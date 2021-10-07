@@ -1,5 +1,7 @@
 package me.aleiv.core.paper;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -15,10 +17,18 @@ public class Game extends BukkitRunnable {
     long gameTime = 0;
     long startTime = 0;
 
+    HashMap<GameType, Boolean> games = new HashMap<>();
+
     public Game(Core instance) {
         this.instance = instance;
         this.startTime = System.currentTimeMillis();
 
+        games.put(GameType.RED_GREEN, false);
+
+    }
+
+    public enum GameType {
+        RED_GREEN
     }
 
     @Override

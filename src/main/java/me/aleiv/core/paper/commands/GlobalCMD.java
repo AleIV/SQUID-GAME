@@ -1,8 +1,7 @@
 package me.aleiv.core.paper.commands;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -10,6 +9,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Game.GameType;
 import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("global")
@@ -24,23 +24,19 @@ public class GlobalCMD extends BaseCommand {
 
     }
 
-    @Subcommand("velocity|v|velo")
-    public void velocity(Player sender, Float x, Float y, Float z){
-
-        var entity = sender.getTargetEntity(10, true);
-
-        if(entity != null){
-            entity.setVelocity(new Vector(x, y, z));
-            sender.sendMessage(ChatColor.BLUE + "Velocity target: " + x + " " + y + " " + z);
-            current = entity;
-
-        }else if(current != null){
-            current.setVelocity(new Vector(x, y, z));
-            sender.sendMessage(ChatColor.BLUE + "Velocity current: " + x + " " + y + " " + z);
-
+    @Subcommand("game")
+    public void game(CommandSender sender, GameType gameType, Boolean bool){
+        var game = instance.getGame();
+        var games = game.getGames();
+        if(!games.containsKey(gameType)){
+            sender.sendMessage(ChatColor.RED + "Game type doesn't exist.");
+            
         }else{
-            sender.sendMessage(ChatColor.RED + "No target.");
+
+            games.put(gameType, bool);
+            sender.sendMessage(ChatColor.DARK_AQUA + "Game type " + gameType + " " + bool + ".");
         }
+        
 
     }
 }
