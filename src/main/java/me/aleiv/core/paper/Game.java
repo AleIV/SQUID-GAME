@@ -24,11 +24,12 @@ public class Game extends BukkitRunnable {
         this.startTime = System.currentTimeMillis();
 
         games.put(GameType.RED_GREEN, false);
+        games.put(GameType.COOKIES, false);
 
     }
 
     public enum GameType {
-        RED_GREEN
+        RED_GREEN, COOKIES
     }
 
     @Override
