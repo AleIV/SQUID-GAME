@@ -24,6 +24,7 @@ public class Core extends JavaPlugin {
     private static @Getter Core instance;
     private @Getter Game game;
     private @Getter PaperCommandManager commandManager;
+    private @Getter AnimationStore animationStore;
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
 
     @Override
@@ -32,6 +33,7 @@ public class Core extends JavaPlugin {
 
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
+        animationStore = new AnimationStore(this);
 
         RapidInvManager.register(this);
         BukkitTCT.registerPlugin(this);
@@ -44,7 +46,6 @@ public class Core extends JavaPlugin {
         //COMMANDS
         
         commandManager = new PaperCommandManager(this);
-
         commandManager.registerCommand(new GlobalCMD(this));
 
     }

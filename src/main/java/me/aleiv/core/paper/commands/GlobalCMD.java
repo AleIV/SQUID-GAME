@@ -1,11 +1,11 @@
 package me.aleiv.core.paper.commands;
 
 import org.bukkit.Particle;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 
 import co.aikar.commands.BaseCommand;
@@ -13,9 +13,9 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
+import me.aleiv.core.paper.AnimationStore;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.GameType;
-import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("global")
@@ -54,69 +54,35 @@ public class GlobalCMD extends BaseCommand {
 
     }
 
-    @Subcommand("stand")
-    public void stand(Player sender, String pos, Integer add){
+    @Subcommand("move")
+    public void move(Player sender, Integer value, Integer tickSpeed, char pos){
         var entity = sender.getTargetEntity(5);
 
         if(entity != null && entity instanceof ArmorStand stand){
 
-            var task = new BukkitTCT();
-
-            for (int i = 0; i < add; i++) {
-                
-                task.addWithDelay(new BukkitRunnable(){
-                    @Override
-                    public void run() {
-                        var part = stand.getHeadPose();
-                        var x = part.getX();
-                        var y = part.getY();
-                        var z = part.getZ();
-                        var v = x+1 > 360 ? x+1 -360 : x+1;
-                        switch (pos) {
-                            case "x": stand.setHeadPose(new EulerAngle(v, y, z)); break;
-                            case "y":  stand.setHeadPose(new EulerAngle(x, v, z)); break;
-                            case "z":  stand.setHeadPose(new EulerAngle(x, y, v)); break;
-                            default: break;
-                        }
-                        sender.sendMessage(ChatColor.GREEN + "CHANGE X: " + x + "Y: " + y + "Z: " + z);
-                    }
-                }, 50*2);
-            }
-
-            task.execute();
+            AnimationStore.move(stand, value, tickSpeed, pos);
 
         }
     }
 
     @Subcommand("rotate")
-    public void rotate(Player sender, Integer add){
+    public void rotate(Player sender, Integer value, Integer tickSpeed){
         var entity = sender.getTargetEntity(5);
 
         if(entity != null && entity instanceof ArmorStand stand){
 
-            var task = new BukkitTCT();
-
-            var v = Math.abs(add);
-            for (int i = 0; i < v; i++) {
-                
-                task.addWithDelay(new BukkitRunnable(){
-                    @Override
-                    public void run() {
-                        var part = stand.getHeadPose();
-                        var x = part.getX();
-                        var y = part.getY();
-                        var z = part.getZ();
-                        var v = add < 0 ? y-0.1 : y+0.1;
-
-                        stand.setHeadPose(new EulerAngle(x, v, z));
-                        sender.sendMessage(ChatColor.GREEN + "CHANGE X: " + x + "Y: " + y + "Z: " + z);
-                    }
-                }, 50*2);
-            }
-
-            task.execute();
+            AnimationStore.rotate(stand, value, tickSpeed);
 
         }
+    }
+
+    @Subcommand("sleep")
+    public void sleep(Player sender){
+       var loc = sender.getLocation();
+       var block = loc.getBlock().getRelative(BlockFace.DOWN);
+       if(block.getType().toString().contains("_BED")){
+            AnimationStore.forceSleep(sender, block.getLocation());
+       }
     }
 
     @Subcommand("set")
