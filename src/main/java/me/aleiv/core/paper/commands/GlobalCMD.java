@@ -13,7 +13,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
-import me.aleiv.core.paper.AnimationStore;
+import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.GameType;
 import net.md_5.bungee.api.ChatColor;
@@ -60,7 +60,7 @@ public class GlobalCMD extends BaseCommand {
 
         if(entity != null && entity instanceof ArmorStand stand){
 
-            AnimationStore.move(stand, value, tickSpeed, pos);
+            AnimationTools.move(stand, value, tickSpeed, pos);
 
         }
     }
@@ -71,7 +71,7 @@ public class GlobalCMD extends BaseCommand {
 
         if(entity != null && entity instanceof ArmorStand stand){
 
-            AnimationStore.rotate(stand, value, tickSpeed);
+            AnimationTools.rotate(stand, value, tickSpeed);
 
         }
     }
@@ -81,7 +81,7 @@ public class GlobalCMD extends BaseCommand {
        var loc = sender.getLocation();
        var block = loc.getBlock().getRelative(BlockFace.DOWN);
        if(block.getType().toString().contains("_BED")){
-            AnimationStore.forceSleep(sender, block.getLocation());
+            AnimationTools.forceSleep(sender, block.getLocation());
        }
     }
 

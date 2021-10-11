@@ -4,19 +4,16 @@ import com.destroystokyo.paper.ParticleBuilder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.EulerAngle;
 
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.GameType;
@@ -90,41 +87,11 @@ public class GlobalListener implements Listener {
         }
     }
 
-    //@EventHandler
-    public void onInteract(PlayerInteractAtEntityEvent e){
-        var player = e.getPlayer();
-        if(!player.hasPermission("stands.edit")) return;
-
-        var entity = e.getRightClicked();
-        var hand = player.getInventory().getItemInMainHand();
-
-        if(entity instanceof ArmorStand stand && hand != null && hand.getType() ==  Material.STICK){
-            var name = hand.getItemMeta().displayName().toString();
-
+    @EventHandler
+    public void onSpawn(CreatureSpawnEvent e){
+        if(e.getSpawnReason().toString().contains("NATURAL")){
             e.setCancelled(true);
-            if(name.contains("head")){
-
-                var split = name.split(";");
-                var neg = split[1] == "+" ? 1 : -1;
-                var pos = split[2];
-
-                var part = stand.getHeadPose();
-                var x = part.getX();
-                var y = part.getY();
-                var z = part.getZ();
-
-                switch (pos) {
-                    case "x": stand.setHeadPose(new EulerAngle(x + (0.1*neg), y, z)); break;
-                    case "y": stand.setHeadPose(new EulerAngle(x, y + (0.1*neg), z)); break;
-                    case "z": stand.setHeadPose(new EulerAngle(x, y, z + (0.1*neg))); break;
-                
-                    default: break;
-                }
-
-            }
-            
         }
-
     }
 
 
