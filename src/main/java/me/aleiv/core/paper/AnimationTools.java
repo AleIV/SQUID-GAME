@@ -1,5 +1,9 @@
 package me.aleiv.core.paper;
 
+import java.util.HashMap;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -9,12 +13,18 @@ import org.bukkit.util.EulerAngle;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 
 public class AnimationTools {
-    
+
+    public static HashMap<String, String> specialObjects = new HashMap<>();
+
     public static void forceSleep(Player player, Location loc){
         player.sleep(loc, true);
     }
 
-    public static void move(ArmorStand stand, Integer value, Integer tickSpeed, char pos, Float distance){
+    public static void move(String name, Integer value, Integer tickSpeed, char pos, Float distance){
+
+        var uuid = UUID.fromString(specialObjects.get(name));
+        var stand = (ArmorStand) Bukkit.getWorld("world").getEntity(uuid);
+
         var task = new BukkitTCT();
         
         var v = Math.abs(value);

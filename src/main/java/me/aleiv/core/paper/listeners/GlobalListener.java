@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -95,7 +96,7 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
-    public void cancelInteract(){
+    public void cancelInteract(PlayerInteractEvent e){
 
     }
 

@@ -2,6 +2,10 @@ package me.aleiv.core.paper;
 
 import java.time.Duration;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -9,8 +13,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import co.aikar.commands.PaperCommandManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
-import me.aleiv.core.paper.commands.GlobalCMD;
+import me.aleiv.core.paper.commands.AnimationStoreCMD;
+import me.aleiv.core.paper.commands.SpecialCMD;
+import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.listeners.GlobalListener;
+import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -26,6 +33,7 @@ public class Core extends JavaPlugin {
     private @Getter PaperCommandManager commandManager;
     private @Getter AnimationStore animationStore;
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
     public void onEnable() {
@@ -46,13 +54,47 @@ public class Core extends JavaPlugin {
         //COMMANDS
         
         commandManager = new PaperCommandManager(this);
-        commandManager.registerCommand(new GlobalCMD(this));
+        commandManager.registerCommand(new SquidCMD(this));
+        commandManager.registerCommand(new SpecialCMD(this));
+        commandManager.registerCommand(new AnimationStoreCMD(this));
 
+        try {
+            var jsonConfig = new JsonConfig("special.json");
+            var list = jsonConfig.getJsonObject();
+            var iter = list.entrySet().iterator();
+            var map = AnimationTools.specialObjects;
+
+            while (iter.hasNext()) {
+                var entry = iter.next();
+                var name = entry.getKey();
+                var value = entry.getValue();
+                map.put(name, value.getAsString());
+
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onDisable() {
 
+        var list = AnimationTools.specialObjects;
+
+        try {
+            var jsonConfig = new JsonConfig("special.json");
+            var json = gson.toJson(list);
+            var obj = gson.fromJson(json, JsonObject.class);
+            jsonConfig.setJsonObject(obj);
+            jsonConfig.save();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        
     }
 
     public void adminMessage(String text) {
