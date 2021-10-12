@@ -55,12 +55,12 @@ public class GlobalCMD extends BaseCommand {
     }
 
     @Subcommand("move")
-    public void move(Player sender, Integer value, Integer tickSpeed, char pos){
+    public void move(Player sender, Integer value, Integer tickSpeed, char pos, Float distance){
         var entity = sender.getTargetEntity(5);
 
         if(entity != null && entity instanceof ArmorStand stand){
 
-            AnimationTools.move(stand, value, tickSpeed, pos);
+            AnimationTools.move(stand, value, tickSpeed, pos, distance);
 
         }
     }
@@ -72,6 +72,17 @@ public class GlobalCMD extends BaseCommand {
         if(entity != null && entity instanceof ArmorStand stand){
 
             AnimationTools.rotate(stand, value, tickSpeed);
+
+        }
+    }
+
+    @Subcommand("info")
+    public void info(Player sender){
+        var entity = sender.getTargetEntity(5);
+
+        if(entity != null && entity instanceof ArmorStand stand){
+            var loc = stand.getLocation();
+            instance.broadcastMessage(ChatColor.GREEN + "" + loc.getX() + " " + loc.getY() + " " + loc.getZ());
 
         }
     }

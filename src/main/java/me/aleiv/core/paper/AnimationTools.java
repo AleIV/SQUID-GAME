@@ -14,7 +14,7 @@ public class AnimationTools {
         player.sleep(loc, true);
     }
 
-    public static void move(ArmorStand stand, Integer value, Integer tickSpeed, char pos){
+    public static void move(ArmorStand stand, Integer value, Integer tickSpeed, char pos, Float distance){
         var task = new BukkitTCT();
         
         var v = Math.abs(value);
@@ -26,7 +26,7 @@ public class AnimationTools {
                     var x = loc.getX();
                     var y = loc.getY();
                     var z = loc.getZ();
-                    var v = value < 0 ? -0.1 : 0.1;
+                    var v = value < 0 ? -distance : distance;
                     var l = loc.clone();
                     switch (pos) {
                         case 'x': l.setX(x+v); break;

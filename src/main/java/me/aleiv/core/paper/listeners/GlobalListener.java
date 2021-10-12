@@ -94,5 +94,10 @@ public class GlobalListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void cancelInteract(){
+
+    }
+
 
 }
