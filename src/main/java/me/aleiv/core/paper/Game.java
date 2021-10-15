@@ -3,6 +3,7 @@ package me.aleiv.core.paper;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import lombok.Data;
@@ -18,6 +19,10 @@ public class Game extends BukkitRunnable {
     long startTime = 0;
 
     HashMap<GameType, Boolean> games = new HashMap<>();
+    HashMap<String, Role> roles = new HashMap<>();
+
+    Boolean lights = true;
+    PvPType pvp = PvPType.ONLY_GUARDS;
 
     public Game(Core instance) {
         this.instance = instance;
@@ -30,6 +35,18 @@ public class Game extends BukkitRunnable {
 
     public enum GameType {
         RED_GREEN, COOKIES
+    }
+
+    public enum PvPType{
+        ONLY_GUARDS, ALL, ONLY_PVP
+    }
+
+    public enum Role {
+        GUARD, PLAYER
+    }
+
+    public boolean isGuard(Player player){
+        return roles.get(player.getUniqueId().toString()) == Role.GUARD;
     }
 
     @Override

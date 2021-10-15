@@ -19,9 +19,8 @@ public class AnimationStoreCMD extends BaseCommand {
     private @NonNull Core instance;
     Entity current = null;
 
-    public AnimationStoreCMD(Core instance) {
+    public AnimationStoreCMD(Core instance){
         this.instance = instance;
-
     }
 
     @Subcommand("lights")
@@ -30,10 +29,22 @@ public class AnimationStoreCMD extends BaseCommand {
         AnimationStore.lights(bool);
     }
 
-    @Subcommand("elevator")
+    @Subcommand("main-elevator")
     public void elevator(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Main elevator " + bool);
         AnimationStore.mainElevator(bool);
+    }
+
+    @Subcommand("submarine-left")
+    public void leftDoor(CommandSender sender, Boolean bool){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Main left door submarine " + bool);
+        AnimationStore.mainLeftDoor(bool);
+    }
+
+    @Subcommand("submarine-right")
+    public void rightDoor(CommandSender sender, Boolean bool){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Main right door submarine " + bool);
+        AnimationStore.mainRightDoor(bool);
     }
 
 

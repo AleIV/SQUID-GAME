@@ -1,6 +1,7 @@
 package me.aleiv.core.paper;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -12,12 +13,13 @@ public class AnimationStore {
         AnimationStore.instance = instance;
 
     }
-
+    
     public static void lights(Boolean bool){
+        instance.getGame().setLights(bool);
         if(bool){
             Bukkit.getOnlinePlayers().forEach(player->{
                 var loc = player.getLocation();
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 100000, 100, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
                 player.playSound(loc, "squid.lights_on", 1, 1);
             });
 
@@ -32,24 +34,73 @@ public class AnimationStore {
     }
 
     public static void mainElevator(Boolean bool){
-        if(bool){
-            AnimationTools.move("RIGHT_ELEVATOR", 33, 1, 'x', 0.1f);
-            AnimationTools.move("LEFT_ELEVATOR", -33, 1, 'x', 0.1f);
+        var loc1 = AnimationTools.parseLocation("MAIN_ELEVATOR_POS1", Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation("MAIN_ELEVATOR_POS2", Bukkit.getWorld("world"));
 
-            Bukkit.getOnlinePlayers().forEach(player->{
-                var loc = player.getLocation();
-                player.playSound(loc, "squid.elevator_open", 1, 1);
-            });
+        if(bool){
+
+            AnimationTools.fill(loc1, loc2, Material.AIR);
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid.elevator_open", 1f, 1f);
+
+            AnimationTools.move("MAIN_RIGHT_ELEVATOR", 33, 1, 'x', 0.1f);
+            AnimationTools.move("MAIN_LEFT_ELEVATOR", -33, 1, 'x', 0.1f);
 
         }else{
-            
-            AnimationTools.move("RIGHT_ELEVATOR", -33, 1, 'x', 0.1f);
-            AnimationTools.move("LEFT_ELEVATOR", 33, 1, 'x', 0.1f);
 
-            Bukkit.getOnlinePlayers().forEach(player->{
-                var loc = player.getLocation();
-                player.playSound(loc, "squid.elevator_close", 1, 1);
-            });
+            AnimationTools.fill(loc1, loc2, Material.BARRIER);
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid.elevator_close", 1f, 1f);
+
+            AnimationTools.move("MAIN_RIGHT_ELEVATOR", -33, 1, 'x', 0.1f);
+            AnimationTools.move("MAIN_LEFT_ELEVATOR", 33, 1, 'x', 0.1f);
+
+        }
+    }
+
+    public static void mainLeftDoor(Boolean bool){
+        var loc1 = AnimationTools.parseLocation("MAIN_LEFT_DOOR_POS1", Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation("MAIN_LEFT_DOOR_POS2", Bukkit.getWorld("world"));
+        if(bool){
+
+            AnimationTools.fill(loc1, loc2, Material.AIR);
+
+            AnimationTools.playSoundDistance(loc1, 15, "squid.door_submarine_open", 1f, 1f);
+
+            AnimationTools.rotate("MAIN_LEFT_DOOR", 25, 1);
+        
+
+        }else{
+
+            AnimationTools.fill(loc1, loc2, Material.BARRIER);
+
+            AnimationTools.playSoundDistance(loc1, 15, "squid.door_submarine_close", 1f, 1f);
+
+            AnimationTools.rotate("MAIN_LEFT_DOOR", -25, 1);
+
+        }
+    }
+
+    public static void mainRightDoor(Boolean bool){
+        var loc1 = AnimationTools.parseLocation("MAIN_RIGHT_DOOR_POS1", Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation("MAIN_RIGHT_DOOR_POS2", Bukkit.getWorld("world"));
+
+        if(bool){
+
+            AnimationTools.fill(loc1, loc2, Material.AIR);
+
+            AnimationTools.playSoundDistance(loc1, 15, "squid.door_submarine_open", 1f, 1f);
+
+            AnimationTools.rotate("MAIN_RIGHT_DOOR", 25, 1);
+        
+        }else{
+
+            AnimationTools.fill(loc1, loc2, Material.BARRIER);
+
+            AnimationTools.playSoundDistance(loc1, 15, "squid.door_submarine_close", 1f, 1f);
+
+            AnimationTools.rotate("MAIN_RIGHT_DOOR", -25, 1);
+
         }
     }
 

@@ -14,6 +14,7 @@ import co.aikar.commands.PaperCommandManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
 import me.aleiv.core.paper.commands.AnimationStoreCMD;
+import me.aleiv.core.paper.commands.GamesCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.listeners.GlobalListener;
@@ -57,6 +58,7 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new SquidCMD(this));
         commandManager.registerCommand(new SpecialCMD(this));
         commandManager.registerCommand(new AnimationStoreCMD(this));
+        commandManager.registerCommand(new GamesCMD(this));
 
         try {
             var jsonConfig = new JsonConfig("special.json");

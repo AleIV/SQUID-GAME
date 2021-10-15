@@ -1,12 +1,8 @@
 package me.aleiv.core.paper.commands;
 
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.EulerAngle;
 
@@ -25,7 +21,6 @@ import net.md_5.bungee.api.ChatColor;
 public class SpecialCMD extends BaseCommand {
 
     private @NonNull Core instance;
-    Entity current = null;
 
     public SpecialCMD(Core instance) {
         this.instance = instance;
@@ -67,7 +62,7 @@ public class SpecialCMD extends BaseCommand {
             }else{
     
                 var loc = block.getLocation();
-                specialObjects.put(name, loc.getX() + ";" + loc.getY() + ";" + loc.getZ());
+                specialObjects.put(name, (int) loc.getX() + ";" + (int) loc.getY() + ";" + (int) loc.getZ());
                 sender.sendMessage(ChatColor.DARK_AQUA + "Special object " + name + " added.");
             }
 
@@ -129,10 +124,9 @@ public class SpecialCMD extends BaseCommand {
 
         if(!specialObjects.containsKey(name)){
             sender.sendMessage(ChatColor.RED + "Special object doesn't exist.");
+            
         }else{
-            var uuid = UUID.fromString(specialObjects.get(name));
-            var stand = (ArmorStand) Bukkit.getWorld("world").getEntity(uuid);
-            AnimationTools.rotate(stand, value, tickSpeed);
+            AnimationTools.rotate(name, value, tickSpeed);
         }
     }
 
