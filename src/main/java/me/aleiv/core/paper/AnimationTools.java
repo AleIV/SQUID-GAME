@@ -43,12 +43,13 @@ public class AnimationTools {
                 .map(entry -> parseLocation(entry.getKey(), world)).collect(Collectors.toList());
     }
 
-    public static void shootLocation(Location loc) {
+    public static void shootLocation(Location loc, float speed) {
         var random = new Random();
         var locations = findLocations("WALL_GUN");
         var wallGun = locations.get(random.nextInt(locations.size()));
         var vector = getVector(loc, wallGun);
-        wallGun.getWorld().spawnArrow(wallGun, vector, 20, 0);
+        
+        wallGun.getWorld().spawnArrow(wallGun, vector, speed, 0);
 
     }
 

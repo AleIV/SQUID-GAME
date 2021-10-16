@@ -22,6 +22,7 @@ import me.aleiv.core.paper.detection.CollisionManager;
 import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import me.aleiv.core.paper.vectors.VectorsManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
@@ -37,6 +38,7 @@ public class Core extends JavaPlugin {
     private @Getter AnimationStore animationStore;
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
     private @Getter CollisionManager collisionManager;
+    private @Getter VectorsManager vectorManager;
     private SkinChanger skinChanger;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -85,6 +87,9 @@ public class Core extends JavaPlugin {
 
         // Start collision manager
         this.collisionManager = new CollisionManager(this);
+        // Start vectors manager
+        this.vectorManager = new VectorsManager(this);
+
     }
 
     @Override

@@ -24,9 +24,12 @@ public class CollisionManager {
      */
     public CollisionManager(Core instance) {
         this.instance = instance;
+        // instanciate the sub-module of this class.
         this.collisionLogicTask = new CollisionLogicTask(instance);
         this.polygonCommand = new CreatePolygonCommand(this);
+        // Start the collision detection thread
         Bukkit.getScheduler().runTaskTimer(instance, this.collisionLogicTask, 0L, 5L);
+        // register the commands
         this.instance.getCommandManager().registerCommand(this.polygonCommand);
     }
 
