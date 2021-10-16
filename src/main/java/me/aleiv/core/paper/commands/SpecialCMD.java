@@ -1,6 +1,5 @@
 package me.aleiv.core.paper.commands;
 
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -141,13 +140,22 @@ public class SpecialCMD extends BaseCommand {
         }
     }
 
-    @Subcommand("sleep")
+    @Subcommand("add-bed")
     public void sleep(Player sender){
-       var loc = sender.getLocation();
-       var block = loc.getBlock().getRelative(BlockFace.DOWN);
-       if(block.getType().toString().contains("_BED")){
-            AnimationTools.forceSleep(sender, block.getLocation());
-       }
+       var specialObjects = AnimationTools.specialObjects;
+        var block = sender.getTargetBlock(5);
+
+        if(block != null){
+
+            var n = AnimationTools.findLocations("BED").size();
+            var loc = block.getLocation();
+            var name = "BED_" + (n+1);
+            specialObjects.put(name, (int) loc.getX() + ";" + (int) loc.getY() + ";" + (int) loc.getZ());
+            sender.sendMessage(ChatColor.DARK_AQUA + "Special object " + name + " added.");
+
+        }else{
+            sender.sendMessage(ChatColor.RED + "You don't have target.");
+        }
     }
 
     @Subcommand("set")

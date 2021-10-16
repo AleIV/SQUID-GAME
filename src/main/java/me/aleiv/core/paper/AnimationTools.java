@@ -3,7 +3,9 @@ package me.aleiv.core.paper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,6 +24,22 @@ public class AnimationTools {
 
     public static void forceSleep(Player player, Location loc){
         player.sleep(loc, true);
+    }
+
+    public static void forceSleep(List<Player> players, List<Location> beds){
+        var random = new Random();
+        
+        for (var player : players) {
+            var index = random.nextInt(beds.size());
+            var bed = beds.remove(index);
+            forceSleep(player, bed);
+        }
+    }
+
+    public static List<Location> findLocations(String str){
+        var world = Bukkit.getWorld("world");
+        return specialObjects.entrySet().stream().filter(entry -> 
+            entry.getKey().contains(str)).map(entry -> parseLocation(entry.getKey(), world)).collect(Collectors.toList());
     }
 
     public static void move(String name, Integer value, Integer tickSpeed, char pos, Float distance){

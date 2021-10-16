@@ -2,19 +2,26 @@ package me.aleiv.core.paper;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class AnimationStore {
 
-    static Core instance;
+    Core instance;
 
     public AnimationStore(Core instance) {
-        AnimationStore.instance = instance;
+        this.instance = instance;
 
     }
+
+    public void makeAllSleep(){
+        var players = Bukkit.getOnlinePlayers().stream().map(player -> (Player) player).toList();
+        var beds = AnimationTools.findLocations("BED");
+        AnimationTools.forceSleep(players, beds);
+    }
     
-    public static void lights(Boolean bool){
+    public void lights(Boolean bool){
         instance.getGame().setLights(bool);
         if(bool){
             Bukkit.getOnlinePlayers().forEach(player->{
@@ -33,7 +40,7 @@ public class AnimationStore {
         }
     }
 
-    public static void mainElevator(Boolean bool){
+    public void mainElevator(Boolean bool){
         var loc1 = AnimationTools.parseLocation("MAIN_ELEVATOR_POS1", Bukkit.getWorld("world"));
         var loc2 = AnimationTools.parseLocation("MAIN_ELEVATOR_POS2", Bukkit.getWorld("world"));
 
@@ -58,7 +65,7 @@ public class AnimationStore {
         }
     }
 
-    public static void mainLeftDoor(Boolean bool){
+    public void mainLeftDoor(Boolean bool){
         var loc1 = AnimationTools.parseLocation("MAIN_LEFT_DOOR_POS1", Bukkit.getWorld("world"));
         var loc2 = AnimationTools.parseLocation("MAIN_LEFT_DOOR_POS2", Bukkit.getWorld("world"));
         if(bool){
@@ -81,7 +88,7 @@ public class AnimationStore {
         }
     }
 
-    public static void mainRightDoor(Boolean bool){
+    public void mainRightDoor(Boolean bool){
         var loc1 = AnimationTools.parseLocation("MAIN_RIGHT_DOOR_POS1", Bukkit.getWorld("world"));
         var loc2 = AnimationTools.parseLocation("MAIN_RIGHT_DOOR_POS2", Bukkit.getWorld("world"));
 
