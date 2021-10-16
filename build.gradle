@@ -29,6 +29,7 @@ javadoc {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     jcenter()
     maven { url 'https://papermc.io/repo/repository/maven-public/' }
@@ -41,6 +42,7 @@ repositories {
 
 dependencies {
     //Paper
+    
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
     //Lombok
     // Use Protocol Lib

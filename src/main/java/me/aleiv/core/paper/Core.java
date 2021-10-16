@@ -15,8 +15,10 @@ import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
 import me.aleiv.core.paper.commands.AnimationStoreCMD;
 import me.aleiv.core.paper.commands.GamesCMD;
+import me.aleiv.core.paper.commands.SkinChanger;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
+import me.aleiv.core.paper.detection.CollisionManager;
 import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
@@ -34,10 +36,13 @@ public class Core extends JavaPlugin {
     private @Getter PaperCommandManager commandManager;
     private @Getter AnimationStore animationStore;
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
+    private @Getter CollisionManager collisionManager;
+    private SkinChanger skinChanger;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
     public void onEnable() {
+
         instance = this;
 
         game = new Game(this);
@@ -47,13 +52,12 @@ public class Core extends JavaPlugin {
         RapidInvManager.register(this);
         BukkitTCT.registerPlugin(this);
 
-        //LISTENERS
+        // LISTENERS
 
         Bukkit.getPluginManager().registerEvents(new GlobalListener(this), this);
 
+        // COMMANDS
 
-        //COMMANDS
-        
         commandManager = new PaperCommandManager(this);
         commandManager.registerCommand(new SquidCMD(this));
         commandManager.registerCommand(new SpecialCMD(this));
@@ -78,6 +82,9 @@ public class Core extends JavaPlugin {
 
             e.printStackTrace();
         }
+
+        // Start collision manager
+        this.collisionManager = new CollisionManager(this);
     }
 
     @Override
@@ -96,7 +103,7 @@ public class Core extends JavaPlugin {
 
             e.printStackTrace();
         }
-        
+
     }
 
     public void adminMessage(String text) {

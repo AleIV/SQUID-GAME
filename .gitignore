@@ -11,6 +11,7 @@ buildNumber.properties
 .vscode/
 .classpath
 
+debug/
 
 ### Gradle & IntelliJ ###
 .gradle/
