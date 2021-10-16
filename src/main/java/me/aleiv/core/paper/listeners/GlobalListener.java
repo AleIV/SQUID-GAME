@@ -66,23 +66,24 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e){
+    public void onJoin(PlayerJoinEvent e) {
         var game = instance.getGame();
         var roles = game.getRoles();
         var player = e.getPlayer();
         var uuid = player.getUniqueId().toString();
 
-        if(!roles.containsKey(uuid)){
-            if(player.hasPermission("admin.perm")){
+        if (!roles.containsKey(uuid)) {
+            if (player.hasPermission("admin.perm")) {
                 roles.put(uuid, Role.GUARD);
-            }else{
+            } else {
                 roles.put(uuid, Role.PLAYER);
             }
         }
 
-        if(game.getLights()){
-            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
-        }else{
+        if (game.getLights()) {
+            player.addPotionEffect(
+                    new PotionEffect(PotionEffectType.NIGHT_VISION, 20 * 1000000, 100, false, false, false));
+        } else {
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
         }
     }
@@ -104,10 +105,29 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
+    public void onSpawn(CreatureSpawnEvent e) {
+        if (e.getSpawnReason().toString().contains("NATURAL")) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void cancelInteract(PlayerInteractEvent e) {
+        var player = e.getPlayer();
+        var block = e.getClickedBlock();
+        var action = e.getAction();
+
+        if (action == Action.RIGHT_CLICK_BLOCK && block != null && player.getGameMode() != GameMode.CREATIVE
+                && (bannedMoveList.contains(block.getType()) || block.getType().toString().contains("TRAPDOOR"))) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onShoot(EntityDamageByEntityEvent e) {
         var entity = e.getEntity();
         var damager = e.getDamager();
-        if(entity instanceof Player player){
+        if (entity instanceof Player player) {
 
             var game = instance.getGame();
             var roles = game.getRoles();
@@ -118,118 +138,82 @@ public class GlobalListener implements Listener {
 
             var animation = 0;
 
-            if(damager instanceof Player playerDamager){
+            if (damager instanceof Player playerDamager) {
                 var damagerRole = roles.get(player.getUniqueId().toString());
 
-                if(role == Role.GUARD && role == damagerRole && !playerDamager.hasPermission("admin.perm")){
-                    //GUARD TO GUARD CASE
-                    e.setCancelled(true);
-                    return;
-                    
-                }else if(role == Role.PLAYER && damagerRole == Role.GUARD){
-                    //PLAYER TO GUARD CASE
+                if (role == Role.GUARD && role == damagerRole && !playerDamager.hasPermission("admin.perm")) {
+                    // GUARD TO GUARD CASE
                     e.setCancelled(true);
                     return;
 
-                }else if(pvp == PvPType.ONLY_GUARDS && role == Role.PLAYER && role == damagerRole){
-                    //PLAYER TO PLAYER CASE
+                } else if (role == Role.PLAYER && damagerRole == Role.GUARD) {
+                    // PLAYER TO GUARD CASE
+                    e.setCancelled(true);
+                    return;
+
+                } else if (pvp == PvPType.ONLY_GUARDS && role == Role.PLAYER && role == damagerRole) {
+                    // PLAYER TO PLAYER CASE
                     e.setCancelled(true);
                     return;
                 }
 
-            }else if(damager instanceof Projectile){
+            } else if (damager instanceof Projectile) {
                 animation = 2;
             }
 
             var inv = player.getInventory();
             var item = inv.getItemInMainHand();
-            if(item != null && item.getType().toString().contains("SWORD")){
+            if (item != null && item.getType().toString().contains("SWORD")) {
                 animation = 1;
             }
 
-
-            if(animation == 0){
-                new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100).offset(0.01, 0.01, 0.01).extra(0.05).spawn();
-            }else{
+            if (animation == 0) {
+                new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100)
+                        .offset(0.01, 0.01, 0.01).extra(0.05).spawn();
+            } else {
 
                 var task = new BukkitTCT();
                 final var a = animation;
 
                 for (int i = 0; i < 5; i++) {
-                    task.addWithDelay(new BukkitRunnable(){
+                    task.addWithDelay(new BukkitRunnable() {
                         @Override
                         public void run() {
                             var loc = player.getLocation();
                             switch (a) {
-                                case 1:{
-                                    //KNIFE CASE
-                                    new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100).offset(0.1, 0.5, 0.1).extra(0.05).spawn();
-                                }break;
-    
-                                case 2:{
-                                    //SHOOT CASE
-                                    new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100).offset(0.1, 0.5, 0.1).extra(0.05).spawn();
-                                }break;
-                            
-                                default: 
+                                case 1: {
+                                    // KNIFE CASE
+                                    new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true)
+                                            .count(100).offset(0.1, 0.5, 0.1).extra(0.05).spawn();
+                                }
+                                    break;
+
+                                case 2: {
+                                    // SHOOT CASE
+                                    new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true)
+                                            .count(100).offset(0.1, 0.5, 0.1).extra(0.05).spawn();
+                                }
+                                    break;
+
+                                default:
                                     break;
                             }
-                            
+
                         }
-                    }, 50*2);
+                    }, 50 * 2);
                 }
-                
+
                 task.execute();
             }
-        if (entity instanceof Player player) {
-            var task = new BukkitTCT();
-
-            for (int i = 0; i < 5; i++) {
-                task.addWithDelay(new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        var loc = player.getLocation();
-                        if (damager instanceof Projectile) {
-                            new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100)
-                                    .offset(0.5, 1, 0.5).extra(0.05).spawn();
-                        } else {
-                            new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100)
-                                    .offset(0.1, 0.5, 0.1).extra(0.05).spawn();
-                        }
-
-                    }
-                }, 50 * 2);
-            }
-
-            task.execute();
 
         }
     }
 
     @EventHandler
-    public void onSpawn(CreatureSpawnEvent e) {
-        if (e.getSpawnReason().toString().contains("NATURAL")) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void cancelInteract(PlayerInteractEvent e){
-        var player = e.getPlayer();
-        var block = e.getClickedBlock();
-        var action = e.getAction();
-        
-        if(action == Action.RIGHT_CLICK_BLOCK && block != null && player.getGameMode() != GameMode.CREATIVE 
-            && (bannedMoveList.contains(block.getType()) || block.getType().toString().contains("TRAPDOOR"))){
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void inventoryOpen(InventoryOpenEvent e){
+    public void inventoryOpen(InventoryOpenEvent e) {
         var player = e.getPlayer();
         var inv = e.getInventory();
-        if(player.getGameMode() != GameMode.CREATIVE && !inv.getType().toString().contains("CHEST")){
+        if (player.getGameMode() != GameMode.CREATIVE && !inv.getType().toString().contains("CHEST")) {
             e.setCancelled(true);
         }
     }
