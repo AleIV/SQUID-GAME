@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.GameType;
+import me.aleiv.core.paper.detection.events.PlayerCollidedWithAreaEvent;
 import me.aleiv.core.paper.events.GameTickEvent;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 
@@ -27,6 +28,12 @@ public class GlobalListener implements Listener {
 
     public GlobalListener(Core instance) {
         this.instance = instance;
+    }
+
+    @EventHandler
+    public void onPlayerEnteredPolygon(PlayerCollidedWithAreaEvent e) {
+        var player = e.getPlayer();
+        Bukkit.broadcastMessage(player.getName() + " is colliding with a polygon");
     }
 
     @EventHandler
@@ -58,47 +65,49 @@ public class GlobalListener implements Listener {
         player.setExp(0);
         player.setLevel(0);
 
-        //player.getActivePotionEffects().forEach(all -> player.removePotionEffect(all.getType()));
+        // player.getActivePotionEffects().forEach(all ->
+        // player.removePotionEffect(all.getType()));
     }
 
     @EventHandler
-    public void onShoot(EntityDamageByEntityEvent e){
+    public void onShoot(EntityDamageByEntityEvent e) {
         var entity = e.getEntity();
         var damager = e.getDamager();
-        if(entity instanceof Player player){
+        if (entity instanceof Player player) {
             var task = new BukkitTCT();
 
             for (int i = 0; i < 5; i++) {
-                task.addWithDelay(new BukkitRunnable(){
+                task.addWithDelay(new BukkitRunnable() {
                     @Override
                     public void run() {
                         var loc = player.getLocation();
-                        if(damager instanceof Projectile){
-                            new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100).offset(0.5, 1, 0.5).extra(0.05).spawn();
-                        }else{
-                            new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100).offset(0.1, 0.5, 0.1).extra(0.05).spawn();
+                        if (damager instanceof Projectile) {
+                            new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100)
+                                    .offset(0.5, 1, 0.5).extra(0.05).spawn();
+                        } else {
+                            new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100)
+                                    .offset(0.1, 0.5, 0.1).extra(0.05).spawn();
                         }
-                        
+
                     }
-                }, 50*2);
+                }, 50 * 2);
             }
-            
+
             task.execute();
 
         }
     }
 
     @EventHandler
-    public void onSpawn(CreatureSpawnEvent e){
-        if(e.getSpawnReason().toString().contains("NATURAL")){
+    public void onSpawn(CreatureSpawnEvent e) {
+        if (e.getSpawnReason().toString().contains("NATURAL")) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void cancelInteract(PlayerInteractEvent e){
+    public void cancelInteract(PlayerInteractEvent e) {
 
     }
-
 
 }

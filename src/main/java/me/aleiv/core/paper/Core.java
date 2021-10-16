@@ -83,7 +83,6 @@ public class Core extends JavaPlugin {
 
         // Start collision manager
         this.collisionManager = new CollisionManager(this);
-        this.collisionManager.start();
     }
 
     @Override
@@ -102,9 +101,6 @@ public class Core extends JavaPlugin {
 
             e.printStackTrace();
         }
-
-        // Bye bye
-        this.collisionManager.stop();
 
     }
 

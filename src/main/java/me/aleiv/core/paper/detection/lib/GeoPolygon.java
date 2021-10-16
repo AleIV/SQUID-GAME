@@ -64,9 +64,7 @@ public class GeoPolygon {
     }
 
     public boolean isInside(Position position) {
-        if (proc == null)
-            proc = new GeoPolygonProc(this);
-        return proc.PointInside3DPolygon(position.getX(), position.getY(), position.getZ());
+        return new GeoPolygonProc(this).PointInside3DPolygon(position.getX(), position.getY(), position.getZ());
     }
 
 }

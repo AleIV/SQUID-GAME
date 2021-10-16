@@ -1,5 +1,7 @@
 package me.aleiv.core.paper.detection;
 
+import org.bukkit.Bukkit;
+
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.detection.commands.CreatePolygonCommand;
 import me.aleiv.core.paper.detection.lib.GeoPolygon;
@@ -12,7 +14,6 @@ import me.aleiv.core.paper.detection.lib.GeoPolygon;
  */
 public class CollisionManager {
     private Core instance;
-    private Thread collisionLogicThread;
     private CollisionLogicTask collisionLogicTask;
     private CreatePolygonCommand polygonCommand;
 
@@ -25,7 +26,7 @@ public class CollisionManager {
         this.instance = instance;
         this.collisionLogicTask = new CollisionLogicTask(instance);
         this.polygonCommand = new CreatePolygonCommand(this);
-        this.collisionLogicThread = new Thread(this.collisionLogicTask);
+        Bukkit.getScheduler().runTaskTimer(instance, this.collisionLogicTask, 0L, 5L);
         this.instance.getCommandManager().registerCommand(this.polygonCommand);
     }
 
@@ -36,20 +37,6 @@ public class CollisionManager {
      */
     public void addPolygon(GeoPolygon polygon) {
         this.collisionLogicTask.addPolygon(polygon);
-    }
-
-    /**
-     * Method that must be called to start the detection thread.
-     */
-    public void start() {
-        this.collisionLogicThread.start();
-    }
-
-    /**
-     * Method that must be called to stop the detection thread.
-     */
-    public void stop() {
-        this.collisionLogicThread.interrupt();
     }
 
 }

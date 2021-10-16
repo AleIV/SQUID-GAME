@@ -3,7 +3,9 @@ package me.aleiv.core.paper.detection.commands;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -82,6 +84,13 @@ public class CreatePolygonCommand extends BaseCommand {
         collisionManager.addPolygon(polygon);
         player.sendMessage(Core.getMiniMessage().parse("<green>Your polygon has been added to the collision checker."));
 
+    }
+
+    @Subcommand("apply-velocity")
+    public void moveUpwards(Player player, Double xComponent, Double yComponent, Double zComponent) {
+        player.getLocation().getNearbyEntitiesByType(Boat.class, 5, 5, 5)
+                .forEach(all -> all.setVelocity(new Vector(xComponent, yComponent, zComponent)));
+        ;
     }
 
 }

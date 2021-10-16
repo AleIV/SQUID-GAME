@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Bukkit;
 
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.detection.events.PlayerCollidedWithAreaEvent;
 import me.aleiv.core.paper.detection.lib.GeoPolygon;
 import me.aleiv.core.paper.detection.objects.Position;
 
@@ -30,33 +31,28 @@ public class CollisionLogicTask implements Runnable {
 
     @Override
     public void run() {
-        // Continue if the task is the thread is not intterupted.
-        while (!Thread.currentThread().isInterrupted()) {
-            // If no ploygons are loaded, don't do anything.
-            if (polygons.isEmpty())
-                return;
+        // If no ploygons are loaded, don't do anything.
+        if (polygons.isEmpty())
+            return;
 
-            final var locationsMap = getPlayersLocations();
-            // If no players are online, don't do anything.
-            if (locationsMap.isEmpty())
-                return;
+        final var locationsMap = getPlayersLocations();
+        // If no players are online, don't do anything.
+        if (locationsMap.isEmpty())
+            return;
 
-            final var entries = locationsMap.entrySet();
-            polygons.parallelStream().forEach(polygon -> {
-                entries.parallelStream().filter(prd -> polygon.isInside(prd.getValue())).forEach(playersInside -> {
-                    // Call event to bukkit
+        final var entries = locationsMap.entrySet();
 
-                });
+        for (final var entry : entries) {
+            final var playerUUID = entry.getKey();
+            final var playerPosition = entry.getValue();
 
-            });
-            // Sleep for a while.
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            for (final var polygon : polygons) {
+                if (polygon.isInside(playerPosition)) {
+                    final var event = new PlayerCollidedWithAreaEvent(polygon, playerUUID, !Bukkit.isPrimaryThread());
+                    Bukkit.getPluginManager().callEvent(event);
+                }
+            } 
         }
-
     }
 
     /**
