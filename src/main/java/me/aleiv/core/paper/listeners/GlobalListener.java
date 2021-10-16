@@ -188,7 +188,8 @@ public class GlobalListener implements Listener {
         var block = e.getClickedBlock();
         var action = e.getAction();
         
-        if(action == Action.LEFT_CLICK_BLOCK && block != null && player.getGameMode() != GameMode.CREATIVE && (bannedMoveList.contains(block.getType()) || block.getType().toString().contains("TRAPDOOR"))){
+        if(action == Action.RIGHT_CLICK_BLOCK && block != null && player.getGameMode() != GameMode.CREATIVE 
+            && (bannedMoveList.contains(block.getType()) || block.getType().toString().contains("TRAPDOOR"))){
             e.setCancelled(true);
         }
     }

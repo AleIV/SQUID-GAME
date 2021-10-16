@@ -1,12 +1,14 @@
 package me.aleiv.core.paper.commands;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
+import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 
 @CommandAlias("games")
@@ -26,8 +28,8 @@ public class GamesCMD extends BaseCommand {
     }
 
     @Subcommand("test")
-    public void test(CommandSender sender){
-        
+    public void test(Player sender){
+        AnimationTools.shootLocation(sender.getLocation());
     }
 
 }
