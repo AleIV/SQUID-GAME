@@ -1,4 +1,4 @@
-#!/bin/bashS
+#!/bin/bash
 set -x
 # Variables
 VERSION="1.16.5"
@@ -22,4 +22,27 @@ if [ ! -f "debug/eula.txt" ]; then
     # Download the jar
     echo "Accepting eula"
     echo "eula=true" >debug/eula.txt
+fi
+# Create a server.properties with max-tick-time=-1
+if [ ! -f "debug/server.properties" ]; then
+    # Download the jar
+    echo "Creating server.properties"
+    cat <<EOF >debug/server.properties
+max-tick-time=-1
+allow-nether=false
+motd=Debug Server TSI
+EOF
+fi
+# Create a server.properties with max-tick-time=-1
+if [ ! -f "debug/bukkit.yml" ]; then
+    # Download the jar
+    echo "Creating bukkit.yml"
+    cat <<EOF >debug/bukkit.yml
+settings:
+  allow-end: false
+  connection-throttle: -1
+worlds:
+  world:
+    generator: VoidGen:{"biome":"DESERT","mobs":false}
+EOF
 fi
