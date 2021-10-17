@@ -59,6 +59,9 @@ dependencies {
     //GUIs
     implementation 'com.github.noobstersmc:RapidInv:v0.0.1'
 
+    // Npc
+    compileOnly 'com.mojang:authlib:1.5.25'
+
 }
 
 spigot {
