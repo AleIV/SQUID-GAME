@@ -19,13 +19,11 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Game.GameType;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.Role;
 import me.aleiv.core.paper.events.GameTickEvent;
@@ -46,16 +44,6 @@ public class GlobalListener implements Listener {
         Bukkit.getScheduler().runTask(instance, () -> {
 
         });
-    }
-
-    @EventHandler
-    public void move(PlayerMoveEvent e) {
-        var games = instance.getGame().getGames();
-        if (games.get(GameType.RED_GREEN)) {
-            var player = e.getPlayer();
-            player.damage(50.0);
-        }
-
     }
 
     @EventHandler
@@ -104,7 +92,7 @@ public class GlobalListener implements Listener {
             var uuid = player.getUniqueId().toString();
             var role = roles.get(uuid);
             var pvp = game.getPvp();
-            var loc = player.getLocation();
+            var loc = player.getLocation().clone().add(0, 1, 0);
 
             var animation = 0;
 

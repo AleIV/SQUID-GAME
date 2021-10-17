@@ -58,5 +58,46 @@ public class AnimationStoreCMD extends BaseCommand {
         tools.makeAllSleep();
     }
 
+    @Subcommand("doll-door")
+    public void dollDoor(CommandSender sender, Integer i, Boolean bool){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Doll door " + i + " " + bool);
+        var tools = instance.getAnimationStore();
+        switch (i) {
+            case 1: tools.dollDoor1(bool); break;
+            case 2: tools.dollDoor2(bool); break;
+            case 3: tools.dollDoor3(bool); break;
+        
+            default:
+                break;
+        }
+    }
+
+    @Subcommand("doll-line")
+    public void makeAllSleep(CommandSender sender, Integer i, Boolean bool){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Doll line " + i + " " + bool);
+        var tools = instance.getAnimationStore();
+        switch (i) {
+            case 1: tools.dollLine1(bool); break;
+            case 2: tools.dollLine2(bool); break;
+        
+            default:
+                break;
+        }
+    }
+
+    @Subcommand("doll")
+    public void doll(CommandSender sender, Boolean bool){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Doll " + bool);
+        var tools = instance.getAnimationStore();
+        tools.dollRotate(bool);
+    }
+
+    @Subcommand("doll-head")
+    public void dollHead(CommandSender sender, Boolean bool){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Doll head" + bool);
+        var tools = instance.getAnimationStore();
+        tools.dollHead(bool);
+    }
+
 
 }

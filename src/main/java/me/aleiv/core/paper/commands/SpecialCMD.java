@@ -117,7 +117,7 @@ public class SpecialCMD extends BaseCommand {
     }
 
     @Subcommand("rotate")
-    public void rotate(CommandSender sender, String name, Integer value, Integer tickSpeed){
+    public void rotate(CommandSender sender, String name, Integer value, Integer tickSpeed, Float amount){
 
         var specialObjects = AnimationTools.specialObjects;
 
@@ -125,7 +125,7 @@ public class SpecialCMD extends BaseCommand {
             sender.sendMessage(ChatColor.RED + "Special object doesn't exist.");
             
         }else{
-            AnimationTools.rotate(name, value, tickSpeed);
+            AnimationTools.rotate(name, value, tickSpeed, amount);
         }
     }
 

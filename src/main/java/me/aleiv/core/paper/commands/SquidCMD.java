@@ -17,7 +17,7 @@ import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.Role;
 import net.md_5.bungee.api.ChatColor;
 
-@CommandAlias("squid|game")
+@CommandAlias("squid")
 @CommandPermission("admin.perm")
 public class SquidCMD extends BaseCommand {
 

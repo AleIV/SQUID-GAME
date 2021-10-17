@@ -8,6 +8,8 @@ import com.google.gson.JsonObject;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import co.aikar.commands.PaperCommandManager;
@@ -49,8 +51,7 @@ public class Core extends JavaPlugin {
 
         //LISTENERS
 
-        Bukkit.getPluginManager().registerEvents(new GlobalListener(this), this);
-
+        registerListener(new GlobalListener(this));
 
         //COMMANDS
         
@@ -97,6 +98,14 @@ public class Core extends JavaPlugin {
             e.printStackTrace();
         }
         
+    }
+
+    public void unregisterListener(Listener listener) {
+        HandlerList.unregisterAll(listener);
+    }
+
+    public void registerListener(Listener listener) {
+        Bukkit.getPluginManager().registerEvents(listener, instance);
     }
 
     public void adminMessage(String text) {

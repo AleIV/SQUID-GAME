@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import me.aleiv.core.paper.events.GameTickEvent;
+import me.aleiv.core.paper.objects.MainGamePanel;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -17,6 +18,8 @@ public class Game extends BukkitRunnable {
 
     long gameTime = 0;
     long startTime = 0;
+
+    MainGamePanel mainGamePanel;
 
     HashMap<GameType, Boolean> games = new HashMap<>();
     HashMap<String, Role> roles = new HashMap<>();
@@ -28,6 +31,7 @@ public class Game extends BukkitRunnable {
         this.instance = instance;
         this.startTime = System.currentTimeMillis();
 
+        this.mainGamePanel = new MainGamePanel(instance);
         games.put(GameType.RED_GREEN, false);
         games.put(GameType.COOKIES, false);
 
@@ -47,6 +51,10 @@ public class Game extends BukkitRunnable {
 
     public boolean isGuard(Player player){
         return roles.get(player.getUniqueId().toString()) == Role.GUARD;
+    }
+
+    public boolean isPlayer(Player player){
+        return roles.get(player.getUniqueId().toString()) == Role.PLAYER;
     }
 
     @Override

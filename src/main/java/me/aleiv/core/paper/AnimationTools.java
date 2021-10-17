@@ -21,6 +21,8 @@ import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 
 public class AnimationTools {
 
+    public static Integer speed = 15;
+
     public static HashMap<String, String> specialObjects = new HashMap<>();
 
     public static void forceSleep(Player player, Location loc) {
@@ -43,12 +45,33 @@ public class AnimationTools {
                 .map(entry -> parseLocation(entry.getKey(), world)).collect(Collectors.toList());
     }
 
+    public static Location getNearbyLocation(List<Location> locations, Location location){
+        Location nearbyLocation = locations.get(0);
+        for (var loc : locations) {
+            if(getDistance(nearbyLocation, location) > getDistance(loc, location)){
+                nearbyLocation = loc;
+            }
+        }
+        return nearbyLocation;
+    }
+
+    public static double getDistance(Location loc1, Location loc2) {
+        final int x1 = (int) loc1.getX();
+        final int z1 = (int) loc1.getZ();
+
+        final int x2 = (int) loc2.getX();
+        final int z2 = (int) loc2.getZ();
+
+        return Math.abs(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(z2 - z1, 2)));
+    }
+
     public static void shootLocation(Location loc) {
-        var random = new Random();
         var locations = findLocations("WALL_GUN");
-        var wallGun = locations.get(random.nextInt(locations.size()));
-        var vector = getVector(loc, wallGun);
-        wallGun.getWorld().spawnArrow(wallGun, vector, 20, 0);
+        var wallGun = getNearbyLocation(locations, loc);
+        var vector = getVector(loc.add(0, 1.40, 0), wallGun);
+        
+        wallGun.getWorld().spawnArrow(wallGun, vector, speed, 0);
+        
 
     }
 
@@ -95,7 +118,7 @@ public class AnimationTools {
         task.execute();
     }
 
-    public static void rotate(String name, Integer value, Integer tickSpeed) {
+    public static void rotate(String name, Integer value, Integer tickSpeed, Float amount) {
         var uuid = UUID.fromString(specialObjects.get(name));
         var stand = (ArmorStand) Bukkit.getWorld("world").getEntity(uuid);
 
@@ -110,7 +133,7 @@ public class AnimationTools {
                     var x = part.getX();
                     var y = part.getY();
                     var z = part.getZ();
-                    var v = value < 0 ? y - 0.1 : y + 0.1;
+                    var v = value < 0 ? y - amount : y + amount;
 
                     stand.setHeadPose(new EulerAngle(x, v, z));
                 }

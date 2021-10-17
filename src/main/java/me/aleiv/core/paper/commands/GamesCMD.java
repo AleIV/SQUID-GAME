@@ -1,6 +1,5 @@
 package me.aleiv.core.paper.commands;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import co.aikar.commands.BaseCommand;
@@ -22,14 +21,30 @@ public class GamesCMD extends BaseCommand {
     }
 
     @Subcommand("panel")
-    public void game(CommandSender sender){
-        //var game = instance.getGame();
+    @CommandAlias("panel")
+    public void game(Player sender){
+        var game = instance.getGame();
+        game.getMainGamePanel().open(sender);
+
+    }
+
+    @Subcommand("greenLight")
+    @CommandAlias("greenLight")
+    public void greenLight(Player sender){
+        var game = instance.getGame();
+        game.getMainGamePanel().getGreenLightPanel().open(sender);
 
     }
 
     @Subcommand("test")
     public void test(Player sender){
         AnimationTools.shootLocation(sender.getLocation());
+
     }
 
+    @Subcommand("speed")
+    public void speed(Player sender, Integer speed){
+        AnimationTools.speed = speed;
+
+    }
 }
