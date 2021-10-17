@@ -14,6 +14,6 @@ if [ ! -d "debug" ]; then
 fi
 # Set the current dir to the debug dir
 cd debug
-/Library/Java/JavaVirtualMachines/microsoft-16.jdk/Contents/Home/bin/java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=$DEBUG_PORT \
+java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=$DEBUG_PORT \
     -Xmx$MAX_HEAP -Xms$INIT_HEAP -jar $SERVER_JAR \
     --plugins $PLUGINS_DIR --universe $WORLDS_DIR
