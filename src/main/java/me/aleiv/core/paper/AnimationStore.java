@@ -38,14 +38,14 @@ public class AnimationStore {
             Bukkit.getOnlinePlayers().forEach(player->{
                 var loc = player.getLocation();
                 player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
-                player.playSound(loc, "squid.lights_on", 1, 1);
+                player.playSound(loc, "squid:squid.lights_on", 1, 1);
             });
 
         }else{
             Bukkit.getOnlinePlayers().forEach(player->{
                 var loc = player.getLocation();
                 player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-                player.playSound(loc, "squid.lights_off", 1, 1);
+                player.playSound(loc, "squid:squid.lights_off", 1, 1);
             });
 
         }
@@ -60,7 +60,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 40, "squid.elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.main_elevator_open", 1f, 1f);
 
             AnimationTools.move("MAIN_RIGHT_ELEVATOR", 33, 1, 'x', 0.1f);
             AnimationTools.move("MAIN_LEFT_ELEVATOR", -33, 1, 'x', 0.1f);
@@ -69,7 +69,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
 
-            AnimationTools.playSoundDistance(loc1, 40, "squid.elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.main_elevator_close", 1f, 1f);
 
             AnimationTools.move("MAIN_RIGHT_ELEVATOR", -33, 1, 'x', 0.1f);
             AnimationTools.move("MAIN_LEFT_ELEVATOR", 33, 1, 'x', 0.1f);
@@ -85,7 +85,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 15, "squid.door_submarine_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 15, "squid:sfx.main_door_open", 1f, 1f);
 
             AnimationTools.rotate("MAIN_LEFT_DOOR", 25, 1, 0.1f);
         
@@ -94,7 +94,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
 
-            AnimationTools.playSoundDistance(loc1, 15, "squid.door_submarine_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 15, "squid:sfx.main_door_close", 1f, 1f);
 
             AnimationTools.rotate("MAIN_LEFT_DOOR", -25, 1, 0.1f);
 
@@ -110,7 +110,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 15, "squid.door_submarine_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 15, "squid:sfx.main_door_open", 1f, 1f);
 
             AnimationTools.rotate("MAIN_RIGHT_DOOR", 25, 1, 0.1f);
         
@@ -118,7 +118,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
 
-            AnimationTools.playSoundDistance(loc1, 15, "squid.door_submarine_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 15, "squid:sfx.main_door_close", 1f, 1f);
 
             AnimationTools.rotate("MAIN_RIGHT_DOOR", -25, 1, 0.1f);
 
@@ -133,7 +133,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid.doll_door_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_open", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR1_LEFT", 20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR1_RIGHT", -20, 1, 0.1f);
@@ -142,7 +142,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid.doll_door_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_close", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR1_LEFT", -20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR1_RIGHT", 20, 1, 0.1f);
@@ -158,7 +158,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid.doll_door_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_open", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR2_LEFT", -20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR2_RIGHT", 20, 1, 0.1f);
@@ -167,7 +167,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid.doll_door_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_close", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR2_LEFT", 20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR2_RIGHT", -20, 1, 0.1f);
@@ -183,7 +183,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid.doll_door_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_open", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR3_LEFT", -20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR3_RIGHT", 20, 1, 0.1f);
@@ -192,7 +192,7 @@ public class AnimationStore {
 
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid.doll_door_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_close", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR3_LEFT", 20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR3_RIGHT", -20, 1, 0.1f);
@@ -227,20 +227,28 @@ public class AnimationStore {
     }
 
     public void dollRotate(Boolean bool){
+        var loc = timerLocations.get(TimerType.RED_GREEN).get(0);
         if(bool){
             AnimationTools.rotate("DOLL_HEAD", 63, 1, 0.05f);
             AnimationTools.rotate("DOLL_BODY", 63, 1, 0.05f);
+
+            AnimationTools.playSoundDistance(loc, 220, "squid:sfx.doll_turn_complete", 1f, 1f);
         }else{
             AnimationTools.rotate("DOLL_BODY", -63, 1, 0.05f);
             AnimationTools.rotate("DOLL_HEAD", -63, 1, 0.05f);
+            AnimationTools.playSoundDistance(loc, 220, "squid:sfx.doll_turn_complete2", 1f, 1f);
         }
     }
 
     public void dollHead(Boolean bool){
+        var loc = timerLocations.get(TimerType.RED_GREEN).get(0);
         if(bool){
             AnimationTools.rotate("DOLL_HEAD", 35, 1, 0.09f);
+            AnimationTools.playSoundDistance(loc, 220, "squid:sfx.doll_turn", 1f, 1f);
+        
         }else{
             AnimationTools.rotate("DOLL_HEAD", -35, 1, 0.09f);
+            AnimationTools.playSoundDistance(loc, 220, "squid:sfx.doll_turn2", 1f, 1f);
         }
     }
 
@@ -325,7 +333,7 @@ public class AnimationStore {
 
                     game.setTotalPrize(formatted);
                     AnimationTools.setScreenValue(prizeValueText, formatted);
-                    AnimationTools.playSoundDistance(loc1, 100, "squid.screen_change", 1f, 1f);
+                    AnimationTools.playSoundDistance(loc1, 200, "squid:sfx.main_board", 1f, 1f);
                 }
             }, 50*delay);
 
@@ -389,7 +397,7 @@ public class AnimationStore {
 
                     game.setTotalPlayers(formatted);
                     AnimationTools.setScreenValue(playersValueText, formatted);
-                    AnimationTools.playSoundDistance(loc1, 100, "squid.screen_change", 1f, 1f);
+                    AnimationTools.playSoundDistance(loc1, 200, "squid:sfx.main_board", 1f, 1f);
                 }
             }, 50*delay);
 

@@ -113,6 +113,7 @@ public class AnimationTools {
         var vector = getVector(loc.add(0, 1.40, 0), wallGun);
         
         wallGun.getWorld().spawnArrow(wallGun, vector, speed, 0);
+        AnimationTools.playSoundDistance(wallGun, 300, "squid:sfx.dramatic_shot", 1f, 1f);
         
 
     }

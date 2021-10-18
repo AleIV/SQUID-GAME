@@ -47,8 +47,8 @@ public class GamesCMD extends BaseCommand {
     }
 
     @Subcommand("test")
-    public void test(Player sender){
-        instance.getAnimationStore().screenPlayers();
+    public void test(Player sender, String str){
+        AnimationTools.playSoundDistance(sender.getLocation(), 10, str, 1f, 1f);
 
     }
 
