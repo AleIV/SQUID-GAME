@@ -52,6 +52,7 @@ public @Data @AllArgsConstructor(staticName = "of") class LineVector {
         // Create a vector array of the length of the distance between the two points
         var points = new Vector[(int) Math.ceil(distance())];
 
+        // TODO: Add a parameter to step through the points at a different rate.
         // Get all points from u to v
         for (int i = 1; i < points.length; i++) {
             points[i] = u.clone().add(uv.clone().multiply(i));

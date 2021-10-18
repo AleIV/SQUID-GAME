@@ -20,6 +20,7 @@ import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.detection.CollisionManager;
 import me.aleiv.core.paper.listeners.GlobalListener;
+import me.aleiv.core.paper.map.MapSystemManager;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import me.aleiv.core.paper.vectors.VectorsManager;
@@ -89,6 +90,8 @@ public class Core extends JavaPlugin {
         this.collisionManager = new CollisionManager(this);
         // Start vectors manager
         this.vectorManager = new VectorsManager(this);
+
+        Bukkit.getPluginManager().registerEvents(new MapSystemManager(), this);
 
     }
 
