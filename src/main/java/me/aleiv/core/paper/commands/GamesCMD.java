@@ -36,9 +36,19 @@ public class GamesCMD extends BaseCommand {
 
     }
 
+
+    @Subcommand("note-block")
+    public void test(Player sender, Boolean bool, String note){
+        var block = sender.getTargetBlock(6);
+        if(block != null){
+            AnimationTools.setBlockValue(bool, block.getLocation(), note);
+        }
+
+    }
+
     @Subcommand("test")
     public void test(Player sender){
-        AnimationTools.shootLocation(sender.getLocation());
+        instance.getAnimationStore().screenPlayers();
 
     }
 

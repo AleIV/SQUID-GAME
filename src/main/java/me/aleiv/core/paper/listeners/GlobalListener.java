@@ -40,13 +40,6 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
-    public void onGameTick(GameTickEvent e) {
-        Bukkit.getScheduler().runTask(instance, () -> {
-
-        });
-    }
-
-    @EventHandler
     public void onJoin(PlayerJoinEvent e){
         var game = instance.getGame();
         var roles = game.getRoles();
@@ -60,6 +53,9 @@ public class GlobalListener implements Listener {
                 roles.put(uuid, Role.PLAYER);
             }
         }
+
+        var timer = game.getTimer();
+        timer.getBossbar().addPlayer(player);
 
         if(game.getLights()){
             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
@@ -79,6 +75,20 @@ public class GlobalListener implements Listener {
         player.setFoodLevel(20);
         player.setExp(0);
         player.setLevel(0);
+    }
+
+    @EventHandler
+    public void customSpawns(GameTickEvent e) {
+        var game = instance.getGame();
+        Bukkit.getScheduler().runTask(instance, () -> {
+
+            var timer = game.getTimer();
+            if (timer.isActive()) {
+                var currentTime = (int) game.getGameTime();
+                timer.refreshTime(currentTime);
+            }
+
+        });
     }
 
     @EventHandler

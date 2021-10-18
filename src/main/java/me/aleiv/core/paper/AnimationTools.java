@@ -8,15 +8,18 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
+import me.aleiv.core.paper.objects.NoteBlockData;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 
 public class AnimationTools {
@@ -24,6 +27,45 @@ public class AnimationTools {
     public static Integer speed = 15;
 
     public static HashMap<String, String> specialObjects = new HashMap<>();
+    public static HashMap<String, NoteBlockData> noteBlocksMain = new HashMap<String, NoteBlockData>() {{
+        put("P", new NoteBlockData(0, 0, Instrument.BASS_DRUM));
+        put("L", new NoteBlockData(0, 1, Instrument.BASS_DRUM));
+        put("A", new NoteBlockData(0, 2, Instrument.BASS_DRUM));
+        put("Y", new NoteBlockData(0, 3, Instrument.BASS_DRUM));
+        put("E", new NoteBlockData(0, 4, Instrument.BASS_DRUM));
+        put("R", new NoteBlockData(0, 5, Instrument.BASS_DRUM));
+        put("S", new NoteBlockData(0, 6, Instrument.BASS_DRUM));
+        put("$", new NoteBlockData(1, 0, Instrument.BASS_DRUM));
+        put("I", new NoteBlockData(1, 1, Instrument.BASS_DRUM));
+        put("Z", new NoteBlockData(1, 2, Instrument.BASS_DRUM));
+        put("0", new NoteBlockData(1, 3, Instrument.BASS_DRUM));
+        put("1", new NoteBlockData(1, 4, Instrument.BASS_DRUM));
+        put("2", new NoteBlockData(1, 5, Instrument.BASS_DRUM));
+        put("3", new NoteBlockData(1, 6, Instrument.BASS_DRUM));
+
+        put("4", new NoteBlockData(0, 0, Instrument.GUITAR));
+        put("5", new NoteBlockData(0, 1, Instrument.GUITAR));
+        put("6", new NoteBlockData(0, 2, Instrument.GUITAR));
+        put("7", new NoteBlockData(0, 3, Instrument.GUITAR));
+        put("8", new NoteBlockData(0, 4, Instrument.GUITAR));
+        put("9", new NoteBlockData(0, 5, Instrument.GUITAR));
+
+    }};
+
+    public static HashMap<String, NoteBlockData> noteBlocksCount = new HashMap<String, NoteBlockData>() {{
+        put(":", new NoteBlockData(0, 0, Instrument.BANJO));
+        put("0", new NoteBlockData(0, 1, Instrument.BANJO));
+        put("1", new NoteBlockData(0, 2, Instrument.BANJO));
+        put("2", new NoteBlockData(0, 3, Instrument.BANJO));
+        put("3", new NoteBlockData(0, 4, Instrument.BANJO));
+        put("4", new NoteBlockData(0, 5, Instrument.BANJO));
+        put("5", new NoteBlockData(0, 6, Instrument.BANJO));
+        put("6", new NoteBlockData(1, 0, Instrument.BANJO));
+        put("7", new NoteBlockData(1, 1, Instrument.BANJO));
+        put("8", new NoteBlockData(1, 2, Instrument.BANJO));
+        put("9", new NoteBlockData(1, 3, Instrument.BANJO));
+
+    }};
 
     public static void forceSleep(Player player, Location loc) {
         player.sleep(loc, true);
@@ -42,7 +84,7 @@ public class AnimationTools {
     public static List<Location> findLocations(String str) {
         var world = Bukkit.getWorld("world");
         return specialObjects.entrySet().stream().filter(entry -> entry.getKey().contains(str))
-                .map(entry -> parseLocation(entry.getKey(), world)).collect(Collectors.toList());
+                .map(entry -> parseLocation(entry.getValue(), world)).collect(Collectors.toList());
     }
 
     public static Location getNearbyLocation(List<Location> locations, Location location){
@@ -142,7 +184,7 @@ public class AnimationTools {
         task.execute();
     }
 
-    private static List<Location> getBlocksInsideCube(Location loc1, Location loc2) {
+    public static List<Location> getBlocksInsideCube(Location loc1, Location loc2) {
         List<Location> locations = new ArrayList<>();
 
         var xa = (int) (loc1.getX() > loc2.getX() ? loc1.getX() : loc2.getX());
@@ -180,8 +222,8 @@ public class AnimationTools {
         return str.startsWith("-") ? -Integer.parseInt(str.replace("-", "")) : Integer.parseInt(str);
     }
 
-    public static Location parseLocation(String specialObject, World world) {
-        var positions = specialObjects.get(specialObject).split(";");
+    public static Location parseLocation(String loc, World world) {
+        var positions = loc.split(";");
         var x = parseInteger(positions[0]);
         var y = parseInteger(positions[1]);
         var z = parseInteger(positions[2]);
@@ -193,6 +235,53 @@ public class AnimationTools {
         loc.getNearbyPlayers(distance).forEach(player -> {
             player.playSound(loc, sound, volume, pitch);
         });
+    }
+
+    public static void setScreenValue(List<Location> locations, String str){
+        var array = str.toCharArray();
+        var count = 0;
+        for (char c : array) {
+            var loc = locations.get(count);
+            setBlockValue(true, loc, String.valueOf(c));
+            count++;
+        }
+
+    }
+
+    public static void setTimerValue(List<Location> locations, String str){
+        var array = str.toCharArray();
+        var count = 0;
+        for (char c : array) {
+            var loc = locations.get(count);
+            setBlockValue(false, loc, String.valueOf(c));
+            count++;
+        }
+
+    }
+
+    public static void setBlockValue(Boolean mainMap, Location location, String note){
+        HashMap<String, NoteBlockData> map;
+        if(mainMap){
+            map = noteBlocksMain;
+        }else{
+            map = noteBlocksCount;
+        }
+        var n = map.get(note);
+        NoteBlock noteBlock = (NoteBlock) Material.NOTE_BLOCK.createBlockData();
+        noteBlock.setNote(n.getNote());
+        noteBlock.setInstrument(n.getInstrument());
+        location.getBlock().setType(Material.NOTE_BLOCK);
+        location.getBlock().setBlockData(noteBlock);
+
+    }
+
+    public static String getFormattedNumber(Integer i, Integer zeros){
+        var str = new StringBuilder();
+        for (int j = 0; j < zeros; j++) {
+            str.append("0");
+        }
+        str.append(i);
+        return str.toString();
     }
 
 }

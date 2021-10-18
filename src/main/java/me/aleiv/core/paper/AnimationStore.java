@@ -1,14 +1,25 @@
 package me.aleiv.core.paper;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import lombok.Getter;
+import me.aleiv.core.paper.Game.TimerType;
+import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 
 public class AnimationStore {
 
     Core instance;
+
+    @Getter HashMap<TimerType, List<Location>> timerLocations = new HashMap<>();
 
     public AnimationStore(Core instance) {
         this.instance = instance;
@@ -41,8 +52,9 @@ public class AnimationStore {
     }
 
     public void mainElevator(Boolean bool){
-        var loc1 = AnimationTools.parseLocation("MAIN_ELEVATOR_POS1", Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation("MAIN_ELEVATOR_POS2", Bukkit.getWorld("world"));
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("MAIN_ELEVATOR_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("MAIN_ELEVATOR_POS2"), Bukkit.getWorld("world"));
 
         if(bool){
 
@@ -66,8 +78,9 @@ public class AnimationStore {
     }
 
     public void mainLeftDoor(Boolean bool){
-        var loc1 = AnimationTools.parseLocation("MAIN_LEFT_DOOR_POS1", Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation("MAIN_LEFT_DOOR_POS2", Bukkit.getWorld("world"));
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("MAIN_LEFT_DOOR_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("MAIN_LEFT_DOOR_POS2"), Bukkit.getWorld("world"));
         if(bool){
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
@@ -89,8 +102,9 @@ public class AnimationStore {
     }
 
     public void mainRightDoor(Boolean bool){
-        var loc1 = AnimationTools.parseLocation("MAIN_RIGHT_DOOR_POS1", Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation("MAIN_RIGHT_DOOR_POS2", Bukkit.getWorld("world"));
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("MAIN_RIGHT_DOOR_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("MAIN_RIGHT_DOOR_POS2"), Bukkit.getWorld("world"));
 
         if(bool){
 
@@ -112,8 +126,9 @@ public class AnimationStore {
     }
 
     public void dollDoor1(Boolean bool){
-        var loc1 = AnimationTools.parseLocation("DOLL_DOOR1_POS1", Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation("DOLL_DOOR1_POS2", Bukkit.getWorld("world"));
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("DOLL_DOOR1_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("DOLL_DOOR1_POS2"), Bukkit.getWorld("world"));
         if(bool){
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
@@ -136,8 +151,9 @@ public class AnimationStore {
     }
 
     public void dollDoor2(Boolean bool){
-        var loc1 = AnimationTools.parseLocation("DOLL_DOOR2_POS1", Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation("DOLL_DOOR2_POS2", Bukkit.getWorld("world"));
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("DOLL_DOOR2_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("DOLL_DOOR2_POS2"), Bukkit.getWorld("world"));
         if(bool){
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
@@ -160,8 +176,9 @@ public class AnimationStore {
     }
 
     public void dollDoor3(Boolean bool){
-        var loc1 = AnimationTools.parseLocation("DOLL_DOOR3_POS1", Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation("DOLL_DOOR3_POS2", Bukkit.getWorld("world"));
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("DOLL_DOOR3_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("DOLL_DOOR3_POS2"), Bukkit.getWorld("world"));
         if(bool){
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
@@ -184,8 +201,9 @@ public class AnimationStore {
     }
 
     public void dollLine1(Boolean bool){
-        var loc1 = AnimationTools.parseLocation("DOLL_LINE1_POS1", Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation("DOLL_LINE1_POS2", Bukkit.getWorld("world"));
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("DOLL_LINE1_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("DOLL_LINE1_POS2"), Bukkit.getWorld("world"));
         
         if(bool){
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
@@ -196,8 +214,9 @@ public class AnimationStore {
     }
 
     public void dollLine2(Boolean bool){
-        var loc1 = AnimationTools.parseLocation("DOLL_LINE2_POS1", Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation("DOLL_LINE2_POS2", Bukkit.getWorld("world"));
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("DOLL_LINE2_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("DOLL_LINE2_POS2"), Bukkit.getWorld("world"));
         
         if(bool){
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
@@ -223,6 +242,192 @@ public class AnimationStore {
         }else{
             AnimationTools.rotate("DOLL_HEAD", -35, 1, 0.09f);
         }
+    }
+
+    public void screenPlayers(){
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PLAYERS_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PLAYERS_POS2"), Bukkit.getWorld("world"));
+        var playersText = AnimationTools.getBlocksInsideCube(loc1, loc2);
+        AnimationTools.setScreenValue(playersText, "PLAYERS");
+    }
+
+    public void screenPrize(){
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PRIZE_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PRIZE_POS2"), Bukkit.getWorld("world"));
+        var prizeText = AnimationTools.getBlocksInsideCube(loc1, loc2);
+        AnimationTools.setScreenValue(prizeText, "PRIZE");
+    }
+
+    public void turnScreen(Boolean bool){
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("SCREEN_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("SCREEN_POS2"), Bukkit.getWorld("world"));
+        var game = instance.getGame();
+
+        if(bool){
+            AnimationTools.fill(loc1, loc2, Material.YELLOW_TERRACOTTA);
+            screenPlayers();
+            screenPrize();
+            var currentPrizeText = game.getTotalPrize();
+            var currentPlayersText = game.getTotalPlayers();
+            var prize = Integer.parseInt(currentPrizeText);
+            var players = Integer.parseInt(currentPlayersText);
+            refreshPrize(prize, 1, 1);
+            refreshPlayers(players, 1, 1);
+            
+        }else{
+            AnimationTools.fill(loc1, loc2, Material.YELLOW_TERRACOTTA);
+            
+        }
+    }
+
+    public void refreshPrize(Integer newNumber, Integer delay, Integer value){
+        if(newNumber < 0) return;
+        var specialObjects = AnimationTools.specialObjects;
+        var dolar = AnimationTools.parseLocation(specialObjects.get("SCREEN_DOLAR"), Bukkit.getWorld("world"));
+        AnimationTools.setBlockValue(true, dolar, "$");
+
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PRIZE_VALUE_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PRIZE_VALUE_POS2"), Bukkit.getWorld("world"));
+
+        var game = instance.getGame();
+        var currentPrizeText = game.getTotalPrize();
+        var prizeValueText = AnimationTools.getBlocksInsideCube(loc1, loc2);
+
+        var fromPrize = Integer.parseInt(currentPrizeText);
+
+        var addOrRemove = newNumber > fromPrize;
+
+        var from = fromPrize;
+        var to = newNumber;
+
+        if(addOrRemove){
+            to++;
+        }else{
+            to--;
+        }
+
+        var task = new BukkitTCT();
+
+        var count = from;
+        
+        while (count != to) {
+
+            final var j = count;
+            task.addWithDelay(new BukkitRunnable(){
+                @Override
+                public void run() {
+                    var st = j + "";
+                    var arraySt = st.toCharArray();
+                    var formatted = AnimationTools.getFormattedNumber(j, 6-arraySt.length);
+
+                    game.setTotalPrize(formatted);
+                    AnimationTools.setScreenValue(prizeValueText, formatted);
+                    AnimationTools.playSoundDistance(loc1, 100, "squid.screen_change", 1f, 1f);
+                }
+            }, 50*delay);
+
+            if(addOrRemove){
+                if(count+value > to){
+                    count = to;
+                }else{
+                    count+=value;
+                }
+                
+            }else{
+                if(count-value < to){
+                    count = to;
+                }else{
+                    count-=value;
+                }
+            }
+
+        }
+
+        task.execute();
+
+    }
+
+    public void refreshPlayers(Integer newNumber, Integer delay, Integer value){
+        if(newNumber < 0) return;
+        var specialObjects = AnimationTools.specialObjects;
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PLAYERS_VALUE_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PLAYERS_VALUE_POS2"), Bukkit.getWorld("world"));
+
+        var game = instance.getGame();
+        var currentPlayersText = game.getTotalPlayers();
+        var playersValueText = AnimationTools.getBlocksInsideCube(loc1, loc2);
+
+        var fromPlayers = Integer.parseInt(currentPlayersText);
+
+        var addOrRemove = newNumber > fromPlayers;
+
+        var from = fromPlayers;
+        var to = newNumber;
+
+        if(addOrRemove){
+            to++;
+        }else{
+            to--;
+        }
+
+        var task = new BukkitTCT();
+
+        var count = from;
+        
+        while (count != to) {
+
+            final var j = count;
+            task.addWithDelay(new BukkitRunnable(){
+                @Override
+                public void run() {
+                    var st = j + "";
+                    var arraySt = st.toCharArray();
+                    var formatted = AnimationTools.getFormattedNumber(j, 3-arraySt.length);
+
+                    game.setTotalPlayers(formatted);
+                    AnimationTools.setScreenValue(playersValueText, formatted);
+                    AnimationTools.playSoundDistance(loc1, 100, "squid.screen_change", 1f, 1f);
+                }
+            }, 50*delay);
+
+            if(addOrRemove){
+                if(count+value > to){
+                    count = to;
+                }else{
+                    count+=value;
+                }
+                
+            }else{
+                if(count-value < to){
+                    count = to;
+                }else{
+                    count-=value;
+                }
+            }
+
+        }
+
+        task.execute();
+
+    }
+
+    public void refreshTimer(String str){
+        
+        var timerType = instance.getGame().getTimerType();
+        switch (timerType) {
+            case RED_GREEN:{
+                
+                AnimationTools.setTimerValue(timerLocations.get(TimerType.RED_GREEN), str);
+                
+            }break;
+        
+            default:
+                break;
+        }
+
     }
 
 

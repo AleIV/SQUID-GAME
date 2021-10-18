@@ -44,22 +44,6 @@ public class Core extends JavaPlugin {
 
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
-        animationStore = new AnimationStore(this);
-
-        RapidInvManager.register(this);
-        BukkitTCT.registerPlugin(this);
-
-        //LISTENERS
-
-        registerListener(new GlobalListener(this));
-
-        //COMMANDS
-        
-        commandManager = new PaperCommandManager(this);
-        commandManager.registerCommand(new SquidCMD(this));
-        commandManager.registerCommand(new SpecialCMD(this));
-        commandManager.registerCommand(new AnimationStoreCMD(this));
-        commandManager.registerCommand(new GamesCMD(this));
 
         try {
             var jsonConfig = new JsonConfig("special.json");
@@ -79,6 +63,24 @@ public class Core extends JavaPlugin {
 
             e.printStackTrace();
         }
+
+        animationStore = new AnimationStore(this);
+
+        RapidInvManager.register(this);
+        BukkitTCT.registerPlugin(this);
+
+        //LISTENERS
+
+        registerListener(new GlobalListener(this));
+
+        //COMMANDS
+        
+        commandManager = new PaperCommandManager(this);
+        commandManager.registerCommand(new SquidCMD(this));
+        commandManager.registerCommand(new SpecialCMD(this));
+        commandManager.registerCommand(new AnimationStoreCMD(this));
+        commandManager.registerCommand(new GamesCMD(this));
+
     }
 
     @Override

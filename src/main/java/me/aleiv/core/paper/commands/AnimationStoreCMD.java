@@ -99,5 +99,28 @@ public class AnimationStoreCMD extends BaseCommand {
         tools.dollHead(bool);
     }
 
+    @Subcommand("screen-turn")
+    public void screen(CommandSender sender, Boolean bool){
+        var tools = instance.getAnimationStore();
+        tools.turnScreen(bool);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Screen turn " + bool);
+    }
+
+    @Subcommand("refresh-prize")
+    public void refreshPrize(CommandSender sender, Integer newPrize, Integer delay, Integer value){
+        var tools = instance.getAnimationStore();
+        tools.refreshPrize(newPrize, delay, value);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Refreshed prize " + newPrize + " " + delay);
+    }
+
+    @Subcommand("refresh-players")
+    public void refreshPlayers(CommandSender sender, Integer newPrize, Integer delay, Integer value){
+        var tools = instance.getAnimationStore();
+        tools.refreshPlayers(newPrize, delay, value);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Refreshed players " + newPrize + " " + delay);
+    }
+
+
+
 
 }
