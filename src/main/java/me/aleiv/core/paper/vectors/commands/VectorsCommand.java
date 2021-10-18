@@ -1,18 +1,20 @@
 package me.aleiv.core.paper.vectors.commands;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.ceil;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
+
+import com.destroystokyo.paper.ParticleBuilder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -52,7 +54,7 @@ public class VectorsCommand extends BaseCommand {
 
     }
 
-    private HashMap<UUID, Entry<Vector, Vector>> vectorMap = new HashMap<>();
+    private HashMap<UUID, LineVector> lineVectorMap = new HashMap<>();
 
     @Subcommand("line-vector")
     public void buildLineVector(Player player) {
@@ -63,24 +65,26 @@ public class VectorsCommand extends BaseCommand {
             player.sendMessage(Core.getMiniMessage().parse("<red>Block can't be null"));
             return;
         }
-        var vector = block.getLocation().toVector();
-        if (!vectorMap.containsKey(id)) {
+        var vector = block.getLocation().add(0.5, 0.5, 0.5).toVector();
+        if (!lineVectorMap.containsKey(id)) {
             // If not contain, add the vector
-            vectorMap.put(id, Map.entry(vector, vector));
+            var vectorEntry = LineVector.of(vector, null);
+            lineVectorMap.put(id, vectorEntry);
             player.sendMessage(
                     Core.getMiniMessage().parse("<green>Set the origin vector <white>" + getCoordinates(block)));
         } else {
             // If contained check if the both the entry and value are contained.
-            var entry = vectorMap.get(id);
+            var entry = lineVectorMap.get(id);
             // Check if targetVector is not present, if not set it
-            if (entry.getValue() == entry.getKey()) {
-                vectorMap.put(id, Map.entry(entry.getKey(), vector));
+            if (entry.getV() == null) {
+                entry.setV(vector);
+                var retrieve = lineVectorMap.get(id);
                 // Send a message to the player
-                player.sendMessage(
-                        Core.getMiniMessage().parse("<green>Set the target vector <white>" + getCoordinates(block)));
+                player.sendMessage(Core.getMiniMessage()
+                        .parse("<green>Set the target vector <white>" + getCoordinates(block) + " duple " + retrieve));
             } else {
                 // Destroy the previous entries
-                vectorMap.remove(id);
+                lineVectorMap.remove(id);
                 // Tell the player
                 player.sendMessage(Core.getMiniMessage().parse("<red>Destroyed the previous vectors."));
             }
@@ -91,9 +95,11 @@ public class VectorsCommand extends BaseCommand {
     @CommandCompletion("<material>")
     public void traceVector(Player sender, String materialName) {
         var material = Material.getMaterial(materialName.toUpperCase());
-        var duple = vectorMap.get(sender.getUniqueId());
-        var origin = duple.getKey();
-        var target = duple.getValue();
+        var lineVector = lineVectorMap.get(sender.getUniqueId());
+        var origin = lineVector.getU();
+        var target = lineVector.getV();
+        sender.sendMessage(Core.getMiniMessage().parse("<green>Going from vector U -> V. " + origin + " -> " + target));
+
         // Send error message to player if either is null and specify which one is it
         if (origin == null || target == null) {
             if (origin == null) {
@@ -105,25 +111,40 @@ public class VectorsCommand extends BaseCommand {
             return;
         }
 
-        // Get all the blocks
-        var blockA = toBlock(origin.toBlockVector(), sender.getWorld()).getLocation();
-        var blockB = toBlock(target.toBlockVector(), sender.getWorld()).getLocation();
+        var vectors = getVectorsBetweenPoints(origin, target);
+        vectors.forEach(all -> {
+            new ParticleBuilder(Particle.BARRIER).location(all.toLocation(sender.getWorld())).receivers(20).force(true)
+                    .count(10).spawn();
+            Bukkit.getScheduler().runTaskLater(Core.getInstance(),
+                    () -> all.toLocation(sender.getWorld()).getBlock().setType(material), 40);
+        });
 
-        // Get all blocks in between
-        var blocks = getBlocksOnRayTrace(blockA, blockB, 0.5, 100);
-        // Reverse the list
-        Collections.reverse(blocks);
+    }
 
-        for (Block block : blocks) {
+    /**
+     * Get all points from u to v.
+     * 
+     * @param u The first point.
+     * @param v The second point.
+     * @return The points from u to v.
+     */
+    List<Vector> getVectorsBetweenPoints(Vector u, Vector v) {
+        // Substract u from v
+        var uv = v.clone().subtract(u);
+        // Normalize uv
+        uv.normalize();
+        // Get distance between u and v
+        var distance = u.distance(v);
 
-            var shiftedBlock = blockB.add(block.getLocation().toVector()).getBlock();
-            shiftedBlock.setType(material);
+        // Create a vector array of the length of the distance between the two points
+        var points = new Vector[(int) ceil(distance)];
 
-            // Broadcast the name of the block modified
-            Bukkit.broadcast(Core.getMiniMessage()
-                    .parse("<gold><click:run_command:test>'" + getCoordinates(shiftedBlock) + "' "));
+        // Get all points from u to v
+        for (int i = 1; i < points.length; i++) {
+            points[i] = u.clone().add(uv.clone().multiply(i));
         }
 
+        return Arrays.asList(points);
     }
 
     @Subcommand("spawn-npc")

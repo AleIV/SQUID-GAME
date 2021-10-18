@@ -16,4 +16,4 @@ fi
 cd debug
 java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=$DEBUG_PORT \
     -Xmx$MAX_HEAP -Xms$INIT_HEAP -jar $SERVER_JAR \
-    --plugins $PLUGINS_DIR --universe $WORLDS_DIR
+    --plugins $PLUGINS_DIR --universe $WORLDS_DIR nogui

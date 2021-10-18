@@ -61,7 +61,6 @@ dependencies {
 
     // Npc
     compileOnly 'com.mojang:authlib:1.5.25'
-
 }
 
 spigot {
