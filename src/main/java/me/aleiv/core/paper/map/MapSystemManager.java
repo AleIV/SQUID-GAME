@@ -85,6 +85,7 @@ public class MapSystemManager implements Listener {
                         // Set the cursor
                         cursor.setY((byte) mapPixelX);
                         cursor.setX((byte) -mapPixelZ);
+                        
 
                     }
                 }
