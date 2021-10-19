@@ -46,6 +46,12 @@ public class VectorsManager {
         // register listeners
         Bukkit.getPluginManager().registerEvents(this.settingsListener, instance);
 
+        // Give a default vector settings to any online players
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            this.vectorsSettings.put(player.getUniqueId(), VectorSettings.of(true, false, 5));
+        }
+
+        // Start the raycaster thread
         Bukkit.getScheduler().runTaskTimerAsynchronously(instance,
                 () -> Bukkit.getOnlinePlayers().forEach(this::sendVector), 0L, 1L);
     }

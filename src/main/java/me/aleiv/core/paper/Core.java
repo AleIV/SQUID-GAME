@@ -15,7 +15,6 @@ import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
 import me.aleiv.core.paper.commands.AnimationStoreCMD;
 import me.aleiv.core.paper.commands.GamesCMD;
-import me.aleiv.core.paper.commands.SkinChanger;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.detection.CollisionManager;
@@ -40,7 +39,7 @@ public class Core extends JavaPlugin {
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
     private @Getter CollisionManager collisionManager;
     private @Getter VectorsManager vectorManager;
-    private SkinChanger skinChanger;
+    private @Getter MapSystemManager mapSystemManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
@@ -90,8 +89,8 @@ public class Core extends JavaPlugin {
         this.collisionManager = new CollisionManager(this);
         // Start vectors manager
         this.vectorManager = new VectorsManager(this);
-
-        Bukkit.getPluginManager().registerEvents(new MapSystemManager(), this);
+        // Start map system manager
+        this.mapSystemManager = new MapSystemManager(this);
 
     }
 

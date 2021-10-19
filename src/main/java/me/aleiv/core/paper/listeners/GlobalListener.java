@@ -28,7 +28,6 @@ import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.GameType;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.Role;
-import me.aleiv.core.paper.detection.events.PlayerCollidedWithAreaEvent;
 import me.aleiv.core.paper.events.GameTickEvent;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 
@@ -40,12 +39,6 @@ public class GlobalListener implements Listener {
 
     public GlobalListener(Core instance) {
         this.instance = instance;
-    }
-
-    @EventHandler
-    public void onPlayerEnteredPolygon(PlayerCollidedWithAreaEvent e) {
-        var player = e.getPlayer();
-        Bukkit.broadcastMessage(player.getName() + " is colliding with a polygon");
     }
 
     @EventHandler

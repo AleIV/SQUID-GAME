@@ -1,25 +1,17 @@
 package me.aleiv.core.paper.vectors.commands;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.ceil;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import com.destroystokyo.paper.ParticleBuilder;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
-import org.bukkit.util.Vector;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -37,13 +29,14 @@ import me.aleiv.core.paper.npc.utils.NPCOptions;
 @CommandAlias("vectors|vec")
 public class VectorsCommand extends BaseCommand {
 
+    private HashMap<UUID, LineVector> lineVectorMap = new HashMap<>();
+
     @CommandCompletion("/command1 & /commandn+1 ")
     @CommandAlias("chain0x|c0x")
     @Subcommand("chain-cmd|ccmd")
     public void rotate(Player sender, String args) {
         // Split the commands to be executed by && and execute them
         String[] cmds = args.split("&");
-        Bukkit.broadcastMessage("Hello world");
         for (String cmd : cmds) {
             var cleanedUpCommand = cmd.trim().substring(1);
             sender.sendMessage(Core.getMiniMessage()
@@ -53,8 +46,6 @@ public class VectorsCommand extends BaseCommand {
         }
 
     }
-
-    private HashMap<UUID, LineVector> lineVectorMap = new HashMap<>();
 
     @Subcommand("line-vector")
     public void buildLineVector(Player player) {
@@ -111,40 +102,14 @@ public class VectorsCommand extends BaseCommand {
             return;
         }
 
-        var vectors = getVectorsBetweenPoints(origin, target);
+        var vectors = LineVector.of(origin, target).getPointsInBetween();
         vectors.forEach(all -> {
             new ParticleBuilder(Particle.BARRIER).location(all.toLocation(sender.getWorld())).receivers(20).force(true)
-                    .count(10).spawn();
+                    .count(1).spawn();
             Bukkit.getScheduler().runTaskLater(Core.getInstance(),
                     () -> all.toLocation(sender.getWorld()).getBlock().setType(material), 40);
         });
 
-    }
-
-    /**
-     * Get all points from u to v.
-     * 
-     * @param u The first point.
-     * @param v The second point.
-     * @return The points from u to v.
-     */
-    List<Vector> getVectorsBetweenPoints(Vector u, Vector v) {
-        // Substract u from v
-        var uv = v.clone().subtract(u);
-        // Normalize uv
-        uv.normalize();
-        // Get distance between u and v
-        var distance = u.distance(v);
-
-        // Create a vector array of the length of the distance between the two points
-        var points = new Vector[(int) ceil(distance)];
-
-        // Get all points from u to v
-        for (int i = 1; i < points.length; i++) {
-            points[i] = u.clone().add(uv.clone().multiply(i));
-        }
-
-        return Arrays.asList(points);
     }
 
     @Subcommand("spawn-npc")
@@ -168,60 +133,6 @@ public class VectorsCommand extends BaseCommand {
      */
     static String getCoordinates(Block block) {
         return String.format("(%s, %s, %s)", block.getX(), block.getY(), block.getZ());
-    }
-
-    /**
-     * A function to ray trace a vector and get the blocks that it collides with.
-     * 
-     * @param start         The start location
-     * @param end           The end location
-     * @param direction     The direction vector
-     * @param scalar        The scalar of the vector
-     * @param maxIterations The maximun amount of iters in the ray cast.
-     * @return
-     */
-    private List<Block> getBlocksOnRayTrace(Location start, Location end, double scalar, int maxIterations) {
-        // A list to keep track of the blocks later
-        var blocks = new ArrayList<Block>();
-        var world = start.getWorld();
-
-        // the oVector is the origin vector
-        var direction = start.toVector().subtract(end.toVector());
-        // the end vector
-        var endVector = end.toVector();
-
-        // Calculate the distance between the two refrence points and peridocailly
-        // advance my multiplying the vector by a scalar factor.
-        var distance = abs(start.distance(end));
-
-        // Iterate until distance is 0 or max iterations are reached.
-        while (maxIterations-- > 0 && distance > 0) {
-            // Transform the current vector into a block vector
-            var blockVector = direction.toBlockVector();
-            // Transform the blockVector into actual block
-            var block = toBlock(blockVector, world);
-            // Add block to list if not already present
-            if (!blocks.contains(block))
-                blocks.add(block);
-
-            // Now advance the vector my multiplying it by the scalar factor
-            direction = direction.multiply(scalar);
-            // Recalculate the distance between the two vector points.
-            distance = distanceVectors(direction, endVector);
-        }
-
-        return blocks;
-    }
-
-    /**
-     * Get's the distance between two vectors (absolute distance)
-     * 
-     * @param u The first vector
-     * @param v The second vector
-     * @return The distance between the two vectors
-     */
-    static double distanceVectors(Vector u, Vector v) {
-        return abs(u.distance(v));
     }
 
     /**

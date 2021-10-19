@@ -22,8 +22,6 @@ public class CollisionLogicTask implements Runnable {
     private Core core;
     private List<GeoPolygon> polygons;
 
-    private static long delay = 50L;
-
     public CollisionLogicTask(Core core) {
         this.core = core;
         this.polygons = new ArrayList<>();
@@ -51,7 +49,7 @@ public class CollisionLogicTask implements Runnable {
                     final var event = new PlayerCollidedWithAreaEvent(polygon, playerUUID, !Bukkit.isPrimaryThread());
                     Bukkit.getPluginManager().callEvent(event);
                 }
-            } 
+            }
         }
     }
 
