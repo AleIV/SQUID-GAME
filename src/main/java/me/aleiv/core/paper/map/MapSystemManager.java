@@ -28,8 +28,7 @@ public class MapSystemManager {
     }
 
     // Create a map and give to player.
-   public void createMap(String name, int width, int height) {
-        Map map = new Map(name, width, height);
-    }  
+    public void createMap(String name, int width, int height) {
+    }
 
 }
