@@ -19,6 +19,7 @@ import me.aleiv.core.paper.commands.GamesCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.detection.CollisionManager;
+import me.aleiv.core.paper.effects.commands.EffectCommands;
 import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.map.MapSystemManager;
 import me.aleiv.core.paper.utilities.JsonConfig;
@@ -47,7 +48,6 @@ public class Core extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        this.effectManager = new EffectManager(this);
 
         this.game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
@@ -93,6 +93,9 @@ public class Core extends JavaPlugin {
         this.vectorManager = new VectorsManager(this);
         // Start map system manager
         this.mapSystemManager = new MapSystemManager(this);
+        // Start effect manager
+        this.effectManager = new EffectManager(this);
+        this.commandManager.registerCommand(new EffectCommands(this));
 
     }
 
