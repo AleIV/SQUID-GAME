@@ -7,10 +7,13 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.destroystokyo.paper.ParticleBuilder;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.entity.ArmorStand;
@@ -19,12 +22,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
+import me.aleiv.core.paper.objects.LineVector;
 import me.aleiv.core.paper.objects.NoteBlockData;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 
 public class AnimationTools {
-
-    public static Integer speed = 15;
 
     public static HashMap<String, String> specialObjects = new HashMap<>();
     public static HashMap<String, NoteBlockData> noteBlocksMain = new HashMap<String, NoteBlockData>() {{
@@ -112,8 +114,16 @@ public class AnimationTools {
         var wallGun = getNearbyLocation(locations, loc);
         var vector = getVector(loc.add(0, 1.40, 0), wallGun);
         
-        wallGun.getWorld().spawnArrow(wallGun, vector, speed, 0);
+        wallGun.getWorld().spawnArrow(wallGun, vector, 20, 0);
         AnimationTools.playSoundDistance(wallGun, 300, "squid:sfx.dramatic_shot", 1f, 1f);
+        var origin = wallGun.toVector();
+        var target = loc.toVector();
+        var vectors = LineVector.of(origin, target).getPointsInBetween();
+
+        vectors.forEach(v ->{
+            var l = v.toLocation(Bukkit.getWorld("world"));
+            new ParticleBuilder(Particle.COMPOSTER).location(l).receivers(300).force(true).count(100).offset(0.000001, 0.000001, 0.000001).extra(0).spawn();
+        });
         
 
     }

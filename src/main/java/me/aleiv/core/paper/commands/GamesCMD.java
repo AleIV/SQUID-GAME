@@ -52,9 +52,4 @@ public class GamesCMD extends BaseCommand {
 
     }
 
-    @Subcommand("speed")
-    public void speed(Player sender, Integer speed){
-        AnimationTools.speed = speed;
-
-    }
 }

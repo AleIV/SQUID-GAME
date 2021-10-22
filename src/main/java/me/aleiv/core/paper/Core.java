@@ -20,6 +20,8 @@ import me.aleiv.core.paper.commands.GamesCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.listeners.GlobalListener;
+import me.aleiv.core.paper.listeners.RopeListener;
+import me.aleiv.core.paper.objects.RopeGame;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import net.kyori.adventure.text.Component;
@@ -35,6 +37,7 @@ public class Core extends JavaPlugin {
     private @Getter Game game;
     private @Getter PaperCommandManager commandManager;
     private @Getter AnimationStore animationStore;
+    private @Getter RopeGame ropeGame;
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -65,6 +68,7 @@ public class Core extends JavaPlugin {
         }
 
         animationStore = new AnimationStore(this);
+        ropeGame = new RopeGame(this);
 
         RapidInvManager.register(this);
         BukkitTCT.registerPlugin(this);
@@ -72,6 +76,7 @@ public class Core extends JavaPlugin {
         //LISTENERS
 
         registerListener(new GlobalListener(this));
+        registerListener(new RopeListener(this));
 
         //COMMANDS
         
@@ -80,6 +85,7 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new SpecialCMD(this));
         commandManager.registerCommand(new AnimationStoreCMD(this));
         commandManager.registerCommand(new GamesCMD(this));
+        
 
     }
 
