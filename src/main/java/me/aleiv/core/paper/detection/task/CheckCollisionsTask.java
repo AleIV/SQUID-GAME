@@ -1,11 +1,5 @@
 package me.aleiv.core.paper.detection.task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,13 +10,9 @@ import me.aleiv.core.paper.detection.objects.Polygon;
 
 public class CheckCollisionsTask implements Runnable {
     private CollisionManager collisionManager;
-    private List<Polygon> polygonList;
-    private Map<UUID, Polygon> playerPolygonMap;
 
     public CheckCollisionsTask(CollisionManager collisionManager) {
         this.collisionManager = collisionManager;
-        this.polygonList = new ArrayList<>();
-        this.playerPolygonMap = new HashMap<>();
     }
 
     @Override
@@ -31,12 +21,12 @@ public class CheckCollisionsTask implements Runnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             // If player is contained on the map already, check if he is still inside of the
             // polygon.
-            var playerPolygon = playerPolygonMap.get(player.getUniqueId());
+            var playerPolygon = this.collisionManager.getPlayerPolygonMap().get(player.getUniqueId());
             // If player polygon is not null, then player might be entering another polygon
             // or leaving one.
             if (playerPolygon != null) {
                 boolean matched = false;
-                for (Polygon polygon : polygonList) {
+                for (Polygon polygon : this.collisionManager.getPolygonList()) {
                     if (polygon.isInside(player.getLocation())) {
                         if (!playerPolygon.equals(polygon)) {
                             // Player is leaving the old polygon
@@ -44,7 +34,7 @@ public class CheckCollisionsTask implements Runnable {
                         }
                         // Player is entering a new polygon.
                         callEnteredPolygon(player, polygon);
-                        playerPolygonMap.put(player.getUniqueId(), polygon);
+                        this.collisionManager.getPlayerPolygonMap().put(player.getUniqueId(), polygon);
                         matched = true;
                         break;
                     }
@@ -52,15 +42,15 @@ public class CheckCollisionsTask implements Runnable {
                 if (!matched) {
                     // Player is no longer inside any polygon.
                     callExitedPolygon(player, playerPolygon);
-                    playerPolygonMap.remove(player.getUniqueId());
+                    this.collisionManager.getPlayerPolygonMap().remove(player.getUniqueId());
                 }
             } else {
                 // If player is not already inside a polygon, then they are only capable of
                 // entering a new polygon.
-                for (Polygon polygon : polygonList) {
+                for (Polygon polygon : this.collisionManager.getPolygonList()) {
                     if (polygon.isInside(player.getLocation())) {
                         callEnteredPolygon(player, polygon);
-                        playerPolygonMap.put(player.getUniqueId(), polygon);
+                        this.collisionManager.getPlayerPolygonMap().put(player.getUniqueId(), polygon);
                         break;
                     }
                 }

@@ -74,8 +74,8 @@ public class VectorsCommand extends BaseCommand {
                 entry.setV(vector);
                 var retrieve = lineVectorMap.get(id);
                 // Send a message to the player
-                player.sendMessage(Core.getMiniMessage()
-                        .parse("<green>Set the target vector <white>" + getCoordinates(block) + " duple " + retrieve));
+                player.sendMessage(
+                        Core.getMiniMessage().parse("<green>Set the target vector <white>" + getCoordinates(block)));
             } else {
                 // Destroy the previous entries
                 lineVectorMap.remove(id);
