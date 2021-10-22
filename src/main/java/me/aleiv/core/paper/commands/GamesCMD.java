@@ -1,5 +1,6 @@
 package me.aleiv.core.paper.commands;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import co.aikar.commands.BaseCommand;
@@ -12,6 +13,7 @@ import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.objects.LineVector;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 @CommandAlias("games")
@@ -43,6 +45,13 @@ public class GamesCMD extends BaseCommand {
             game.getMainGamePanel().getGreenLightPanel().shoot(target);
             sender.sendMessage(MiniMessage.get().parse("<rainbow>You have shot " + target.getName()));
         }
+
+    }
+
+    @Subcommand("particle-distance")
+    public void greenLight(CommandSender sender, @Name("distance") Double distance) {
+        LineVector.interval = distance;
+        sender.sendMessage("Changed the particle distance to " + LineVector.interval);
 
     }
 

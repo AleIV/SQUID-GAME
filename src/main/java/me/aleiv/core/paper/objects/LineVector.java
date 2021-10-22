@@ -15,6 +15,8 @@ public @Data @AllArgsConstructor(staticName = "of") class LineVector {
     Vector u;
     Vector v;
 
+    public static Double interval = 0.2;
+
     /**
      * @return The distance between the two points. This also represents the length
      *         of the line connecting u to v.
@@ -55,7 +57,7 @@ public @Data @AllArgsConstructor(staticName = "of") class LineVector {
         var distance = Math.ceil(u.distance(v));
 
         // Get all points from u to v
-        for (int i = 0; i < distance; i++) {
+        for (double i = 0; i < distance; i += (interval)) {
             points.add(u.clone().add(uv.clone().multiply(i)));
         }
 
