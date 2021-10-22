@@ -1,5 +1,7 @@
 package me.aleiv.core.paper.detection;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,6 +22,8 @@ public class CollisionManager {
 
     public CollisionManager(Core instance) {
         this.instance = instance;
+        this.playerPolygonMap = new HashMap<>();
+        this.polygonList = new ArrayList<>();
         this.instance.getCommandManager().registerCommand(new PolygonCommand(this));
         Bukkit.getScheduler().runTaskTimerAsynchronously(instance, new CheckCollisionsTask(this), 0L, 2L);
         Bukkit.getPluginManager().registerEvents(new PolygonListener(), instance);

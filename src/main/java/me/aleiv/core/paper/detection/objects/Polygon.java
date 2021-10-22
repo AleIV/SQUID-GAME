@@ -21,7 +21,8 @@ public class Polygon {
      * @return True if the location is inside the polygon, false otherwise.
      */
     public boolean isInside(Location loc) {
-        return loc.getWorld() == this.world && loc.toVector().isInAABB(lower, upper);
+        System.out.println(loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
+        return loc.toVector().isInAABB(lower, upper);
     }
 
 }
