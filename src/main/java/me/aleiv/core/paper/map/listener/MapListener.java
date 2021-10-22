@@ -6,14 +6,10 @@ import static java.lang.Math.max;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapRenderer;
-import org.bukkit.map.MapView;
 
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.map.MapSystemManager;
@@ -57,11 +53,6 @@ public class MapListener implements Listener {
     public void clickOnMap(PlayerClicksOnMapEvent e) {
         var view = e.mapView;
 
-        view.addRenderer(new MapRenderer() {
-            @Override
-            public void render(MapView mapView, MapCanvas mapCanvas, Player player) {
-            }
-        });
         // Calculate the relative pixel values
         var position = e.getClickedPosition();
         var block = e.getBlock();
@@ -73,5 +64,6 @@ public class MapListener implements Listener {
 
         // Now somehow get the map involved and render the pixel onto it.
 
+        
     }
 }

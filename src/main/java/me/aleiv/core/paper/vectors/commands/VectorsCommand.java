@@ -12,6 +12,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
+import org.bukkit.util.Vector;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -20,6 +21,8 @@ import co.aikar.commands.annotation.Subcommand;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.npc.Npc;
 import me.aleiv.core.paper.npc.utils.NPCOptions;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 /**
  * A command design to play around with vectors in minecraft.
@@ -104,12 +107,18 @@ public class VectorsCommand extends BaseCommand {
 
         var vectors = LineVector.of(origin, target).getPointsInBetween();
         vectors.forEach(all -> {
-            new ParticleBuilder(Particle.BARRIER).location(all.toLocation(sender.getWorld())).receivers(20).force(true)
-                    .count(1).spawn();
-            Bukkit.getScheduler().runTaskLater(Core.getInstance(),
-                    () -> all.toLocation(sender.getWorld()).getBlock().setType(material), 40);
+            if (all != null) {
+                // sender.sendMessage(getClickableVector(all));
+                new ParticleBuilder(Particle.BARRIER).location(all.toLocation(sender.getWorld())).receivers(20)
+                        .force(true).count(1).spawn();
+            }
         });
 
+    }
+
+    private Component getClickableVector(Vector v) {
+        return MiniMessage.get().parse(String.format("<click:run_commmand:/tp %s %s %s> Teleport to %s %s %s</click>",
+                v.getX(), v.getY(), v.getZ(), v.getX(), v.getY(), v.getZ()));
     }
 
     @Subcommand("spawn-npc")

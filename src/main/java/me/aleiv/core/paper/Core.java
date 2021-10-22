@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import co.aikar.commands.PaperCommandManager;
+import de.slikey.effectlib.EffectManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
 import me.aleiv.core.paper.commands.AnimationStoreCMD;
@@ -40,16 +41,17 @@ public class Core extends JavaPlugin {
     private @Getter CollisionManager collisionManager;
     private @Getter VectorsManager vectorManager;
     private @Getter MapSystemManager mapSystemManager;
+    private @Getter EffectManager effectManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
     public void onEnable() {
-
         instance = this;
+        this.effectManager = new EffectManager(this);
 
-        game = new Game(this);
+        this.game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
-        animationStore = new AnimationStore(this);
+        this.animationStore = new AnimationStore(this);
 
         RapidInvManager.register(this);
         BukkitTCT.registerPlugin(this);

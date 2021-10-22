@@ -1,6 +1,6 @@
 package me.aleiv.core.paper.vectors.commands;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.util.Vector;
@@ -48,17 +48,18 @@ public @Data @AllArgsConstructor(staticName = "of") class LineVector {
      */
     public List<Vector> getPointsInBetween() {
         // Calculate the uv vector
-        var uv = getUVVector();
+        var uv = getVUVector().normalize();
         // Create a vector array of the length of the distance between the two points
-        var points = new Vector[(int) Math.ceil(distance())];
+        var points = new ArrayList<Vector>();
 
-        // TODO: Add a parameter to step through the points at a different rate.
+        var distance = Math.ceil(u.distance(v));
+
         // Get all points from u to v
-        for (int i = 1; i < points.length; i++) {
-            points[i] = u.clone().add(uv.clone().multiply(i));
+        for (int i = 0; i < distance; i++) {
+            points.add(u.clone().add(uv.clone().multiply(i)));
         }
 
-        return Arrays.asList(points);
+        return points;
     }
 
 }
