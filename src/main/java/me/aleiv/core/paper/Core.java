@@ -15,14 +15,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import co.aikar.commands.PaperCommandManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
-import me.aleiv.core.paper.commands.AnimationStoreCMD;
-import me.aleiv.core.paper.commands.GamesCMD;
+import me.aleiv.core.paper.commands.DollCMD;
+import me.aleiv.core.paper.commands.MainCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
+import me.aleiv.core.paper.commands.TestCMD;
 import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.listeners.RopeListener;
-import me.aleiv.core.paper.objects.RopeGame;
 import me.aleiv.core.paper.utilities.JsonConfig;
+import me.aleiv.core.paper.utilities.NegativeSpaces;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -37,13 +38,16 @@ public class Core extends JavaPlugin {
     private @Getter Game game;
     private @Getter PaperCommandManager commandManager;
     private @Getter AnimationStore animationStore;
-    private @Getter RopeGame ropeGame;
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
     public void onEnable() {
         instance = this;
+
+        RapidInvManager.register(this);
+        BukkitTCT.registerPlugin(this);
+        NegativeSpaces.registerCodes();
 
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
@@ -68,10 +72,6 @@ public class Core extends JavaPlugin {
         }
 
         animationStore = new AnimationStore(this);
-        ropeGame = new RopeGame(this);
-
-        RapidInvManager.register(this);
-        BukkitTCT.registerPlugin(this);
 
         //LISTENERS
 
@@ -81,12 +81,12 @@ public class Core extends JavaPlugin {
         //COMMANDS
         
         commandManager = new PaperCommandManager(this);
+        commandManager.registerCommand(new DollCMD(this));
+        commandManager.registerCommand(new MainCMD(this));
         commandManager.registerCommand(new SquidCMD(this));
         commandManager.registerCommand(new SpecialCMD(this));
-        commandManager.registerCommand(new AnimationStoreCMD(this));
-        commandManager.registerCommand(new GamesCMD(this));
+        commandManager.registerCommand(new TestCMD(this));
         
-
     }
 
     @Override

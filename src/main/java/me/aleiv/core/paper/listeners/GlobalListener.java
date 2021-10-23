@@ -55,7 +55,7 @@ public class GlobalListener implements Listener {
         }
 
         var timer = game.getTimer();
-        timer.getBossbar().addPlayer(player);
+        timer.getBossBar().addPlayer(player);
 
         if(game.getLights()){
             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));

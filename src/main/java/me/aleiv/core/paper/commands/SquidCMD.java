@@ -30,20 +30,6 @@ public class SquidCMD extends BaseCommand {
 
     }
 
-    /*@Subcommand("game-type")
-    public void game(CommandSender sender, GameType gameType, Boolean bool) {
-        var game = instance.getGame();
-        var games = game.getGames();
-        if (!games.containsKey(gameType)) {
-            sender.sendMessage(ChatColor.RED + "Game type doesn't exist.");
-
-        } else {
-
-            games.put(gameType, bool);
-            sender.sendMessage(ChatColor.DARK_AQUA + "Game type " + gameType + " " + bool);
-        }
-    }*/
-
     @Subcommand("pvp")
     public void pvp(CommandSender sender, PvPType pvpType) {
         var game = instance.getGame();

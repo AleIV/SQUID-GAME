@@ -1,7 +1,6 @@
 package me.aleiv.core.paper.commands;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -11,14 +10,13 @@ import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
 
-@CommandAlias("store")
+@CommandAlias("main")
 @CommandPermission("admin.perm")
-public class AnimationStoreCMD extends BaseCommand {
+public class MainCMD extends BaseCommand {
 
     private @NonNull Core instance;
-    Entity current = null;
 
-    public AnimationStoreCMD(Core instance){
+    public MainCMD(Core instance){
         this.instance = instance;
     }
 
@@ -56,47 +54,6 @@ public class AnimationStoreCMD extends BaseCommand {
         sender.sendMessage(ChatColor.DARK_AQUA + "Make all sleep");
         var tools = instance.getAnimationStore();
         tools.makeAllSleep();
-    }
-
-    @Subcommand("doll-door")
-    public void dollDoor(CommandSender sender, Integer i, Boolean bool){
-        sender.sendMessage(ChatColor.DARK_AQUA + "Doll door " + i + " " + bool);
-        var tools = instance.getAnimationStore();
-        switch (i) {
-            case 1: tools.dollDoor1(bool); break;
-            case 2: tools.dollDoor2(bool); break;
-            case 3: tools.dollDoor3(bool); break;
-        
-            default:
-                break;
-        }
-    }
-
-    @Subcommand("doll-line")
-    public void makeAllSleep(CommandSender sender, Integer i, Boolean bool){
-        sender.sendMessage(ChatColor.DARK_AQUA + "Doll line " + i + " " + bool);
-        var tools = instance.getAnimationStore();
-        switch (i) {
-            case 1: tools.dollLine1(bool); break;
-            case 2: tools.dollLine2(bool); break;
-        
-            default:
-                break;
-        }
-    }
-
-    @Subcommand("doll")
-    public void doll(CommandSender sender, Boolean bool){
-        sender.sendMessage(ChatColor.DARK_AQUA + "Doll " + bool);
-        var tools = instance.getAnimationStore();
-        tools.dollRotate(bool);
-    }
-
-    @Subcommand("doll-head")
-    public void dollHead(CommandSender sender, Boolean bool){
-        sender.sendMessage(ChatColor.DARK_AQUA + "Doll head" + bool);
-        var tools = instance.getAnimationStore();
-        tools.dollHead(bool);
     }
 
     @Subcommand("screen-turn")

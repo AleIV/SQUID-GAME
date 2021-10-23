@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import me.aleiv.core.paper.events.GameTickEvent;
 import me.aleiv.core.paper.objects.MainGamePanel;
+import me.aleiv.core.paper.objects.RopeGame;
 import me.aleiv.core.paper.objects.Timer;
 
 @Data
@@ -22,6 +23,8 @@ public class Game extends BukkitRunnable {
 
     MainGamePanel mainGamePanel;
     Timer timer;
+
+    RopeGame ropeGame;
 
     HashMap<String, Role> roles = new HashMap<>();
 
@@ -39,6 +42,8 @@ public class Game extends BukkitRunnable {
         this.timer = new Timer(instance, (int) gameTime);
 
         this.mainGamePanel = new MainGamePanel(instance);
+
+        this.ropeGame = new RopeGame(instance);
     }
 
     public enum PvPType{

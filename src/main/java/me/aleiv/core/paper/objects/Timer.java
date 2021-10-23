@@ -23,7 +23,7 @@ public class Timer {
     int seconds;
 
     @Getter
-    BossBar bossbar;
+    BossBar bossBar;
 
     String time = "";
 
@@ -37,8 +37,8 @@ public class Timer {
         this.instance = instance;
         this.seconds = 0;
         this.startTime = (int) currentTime;
-        this.bossbar = Bukkit.createBossBar(new NamespacedKey(instance, "TIMER"), "", BarColor.WHITE, BarStyle.SOLID);
-        bossbar.setVisible(false);
+        this.bossBar = Bukkit.createBossBar(new NamespacedKey(instance, "TIMER"), "", BarColor.WHITE, BarStyle.SOLID);
+        bossBar.setVisible(false);
 
     }
 
@@ -58,8 +58,8 @@ public class Timer {
 
     public void setPreStart(int time) {
         this.time = timeConvert(time);
-        this.getBossbar().setVisible(true);
-        bossbar.setTitle(this.time);
+        this.getBossBar().setVisible(true);
+        bossBar.setTitle(this.time);
 
         var timerLocations = instance.getAnimationStore().getTimerLocations();
         if (!timerLocations.containsKey(TimerType.RED_GREEN)) {
@@ -86,7 +86,7 @@ public class Timer {
 
         } else {
             this.time = timeConvert((int) time);
-            bossbar.setTitle(this.time);
+            bossBar.setTitle(this.time);
 
         }
 
@@ -100,7 +100,7 @@ public class Timer {
     }
 
     public void delete() {
-        bossbar.setVisible(false);
+        bossBar.setVisible(false);
 
     }
 
@@ -109,7 +109,7 @@ public class Timer {
         this.seconds = seconds;
         this.startTime = (int) instance.getGame().getGameTime();
         this.isActive = true;
-        bossbar.setVisible(true);
+        bossBar.setVisible(true);
     }
 
 }
