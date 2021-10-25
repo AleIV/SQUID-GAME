@@ -25,4 +25,8 @@ public class Polygon {
         return loc.toVector().isInAABB(lower, upper);
     }
 
+    //A function that checks if a vector v is inside the lower and upper vectors of the polygon, and takes into consideration negative values
+    
+
+
 }
