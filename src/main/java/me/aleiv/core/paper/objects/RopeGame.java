@@ -14,6 +14,7 @@ public class RopeGame {
     Core instance;
 
     @Getter BossBar bossBar;
+    @Getter BossBar yellowBar;
 
     Integer leftPoints = 0;
     Integer rightPoints = 0;
@@ -26,17 +27,32 @@ public class RopeGame {
     String bar = Character.toString('\u0250');
     String rope = Character.toString('\u0251');
     String flag = Character.toString('\u0252');
+    String blank = Character.toString('\u0253');
 
     public RopeGame(Core instance){
         this.instance = instance;
 
         this.bossBar = Bukkit.createBossBar(new NamespacedKey(instance, "ROPE"), "", BarColor.WHITE, BarStyle.SOLID);
-        bossBar.setVisible(true);
+        this.yellowBar = Bukkit.createBossBar(new NamespacedKey(instance, "YELLOW"), "", BarColor.WHITE, BarStyle.SOLID);
+        yellowBar.setTitle(bar);
+        
+        enableRope(true);
         updateBossBar();
     }
 
     public void updateBossBar(){
-        bossBar.setTitle(rope + NegativeSpaces.get(neg1) + NegativeSpaces.get(neg2) + flag + NegativeSpaces.get(neg3) + NegativeSpaces.get(neg4) + bar);
+        bossBar.setTitle(NegativeSpaces.get(neg1) + rope + NegativeSpaces.get(neg2) + NegativeSpaces.get(neg3) + NegativeSpaces.get(neg4) + flag);
+    }
+
+    public void enableRope(Boolean bool){
+        if(bool){
+            bossBar.setVisible(true);
+            yellowBar.setVisible(true);
+
+        }else{
+            bossBar.setVisible(false);
+            yellowBar.setVisible(false);
+        }
     }
     
 }

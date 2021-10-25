@@ -32,6 +32,8 @@ public class RopeListener implements Listener {
 
         var rope = game.getRopeGame();
         rope.getBossBar().addPlayer(player);
+        rope.getYellowBar().addPlayer(player);
 
     }
+
 }
