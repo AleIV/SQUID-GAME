@@ -29,6 +29,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
+import us.jcedeno.libs.Npc;
 import us.jcedeno.libs.rapidinv.RapidInvManager;
 
 @SpigotPlugin
@@ -48,6 +49,7 @@ public class Core extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        Npc.registerPlugin(this);
 
         this.game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
