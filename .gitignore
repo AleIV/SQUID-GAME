@@ -11,6 +11,8 @@ buildNumber.properties
 .vscode/
 .classpath
 
+debug
+worlds
 
 ### Gradle & IntelliJ ###
 .gradle/
@@ -20,7 +22,6 @@ out/
 run/
 *.iml
 .idea_modules/
-
 
 ### Eclipse ###
 .metadata
@@ -42,14 +43,12 @@ local.properties
 .project
 .classpath
 
-
 ### Linux ###
 *~
 .fuse_hidden*
 .directory
 .Trash-*
 .nfs*
-
 
 ### macOS ###
 .DS_Store
@@ -70,7 +69,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-
 ### NetBeans ###
 nbproject/private/
 build/
@@ -78,7 +76,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-
 
 ### Windows ###
 # Windows thumbnail cache files
