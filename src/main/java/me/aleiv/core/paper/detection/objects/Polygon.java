@@ -21,7 +21,7 @@ public class Polygon {
      * @return True if the location is inside the polygon, false otherwise.
      */
     public boolean isInside(Location loc) {
-        return this.inInside(loc.toVector());
+        return loc.getWorld() == this.world && this.inInside(loc.toVector());
     }
 
     /**

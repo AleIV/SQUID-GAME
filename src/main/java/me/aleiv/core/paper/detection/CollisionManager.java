@@ -25,7 +25,7 @@ public class CollisionManager {
         this.playerPolygonMap = new HashMap<>();
         this.polygonList = new ArrayList<>();
         this.instance.getCommandManager().registerCommand(new PolygonCommand(this));
-        Bukkit.getScheduler().runTaskTimerAsynchronously(instance, new CheckCollisionsTask(this), 0L, 2L);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(instance, new CheckCollisionsTask(this), 0L, 1L);
         Bukkit.getPluginManager().registerEvents(new PolygonListener(), instance);
 
     }

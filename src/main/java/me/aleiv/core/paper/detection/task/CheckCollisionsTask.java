@@ -31,6 +31,9 @@ public class CheckCollisionsTask implements Runnable {
                         if (!playerPolygon.equals(polygon)) {
                             // Player is leaving the old polygon
                             callExitedPolygon(player, playerPolygon);
+                        } else {
+                            matched = true;
+                            break;
                         }
                         // Player is entering a new polygon.
                         callEnteredPolygon(player, polygon);
@@ -48,17 +51,10 @@ public class CheckCollisionsTask implements Runnable {
                 // If player is not already inside a polygon, then they are only capable of
                 // entering a new polygon.
                 for (Polygon polygon : this.collisionManager.getPolygonList()) {
-                    System.out.println(polygon.toString());
-                    System.out.println("Got here");
                     if (polygon.isInside(player.getLocation())) {
-
-                        System.out.println("yup");
                         callEnteredPolygon(player, polygon);
                         this.collisionManager.getPlayerPolygonMap().put(player.getUniqueId(), polygon);
                         break;
-                    } else {
-
-                        System.out.println("nope");
                     }
                 }
             }

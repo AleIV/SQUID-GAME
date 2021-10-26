@@ -78,6 +78,7 @@ public class PolygonCommand extends BaseCommand {
                 return;
             }
             polygonsInProgress.remove(id);
+            
             collisionManager.getPolygonList().add(polygon);
             player.sendMessage(Core.getMiniMessage().parse("<green>Committed the polygon."));
         } else {
