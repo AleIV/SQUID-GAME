@@ -19,7 +19,6 @@ import us.jcedeno.libs.rapidinv.RapidInv;
 
 public class GreenLightPanel extends RapidInv{
 
-    MainGamePanel mainGamePanel;
     GreenLightListener greenLightListener;
     Core instance;
 
@@ -31,20 +30,11 @@ public class GreenLightPanel extends RapidInv{
     @Getter Boolean headDoll = true;
      
 
-    public GreenLightPanel(MainGamePanel mainGamePanel, Core instance){
+    public GreenLightPanel(Core instance){
         super(6*9, "Green light-Red light");
         this.instance = instance;
 
-        this.mainGamePanel = mainGamePanel;
         this.greenLightListener = new GreenLightListener(instance);
-
-        var mainPanel = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(6))
-            .name(ChatColor.RED + "Main game panel").build();
-
-        this.setItem(0, mainPanel, action ->{
-            var player = (Player) action.getWhoClicked();
-            this.mainGamePanel.open(player);
-        });
 
         updateEnableDisable();
         updateMovedPlayers();
@@ -87,7 +77,7 @@ public class GreenLightPanel extends RapidInv{
             door1 = !door1;
             var bool = door1;
             var player = (Player) action.getWhoClicked();
-            instance.getAnimationStore().dollDoor1(bool);
+            instance.getGame().getDollGame().dollDoor1(bool);
             instance.adminMessage(ChatColor.GREEN + player.getName() + " DOOR 1 " + bool);
             updateDoor1();
         });
@@ -102,7 +92,7 @@ public class GreenLightPanel extends RapidInv{
             door2 = !door2;
             var bool = door2;
             var player = (Player) action.getWhoClicked();
-            instance.getAnimationStore().dollDoor2(bool);
+            instance.getGame().getDollGame().dollDoor2(bool);
             instance.adminMessage(ChatColor.GREEN + player.getName() + " DOOR 2 " + bool);
             updateDoor2();
         });
@@ -117,7 +107,7 @@ public class GreenLightPanel extends RapidInv{
             door3 = !door3;
             var bool = door3;
             var player = (Player) action.getWhoClicked();
-            instance.getAnimationStore().dollDoor3(bool);
+            instance.getGame().getDollGame().dollDoor3(bool);
             instance.adminMessage(ChatColor.GREEN + player.getName() + " DOOR 3 " + bool);
             updateDoor3();
         });
@@ -132,7 +122,7 @@ public class GreenLightPanel extends RapidInv{
             headDoll = !headDoll;
             var bool = headDoll;
             var player = (Player) action.getWhoClicked();
-            instance.getAnimationStore().dollHead(bool);
+            instance.getGame().getDollGame().dollHead(bool);
             instance.adminMessage(ChatColor.GREEN + player.getName() + " HEAD DOLL " + bool);
             updateHeadDoll();
         });

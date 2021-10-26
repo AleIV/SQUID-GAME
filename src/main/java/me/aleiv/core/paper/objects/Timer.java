@@ -61,7 +61,7 @@ public class Timer {
         this.getBossBar().setVisible(true);
         bossBar.setTitle(this.time);
 
-        var timerLocations = instance.getAnimationStore().getTimerLocations();
+        var timerLocations = instance.getGame().getTimerLocations();
         if (!timerLocations.containsKey(TimerType.RED_GREEN)) {
             var specialObjects = AnimationTools.specialObjects;
             var loc1 = AnimationTools.parseLocation(specialObjects.get("TIMER_RED_GREEN_1"), Bukkit.getWorld("world"));
@@ -95,7 +95,7 @@ public class Timer {
             setActive(false);
         }
 
-        instance.getAnimationStore().refreshTimer(this.time);
+        instance.getGame().refreshTimer(this.time);
 
     }
 

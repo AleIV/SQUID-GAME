@@ -24,55 +24,55 @@ public class MainCMD extends BaseCommand {
     public void game(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Lights " + bool);
 
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getMainRoom();
         tools.lights(bool);
     }
 
     @Subcommand("main-elevator")
     public void elevator(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Main elevator " + bool);
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getMainRoom();
         tools.mainElevator(bool);
     }
 
     @Subcommand("submarine-left")
     public void leftDoor(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Main left door submarine " + bool);
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getMainRoom();
         tools.mainLeftDoor(bool);
     }
 
     @Subcommand("submarine-right")
     public void rightDoor(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Main right door submarine " + bool);
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getMainRoom();
         tools.mainRightDoor(bool);
     }
 
     @Subcommand("make-all-sleep")
     public void makeAllSleep(CommandSender sender){
         sender.sendMessage(ChatColor.DARK_AQUA + "Make all sleep");
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getMainRoom();
         tools.makeAllSleep();
     }
 
     @Subcommand("screen-turn")
     public void screen(CommandSender sender, Boolean bool){
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getMainRoom();
         tools.turnScreen(bool);
         sender.sendMessage(ChatColor.DARK_AQUA + "Screen turn " + bool);
     }
 
     @Subcommand("refresh-prize")
     public void refreshPrize(CommandSender sender, Integer newPrize, Integer delay, Integer value){
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getMainRoom();
         tools.refreshPrize(newPrize, delay, value);
         sender.sendMessage(ChatColor.DARK_AQUA + "Refreshed prize " + newPrize + " " + delay);
     }
 
     @Subcommand("refresh-players")
     public void refreshPlayers(CommandSender sender, Integer newPrize, Integer delay, Integer value){
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getMainRoom();
         tools.refreshPlayers(newPrize, delay, value);
         sender.sendMessage(ChatColor.DARK_AQUA + "Refreshed players " + newPrize + " " + delay);
     }

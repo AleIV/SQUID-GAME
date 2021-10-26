@@ -22,8 +22,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
-import me.aleiv.core.paper.objects.LineVector;
 import me.aleiv.core.paper.objects.NoteBlockData;
+import me.aleiv.core.paper.utilities.LineVector;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 
 public class AnimationTools {

@@ -11,9 +11,7 @@ import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.objects.LineVector;
-import me.aleiv.core.paper.objects.RopeGame;
-import net.md_5.bungee.api.ChatColor;
+import me.aleiv.core.paper.utilities.LineVector;
 
 @CommandAlias("test")
 @CommandPermission("admin.perm")
@@ -23,14 +21,6 @@ public class TestCMD extends BaseCommand {
 
     public TestCMD(Core instance) {
         this.instance = instance;
-    }
-
-    @Subcommand("panel")
-    @CommandAlias("panel")
-    public void game(Player sender) {
-        var game = instance.getGame();
-        game.getMainGamePanel().open(sender);
-
     }
 
     @Subcommand("particle-distance")
@@ -52,36 +42,6 @@ public class TestCMD extends BaseCommand {
     @Subcommand("playsound")
     public void test(Player sender, String str) {
         AnimationTools.playSoundDistance(sender.getLocation(), 10, str, 1f, 1f);
-
-    }
-
-    @Subcommand("bossbar")
-    public void bossbar(Player sender, Integer neg, Integer neg2) {
-        switch (neg) {
-            case 1 -> {
-                instance.broadcastMessage(ChatColor.RED + "1 "+ RopeGame.neg1);
-                RopeGame.neg1 = neg2;
-                instance.broadcastMessage(ChatColor.GREEN + "1 "+ RopeGame.neg1);
-            }
-            case 2 -> {
-                instance.broadcastMessage(ChatColor.RED + "2 "+ RopeGame.neg1);
-                RopeGame.neg2 = neg2;
-                instance.broadcastMessage(ChatColor.GREEN  + "2 "+ RopeGame.neg2);
-            }
-            case 3 -> {
-                instance.broadcastMessage(ChatColor.RED + "3 "+ RopeGame.neg3);
-                RopeGame.neg3 = neg2;
-                instance.broadcastMessage(ChatColor.GREEN + "3 "+ RopeGame.neg3);
-            }
-            case 4 -> {
-                instance.broadcastMessage(ChatColor.RED + "4 "+ RopeGame.neg4);
-                RopeGame.neg4 = neg2;
-                instance.broadcastMessage(ChatColor.GREEN + "4 " + RopeGame.neg4);
-            }
-        
-        }
-        instance.getGame().getRopeGame().updateBossBar();
-
 
     }
 

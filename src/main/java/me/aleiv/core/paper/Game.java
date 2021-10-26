@@ -1,16 +1,19 @@
 package me.aleiv.core.paper;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.aleiv.core.paper.Games.DollGame;
+import me.aleiv.core.paper.Games.MainRoom;
+import me.aleiv.core.paper.Games.RopeGame;
 import me.aleiv.core.paper.events.GameTickEvent;
-import me.aleiv.core.paper.objects.MainGamePanel;
-import me.aleiv.core.paper.objects.RopeGame;
 import me.aleiv.core.paper.objects.Timer;
 
 @Data
@@ -21,11 +24,14 @@ public class Game extends BukkitRunnable {
     long gameTime = 0;
     long startTime = 0;
 
-    MainGamePanel mainGamePanel;
     Timer timer;
 
+    //GAMES
+    MainRoom mainRoom;
+    DollGame dollGame;
     RopeGame ropeGame;
 
+    HashMap<TimerType, List<Location>> timerLocations = new HashMap<>();
     HashMap<String, Role> roles = new HashMap<>();
 
     Boolean lights = true;
@@ -41,9 +47,24 @@ public class Game extends BukkitRunnable {
 
         this.timer = new Timer(instance, (int) gameTime);
 
-        this.mainGamePanel = new MainGamePanel(instance);
-
         this.ropeGame = new RopeGame(instance);
+        this.dollGame = new DollGame(instance);
+    }
+
+    public void refreshTimer(String str){
+        
+        var timerType = instance.getGame().getTimerType();
+        switch (timerType) {
+            case RED_GREEN:{
+                
+                AnimationTools.setTimerValue(timerLocations.get(TimerType.RED_GREEN), str);
+                
+            }break;
+        
+            default:
+                break;
+        }
+
     }
 
     public enum PvPType{

@@ -37,7 +37,6 @@ public class Core extends JavaPlugin {
     private static @Getter Core instance;
     private @Getter Game game;
     private @Getter PaperCommandManager commandManager;
-    private @Getter AnimationStore animationStore;
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -71,8 +70,6 @@ public class Core extends JavaPlugin {
             e.printStackTrace();
         }
 
-        animationStore = new AnimationStore(this);
-
         //LISTENERS
 
         registerListener(new GlobalListener(this));
@@ -91,7 +88,10 @@ public class Core extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        
+    }
 
+    public void refreshJson(){
         var list = AnimationTools.specialObjects;
 
         try {
@@ -105,7 +105,6 @@ public class Core extends JavaPlugin {
 
             e.printStackTrace();
         }
-        
     }
 
     public void unregisterListener(Listener listener) {

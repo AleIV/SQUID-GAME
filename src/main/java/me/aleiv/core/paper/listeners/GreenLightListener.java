@@ -22,7 +22,7 @@ public class GreenLightListener implements Listener {
         //TODO: ADD IF IS INSIDE ARENA
         if (player.getGameMode() == GameMode.ADVENTURE && game.isPlayer(player)) {
             
-            var panel = game.getMainGamePanel().getGreenLightPanel();
+            var panel = game.getDollGame().getGreenLightPanel();
             var moved = panel.getPlayersMoved();
             if(!moved.contains(player)){
                 moved.add(player);

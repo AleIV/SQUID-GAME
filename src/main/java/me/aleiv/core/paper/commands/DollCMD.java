@@ -28,14 +28,14 @@ public class DollCMD extends BaseCommand {
     @CommandAlias("greenLight")
     public void greenLight(Player sender, @Name("target") @Optional @Flags("other") Player target) {
         var game = instance.getGame();
-        game.getMainGamePanel().getGreenLightPanel().open(sender);
+        game.getDollGame().getGreenLightPanel().open(sender);
 
     }
 
     @Subcommand("door")
     public void dollDoor(CommandSender sender, Integer i, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Doll door " + i + " " + bool);
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getDollGame();
         switch (i) {
             case 1: tools.dollDoor1(bool); break;
             case 2: tools.dollDoor2(bool); break;
@@ -49,7 +49,7 @@ public class DollCMD extends BaseCommand {
     @Subcommand("line")
     public void makeAllSleep(CommandSender sender, Integer i, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Doll line " + i + " " + bool);
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getDollGame();
         switch (i) {
             case 1: tools.dollLine1(bool); break;
             case 2: tools.dollLine2(bool); break;
@@ -62,14 +62,14 @@ public class DollCMD extends BaseCommand {
     @Subcommand("body")
     public void doll(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Doll " + bool);
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getDollGame();
         tools.dollRotate(bool);
     }
 
     @Subcommand("head")
     public void dollHead(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Doll head" + bool);
-        var tools = instance.getAnimationStore();
+        var tools = instance.getGame().getDollGame();
         tools.dollHead(bool);
     }
 }

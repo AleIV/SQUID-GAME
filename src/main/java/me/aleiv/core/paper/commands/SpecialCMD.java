@@ -40,6 +40,7 @@ public class SpecialCMD extends BaseCommand {
     
                 specialObjects.put(name, entity.getUniqueId().toString());
                 sender.sendMessage(ChatColor.DARK_AQUA + "Special object " + name + " added.");
+                instance.refreshJson();
             }
 
         }else{
@@ -63,6 +64,7 @@ public class SpecialCMD extends BaseCommand {
                 var loc = block.getLocation();
                 specialObjects.put(name, (int) loc.getX() + ";" + (int) loc.getY() + ";" + (int) loc.getZ());
                 sender.sendMessage(ChatColor.DARK_AQUA + "Special object " + name + " added.");
+                instance.refreshJson();
             }
 
         }else{
@@ -82,6 +84,7 @@ public class SpecialCMD extends BaseCommand {
 
             specialObjects.remove(name);
             sender.sendMessage(ChatColor.DARK_AQUA + "Special object " + name + " deleted.");
+            instance.refreshJson();
         }
 
     }
@@ -152,6 +155,8 @@ public class SpecialCMD extends BaseCommand {
             var name = "BED_" + (n+1);
             specialObjects.put(name, (int) loc.getX() + ";" + (int) loc.getY() + ";" + (int) loc.getZ());
             sender.sendMessage(ChatColor.DARK_AQUA + "Special object " + name + " added.");
+
+            instance.refreshJson();
 
         }else{
             sender.sendMessage(ChatColor.RED + "You don't have target.");

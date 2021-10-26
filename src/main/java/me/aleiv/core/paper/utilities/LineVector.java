@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.objects;
+package me.aleiv.core.paper.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
