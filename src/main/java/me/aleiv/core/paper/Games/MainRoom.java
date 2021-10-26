@@ -31,18 +31,18 @@ public class MainRoom {
             Bukkit.getOnlinePlayers().forEach(player->{
                 var loc = player.getLocation();
                 player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
-                player.playSound(loc, "squid:squid.lights_on", 1, 1);
+                player.playSound(loc, "squid:sfx.main_lights_on", 1, 1);
             });
 
         }else{
             Bukkit.getOnlinePlayers().forEach(player->{
                 var loc = player.getLocation();
                 player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-                player.playSound(loc, "squid:squid.lights_off", 1, 1);
+                player.playSound(loc, "squid:sfx.main_lights_off", 1, 1);
             });
 
         }
-    }
+    } 
 
     public void mainElevator(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
