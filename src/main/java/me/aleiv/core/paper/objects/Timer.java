@@ -74,12 +74,11 @@ public class Timer {
             timerLocations.put(TimerType.RED_GREEN, locations);
         }
 
+        instance.getGame().refreshTimer(this.time);
     }
 
     public void refreshTime(int currentTime) {
         var time = (startTime + seconds) - currentTime;
-
-        // if(time == 30){ }
 
         if (time < 0) {
             this.time = "00:00";
@@ -87,6 +86,9 @@ public class Timer {
         } else {
             this.time = timeConvert((int) time);
             bossBar.setTitle(this.time);
+            Bukkit.getOnlinePlayers().forEach(player ->{
+                player.playSound(player.getLocation(), "squid:sfx.tic", 1, 1);
+            });
 
         }
 

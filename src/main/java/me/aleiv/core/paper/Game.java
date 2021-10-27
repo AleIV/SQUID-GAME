@@ -10,7 +10,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.aleiv.core.paper.Games.CookieGame;
 import me.aleiv.core.paper.Games.DollGame;
+import me.aleiv.core.paper.Games.Elevators;
+import me.aleiv.core.paper.Games.HideSeekGame;
 import me.aleiv.core.paper.Games.MainRoom;
 import me.aleiv.core.paper.Games.RopeGame;
 import me.aleiv.core.paper.events.GameTickEvent;
@@ -30,6 +33,9 @@ public class Game extends BukkitRunnable {
     MainRoom mainRoom;
     DollGame dollGame;
     RopeGame ropeGame;
+    HideSeekGame hideSeekGame;
+    CookieGame cookieGame;
+    Elevators elevators;
 
     HashMap<TimerType, List<Location>> timerLocations = new HashMap<>();
     HashMap<String, Role> roles = new HashMap<>();
@@ -47,8 +53,12 @@ public class Game extends BukkitRunnable {
 
         this.timer = new Timer(instance, (int) gameTime);
 
+        this.mainRoom = new MainRoom(instance);
         this.ropeGame = new RopeGame(instance);
         this.dollGame = new DollGame(instance);
+        this.hideSeekGame = new HideSeekGame(instance);
+        this.cookieGame = new CookieGame(instance);
+        this.elevators = new Elevators(instance);
     }
 
     public void refreshTimer(String str){

@@ -1,6 +1,7 @@
 package me.aleiv.core.paper.Games;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BarColor;
@@ -27,6 +28,8 @@ public class RopeGame {
     String rope = Character.toString('\u0251');
     String flag = Character.toString('\u0252');
 
+    Boolean ropeBossbar = false;
+
     public RopeGame(Core instance){
         this.instance = instance;
 
@@ -37,7 +40,7 @@ public class RopeGame {
         updateBossBar();
         yellowBar.setTitle(bar);
         
-        enableRope(true);
+        enableRope(ropeBossbar);
     }
 
     public void updateBossBar(){
@@ -51,28 +54,23 @@ public class RopeGame {
     }
 
     public void enableRope(Boolean bool){
-        if(bool){
-            ropeBar.setVisible(true);
-            flagBar.setVisible(true);
-            yellowBar.setVisible(true);
-
-        }else{
-            ropeBar.setVisible(false);
-            flagBar.setVisible(true);
-            yellowBar.setVisible(false);
-        }
+        ropeBossbar = bool;
+        ropeBar.setVisible(bool);
+        flagBar.setVisible(bool);
+        yellowBar.setVisible(bool);
     }
+
 
     public void ropeGate(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("MAIN_RIGHT_DOOR_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("MAIN_RIGHT_DOOR_POS2"), Bukkit.getWorld("world"));
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("ROPE_DOOR_POS1"), Bukkit.getWorld("world"));
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("ROPE_DOOR_POS2"), Bukkit.getWorld("world"));
 
         if(bool){
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 15, "squid:sfx.main_door_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.metal_door_open", 1f, 1f);
 
             AnimationTools.move("ROPE_DOOR1", 42, 1, 'y', 0.1f);
             AnimationTools.move("ROPE_DOOR2", 42, 1, 'y', 0.1f);
@@ -82,12 +80,23 @@ public class RopeGame {
 
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
 
-            AnimationTools.playSoundDistance(loc1, 15, "squid:sfx.main_door_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.metal_door_close", 1f, 1f);
 
             AnimationTools.move("ROPE_DOOR1", -42, 1, 'y', 0.1f);
             AnimationTools.move("ROPE_DOOR2", -42, 1, 'y', 0.1f);
             AnimationTools.move("ROPE_DOOR3", -42, 1, 'y', 0.1f);
 
+        }
+    }
+
+    public void moveGuillotine(Boolean bool){
+        var loc = new Location(Bukkit.getWorld("world"), 241, 61, -301);
+        if(bool){
+            
+            AnimationTools.move("ROPE_GUILLOTINE", -12, 1, 'y', 1f);
+            AnimationTools.playSoundDistance(loc, 200, "squid:sfx.rope_guillotine", 1f, 1f);
+        }else{
+            AnimationTools.move("ROPE_GUILLOTINE", 12, 1, 'y', 1f);
         }
     }
     

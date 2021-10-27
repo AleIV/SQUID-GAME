@@ -28,7 +28,7 @@ public class DollGame {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.doll_door_open", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR1_LEFT", 20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR1_RIGHT", -20, 1, 0.1f);
@@ -37,7 +37,7 @@ public class DollGame {
 
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.doll_door_close", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR1_LEFT", -20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR1_RIGHT", 20, 1, 0.1f);
@@ -53,7 +53,7 @@ public class DollGame {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.doll_door_open", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR2_LEFT", -20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR2_RIGHT", 20, 1, 0.1f);
@@ -62,7 +62,7 @@ public class DollGame {
 
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.doll_door_close", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR2_LEFT", 20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR2_RIGHT", -20, 1, 0.1f);
@@ -78,7 +78,7 @@ public class DollGame {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.doll_door_open", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR3_LEFT", -20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR3_RIGHT", 20, 1, 0.1f);
@@ -87,7 +87,7 @@ public class DollGame {
 
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.doll_door_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.doll_door_close", 1f, 1f);
 
             AnimationTools.rotate("DOLL_DOOR3_LEFT", 20, 1, 0.1f);
             AnimationTools.rotate("DOLL_DOOR3_RIGHT", -20, 1, 0.1f);

@@ -1,6 +1,7 @@
 package me.aleiv.core.paper.Games;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -23,6 +24,18 @@ public class MainRoom {
         var players = Bukkit.getOnlinePlayers().stream().map(player -> (Player) player).toList();
         var beds = AnimationTools.findLocations("BED");
         AnimationTools.forceSleep(players, beds);
+    }
+
+    public void moveTube(Boolean bool){
+        var loc = new Location(Bukkit.getWorld("world"), 282, 30, -105);
+        if(bool){
+            
+            AnimationTools.move("TUBE", -100, 1, 'y', 0.2f);
+            AnimationTools.playSoundDistance(loc, 100, "squid:sfx.piggybank_tube_down", 1f, 1f);
+        }else{
+            AnimationTools.move("TUBE", 100, 1, 'y', 0.2f);
+            AnimationTools.playSoundDistance(loc, 100, "squid:sfx.piggybank_tube_up", 1f, 1f);
+        }
     }
     
     public void lights(Boolean bool){
@@ -199,7 +212,7 @@ public class MainRoom {
 
                     game.setTotalPrize(formatted);
                     AnimationTools.setScreenValue(prizeValueText, formatted);
-                    AnimationTools.playSoundDistance(loc1, 200, "squid:sfx.main_board", 1f, 1f);
+                    AnimationTools.playSoundDistance(loc1, 100, "squid:sfx.main_board", 1f, 1f);
                 }
             }, 50*delay);
 
@@ -263,7 +276,7 @@ public class MainRoom {
 
                     game.setTotalPlayers(formatted);
                     AnimationTools.setScreenValue(playersValueText, formatted);
-                    AnimationTools.playSoundDistance(loc1, 200, "squid:sfx.main_board", 1f, 1f);
+                    AnimationTools.playSoundDistance(loc1, 100, "squid:sfx.main_board", 1f, 1f);
                 }
             }, 50*delay);
 

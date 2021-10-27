@@ -56,6 +56,13 @@ public class MainCMD extends BaseCommand {
         tools.makeAllSleep();
     }
 
+    @Subcommand("tube")
+    public void tube(CommandSender sender, Boolean bool){
+        var tools = instance.getGame().getMainRoom();
+        tools.moveTube(bool);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Tube move " + bool);
+    }
+
     @Subcommand("screen-turn")
     public void screen(CommandSender sender, Boolean bool){
         var tools = instance.getGame().getMainRoom();

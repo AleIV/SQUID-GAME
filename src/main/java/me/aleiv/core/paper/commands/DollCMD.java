@@ -11,6 +11,7 @@ import co.aikar.commands.annotation.Name;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
+import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
 
@@ -29,6 +30,14 @@ public class DollCMD extends BaseCommand {
     public void greenLight(Player sender, @Name("target") @Optional @Flags("other") Player target) {
         var game = instance.getGame();
         game.getDollGame().getGreenLightPanel().open(sender);
+
+    }
+
+    
+    @Subcommand("shoot")
+    @CommandAlias("shoot")
+    public void shoot(Player sender, @Name("target") @Optional @Flags("other") Player target) {
+        AnimationTools.shootLocation(target.getLocation());
 
     }
 
