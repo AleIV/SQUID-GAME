@@ -37,9 +37,10 @@ public class CanceledListener implements Listener {
         var player = e.getPlayer();
         var block = e.getClickedBlock();
         var action = e.getAction();
+
+        if(block == null || action != Action.RIGHT_CLICK_BLOCK || player.getGameMode() == GameMode.CREATIVE) return;
         
-        if(action == Action.RIGHT_CLICK_BLOCK && block != null && player.getGameMode() != GameMode.CREATIVE 
-            && (bannedMoveList.contains(block.getType()) || block.getType().toString().contains("TRAPDOOR")) 
+        if(bannedMoveList.contains(block.getType()) || block.getType().toString().contains("TRAPDOOR") 
                 || block.getType().toString().contains("FENCE_GATE")){
             e.setCancelled(true);
         }
