@@ -1,5 +1,6 @@
 package me.aleiv.core.paper.objects;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -33,6 +34,8 @@ public class Timer {
 
     int currentClock = 0;
 
+    @Getter HashMap<TimerType, List<Location>> timerLocations = new HashMap<>();
+
     public Timer(Core instance, int currentTime) {
         this.instance = instance;
         this.seconds = 0;
@@ -61,20 +64,10 @@ public class Timer {
         this.getBossBar().setVisible(true);
         bossBar.setTitle(this.time);
 
-        var timerLocations = instance.getGame().getTimerLocations();
-        if (!timerLocations.containsKey(TimerType.RED_GREEN)) {
-            var specialObjects = AnimationTools.specialObjects;
-            var loc1 = AnimationTools.parseLocation(specialObjects.get("TIMER_RED_GREEN_1"), Bukkit.getWorld("world"));
-            var loc2 = AnimationTools.parseLocation(specialObjects.get("TIMER_RED_GREEN_2"), Bukkit.getWorld("world"));
-            var loc3 = AnimationTools.parseLocation(specialObjects.get("TIMER_RED_GREEN_3"), Bukkit.getWorld("world"));
-            var loc4 = AnimationTools.parseLocation(specialObjects.get("TIMER_RED_GREEN_4"), Bukkit.getWorld("world"));
-            var loc5 = AnimationTools.parseLocation(specialObjects.get("TIMER_RED_GREEN_5"), Bukkit.getWorld("world"));
-            List<Location> locations = List.of(loc1, loc2, loc3, loc4, loc5);
-
-            timerLocations.put(TimerType.RED_GREEN, locations);
+        if(timerLocations.isEmpty()){
+            registerTimers();
         }
-
-        instance.getGame().refreshTimer(this.time);
+        refreshTimer(this.time);
     }
 
     public void refreshTime(int currentTime) {
@@ -86,7 +79,7 @@ public class Timer {
         } else {
             this.time = timeConvert((int) time);
             bossBar.setTitle(this.time);
-            Bukkit.getOnlinePlayers().forEach(player ->{
+            Bukkit.getOnlinePlayers().forEach(player -> {
                 player.playSound(player.getLocation(), "squid:sfx.tic", 1, 1);
             });
 
@@ -97,7 +90,7 @@ public class Timer {
             setActive(false);
         }
 
-        instance.getGame().refreshTimer(this.time);
+        refreshTimer(this.time);
 
     }
 
@@ -112,6 +105,59 @@ public class Timer {
         this.startTime = (int) instance.getGame().getGameTime();
         this.isActive = true;
         bossBar.setVisible(true);
+    }
+
+    public void refreshTimer(String str){
+        
+        var timerType = instance.getGame().getTimerType();
+        switch (timerType) {
+            case RED_GREEN ->{  AnimationTools.setTimerValue(timerLocations.get(TimerType.RED_GREEN), str); }
+            case GLASS ->{ AnimationTools.setTimerValue(timerLocations.get(TimerType.GLASS), str); }
+            case COOKIE ->{ AnimationTools.setTimerValue(timerLocations.get(TimerType.COOKIE), str); }
+            case HIDE_SEEK ->{ AnimationTools.setTimerValue(timerLocations.get(TimerType.HIDE_SEEK), str); }
+        }
+
+    }
+
+    private void registerTimers() {
+
+        var world = Bukkit.getWorld("world");
+        var specialObjects = AnimationTools.specialObjects;
+        var b1 = AnimationTools.parseLocation(specialObjects.get("TIMER_RED_GREEN_1"), world);
+        var b2 = AnimationTools.parseLocation(specialObjects.get("TIMER_RED_GREEN_2"), world);
+        var b3 = AnimationTools.parseLocation(specialObjects.get("TIMER_RED_GREEN_3"), world);
+        var b4 = AnimationTools.parseLocation(specialObjects.get("TIMER_RED_GREEN_4"), world);
+        var b5 = AnimationTools.parseLocation(specialObjects.get("TIMER_RED_GREEN_5"), world);
+        List<Location> locations = List.of(b1, b2, b3, b4, b5);
+
+        timerLocations.put(TimerType.RED_GREEN, locations);
+
+        b1 = AnimationTools.parseLocation(specialObjects.get("TIMER_GLASS_1"), world);
+        b2 = AnimationTools.parseLocation(specialObjects.get("TIMER_GLASS_2"), world);
+        b3 = AnimationTools.parseLocation(specialObjects.get("TIMER_GLASS_3"), world);
+        b4 = AnimationTools.parseLocation(specialObjects.get("TIMER_GLASS_4"), world);
+        b5 = AnimationTools.parseLocation(specialObjects.get("TIMER_GLASS_5"), world);
+        locations = List.of(b1, b2, b3, b4, b5);
+
+        timerLocations.put(TimerType.GLASS, locations);
+
+        b1 = AnimationTools.parseLocation(specialObjects.get("TIMER_HIDE_SEEK_1"), world);
+        b2 = AnimationTools.parseLocation(specialObjects.get("TIMER_HIDE_SEEK_2"), world);
+        b3 = AnimationTools.parseLocation(specialObjects.get("TIMER_HIDE_SEEK_3"), world);
+        b4 = AnimationTools.parseLocation(specialObjects.get("TIMER_HIDE_SEEK_4"), world);
+        b5 = AnimationTools.parseLocation(specialObjects.get("TIMER_HIDE_SEEK_5"), world);
+        locations = List.of(b1, b2, b3, b4, b5);
+
+        timerLocations.put(TimerType.HIDE_SEEK, locations);
+
+        b1 = AnimationTools.parseLocation(specialObjects.get("TIMER_COOKIE_1"), world);
+        b2 = AnimationTools.parseLocation(specialObjects.get("TIMER_COOKIE_2"), world);
+        b3 = AnimationTools.parseLocation(specialObjects.get("TIMER_COOKIE_3"), world);
+        b4 = AnimationTools.parseLocation(specialObjects.get("TIMER_COOKIE_4"), world);
+        b5 = AnimationTools.parseLocation(specialObjects.get("TIMER_COOKIE_5"), world);
+        locations = List.of(b1, b2, b3, b4, b5);
+
+        timerLocations.put(TimerType.COOKIE, locations);
     }
 
 }

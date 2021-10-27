@@ -24,8 +24,10 @@ import me.aleiv.core.paper.commands.RopeCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.commands.TestCMD;
+import me.aleiv.core.paper.listeners.CanceledListener;
 import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.listeners.RopeListener;
+import me.aleiv.core.paper.listeners.HideListener;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
@@ -52,9 +54,6 @@ public class Core extends JavaPlugin {
         BukkitTCT.registerPlugin(this);
         NegativeSpaces.registerCodes();
 
-        game = new Game(this);
-        game.runTaskTimerAsynchronously(this, 0L, 20L);
-
         try {
             var jsonConfig = new JsonConfig("special.json");
             var list = jsonConfig.getJsonObject();
@@ -74,10 +73,15 @@ public class Core extends JavaPlugin {
             e.printStackTrace();
         }
 
+        game = new Game(this);
+        game.runTaskTimerAsynchronously(this, 0L, 20L);
+
         //LISTENERS
 
         registerListener(new GlobalListener(this));
         registerListener(new RopeListener(this));
+        registerListener(new CanceledListener(this));
+        registerListener(new HideListener(this));
 
         //COMMANDS
         

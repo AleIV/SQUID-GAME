@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 
 public class GreenLightListener implements Listener {
@@ -19,8 +20,12 @@ public class GreenLightListener implements Listener {
     public void move(PlayerMoveEvent e) {
         var game = instance.getGame();
         var player = e.getPlayer();
-        //TODO: ADD IF IS INSIDE ARENA
-        if (player.getGameMode() == GameMode.ADVENTURE && game.isPlayer(player)) {
+        var point = player.getLocation();
+        var doll = game.getDollGame();
+        var pos1 = doll.getPos1();
+        var pos2 = doll.getPos2();
+        
+        if (player.getGameMode() == GameMode.ADVENTURE && game.isPlayer(player) && AnimationTools.isInCube(pos1, pos2, point)){
             
             var panel = game.getDollGame().getGreenLightPanel();
             var moved = panel.getPlayersMoved();

@@ -1,10 +1,8 @@
 package me.aleiv.core.paper;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -37,12 +35,12 @@ public class Game extends BukkitRunnable {
     CookieGame cookieGame;
     Elevators elevators;
 
-    HashMap<TimerType, List<Location>> timerLocations = new HashMap<>();
     HashMap<String, Role> roles = new HashMap<>();
 
     Boolean lights = true;
     PvPType pvp = PvPType.ONLY_GUARDS;
     TimerType timerType = TimerType.RED_GREEN;
+    HideMode hideMode = HideMode.INGAME;
 
     String totalPlayers = "000";
     String totalPrize = "000000";
@@ -61,22 +59,6 @@ public class Game extends BukkitRunnable {
         this.elevators = new Elevators(instance);
     }
 
-    public void refreshTimer(String str){
-        
-        var timerType = instance.getGame().getTimerType();
-        switch (timerType) {
-            case RED_GREEN:{
-                
-                AnimationTools.setTimerValue(timerLocations.get(TimerType.RED_GREEN), str);
-                
-            }break;
-        
-            default:
-                break;
-        }
-
-    }
-
     public enum PvPType{
         ONLY_GUARDS, ALL, ONLY_PVP
     }
@@ -86,7 +68,11 @@ public class Game extends BukkitRunnable {
     }
 
     public enum TimerType{
-        RED_GREEN
+        RED_GREEN, GLASS, COOKIE, HIDE_SEEK
+    }
+
+    public enum HideMode{
+        INGAME, LOBBY, TEST
     }
 
     public boolean isGuard(Player player){
@@ -95,6 +81,40 @@ public class Game extends BukkitRunnable {
 
     public boolean isPlayer(Player player){
         return roles.get(player.getUniqueId().toString()) == Role.PLAYER;
+    }
+
+    public void applyInGameHide(Player player){
+
+    }
+
+    public void applyLobbyHide(Player player){
+
+    }
+
+    public void refreshHide(HideMode hideMode){
+        this.hideMode = hideMode;
+
+        var players = Bukkit.getOnlinePlayers();
+
+        switch (hideMode) {
+            case INGAME ->{
+                players.forEach(player ->{
+                    applyInGameHide(player);
+                });
+            }
+            case LOBBY ->{
+                players.forEach(player ->{
+                    applyLobbyHide(player);
+                });
+            }
+            case TEST ->{
+                players.forEach(player ->{
+                    players.forEach(p ->{
+                        player.showPlayer(instance, p);
+                   });
+                });
+            }
+        }
     }
 
     @Override

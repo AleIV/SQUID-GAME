@@ -16,8 +16,9 @@ public class CookieGame {
 
     public void cookieDoor1(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR1_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR1_POS2"), Bukkit.getWorld("world"));
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR1_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR1_POS2"), world);
         if(bool){
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
@@ -41,8 +42,9 @@ public class CookieGame {
 
     public void cookieDoor2(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR2_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR2_POS2"), Bukkit.getWorld("world"));
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR2_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR2_POS2"), world);
         if(bool){
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
@@ -66,8 +68,9 @@ public class CookieGame {
 
     public void cookieDoor3(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR3_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR3_POS2"), Bukkit.getWorld("world"));
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR3_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR3_POS2"), world);
         if(bool){
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
@@ -91,8 +94,9 @@ public class CookieGame {
 
     public void cookieDoor4(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR4_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR4_POS2"), Bukkit.getWorld("world"));
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR4_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR4_POS2"), world);
         if(bool){
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
@@ -116,8 +120,9 @@ public class CookieGame {
 
     public void mainDoor(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR_POS2"), Bukkit.getWorld("world"));
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("COOKIE_DOOR_POS2"), world);
         if(bool){
 
             AnimationTools.fill(loc1, loc2, Material.AIR);

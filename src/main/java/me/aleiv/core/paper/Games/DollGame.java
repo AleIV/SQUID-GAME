@@ -1,18 +1,25 @@
 package me.aleiv.core.paper.Games;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 
+import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.TimerType;
 import me.aleiv.core.paper.objects.GreenLightPanel;
 
+@Data
 public class DollGame {
     Core instance;
 
     @Getter GreenLightPanel greenLightPanel;
+
+    @Setter Location pos1;
+    @Setter Location pos2;
     
     public DollGame(Core instance){
         this.instance = instance;
@@ -122,7 +129,7 @@ public class DollGame {
     }
 
     public void dollRotate(Boolean bool){
-        var timerLocations = instance.getGame().getTimerLocations();
+        var timerLocations = instance.getGame().getTimer().getTimerLocations();
         var loc = timerLocations.get(TimerType.RED_GREEN).get(0);
         if(bool){
             AnimationTools.rotate("DOLL_HEAD", 63, 1, 0.05f);
@@ -137,7 +144,7 @@ public class DollGame {
     }
 
     public void dollHead(Boolean bool){
-        var timerLocations = instance.getGame().getTimerLocations();
+        var timerLocations = instance.getGame().getTimer().getTimerLocations();
         var loc = timerLocations.get(TimerType.RED_GREEN).get(0);
         if(bool){
             AnimationTools.rotate("DOLL_HEAD", 35, 1, 0.09f);

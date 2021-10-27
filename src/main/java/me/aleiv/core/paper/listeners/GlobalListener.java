@@ -1,23 +1,16 @@
 package me.aleiv.core.paper.listeners;
 
-import java.util.List;
-
 import com.destroystokyo.paper.ParticleBuilder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -32,8 +25,6 @@ import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 public class GlobalListener implements Listener {
 
     Core instance;
-
-    List<Material> bannedMoveList = List.of(Material.WARPED_TRAPDOOR);
 
     public GlobalListener(Core instance) {
         this.instance = instance;
@@ -172,34 +163,5 @@ public class GlobalListener implements Listener {
 
         }
     }
-
-    @EventHandler
-    public void onSpawn(CreatureSpawnEvent e){
-        if(e.getSpawnReason().toString().contains("NATURAL")){
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void cancelInteract(PlayerInteractEvent e){
-        var player = e.getPlayer();
-        var block = e.getClickedBlock();
-        var action = e.getAction();
-        
-        if(action == Action.RIGHT_CLICK_BLOCK && block != null && player.getGameMode() != GameMode.CREATIVE 
-            && (bannedMoveList.contains(block.getType()) || block.getType().toString().contains("TRAPDOOR"))){
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void inventoryOpen(InventoryOpenEvent e){
-        var player = e.getPlayer();
-        var inv = e.getInventory();
-        if(player.getGameMode() != GameMode.CREATIVE && !inv.getType().toString().contains("CHEST")){
-            e.setCancelled(true);
-        }
-    }
-
 
 }
