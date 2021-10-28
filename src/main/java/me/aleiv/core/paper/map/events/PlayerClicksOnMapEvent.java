@@ -36,8 +36,9 @@ public class PlayerClicksOnMapEvent extends Event {
     private Vector clickedPosition;
     public @Getter AsyncCanvas asyncCanvas;
 
-    public PlayerClicksOnMapEvent(Player player, Event triggedByEvent, boolean isAsync) {
+    public PlayerClicksOnMapEvent(Player player, Event triggedByEvent, AsyncCanvas asyncCanvas, boolean isAsync) {
         super(isAsync);
+        this.asyncCanvas = asyncCanvas;
         this.triggedByEvent = triggedByEvent;
         this.player = player;
         // Calculate the block and clicked positions
@@ -46,6 +47,7 @@ public class PlayerClicksOnMapEvent extends Event {
             this.clickedPosition = e.getClickedPosition();
         } else if (triggedByEvent instanceof PlayerInteractEvent e) {
             this.block = e.getClickedBlock();
+            e.getBlockFace();
             this.clickedPosition = e.getInteractionPoint().toVector();
         }
     }

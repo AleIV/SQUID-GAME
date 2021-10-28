@@ -33,7 +33,7 @@ public class AsyncCanvas {
      * @param mapView the MapView object to wrap.
      * @return a new AsyncCanvas object.
      */
-    public AsyncCanvas of(MapView mapView) {
+    public static AsyncCanvas of(MapView mapView) {
         return new AsyncCanvas(mapView);
     }
 

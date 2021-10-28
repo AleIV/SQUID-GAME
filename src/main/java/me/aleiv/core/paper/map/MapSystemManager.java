@@ -31,6 +31,7 @@ public class MapSystemManager {
     private Core instance;
     private MapListener mapListener;
     private MapCommands mapCommands;
+    public Boolean allowedRotation = false;
     private @Getter Map<MapView, UUID> map = new HashMap<>();
     private @Getter ProtocolManager protocolManager;
 

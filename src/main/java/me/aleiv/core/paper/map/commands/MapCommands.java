@@ -16,6 +16,7 @@ import com.mojang.authlib.properties.Property;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -82,6 +83,13 @@ public class MapCommands extends BaseCommand {
                     i * interval);
 
         }
+    }
+
+    @Subcommand("toggle-rotation")
+    public void toggleRotation(CommandSender sender) {
+        this.manager.allowedRotation = !this.manager.allowedRotation;
+        sender.sendMessage("Rotation allowed: " + this.manager.allowedRotation);
+
     }
 
     private static HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(15)).build();
