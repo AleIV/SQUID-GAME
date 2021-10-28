@@ -88,7 +88,7 @@ public class MapCommands extends BaseCommand {
     @Subcommand("toggle-rotation")
     public void toggleRotation(CommandSender sender) {
         this.manager.allowedRotation = !this.manager.allowedRotation;
-        sender.sendMessage("Rotation allowed: " + this.manager.allowedRotation);
+        sender.sendMessage("Rotation allowed: " + !this.manager.allowedRotation);
 
     }
 
