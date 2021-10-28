@@ -1,7 +1,5 @@
 package me.aleiv.core.paper.map.listener;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -33,12 +31,10 @@ public class MapListener implements Listener {
         var entity = event.getRightClicked();
 
         if (entity != null && entity instanceof ItemFrame frame) {
-            System.out.println("Frame part 1");
             ItemStack itemInFrame = frame.getItem();
             if (itemInFrame != null && itemInFrame.getType() == Material.FILLED_MAP
                     && itemInFrame.getItemMeta() instanceof MapMeta map) {
 
-                System.out.println("Frame part 2");
                 Bukkit.getPluginManager().callEvent(new PlayerClicksOnMapEvent(player, event,
                         AsyncCanvas.of(map.getMapView()), !Bukkit.isPrimaryThread()));
             }
