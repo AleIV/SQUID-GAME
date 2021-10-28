@@ -47,7 +47,6 @@ public class MapSystemManager {
         Bukkit.getPluginManager().registerEvents(this.mapListener, this.instance);
 
         this.protocolManager = ProtocolLibrary.getProtocolManager();
-
     }
 
     /**
@@ -81,6 +80,33 @@ public class MapSystemManager {
         mapDataPacket.setRows(dataHeight);
         mapDataPacket.setX(dataStartX);
         mapDataPacket.setZ(dataStartZ);
+        mapDataPacket.setData(dataArray);
+        player.sendMessage("Sending data for map #" + mapId);
+
+        try {
+            this.protocolManager.sendServerPacket(player, mapDataPacket.getHandle());
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void updateMapPixel(MapView mapView, Player player, int x, int z) {
+        int mapId = mapView.getId();
+        byte[] dataArray = new byte[1];
+
+        // Paint the map to color 24 or gray
+        dataArray[0] = (byte) 24;
+
+        WrapperPlayServerMap mapDataPacket = new WrapperPlayServerMap();
+        mapDataPacket.setItemDamage(mapId);
+        mapDataPacket.setScale((byte) 4);
+        mapDataPacket.setTrackingPosition(false);
+        mapDataPacket.setLocked(false);
+        mapDataPacket.setColumns(1);
+        mapDataPacket.setRows(1);
+        mapDataPacket.setX(x);
+        mapDataPacket.setZ(z);
         mapDataPacket.setData(dataArray);
         player.sendMessage("Sending data for map #" + mapId);
 

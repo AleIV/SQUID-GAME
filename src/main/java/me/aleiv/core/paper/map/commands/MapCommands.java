@@ -63,6 +63,15 @@ public class MapCommands extends BaseCommand {
         sender.getInventory().addItem(item);
     }
 
+    @Subcommand("upixel")
+    public void updateAPixel(Player sender, Integer x, Integer z) {
+        this.manager.getMap().entrySet().stream().filter(entry -> entry.getValue().equals(sender.getUniqueId()))
+                .forEach(entry -> {
+                    this.manager.updateMapPixel(entry.getKey(), sender, x, z);
+                });
+
+    }
+
     @Subcommand("mandar-a-la-verga")
     public void iterateThroughPixels(Player sender, int amount, int interval) {
 

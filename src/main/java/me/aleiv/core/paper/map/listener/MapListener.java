@@ -1,6 +1,7 @@
 package me.aleiv.core.paper.map.listener;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.ceil;
 import static java.lang.Math.max;
 
 import org.bukkit.Bukkit;
@@ -51,7 +52,7 @@ public class MapListener implements Listener {
 
     @EventHandler
     public void clickOnMap(PlayerClicksOnMapEvent e) {
-        var view = e.mapView;
+        var canvas = e.getAsyncCanvas();
 
         // Calculate the relative pixel values
         var position = e.getClickedPosition();
@@ -59,11 +60,12 @@ public class MapListener implements Listener {
 
         // TODO: Make this work any plane.
         // Assume we are on a xz plane, multiply by 256 and substract 128 to map it.
-        var adjustedX = (max(abs(position.getX()) - abs(block.getX()), 1.0) * 256) - 128;
-        var adjustedZ = (max(abs(position.getZ()) - abs(block.getZ()), 1.0) * 256) - 128;
+        var adjustedX = ceil((max(abs(position.getX()) - abs(block.getX()), 1.0) * 128));
+        var adjustedZ = ceil((max(abs(position.getZ()) - abs(block.getZ()), 1.0) * 128));
+
+        canvas.updateMapPixel((int) adjustedX, (int) adjustedZ);
 
         // Now somehow get the map involved and render the pixel onto it.
 
-        
     }
 }

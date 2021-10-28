@@ -9,10 +9,10 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 
 import lombok.Getter;
+import me.aleiv.core.paper.map.objects.AsyncCanvas;
 
 /**
  * 
@@ -34,7 +34,7 @@ public class PlayerClicksOnMapEvent extends Event {
     private Player player;
     private Block block;
     private Vector clickedPosition;
-    public MapView mapView;
+    public @Getter AsyncCanvas asyncCanvas;
 
     public PlayerClicksOnMapEvent(Player player, Event triggedByEvent, boolean isAsync) {
         super(isAsync);
