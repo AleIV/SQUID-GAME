@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import co.aikar.commands.PaperCommandManager;
+import de.slikey.effectlib.EffectManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
 import me.aleiv.core.paper.commands.ChairCMD;
@@ -26,15 +27,19 @@ import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.commands.TestCMD;
 import me.aleiv.core.paper.commands.UtilsCMD;
+import me.aleiv.core.paper.detection.CollisionManager;
+import me.aleiv.core.paper.effects.commands.EffectCommands;
 import me.aleiv.core.paper.listeners.CanceledListener;
 import me.aleiv.core.paper.listeners.ChairListener;
 import me.aleiv.core.paper.listeners.GlobalListener;
-import me.aleiv.core.paper.listeners.RopeListener;
 import me.aleiv.core.paper.listeners.HideListener;
 import me.aleiv.core.paper.listeners.MechanicsListener;
+import me.aleiv.core.paper.listeners.RopeListener;
+import me.aleiv.core.paper.map.MapSystemManager;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import me.aleiv.core.paper.vectors.VectorsManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
@@ -48,6 +53,10 @@ public class Core extends JavaPlugin {
     private @Getter Game game;
     private @Getter PaperCommandManager commandManager;
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
+    private @Getter CollisionManager collisionManager;
+    private @Getter VectorsManager vectorManager;
+    private @Getter MapSystemManager mapSystemManager;
+    private @Getter EffectManager effectManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
@@ -80,7 +89,7 @@ public class Core extends JavaPlugin {
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
 
-        //LISTENERS
+        // LISTENERS
 
         registerListener(new GlobalListener(this));
         registerListener(new RopeListener(this));
@@ -89,8 +98,8 @@ public class Core extends JavaPlugin {
         registerListener(new ChairListener(this));
         registerListener(new MechanicsListener(this));
 
-        //COMMANDS
-        
+        // COMMANDS
+
         commandManager = new PaperCommandManager(this);
         commandManager.registerCommand(new DollCMD(this));
         commandManager.registerCommand(new MainCMD(this));
@@ -102,18 +111,27 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new ChairCMD(this));
         commandManager.registerCommand(new UtilsCMD(this));
 
-
         commandManager.registerCommand(new SpecialCMD(this));
         commandManager.registerCommand(new TestCMD(this));
-        
+
+        // Start collision manager
+        this.collisionManager = new CollisionManager(this);
+        // Start vectors manager
+        this.vectorManager = new VectorsManager(this);
+        // Start map system manager
+        this.mapSystemManager = new MapSystemManager(this);
+        // Start effect manager
+        this.effectManager = new EffectManager(this);
+        this.commandManager.registerCommand(new EffectCommands(this));
+
     }
 
     @Override
     public void onDisable() {
-        
+
     }
 
-    public void refreshJson(){
+    public void refreshJson() {
         var list = AnimationTools.specialObjects;
 
         try {

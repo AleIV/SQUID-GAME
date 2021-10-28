@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -34,16 +35,16 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e){
+    public void onJoin(PlayerJoinEvent e) {
         var game = instance.getGame();
         var roles = game.getRoles();
         var player = e.getPlayer();
         var uuid = player.getUniqueId().toString();
 
-        if(!roles.containsKey(uuid)){
-            if(player.hasPermission("admin.perm")){
+        if (!roles.containsKey(uuid)) {
+            if (player.hasPermission("admin.perm")) {
                 roles.put(uuid, Role.GUARD);
-            }else{
+            } else {
                 roles.put(uuid, Role.PLAYER);
             }
         }
@@ -51,13 +52,14 @@ public class GlobalListener implements Listener {
         var timer = game.getTimer();
         timer.getBossBar().addPlayer(player);
 
-        if(game.getGameStage() == GameStage.LOBBY){
+        if (game.getGameStage() == GameStage.LOBBY) {
             var city = new Location(Bukkit.getWorld("world"), 180.5, 35, 401.5);
             player.teleport(city);
-        }else{
-            if(game.getLights()){
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
-            }else{
+        } else {
+            if (game.getLights()) {
+                player.addPotionEffect(
+                        new PotionEffect(PotionEffectType.NIGHT_VISION, 20 * 1000000, 100, false, false, false));
+            } else {
                 player.removePotionEffect(PotionEffectType.NIGHT_VISION);
             }
         }
@@ -75,6 +77,16 @@ public class GlobalListener implements Listener {
         player.setFoodLevel(20);
         player.setExp(0);
         player.setLevel(0);
+
+        // player.getActivePotionEffects().forEach(all ->
+        // player.removePotionEffect(all.getType()));
+    }
+
+    @EventHandler
+    public void onSpawn(CreatureSpawnEvent e) {
+        if (e.getSpawnReason().toString().contains("NATURAL")) {
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -93,31 +105,32 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
-    public void playerMove(PlayerMoveEvent e){
+    public void playerMove(PlayerMoveEvent e) {
         var game = instance.getGame();
-        if(game.getGameStage() != GameStage.LOBBY) return;
+        if (game.getGameStage() != GameStage.LOBBY)
+            return;
 
         var player = e.getPlayer();
 
-        if(game.isPlayer(player)){
+        if (game.isPlayer(player)) {
             var from = e.getFrom();
             var to = e.getTo();
             var x1 = from.getX();
             var z1 = from.getZ();
             var x2 = to.getX();
             var z2 = to.getZ();
-            if(x1 != x2 || z1 != z2){
+            if (x1 != x2 || z1 != z2) {
                 e.setCancelled(true);
             }
         }
-    
+
     }
 
     @EventHandler
-    public void onShoot(EntityDamageByEntityEvent e){
+    public void onShoot(EntityDamageByEntityEvent e) {
         var entity = e.getEntity();
         var damager = e.getDamager();
-        if(entity instanceof Player player){
+        if (entity instanceof Player player) {
 
             var game = instance.getGame();
             var roles = game.getRoles();
@@ -128,67 +141,71 @@ public class GlobalListener implements Listener {
 
             var animation = 0;
 
-            if(damager instanceof Player playerDamager){
+            if (damager instanceof Player playerDamager) {
                 var damagerRole = roles.get(player.getUniqueId().toString());
 
-                if(role == Role.GUARD && role == damagerRole && !playerDamager.hasPermission("admin.perm")){
-                    //GUARD TO GUARD CASE
-                    e.setCancelled(true);
-                    return;
-                    
-                }else if(role == Role.PLAYER && damagerRole == Role.GUARD){
-                    //PLAYER TO GUARD CASE
+                if (role == Role.GUARD && role == damagerRole && !playerDamager.hasPermission("admin.perm")) {
+                    // GUARD TO GUARD CASE
                     e.setCancelled(true);
                     return;
 
-                }else if(pvp == PvPType.ONLY_GUARDS && role == Role.PLAYER && role == damagerRole){
-                    //PLAYER TO PLAYER CASE
+                } else if (role == Role.PLAYER && damagerRole == Role.GUARD) {
+                    // PLAYER TO GUARD CASE
+                    e.setCancelled(true);
+                    return;
+
+                } else if (pvp == PvPType.ONLY_GUARDS && role == Role.PLAYER && role == damagerRole) {
+                    // PLAYER TO PLAYER CASE
                     e.setCancelled(true);
                     return;
                 }
 
-            }else if(damager instanceof Projectile){
+            } else if (damager instanceof Projectile) {
                 animation = 2;
             }
 
             var inv = player.getInventory();
             var item = inv.getItemInMainHand();
-            if(item != null && item.getType().toString().contains("SWORD")){
+            if (item != null && item.getType().toString().contains("SWORD")) {
                 animation = 1;
             }
 
-
-            if(animation == 0){
-                new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100).offset(0.01, 0.01, 0.01).extra(0.05).spawn();
-            }else{
+            if (animation == 0) {
+                new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100)
+                        .offset(0.01, 0.01, 0.01).extra(0.05).spawn();
+            } else {
 
                 var task = new BukkitTCT();
                 final var a = animation;
 
                 for (int i = 0; i < 5; i++) {
-                    task.addWithDelay(new BukkitRunnable(){
+                    task.addWithDelay(new BukkitRunnable() {
                         @Override
                         public void run() {
                             var loc = player.getLocation();
                             switch (a) {
-                                case 1:{
-                                    //KNIFE CASE
-                                    new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100).offset(0.1, 0.5, 0.1).extra(0.05).spawn();
-                                }break;
-    
-                                case 2:{
-                                    //SHOOT CASE
-                                    new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100).offset(0.1, 0.5, 0.1).extra(0.05).spawn();
-                                }break;
-                            
-                                default: 
-                                    break;
+                            case 1: {
+                                // KNIFE CASE
+                                new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100)
+                                        .offset(0.1, 0.5, 0.1).extra(0.05).spawn();
                             }
-                            
+                                break;
+
+                            case 2: {
+                                // SHOOT CASE
+                                new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100)
+                                        .offset(0.1, 0.5, 0.1).extra(0.05).spawn();
+                            }
+                                break;
+
+                            default:
+                                break;
+                            }
+
                         }
-                    }, 50*2);
+                    }, 50 * 2);
                 }
-                
+
                 task.execute();
             }
 
