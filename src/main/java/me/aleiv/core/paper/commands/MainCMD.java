@@ -49,13 +49,6 @@ public class MainCMD extends BaseCommand {
         tools.mainRightDoor(bool);
     }
 
-    @Subcommand("make-all-sleep")
-    public void makeAllSleep(CommandSender sender){
-        sender.sendMessage(ChatColor.DARK_AQUA + "Make all sleep");
-        var tools = instance.getGame().getMainRoom();
-        tools.makeAllSleep();
-    }
-
     @Subcommand("tube")
     public void tube(CommandSender sender, Boolean bool){
         var tools = instance.getGame().getMainRoom();

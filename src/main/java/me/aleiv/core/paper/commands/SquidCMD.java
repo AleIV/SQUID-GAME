@@ -13,6 +13,8 @@ import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Game.GameStage;
+import me.aleiv.core.paper.Game.HideMode;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.Role;
 import me.aleiv.core.paper.Game.TimerType;
@@ -45,6 +47,23 @@ public class SquidCMD extends BaseCommand {
         game.setTimerType(timerType);
         sender.sendMessage(ChatColor.DARK_AQUA + "Timer type set to " + timerType);
     }
+
+    @Subcommand("hideMode")
+    public void hideMode(CommandSender sender, HideMode hideMode) {
+        var game = instance.getGame();
+
+        game.refreshHide(hideMode);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Hide mode set to " + hideMode);
+    }
+
+    @Subcommand("gameStage")
+    public void gameStage(CommandSender sender, GameStage gameStage) {
+        var game = instance.getGame();
+
+        game.setGameStage(gameStage);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Game stage mode set to " + gameStage);
+    }
+    
 
     @Subcommand("role")
     @CommandCompletion("@players")

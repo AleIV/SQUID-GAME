@@ -4,6 +4,7 @@ import com.destroystokyo.paper.ParticleBuilder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -12,11 +13,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Game.GameStage;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.Role;
 import me.aleiv.core.paper.events.GameTickEvent;
@@ -48,11 +51,17 @@ public class GlobalListener implements Listener {
         var timer = game.getTimer();
         timer.getBossBar().addPlayer(player);
 
-        if(game.getLights()){
-            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
+        if(game.getGameStage() == GameStage.LOBBY){
+            var city = new Location(Bukkit.getWorld("world"), 180.5, 35, 401.5);
+            player.teleport(city);
         }else{
-            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+            if(game.getLights()){
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
+            }else{
+                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+            }
         }
+
     }
 
     @EventHandler
@@ -69,7 +78,7 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
-    public void customSpawns(GameTickEvent e) {
+    public void gameTickEvent(GameTickEvent e) {
         var game = instance.getGame();
         Bukkit.getScheduler().runTask(instance, () -> {
 
@@ -80,6 +89,28 @@ public class GlobalListener implements Listener {
             }
 
         });
+
+    }
+
+    @EventHandler
+    public void playerMove(PlayerMoveEvent e){
+        var game = instance.getGame();
+        if(game.getGameStage() != GameStage.LOBBY) return;
+
+        var player = e.getPlayer();
+
+        if(game.isPlayer(player)){
+            var from = e.getFrom();
+            var to = e.getTo();
+            var x1 = from.getX();
+            var z1 = from.getZ();
+            var x2 = to.getX();
+            var z2 = to.getZ();
+            if(x1 != x2 || z1 != z2){
+                e.setCancelled(true);
+            }
+        }
+    
     }
 
     @EventHandler

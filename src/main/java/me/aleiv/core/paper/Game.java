@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.aleiv.core.paper.Games.ChairGame;
 import me.aleiv.core.paper.Games.CookieGame;
 import me.aleiv.core.paper.Games.DollGame;
 import me.aleiv.core.paper.Games.Elevators;
@@ -34,6 +35,7 @@ public class Game extends BukkitRunnable {
     HideSeekGame hideSeekGame;
     CookieGame cookieGame;
     Elevators elevators;
+    ChairGame chairGame;
 
     HashMap<String, Role> roles = new HashMap<>();
 
@@ -41,6 +43,7 @@ public class Game extends BukkitRunnable {
     PvPType pvp = PvPType.ONLY_GUARDS;
     TimerType timerType = TimerType.RED_GREEN;
     HideMode hideMode = HideMode.INGAME;
+    GameStage gameStage = GameStage.INGAME;
 
     String totalPlayers = "000";
     String totalPrize = "000000";
@@ -57,6 +60,7 @@ public class Game extends BukkitRunnable {
         this.hideSeekGame = new HideSeekGame(instance);
         this.cookieGame = new CookieGame(instance);
         this.elevators = new Elevators(instance);
+        this.chairGame = new ChairGame(instance);
     }
 
     public enum PvPType{
@@ -64,15 +68,19 @@ public class Game extends BukkitRunnable {
     }
 
     public enum Role {
-        GUARD, PLAYER
+        GUARD, PLAYER, DEAD
     }
 
     public enum TimerType{
-        RED_GREEN, GLASS, COOKIE, HIDE_SEEK
+        RED_GREEN, GLASS, COOKIE, HIDE_SEEK, POTATO
     }
 
     public enum HideMode{
         INGAME, LOBBY, TEST
+    }
+
+    public enum GameStage{
+        INGAME, LOBBY
     }
 
     public boolean isGuard(Player player){

@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import co.aikar.commands.PaperCommandManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
+import me.aleiv.core.paper.commands.ChairCMD;
 import me.aleiv.core.paper.commands.CookieCMD;
 import me.aleiv.core.paper.commands.DollCMD;
 import me.aleiv.core.paper.commands.ElevatorsCMD;
@@ -24,10 +25,13 @@ import me.aleiv.core.paper.commands.RopeCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.commands.TestCMD;
+import me.aleiv.core.paper.commands.UtilsCMD;
 import me.aleiv.core.paper.listeners.CanceledListener;
+import me.aleiv.core.paper.listeners.ChairListener;
 import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.listeners.RopeListener;
 import me.aleiv.core.paper.listeners.HideListener;
+import me.aleiv.core.paper.listeners.MechanicsListener;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
@@ -82,6 +86,8 @@ public class Core extends JavaPlugin {
         registerListener(new RopeListener(this));
         registerListener(new CanceledListener(this));
         registerListener(new HideListener(this));
+        registerListener(new ChairListener(this));
+        registerListener(new MechanicsListener(this));
 
         //COMMANDS
         
@@ -93,6 +99,8 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new HideSeekCMD(this));
         commandManager.registerCommand(new CookieCMD(this));
         commandManager.registerCommand(new ElevatorsCMD(this));
+        commandManager.registerCommand(new ChairCMD(this));
+        commandManager.registerCommand(new UtilsCMD(this));
 
 
         commandManager.registerCommand(new SpecialCMD(this));

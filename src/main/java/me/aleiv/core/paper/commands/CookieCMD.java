@@ -37,8 +37,7 @@ public class CookieCMD extends BaseCommand {
             case 3: tools.cookieDoor3(bool); break;
             case 4: tools.cookieDoor4(bool); break;
         
-            default:
-                break;
+            default: break;
         }
     }
 

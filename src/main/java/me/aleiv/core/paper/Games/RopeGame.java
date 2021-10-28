@@ -1,5 +1,7 @@
 package me.aleiv.core.paper.Games;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -66,15 +68,14 @@ public class RopeGame {
         var loc1 = AnimationTools.parseLocation(specialObjects.get("ROPE_DOOR_POS1"), Bukkit.getWorld("world"));
         var loc2 = AnimationTools.parseLocation(specialObjects.get("ROPE_DOOR_POS2"), Bukkit.getWorld("world"));
 
+        var ropeDoor = List.of("ROPE_DOOR1", "ROPE_DOOR2", "ROPE_DOOR3");
         if(bool){
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
             AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.metal_door_open", 1f, 1f);
 
-            AnimationTools.move("ROPE_DOOR1", 42, 1, 'y', 0.1f);
-            AnimationTools.move("ROPE_DOOR2", 42, 1, 'y', 0.1f);
-            AnimationTools.move("ROPE_DOOR3", 42, 1, 'y', 0.1f);
+            AnimationTools.move(ropeDoor, 42, 1, 'y', 0.1f);
         
         }else{
 
@@ -82,9 +83,7 @@ public class RopeGame {
 
             AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.metal_door_close", 1f, 1f);
 
-            AnimationTools.move("ROPE_DOOR1", -42, 1, 'y', 0.1f);
-            AnimationTools.move("ROPE_DOOR2", -42, 1, 'y', 0.1f);
-            AnimationTools.move("ROPE_DOOR3", -42, 1, 'y', 0.1f);
+            AnimationTools.move(ropeDoor, -42, 1, 'y', 0.1f);
 
         }
     }

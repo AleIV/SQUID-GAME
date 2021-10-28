@@ -115,6 +115,7 @@ public class Timer {
             case GLASS ->{ AnimationTools.setTimerValue(timerLocations.get(TimerType.GLASS), str); }
             case COOKIE ->{ AnimationTools.setTimerValue(timerLocations.get(TimerType.COOKIE), str); }
             case HIDE_SEEK ->{ AnimationTools.setTimerValue(timerLocations.get(TimerType.HIDE_SEEK), str); }
+            case POTATO ->{ AnimationTools.setTimerValue(timerLocations.get(TimerType.POTATO), str); }
         }
 
     }
@@ -158,6 +159,15 @@ public class Timer {
         locations = List.of(b1, b2, b3, b4, b5);
 
         timerLocations.put(TimerType.COOKIE, locations);
+
+        b1 = AnimationTools.parseLocation(specialObjects.get("TIMER_POTATO_1"), world);
+        b2 = AnimationTools.parseLocation(specialObjects.get("TIMER_POTATO_2"), world);
+        b3 = AnimationTools.parseLocation(specialObjects.get("TIMER_POTATO_3"), world);
+        b4 = AnimationTools.parseLocation(specialObjects.get("TIMER_POTATO_4"), world);
+        b5 = AnimationTools.parseLocation(specialObjects.get("TIMER_POTATO_5"), world);
+        locations = List.of(b1, b2, b3, b4, b5);
+
+        timerLocations.put(TimerType.POTATO, locations);
     }
 
 }
