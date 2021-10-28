@@ -64,26 +64,6 @@ public class MapCommands extends BaseCommand {
         sender.getInventory().addItem(item);
     }
 
-    @Subcommand("upixel")
-    public void updateAPixel(Player sender, Integer x, Integer z) {
-        this.manager.getMap().entrySet().stream().filter(entry -> entry.getValue().equals(sender.getUniqueId()))
-                .forEach(entry -> {
-                    this.manager.updateMapPixel(entry.getKey(), sender, x, z);
-                });
-
-    }
-
-    @Subcommand("mandar-a-la-verga")
-    public void iterateThroughPixels(Player sender, int amount, int interval) {
-
-        for (int i = 0; i < amount; i++) {
-            Bukkit.getScheduler().runTaskLater(Core.getInstance(),
-                    () -> manager.getMap().entrySet().stream().filter(owner -> owner.getValue() == sender.getUniqueId())
-                            .forEach(map -> this.manager.updateMap(map.getKey(), sender)),
-                    i * interval);
-
-        }
-    }
 
     @Subcommand("toggle-rotation")
     public void toggleRotation(CommandSender sender) {
