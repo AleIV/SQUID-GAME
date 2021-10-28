@@ -6,7 +6,6 @@ import org.bukkit.event.Listener;
 
 import me.aleiv.core.paper.detection.events.PlayerEnterPolygonEvent;
 import me.aleiv.core.paper.detection.events.PlayerExitPloygonEvent;
-import me.aleiv.core.paper.detection.objects.Polygon;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class PolygonListener implements Listener {
@@ -21,8 +20,6 @@ public class PolygonListener implements Listener {
     public void onLeavingPolygon(PlayerExitPloygonEvent e) {
         Bukkit.broadcast(MiniMessage.get()
                 .parse("<red>Player " + e.getPlayer().getName() + " has exited <white>" + e.getPolygon().toString()));
-
-        
 
     }
 

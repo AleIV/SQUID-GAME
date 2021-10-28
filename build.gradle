@@ -67,9 +67,6 @@ dependencies {
     // EffectLib
     implementation 'com.elmakers.mine.bukkit:EffectLib:9.3'
 
-    // OpenCV
-    implementation 'org.bytedeco:opencv:4.5.3-1.5.6'
-    implementation 'nu.pattern:opencv:2.4.9-7'
 }
 
 spigot {
