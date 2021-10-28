@@ -78,13 +78,11 @@ public class MapListener implements Listener {
         // Calculate the relative pixel values
         var position = e.getClickedPosition().toBlockVector();
         var block = e.getBlock();
-        System.out.println(position);
 
         // TODO: Make this work any plane.
         // Assume we are on a xz plane, multiply by 256 and substract 128 to map it.
         var adjustedX = Math.round((position.getX() + 0.5) * 128);
         var adjustedZ = Math.round((position.getZ() + 0.5) * 128);
-        e.getPlayer().sendMessage((int) adjustedX + ", " + (int) adjustedZ);
 
         try {
             this.mapSystemManager.getProtocolManager().sendServerPacket(e.getPlayer(),

@@ -18,7 +18,7 @@ public class SettingsListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         var id = e.getPlayer().getUniqueId();
         if (!vectorsManager.getVectorsSettings().containsKey(id)) {
-            vectorsManager.getVectorsSettings().put(id, VectorSettings.of(true, false, 5));
+            vectorsManager.getVectorsSettings().put(id, VectorSettings.of(false, false, 5));
         }
 
     }
