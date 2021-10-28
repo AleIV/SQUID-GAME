@@ -25,18 +25,17 @@ import me.aleiv.core.paper.commands.MainCMD;
 import me.aleiv.core.paper.commands.RopeCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
-import me.aleiv.core.paper.detection.CollisionManager;
-import me.aleiv.core.paper.effects.commands.EffectCommands;
-import me.aleiv.core.paper.listeners.GlobalListener;
-import me.aleiv.core.paper.map.MapSystemManager;
 import me.aleiv.core.paper.commands.TestCMD;
 import me.aleiv.core.paper.commands.UtilsCMD;
+import me.aleiv.core.paper.detection.CollisionManager;
+import me.aleiv.core.paper.effects.commands.EffectCommands;
 import me.aleiv.core.paper.listeners.CanceledListener;
 import me.aleiv.core.paper.listeners.ChairListener;
 import me.aleiv.core.paper.listeners.GlobalListener;
-import me.aleiv.core.paper.listeners.RopeListener;
 import me.aleiv.core.paper.listeners.HideListener;
 import me.aleiv.core.paper.listeners.MechanicsListener;
+import me.aleiv.core.paper.listeners.RopeListener;
+import me.aleiv.core.paper.map.MapSystemManager;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
@@ -45,7 +44,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
-import us.jcedeno.libs.Npc;
 import us.jcedeno.libs.rapidinv.RapidInvManager;
 
 @SpigotPlugin
@@ -64,27 +62,10 @@ public class Core extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        Npc.registerPlugin(this);
-
-        this.game = new Game(this);
-        game.runTaskTimerAsynchronously(this, 0L, 20L);
-        this.animationStore = new AnimationStore(this);
 
         RapidInvManager.register(this);
         BukkitTCT.registerPlugin(this);
         NegativeSpaces.registerCodes();
-
-        // LISTENERS
-
-        Bukkit.getPluginManager().registerEvents(new GlobalListener(this), this);
-
-        // COMMANDS
-
-        commandManager = new PaperCommandManager(this);
-        commandManager.registerCommand(new SquidCMD(this));
-        commandManager.registerCommand(new SpecialCMD(this));
-        commandManager.registerCommand(new AnimationStoreCMD(this));
-        commandManager.registerCommand(new GamesCMD(this));
 
         try {
             var jsonConfig = new JsonConfig("special.json");
@@ -105,21 +86,10 @@ public class Core extends JavaPlugin {
             e.printStackTrace();
         }
 
-        // Start collision manager
-        this.collisionManager = new CollisionManager(this);
-        // Start vectors manager
-        this.vectorManager = new VectorsManager(this);
-        // Start map system manager
-        this.mapSystemManager = new MapSystemManager(this);
-        // Start effect manager
-        this.effectManager = new EffectManager(this);
-        this.commandManager.registerCommand(new EffectCommands(this));
-
-                
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
 
-        //LISTENERS
+        // LISTENERS
 
         registerListener(new GlobalListener(this));
         registerListener(new RopeListener(this));
@@ -128,8 +98,8 @@ public class Core extends JavaPlugin {
         registerListener(new ChairListener(this));
         registerListener(new MechanicsListener(this));
 
-        //COMMANDS
-        
+        // COMMANDS
+
         commandManager = new PaperCommandManager(this);
         commandManager.registerCommand(new DollCMD(this));
         commandManager.registerCommand(new MainCMD(this));
@@ -141,18 +111,27 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new ChairCMD(this));
         commandManager.registerCommand(new UtilsCMD(this));
 
-
         commandManager.registerCommand(new SpecialCMD(this));
         commandManager.registerCommand(new TestCMD(this));
-        
+
+        // Start collision manager
+        this.collisionManager = new CollisionManager(this);
+        // Start vectors manager
+        this.vectorManager = new VectorsManager(this);
+        // Start map system manager
+        this.mapSystemManager = new MapSystemManager(this);
+        // Start effect manager
+        this.effectManager = new EffectManager(this);
+        this.commandManager.registerCommand(new EffectCommands(this));
+
     }
 
     @Override
     public void onDisable() {
-        
+
     }
 
-    public void refreshJson(){
+    public void refreshJson() {
         var list = AnimationTools.specialObjects;
 
         try {
