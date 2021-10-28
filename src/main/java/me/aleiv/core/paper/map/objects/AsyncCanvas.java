@@ -2,6 +2,7 @@ package me.aleiv.core.paper.map.objects;
 
 import com.comphenix.protocol.events.PacketContainer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.map.MapView;
 
 import lombok.Getter;
@@ -44,7 +45,7 @@ public class AsyncCanvas {
      * @param z The z coordinate of the pixel
      * @return A packet containing the pixel change
      */
-    public PacketContainer updateMapPixel(int x, int z) {
+    public WrapperPlayServerMap updateMapPixel(int x, int z) {
         int mapId = mapView.getId();
         // Create a data array to store the 1 pixel update we'll be performing
         byte[] dataArray = new byte[1];
@@ -66,7 +67,8 @@ public class AsyncCanvas {
         mapDataPacket.setZ(z);
         mapDataPacket.setData(dataArray);
         // Return the Handle of the wrapped packet.
-        return mapDataPacket.getHandle();
+        return mapDataPacket;
     }
 
+    
 }

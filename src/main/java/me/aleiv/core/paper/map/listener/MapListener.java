@@ -84,12 +84,7 @@ public class MapListener implements Listener {
         var adjustedX = Math.round((position.getX() + 0.5) * 128);
         var adjustedZ = Math.round((position.getZ() + 0.5) * 128);
 
-        try {
-            this.mapSystemManager.getProtocolManager().sendServerPacket(e.getPlayer(),
-                    canvas.updateMapPixel((int) adjustedX, (int) adjustedZ));
-        } catch (InvocationTargetException e1) {
-            e1.printStackTrace();
-        }
+        canvas.updateMapPixel((int) adjustedX, (int) adjustedZ).broadcastPacket();
 
         // Now somehow get the map involved and render the pixel onto it.
 
