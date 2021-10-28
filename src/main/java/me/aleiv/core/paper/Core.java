@@ -8,21 +8,37 @@ import com.google.gson.JsonObject;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import co.aikar.commands.PaperCommandManager;
 import de.slikey.effectlib.EffectManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
-import me.aleiv.core.paper.commands.AnimationStoreCMD;
-import me.aleiv.core.paper.commands.GamesCMD;
+import me.aleiv.core.paper.commands.ChairCMD;
+import me.aleiv.core.paper.commands.CookieCMD;
+import me.aleiv.core.paper.commands.DollCMD;
+import me.aleiv.core.paper.commands.ElevatorsCMD;
+import me.aleiv.core.paper.commands.HideSeekCMD;
+import me.aleiv.core.paper.commands.MainCMD;
+import me.aleiv.core.paper.commands.RopeCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.detection.CollisionManager;
 import me.aleiv.core.paper.effects.commands.EffectCommands;
 import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.map.MapSystemManager;
+import me.aleiv.core.paper.commands.TestCMD;
+import me.aleiv.core.paper.commands.UtilsCMD;
+import me.aleiv.core.paper.listeners.CanceledListener;
+import me.aleiv.core.paper.listeners.ChairListener;
+import me.aleiv.core.paper.listeners.GlobalListener;
+import me.aleiv.core.paper.listeners.RopeListener;
+import me.aleiv.core.paper.listeners.HideListener;
+import me.aleiv.core.paper.listeners.MechanicsListener;
 import me.aleiv.core.paper.utilities.JsonConfig;
+import me.aleiv.core.paper.utilities.NegativeSpaces;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import me.aleiv.core.paper.vectors.VectorsManager;
 import net.kyori.adventure.text.Component;
@@ -38,7 +54,6 @@ public class Core extends JavaPlugin {
     private static @Getter Core instance;
     private @Getter Game game;
     private @Getter PaperCommandManager commandManager;
-    private @Getter AnimationStore animationStore;
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
     private @Getter CollisionManager collisionManager;
     private @Getter VectorsManager vectorManager;
@@ -57,6 +72,7 @@ public class Core extends JavaPlugin {
 
         RapidInvManager.register(this);
         BukkitTCT.registerPlugin(this);
+        NegativeSpaces.registerCodes();
 
         // LISTENERS
 
@@ -99,11 +115,44 @@ public class Core extends JavaPlugin {
         this.effectManager = new EffectManager(this);
         this.commandManager.registerCommand(new EffectCommands(this));
 
+                
+        game = new Game(this);
+        game.runTaskTimerAsynchronously(this, 0L, 20L);
+
+        //LISTENERS
+
+        registerListener(new GlobalListener(this));
+        registerListener(new RopeListener(this));
+        registerListener(new CanceledListener(this));
+        registerListener(new HideListener(this));
+        registerListener(new ChairListener(this));
+        registerListener(new MechanicsListener(this));
+
+        //COMMANDS
+        
+        commandManager = new PaperCommandManager(this);
+        commandManager.registerCommand(new DollCMD(this));
+        commandManager.registerCommand(new MainCMD(this));
+        commandManager.registerCommand(new SquidCMD(this));
+        commandManager.registerCommand(new RopeCMD(this));
+        commandManager.registerCommand(new HideSeekCMD(this));
+        commandManager.registerCommand(new CookieCMD(this));
+        commandManager.registerCommand(new ElevatorsCMD(this));
+        commandManager.registerCommand(new ChairCMD(this));
+        commandManager.registerCommand(new UtilsCMD(this));
+
+
+        commandManager.registerCommand(new SpecialCMD(this));
+        commandManager.registerCommand(new TestCMD(this));
+        
     }
 
     @Override
     public void onDisable() {
+        
+    }
 
+    public void refreshJson(){
         var list = AnimationTools.specialObjects;
 
         try {
@@ -117,7 +166,14 @@ public class Core extends JavaPlugin {
 
             e.printStackTrace();
         }
+    }
 
+    public void unregisterListener(Listener listener) {
+        HandlerList.unregisterAll(listener);
+    }
+
+    public void registerListener(Listener listener) {
+        Bukkit.getPluginManager().registerEvents(listener, instance);
     }
 
     public void adminMessage(String text) {

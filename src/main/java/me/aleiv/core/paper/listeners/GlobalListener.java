@@ -1,23 +1,17 @@
 package me.aleiv.core.paper.listeners;
 
-import java.util.List;
-
 import com.destroystokyo.paper.ParticleBuilder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
@@ -25,7 +19,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Game.GameType;
+import me.aleiv.core.paper.Game.GameStage;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.Role;
 import me.aleiv.core.paper.events.GameTickEvent;
@@ -35,31 +29,12 @@ public class GlobalListener implements Listener {
 
     Core instance;
 
-    List<Material> bannedMoveList = List.of(Material.WARPED_TRAPDOOR);
-
     public GlobalListener(Core instance) {
         this.instance = instance;
     }
 
     @EventHandler
-    public void onGameTick(GameTickEvent e) {
-        Bukkit.getScheduler().runTask(instance, () -> {
-
-        });
-    }
-
-    @EventHandler
-    public void move(PlayerMoveEvent e) {
-        var games = instance.getGame().getGames();
-        if (games.get(GameType.RED_GREEN)) {
-            var player = e.getPlayer();
-            player.damage(50.0);
-        }
-
-    }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
+    public void onJoin(PlayerJoinEvent e){
         var game = instance.getGame();
         var roles = game.getRoles();
         var player = e.getPlayer();
@@ -73,12 +48,20 @@ public class GlobalListener implements Listener {
             }
         }
 
-        if (game.getLights()) {
-            player.addPotionEffect(
-                    new PotionEffect(PotionEffectType.NIGHT_VISION, 20 * 1000000, 100, false, false, false));
-        } else {
-            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+        var timer = game.getTimer();
+        timer.getBossBar().addPlayer(player);
+
+        if(game.getGameStage() == GameStage.LOBBY){
+            var city = new Location(Bukkit.getWorld("world"), 180.5, 35, 401.5);
+            player.teleport(city);
+        }else{
+            if(game.getLights()){
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
+            }else{
+                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+            }
         }
+
     }
 
     @EventHandler
@@ -105,19 +88,43 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
-    public void cancelInteract(PlayerInteractEvent e) {
-        var player = e.getPlayer();
-        var block = e.getClickedBlock();
-        var action = e.getAction();
+    public void gameTickEvent(GameTickEvent e) {
+        var game = instance.getGame();
+        Bukkit.getScheduler().runTask(instance, () -> {
 
-        if (action == Action.RIGHT_CLICK_BLOCK && block != null && player.getGameMode() != GameMode.CREATIVE
-                && (bannedMoveList.contains(block.getType()) || block.getType().toString().contains("TRAPDOOR"))) {
-            e.setCancelled(true);
-        }
+            var timer = game.getTimer();
+            if (timer.isActive()) {
+                var currentTime = (int) game.getGameTime();
+                timer.refreshTime(currentTime);
+            }
+
+        });
+
     }
 
     @EventHandler
-    public void onShoot(EntityDamageByEntityEvent e) {
+    public void playerMove(PlayerMoveEvent e){
+        var game = instance.getGame();
+        if(game.getGameStage() != GameStage.LOBBY) return;
+
+        var player = e.getPlayer();
+
+        if(game.isPlayer(player)){
+            var from = e.getFrom();
+            var to = e.getTo();
+            var x1 = from.getX();
+            var z1 = from.getZ();
+            var x2 = to.getX();
+            var z2 = to.getZ();
+            if(x1 != x2 || z1 != z2){
+                e.setCancelled(true);
+            }
+        }
+    
+    }
+
+    @EventHandler
+    public void onShoot(EntityDamageByEntityEvent e){
         var entity = e.getEntity();
         var damager = e.getDamager();
         if (entity instanceof Player player) {
@@ -127,7 +134,7 @@ public class GlobalListener implements Listener {
             var uuid = player.getUniqueId().toString();
             var role = roles.get(uuid);
             var pvp = game.getPvp();
-            var loc = player.getLocation();
+            var loc = player.getLocation().clone().add(0, 1, 0);
 
             var animation = 0;
 
@@ -199,15 +206,6 @@ public class GlobalListener implements Listener {
                 task.execute();
             }
 
-        }
-    }
-
-    @EventHandler
-    public void inventoryOpen(InventoryOpenEvent e) {
-        var player = e.getPlayer();
-        var inv = e.getInventory();
-        if (player.getGameMode() != GameMode.CREATIVE && !inv.getType().toString().contains("CHEST")) {
-            e.setCancelled(true);
         }
     }
 
