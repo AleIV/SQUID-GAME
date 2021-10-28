@@ -44,6 +44,7 @@ dependencies {
     //Paper
     
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'org.bukkit:craftbukkit:1.16.5-R0.1-SNAPSHOT'
     //Lombok
     // Use Protocol Lib
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.7.0";
@@ -66,6 +67,9 @@ dependencies {
     // EffectLib
     implementation 'com.elmakers.mine.bukkit:EffectLib:9.3'
 
+    // OpenCV
+    implementation 'org.bytedeco:opencv:4.5.3-1.5.6'
+    implementation 'nu.pattern:opencv:2.4.9-7'
 }
 
 spigot {

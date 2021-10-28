@@ -6,12 +6,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -51,23 +47,6 @@ public class MapSystemManager {
         Bukkit.getPluginManager().registerEvents(this.mapListener, this.instance);
 
         this.protocolManager = ProtocolLibrary.getProtocolManager();
-
-        // Disable all sound effects
-        protocolManager.addPacketListener(
-                new PacketAdapter(this.instance, ListenerPriority.NORMAL, PacketType.Play.Server.MAP) {
-                    @Override
-                    public void onPacketSending(PacketEvent event) {
-                        // Item packets (id: 0x29)
-                        if (event.getPacketType() == PacketType.Play.Server.MAP) {
-
-                            var serverMap = new WrapperPlayServerMap(event.getPacket());
-
-                            System.out.println(String.format("(Column: %s, Row: %s), (X: %s, Z: %s)",
-                                    serverMap.getColumns(), serverMap.getRows(), serverMap.getX(), serverMap.getZ()));
-
-                        }
-                    }
-                });
 
     }
 
