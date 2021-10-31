@@ -17,17 +17,25 @@ import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
+import me.aleiv.core.paper.Game.DeathReason;
 import me.aleiv.core.paper.objects.NoteBlockData;
 import me.aleiv.core.paper.utilities.LineVector;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import us.jcedeno.libs.rapidinv.ItemBuilder;
 
 public class AnimationTools {
 
+    public static Random random = new Random();
     public static HashMap<String, String> specialObjects = new HashMap<>();
     public static HashMap<String, NoteBlockData> noteBlocksMain = new HashMap<String, NoteBlockData>() {
         {
@@ -360,6 +368,114 @@ public class AnimationTools {
             return false;
 
         return true;
+    }
+
+    public static ArmorStand getFormatteStand(World world, Location loc){
+        var stand = (ArmorStand) world.spawnEntity(loc, EntityType.ARMOR_STAND);
+        stand.setInvisible(true);
+        stand.setArms(true);
+        stand.setInvulnerable(true);
+        stand.setBasePlate(false);
+        stand.addDisabledSlots(EquipmentSlot.HEAD);
+        stand.addDisabledSlots(EquipmentSlot.CHEST);
+        stand.addDisabledSlots(EquipmentSlot.LEGS);
+        stand.addDisabledSlots(EquipmentSlot.FEET);
+        stand.addDisabledSlots(EquipmentSlot.OFF_HAND);
+        stand.addDisabledSlots(EquipmentSlot.HAND);
+        return stand;
+    }
+
+    public static ItemStack getModelItem(Material material, Integer model){
+        return new ItemBuilder(material).meta(meta -> meta.setCustomModelData(model)).build();
+    }
+
+    public static ArmorStand summonDeadBody(Player player, DeathReason deathReason, Projectile projectile){
+        var world = player.getWorld();
+        var loc = player.getLocation();
+        var uuid = player.getUniqueId();
+        var head = new ItemBuilder(Material.PLAYER_HEAD)
+                    .meta(SkullMeta.class, meta -> meta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid))).build();
+        
+        switch (deathReason) {
+            case EXPLOSION->{
+
+                
+                var part = AnimationTools.getFormatteStand(world, loc);
+                var equip = part.getEquipment();
+                equip.setItemInOffHand(getModelItem(Material.LEATHER, 1));
+                part.setVelocity(getRandomVector(3).normalize());
+
+                part = AnimationTools.getFormatteStand(world, loc);
+                equip = part.getEquipment();
+                equip.setItemInOffHand(getModelItem(Material.LEATHER, 2));
+                part.setVelocity(getRandomVector(3).normalize());
+
+                part = AnimationTools.getFormatteStand(world, loc);
+                equip = part.getEquipment();
+                equip.setItemInOffHand(getModelItem(Material.LEATHER, 3));
+                part.setVelocity(getRandomVector(3).normalize());
+
+                part = AnimationTools.getFormatteStand(world, loc);
+                equip = part.getEquipment();
+                equip.setItemInOffHand(getModelItem(Material.LEATHER, 4));
+                part.setVelocity(getRandomVector(3).normalize());
+
+                part = AnimationTools.getFormatteStand(world, loc);
+                equip = part.getEquipment();
+                equip.setItemInOffHand(getModelItem(Material.LEATHER, 5));
+                part.setVelocity(getRandomVector(3).normalize());
+
+                part = AnimationTools.getFormatteStand(world, loc);
+                equip = part.getEquipment();
+                equip.setItemInOffHand(head);
+                part.setVelocity(getRandomVector(3).normalize());
+
+                new ParticleBuilder(Particle.TOTEM).location(loc).receivers(300).force(true).count(1000)
+                    .offset(1, 1, 1).extra(0.5).spawn();
+
+            }
+            case PROJECTILE->{
+                var body = new ItemBuilder(Material.LEATHER).meta(meta -> meta.setCustomModelData(6)).build();
+
+                var stand = AnimationTools.getFormatteStand(world, loc);
+                var equip = stand.getEquipment();
+                equip.setItemInOffHand(head);
+                equip.setItemInMainHand(body);
+
+                var vector = projectile.getVelocity();
+                vector.normalize();
+                stand.setVelocity(vector);
+                
+                
+                return stand;
+            }
+            case NORMAL->{
+                var body = new ItemBuilder(Material.LEATHER).meta(meta -> meta.setCustomModelData(6)).build();
+
+                var stand = AnimationTools.getFormatteStand(world, loc);
+                var equip = stand.getEquipment();
+                equip.setItemInOffHand(head);
+                equip.setItemInMainHand(body);
+
+                stand.setVelocity(getRandomVector(1).normalize());
+                
+                return stand;
+            }
+        }
+
+        return null;
+    }
+
+    public static Vector getRandomVector(Integer i){
+        var vector = new Vector(getRandomValue(i), random.nextInt(i), getRandomValue(i));
+        return vector;
+
+    }
+
+    public static Float getRandomValue(Integer i){
+        var inte = random.nextInt(i);
+        var value = inte + random.nextFloat();
+        return random.nextBoolean() ? value : -value;
     }
 
 }

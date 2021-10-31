@@ -52,7 +52,8 @@ public class SquidCMD extends BaseCommand {
     public void hideMode(CommandSender sender, HideMode hideMode) {
         var game = instance.getGame();
 
-        game.refreshHide(hideMode);
+        game.setHideMode(hideMode);
+        game.refreshHide();
         sender.sendMessage(ChatColor.DARK_AQUA + "Hide mode set to " + hideMode);
     }
 

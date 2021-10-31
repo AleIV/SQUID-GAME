@@ -1,5 +1,6 @@
 package me.aleiv.core.paper.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
@@ -18,39 +19,15 @@ public class HideListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         var game = instance.getGame();
-        var hideMode = game.getHideMode();
-        var player = e.getPlayer();
-
-        switch (hideMode) {
-            case INGAME ->{
-                game.applyInGameHide(player);
-            }
-            case LOBBY ->{
-                game.applyLobbyHide(player);
-            }
-            case TEST ->{
-                return;
-            }
-        }
+        game.refreshHide();
     }
 
     @EventHandler
     public void onGamemode(PlayerGameModeChangeEvent e){
         var game = instance.getGame();
-        var hideMode = game.getHideMode();
-        var player = e.getPlayer();
-
-        switch (hideMode) {
-            case INGAME ->{
-                game.applyInGameHide(player);
-            }
-            case LOBBY ->{
-                game.applyLobbyHide(player);
-            }
-            case TEST ->{
-                return;
-            }
-        }
+        Bukkit.getScheduler().runTaskLater(instance, task->{
+            game.refreshHide();
+        }, 1);
 
     }
 

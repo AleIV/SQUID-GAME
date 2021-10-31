@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -19,7 +20,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Game.DeathReason;
 import me.aleiv.core.paper.Game.GameStage;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.Role;
@@ -32,6 +35,31 @@ public class GlobalListener implements Listener {
 
     public GlobalListener(Core instance) {
         this.instance = instance;
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent e){
+        var player = e.getEntity();
+        var game = instance.getGame();
+        var roles = game.getRoles();
+        var uuid = player.getUniqueId().toString();
+        var role = roles.get(uuid);
+        if(role == Role.PLAYER){
+            var damageEvent = player.getLastDamageCause();
+            if(damageEvent instanceof EntityDamageByEntityEvent damageEntity && damageEntity.getDamager() instanceof Projectile projectile){
+                AnimationTools.summonDeadBody(player, DeathReason.PROJECTILE, projectile);
+            }else{
+                var cause = damageEvent.getCause();
+                if(cause == DamageCause.BLOCK_EXPLOSION || cause == DamageCause.ENTITY_EXPLOSION){
+                    AnimationTools.summonDeadBody(player, DeathReason.EXPLOSION, null);
+
+                }else{
+                    AnimationTools.summonDeadBody(player, DeathReason.NORMAL, null);
+                }
+            }
+            roles.put(uuid, Role.DEAD);
+        }
+
     }
 
     @EventHandler
@@ -52,16 +80,19 @@ public class GlobalListener implements Listener {
         var timer = game.getTimer();
         timer.getBossBar().addPlayer(player);
 
+        var city = new Location(Bukkit.getWorld("world"), 180.5, 35, 401.5);
         if (game.getGameStage() == GameStage.LOBBY) {
-            var city = new Location(Bukkit.getWorld("world"), 180.5, 35, 401.5);
             player.teleport(city);
+
+        } else if(!player.hasPlayedBefore()){
+            player.teleport(city);
+        }
+
+        if (game.getLights()) {
+            player.addPotionEffect(
+                    new PotionEffect(PotionEffectType.NIGHT_VISION, 20 * 1000000, 100, false, false, false));
         } else {
-            if (game.getLights()) {
-                player.addPotionEffect(
-                        new PotionEffect(PotionEffectType.NIGHT_VISION, 20 * 1000000, 100, false, false, false));
-            } else {
-                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-            }
+            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
         }
 
     }

@@ -3,6 +3,7 @@ package me.aleiv.core.paper;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -83,6 +84,10 @@ public class Game extends BukkitRunnable {
         INGAME, LOBBY
     }
 
+    public enum DeathReason{
+        EXPLOSION, PROJECTILE, NORMAL
+    }
+
     public boolean isGuard(Player player){
         return roles.get(player.getUniqueId().toString()) == Role.GUARD;
     }
@@ -91,28 +96,45 @@ public class Game extends BukkitRunnable {
         return roles.get(player.getUniqueId().toString()) == Role.PLAYER;
     }
 
-    public void applyInGameHide(Player player){
-
-    }
-
-    public void applyLobbyHide(Player player){
-
-    }
-
-    public void refreshHide(HideMode hideMode){
-        this.hideMode = hideMode;
-
-        var players = Bukkit.getOnlinePlayers();
+    public void refreshHide(){
+        var players = Bukkit.getOnlinePlayers().stream().map(p -> (Player) p).toList();
 
         switch (hideMode) {
             case INGAME ->{
                 players.forEach(player ->{
-                    applyInGameHide(player);
+                    var gamemode = player.getGameMode();
+
+                    if(gamemode == GameMode.CREATIVE){
+                        players.forEach(p ->{
+                            player.showPlayer(instance, p);
+                        });
+                    }else{
+                        players.forEach(p ->{
+                            var gm = p.getGameMode();
+                            if(gm == GameMode.CREATIVE || gm == GameMode.SPECTATOR){
+                                player.hidePlayer(instance, p);
+                            }else{
+                                player.showPlayer(instance, p);
+                            }
+                        });
+                    }
+
                 });
             }
             case LOBBY ->{
                 players.forEach(player ->{
-                    applyLobbyHide(player);
+                    var gamemode = player.getGameMode();
+
+                    if(gamemode == GameMode.CREATIVE){
+                        players.forEach(p ->{
+                            player.showPlayer(instance, p);
+                        });
+                    }else{
+                        players.forEach(p ->{
+                            player.hidePlayer(instance, p);
+                        });
+                    }
+
                 });
             }
             case TEST ->{
