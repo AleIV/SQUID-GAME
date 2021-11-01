@@ -1,23 +1,79 @@
 package me.aleiv.core.paper.Games;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.objects.Elevator;
 
 public class Elevators {
     Core instance;
+
+    HashMap<ElevatorType, Elevator> elevators = new HashMap<>();
     
     public Elevators(Core instance){
         this.instance = instance;
 
     }
 
-    public void dollElevator(Boolean bool){
+    public enum ElevatorType {
+        ONE, TWO, THREE, DOLL, HIDE_SEEK, POTATO, EXIT, CHICKEN
+    }
+
+    public void elevatorTravel(ElevatorType elevator1, ElevatorType elevator2, String music){
+
+        if(elevators.isEmpty()){
+            registerElevators();
+        }
+
+        if(elevators.containsKey(elevator1) && elevators.containsKey(elevator2)){
+            var elev1 = elevators.get(elevator1);
+            var elev2 = elevators.get(elevator2);
+
+            elev1.travel(elev2, music);
+            instance.getGame().setLights(false);
+        }
+    }
+
+    public void elevatorDoor(ElevatorType elevatorType, Boolean bool){
+        switch (elevatorType) {
+            case ONE ->{
+                elevator1(bool);
+            }
+            case TWO ->{
+                elevator2(bool);
+            }
+            case THREE ->{
+                elevator3(bool);
+            }
+            case DOLL ->{
+                dollElevator(bool);
+            }
+            case HIDE_SEEK ->{
+                hideSeekElevator(bool);
+            }
+            case POTATO ->{
+                potatoElevator(bool);
+            }
+            case EXIT ->{
+                exitElevator(bool);
+            }
+
+            case CHICKEN ->{
+                exitElevator(bool);
+            }
+
+        }
+    }
+
+    public void chickenElevator(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("DOLL_ELEVATOR_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("DOLL_ELEVATOR_POS2"), Bukkit.getWorld("world"));
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("CHICKEN_ELEVATOR_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("CHICKEN_ELEVATOR_POS2"), world);
 
         if(bool){
 
@@ -25,25 +81,113 @@ public class Elevators {
 
             AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
 
-            AnimationTools.move("DOLL_ELEVATOR_LEFT", 32, 1, 'z', 0.1f);
-            AnimationTools.move("DOLL_ELEVATOR_RIGHT", -32, 1, 'z', 0.1f);
+            AnimationTools.move("CHICKEN_ELEVATOR_LEFT", "CHICKEN_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
 
         }else{
 
-            AnimationTools.fill(loc1, loc2, Material.BARRIER);
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
+
+            var task = AnimationTools.move("CHICKEN_ELEVATOR_RIGHT", "CHICKEN_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
+
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
+        }
+    }
+
+    public void potatoElevator(Boolean bool){
+        var specialObjects = AnimationTools.specialObjects;
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("POTATO_ELEVATOR_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("POTATO_ELEVATOR_POS2"), world);
+
+        if(bool){
+
+            AnimationTools.fill(loc1, loc2, Material.AIR);
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
+
+            AnimationTools.move("POTATO_ELEVATOR_LEFT", "POTATO_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
+
+        }else{
 
             AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
 
-            AnimationTools.move("DOLL_ELEVATOR_LEFT", -32, 1, 'z', 0.1f);
-            AnimationTools.move("DOLL_ELEVATOR_RIGHT", 32, 1, 'z', 0.1f);
+            var task = AnimationTools.move("POTATO_ELEVATOR_RIGHT", "POTATO_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
+
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
+
+        }
+    }
+
+    public void exitElevator(Boolean bool){
+        var specialObjects = AnimationTools.specialObjects;
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("EXIT_ELEVATOR_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("EXIT_ELEVATOR_POS2"), world);
+
+        if(bool){
+
+            AnimationTools.fill(loc1, loc2, Material.AIR);
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
+
+            AnimationTools.move("EXIT_ELEVATOR_LEFT", "EXIT_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
+
+        }else{
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
+
+            var task = AnimationTools.move("EXIT_ELEVATOR_RIGHT", "EXIT_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
+
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
+        }
+    }
+
+    public void dollElevator(Boolean bool){
+        var specialObjects = AnimationTools.specialObjects;
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("DOLL_ELEVATOR_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("DOLL_ELEVATOR_POS2"), world);
+
+        if(bool){
+
+            AnimationTools.fill(loc1, loc2, Material.AIR);
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
+
+            AnimationTools.move("DOLL_ELEVATOR_LEFT", "DOLL_ELEVATOR_RIGHT", 32, 1, 'z', 0.1f);
+
+        }else{
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
+
+            var task = AnimationTools.move("DOLL_ELEVATOR_RIGHT", "DOLL_ELEVATOR_LEFT", 32, 1, 'z', 0.1f);
+
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
 
         }
     }
 
     public void hideSeekElevator(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("HIDE_SEEK_ELEVATOR_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("HIDE_SEEK_ELEVATOR_POS2"), Bukkit.getWorld("world"));
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("HIDE_SEEK_ELEVATOR_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("HIDE_SEEK_ELEVATOR_POS2"), world);
 
         if(bool){
 
@@ -51,25 +195,27 @@ public class Elevators {
 
             AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
 
-            AnimationTools.move("HIDE_SEEK_ELEVATOR_LEFT", -32, 1, 'z', 0.1f);
-            AnimationTools.move("HIDE_SEEK_ELEVATOR_RIGHT", 32, 1, 'z', 0.1f);
+            AnimationTools.move("HIDE_SEEK_ELEVATOR_RIGHT", "HIDE_SEEK_ELEVATOR_LEFT", 32, 1, 'z', 0.1f);
 
         }else{
-
-            AnimationTools.fill(loc1, loc2, Material.BARRIER);
-
             AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
 
-            AnimationTools.move("HIDE_SEEK_ELEVATOR_LEFT", 32, 1, 'z', 0.1f);
-            AnimationTools.move("HIDE_SEEK_ELEVATOR_RIGHT", -32, 1, 'z', 0.1f);
+            var task = AnimationTools.move("HIDE_SEEK_ELEVATOR_LEFT", "HIDE_SEEK_ELEVATOR_RIGHT", 32, 1, 'z', 0.1f);
+
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
 
         }
     }
 
     public void elevator1(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR1_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR1_POS2"), Bukkit.getWorld("world"));
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR1_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR1_POS2"), world);
 
         if(bool){
 
@@ -77,25 +223,27 @@ public class Elevators {
 
             AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
 
-            AnimationTools.move("ELEVATOR1_LEFT", -32, 1, 'z', 0.1f);
-            AnimationTools.move("ELEVATOR1_RIGHT", 32, 1, 'z', 0.1f);
+            AnimationTools.move("ELEVATOR1_RIGHT", "ELEVATOR1_LEFT", 32, 1, 'z', 0.1f);
 
         }else{
 
-            AnimationTools.fill(loc1, loc2, Material.BARRIER);
-
             AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
 
-            AnimationTools.move("ELEVATOR1_LEFT", 32, 1, 'z', 0.1f);
-            AnimationTools.move("ELEVATOR1_RIGHT", -32, 1, 'z', 0.1f);
+            var task = AnimationTools.move("ELEVATOR1_LEFT", "ELEVATOR1_RIGHT", 32, 1, 'z', 0.1f);
 
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
         }
     }
     
     public void elevator2(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR2_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR2_POS2"), Bukkit.getWorld("world"));
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR2_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR2_POS2"), world);
 
         if(bool){
 
@@ -103,18 +251,89 @@ public class Elevators {
 
             AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
 
-            AnimationTools.move("ELEVATOR2_LEFT", 32, 1, 'z', 0.1f);
-            AnimationTools.move("ELEVATOR2_RIGHT", -32, 1, 'z', 0.1f);
+            AnimationTools.move("ELEVATOR2_LEFT", "ELEVATOR2_RIGHT", 32, 1, 'z', 0.1f);
 
         }else{
 
-            AnimationTools.fill(loc1, loc2, Material.BARRIER);
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
+
+            var task = AnimationTools.move("ELEVATOR2_RIGHT", "ELEVATOR2_LEFT", 32, 1, 'z', 0.1f);
+            
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
+
+        }
+    }
+
+    public void elevator3(Boolean bool){
+        var specialObjects = AnimationTools.specialObjects;
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR3_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR3_POS2"), world);
+
+        if(bool){
+
+            AnimationTools.fill(loc1, loc2, Material.AIR);
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
+
+            AnimationTools.move("ELEVATOR3_LEFT", "ELEVATOR3_RIGHT", 28, 1, 'x', 0.1f);
+
+        }else{
 
             AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
 
-            AnimationTools.move("ELEVATOR2_LEFT", -32, 1, 'z', 0.1f);
-            AnimationTools.move("ELEVATOR2_RIGHT", 32, 1, 'z', 0.1f);
+            var task = AnimationTools.move("ELEVATOR3_RIGHT", "ELEVATOR3_LEFT", 28, 1, 'x', 0.1f);
+
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
 
         }
+    }
+
+    public void registerElevators(){
+        var specialObjects = AnimationTools.specialObjects;
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR1_LOC1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR1_LOC2"), world);
+
+        elevators.put(ElevatorType.ONE, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR2_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR2_LOC2"), world);
+
+        elevators.put(ElevatorType.TWO, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR3_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR3_LOC2"), world);
+
+        elevators.put(ElevatorType.THREE, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_DOLL_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_DOLL_LOC2"), world);
+
+        elevators.put(ElevatorType.DOLL, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_POTATO_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_POTATO_LOC2"), world);
+
+        elevators.put(ElevatorType.POTATO, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_HIDE_SEEK_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_HIDE_SEEK_LOC2"), world);
+
+        elevators.put(ElevatorType.HIDE_SEEK, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_CHICKEN_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_CHICKEN_LOC2"), world);
+
+        elevators.put(ElevatorType.CHICKEN, new Elevator(loc1, loc2));
+
     }
 }

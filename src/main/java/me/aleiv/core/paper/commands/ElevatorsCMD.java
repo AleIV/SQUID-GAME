@@ -8,6 +8,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Games.Elevators.ElevatorType;
 import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("elevators")
@@ -20,32 +21,18 @@ public class ElevatorsCMD extends BaseCommand {
         this.instance = instance;
     }
 
-    @Subcommand("doll-elevator")
-    public void dollElevator(CommandSender sender, Boolean bool){
+    @Subcommand("door")
+    public void dollElevator(CommandSender sender, ElevatorType elevatorType, Boolean bool){
         var tools = instance.getGame().getElevators();
-        tools.dollElevator(bool);
-        sender.sendMessage(ChatColor.DARK_AQUA + "Doll elevator " + bool);
+        tools.elevatorDoor(elevatorType, bool);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Elevator " + elevatorType + " elevator " + bool);
     }
 
-    @Subcommand("hideSeek-elevator")
-    public void hideSeekElevator(CommandSender sender, Boolean bool){
+    @Subcommand("travel")
+    public void travel(CommandSender sender, ElevatorType elevator1, ElevatorType elevator2, String music){
         var tools = instance.getGame().getElevators();
-        tools.hideSeekElevator(bool);
-        sender.sendMessage(ChatColor.DARK_AQUA + "Hide and seek elevator " + bool);
-    }
-
-    @Subcommand("elevator1")
-    public void elevator1(CommandSender sender, Boolean bool){
-        var tools = instance.getGame().getElevators();
-        tools.elevator1(bool);
-        sender.sendMessage(ChatColor.DARK_AQUA + "Left elevator " + bool);
-    }
-
-    @Subcommand("elevator2")
-    public void elevator2(CommandSender sender, Boolean bool){
-        var tools = instance.getGame().getElevators();
-        tools.elevator2(bool);
-        sender.sendMessage(ChatColor.DARK_AQUA + "Right elevator " + bool);
+        tools.elevatorTravel(elevator1, elevator2, music);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Elevator travel " + elevator1 + " to " + elevator2);
     }
 
 }

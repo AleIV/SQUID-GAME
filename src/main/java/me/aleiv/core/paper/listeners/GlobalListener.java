@@ -44,7 +44,8 @@ public class GlobalListener implements Listener {
         var roles = game.getRoles();
         var uuid = player.getUniqueId().toString();
         var role = roles.get(uuid);
-        if(role == Role.PLAYER){
+        var gamemode = player.getGameMode();
+        if(role == Role.PLAYER && gamemode == GameMode.ADVENTURE){
             var damageEvent = player.getLastDamageCause();
             if(damageEvent instanceof EntityDamageByEntityEvent damageEntity && damageEntity.getDamager() instanceof Projectile projectile){
                 AnimationTools.summonDeadBody(player, DeathReason.PROJECTILE, projectile);
@@ -172,20 +173,20 @@ public class GlobalListener implements Listener {
 
             var animation = 0;
 
-            if (damager instanceof Player playerDamager) {
-                var damagerRole = roles.get(player.getUniqueId().toString());
+            if (damager instanceof Player playerDamager && pvp != PvPType.ALL) {
+                var damagerRole = roles.get(playerDamager.getUniqueId().toString());
 
                 if (role == Role.GUARD && role == damagerRole && !playerDamager.hasPermission("admin.perm")) {
                     // GUARD TO GUARD CASE
                     e.setCancelled(true);
                     return;
 
-                } else if (role == Role.PLAYER && damagerRole == Role.GUARD) {
+                } else if (role == Role.GUARD && damagerRole == Role.PLAYER){
                     // PLAYER TO GUARD CASE
                     e.setCancelled(true);
                     return;
 
-                } else if (pvp == PvPType.ONLY_GUARDS && role == Role.PLAYER && role == damagerRole) {
+                }else if (role == Role.PLAYER && role == damagerRole && pvp == PvPType.ONLY_GUARDS) {
                     // PLAYER TO PLAYER CASE
                     e.setCancelled(true);
                     return;
@@ -193,6 +194,7 @@ public class GlobalListener implements Listener {
 
             } else if (damager instanceof Projectile) {
                 animation = 2;
+                e.setDamage(30);
             }
 
             var inv = player.getInventory();
@@ -202,8 +204,8 @@ public class GlobalListener implements Listener {
             }
 
             if (animation == 0) {
-                new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(100)
-                        .offset(0.01, 0.01, 0.01).extra(0.05).spawn();
+                new ParticleBuilder(Particle.TOTEM).location(loc).receivers(20).force(true).count(20)
+                        .offset(0.0001, 0.0001, 0.0001).extra(0.05).spawn();
             } else {
 
                 var task = new BukkitTCT();

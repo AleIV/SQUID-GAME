@@ -1,5 +1,6 @@
 package me.aleiv.core.paper.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -43,6 +44,17 @@ public class TestCMD extends BaseCommand {
     public void test(Player sender, String str) {
         AnimationTools.playSoundDistance(sender.getLocation(), 10, str, 1f, 1f);
 
+    }
+
+    @Subcommand("inside")
+    public void inside(Player sender, String pos1, String pos2) {
+        var specialObjects = AnimationTools.specialObjects;
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get(pos1), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get(pos2), world);
+
+        var players = AnimationTools.getPlayersInsideCube(loc1, loc2);
+        Core.getInstance().broadcastMessage(players.toString());
     }
 
 }

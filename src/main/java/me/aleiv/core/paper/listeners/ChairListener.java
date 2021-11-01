@@ -45,8 +45,9 @@ public class ChairListener implements Listener {
     public void onJoin(PlayerInteractAtEntityEvent e){
         var entity = e.getRightClicked();
         if(entity instanceof ArmorStand stand){
-            var brick = stand.getEquipment().getHelmet();
-            if(brick != null && brick.getItemMeta().hasCustomModelData()){
+            var equip = stand.getEquipment();
+            var brick = equip.getHelmet();
+            if(brick != null && brick.hasItemMeta() && brick.getItemMeta().hasCustomModelData()){
                 var model = brick.getItemMeta().getCustomModelData();
                 if((model == 40) && stand.getPassengers().isEmpty()){
                     var player = e.getPlayer();
