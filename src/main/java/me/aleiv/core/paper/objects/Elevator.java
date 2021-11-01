@@ -21,7 +21,7 @@ public class Elevator {
         this.loc2 = loc2;
     }
 
-    public void travel(Elevator elevator, String music){
+    public void travel(Elevator elevator, Boolean bool){
         var referencePoint1 = this.getLoc1();
         var referencePoint2 = elevator.getLoc1();
 
@@ -34,10 +34,17 @@ public class Elevator {
         
         players.forEach(p ->{
             var loc = p.getLocation().clone().add(xOffSet, yOffSet, zOffSet);
-            p.removePotionEffect(PotionEffectType.NIGHT_VISION);
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*2, 0, false, false, false));
             p.teleport(loc);
-            p.playSound(loc, music, 1, 1);
+
+            if(bool){
+                p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
+            }else{
+                p.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                p.playSound(loc, "squid:sfx.main_lights_off", 1, 1);
+            }
+
+            p.playSound(loc, "squid:sfx.elevator_move", 1, 1);
         });
 
     }

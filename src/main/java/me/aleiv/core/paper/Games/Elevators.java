@@ -23,7 +23,7 @@ public class Elevators {
         ONE, TWO, THREE, DOLL, HIDE_SEEK, POTATO, EXIT, CHICKEN
     }
 
-    public void elevatorTravel(ElevatorType elevator1, ElevatorType elevator2, String music){
+    public void elevatorTravel(ElevatorType elevator1, ElevatorType elevator2, Boolean bool){
 
         if(elevators.isEmpty()){
             registerElevators();
@@ -33,8 +33,8 @@ public class Elevators {
             var elev1 = elevators.get(elevator1);
             var elev2 = elevators.get(elevator2);
 
-            elev1.travel(elev2, music);
-            instance.getGame().setLights(false);
+            elev1.travel(elev2, bool);
+            instance.getGame().setLights(bool);
         }
     }
 

@@ -62,6 +62,14 @@ public class RopeGame {
         yellowBar.setVisible(bool);
     }
 
+    public void rightElevator(Boolean bool){
+        if(bool){
+
+        }else{
+            
+        }
+    }
+
 
     public void ropeGate(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
@@ -79,11 +87,15 @@ public class RopeGame {
         
         }else{
 
-            AnimationTools.fill(loc1, loc2, Material.BARRIER);
-
             AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.metal_door_close", 1f, 1f);
 
-            AnimationTools.move(ropeDoor, -42, 1, 'y', 0.1f);
+            var task = AnimationTools.move(ropeDoor, -42, 1, 'y', 0.1f);
+
+            task.thenAccept(action ->{
+               Bukkit.getScheduler().runTask(instance, tk->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+               });
+            });
 
         }
     }

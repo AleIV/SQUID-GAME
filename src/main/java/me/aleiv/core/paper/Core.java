@@ -22,6 +22,7 @@ import me.aleiv.core.paper.commands.DollCMD;
 import me.aleiv.core.paper.commands.ElevatorsCMD;
 import me.aleiv.core.paper.commands.HideSeekCMD;
 import me.aleiv.core.paper.commands.MainCMD;
+import me.aleiv.core.paper.commands.PotatoCMD;
 import me.aleiv.core.paper.commands.RopeCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
@@ -34,6 +35,7 @@ import me.aleiv.core.paper.listeners.ChairListener;
 import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.listeners.HideListener;
 import me.aleiv.core.paper.listeners.MechanicsListener;
+import me.aleiv.core.paper.listeners.PotatoListener;
 import me.aleiv.core.paper.listeners.RopeListener;
 import me.aleiv.core.paper.map.MapSystemManager;
 import me.aleiv.core.paper.utilities.JsonConfig;
@@ -97,6 +99,7 @@ public class Core extends JavaPlugin {
         registerListener(new HideListener(this));
         registerListener(new ChairListener(this));
         registerListener(new MechanicsListener(this));
+        registerListener(new PotatoListener(this));
 
         // COMMANDS
 
@@ -109,8 +112,9 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new CookieCMD(this));
         commandManager.registerCommand(new ElevatorsCMD(this));
         commandManager.registerCommand(new ChairCMD(this));
-        commandManager.registerCommand(new UtilsCMD(this));
+        commandManager.registerCommand(new PotatoCMD(this));
 
+        commandManager.registerCommand(new UtilsCMD(this));
         commandManager.registerCommand(new SpecialCMD(this));
         commandManager.registerCommand(new TestCMD(this));
 

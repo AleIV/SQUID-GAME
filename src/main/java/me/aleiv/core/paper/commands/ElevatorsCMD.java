@@ -29,9 +29,9 @@ public class ElevatorsCMD extends BaseCommand {
     }
 
     @Subcommand("travel")
-    public void travel(CommandSender sender, ElevatorType elevator1, ElevatorType elevator2, String music){
+    public void travel(CommandSender sender, ElevatorType elevator1, ElevatorType elevator2, Boolean bool){
         var tools = instance.getGame().getElevators();
-        tools.elevatorTravel(elevator1, elevator2, music);
+        tools.elevatorTravel(elevator1, elevator2, bool);
         sender.sendMessage(ChatColor.DARK_AQUA + "Elevator travel " + elevator1 + " to " + elevator2);
     }
 
