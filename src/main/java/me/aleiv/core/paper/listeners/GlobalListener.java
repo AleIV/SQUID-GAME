@@ -61,6 +61,8 @@ public class GlobalListener implements Listener {
             roles.put(uuid, Role.DEAD);
         }
 
+        //TODO: listener for cancel leather take, death msgs, BOOLEAN on travel elevator
+
     }
 
     @EventHandler
