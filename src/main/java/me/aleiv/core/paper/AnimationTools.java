@@ -439,18 +439,13 @@ public class AnimationTools {
                 .map(p -> (Player) p).toList();
     }
 
-    public static ArmorStand getFormatteStand(World world, Location loc) {
+    public static ArmorStand getFormattedStand(World world, Location loc) {
         var stand = (ArmorStand) world.spawnEntity(loc, EntityType.ARMOR_STAND);
         stand.setInvisible(true);
         stand.setArms(true);
         stand.setInvulnerable(true);
         stand.setBasePlate(false);
-        stand.addDisabledSlots(EquipmentSlot.HEAD);
-        stand.addDisabledSlots(EquipmentSlot.CHEST);
-        stand.addDisabledSlots(EquipmentSlot.LEGS);
-        stand.addDisabledSlots(EquipmentSlot.FEET);
-        stand.addDisabledSlots(EquipmentSlot.OFF_HAND);
-        stand.addDisabledSlots(EquipmentSlot.HAND);
+        stand.addDisabledSlots(EquipmentSlot.values());
         return stand;
     }
 
@@ -468,32 +463,32 @@ public class AnimationTools {
         switch (deathReason) {
         case EXPLOSION -> {
 
-            var part = AnimationTools.getFormatteStand(world, loc);
+            var part = AnimationTools.getFormattedStand(world, loc);
             var equip = part.getEquipment();
             equip.setItemInOffHand(getModelItem(Material.LEATHER, 1));
             part.setVelocity(getRandomVector(3).normalize());
 
-            part = AnimationTools.getFormatteStand(world, loc);
+            part = AnimationTools.getFormattedStand(world, loc);
             equip = part.getEquipment();
             equip.setItemInOffHand(getModelItem(Material.LEATHER, 2));
             part.setVelocity(getRandomVector(3).normalize());
 
-            part = AnimationTools.getFormatteStand(world, loc);
+            part = AnimationTools.getFormattedStand(world, loc);
             equip = part.getEquipment();
             equip.setItemInOffHand(getModelItem(Material.LEATHER, 3));
             part.setVelocity(getRandomVector(3).normalize());
 
-            part = AnimationTools.getFormatteStand(world, loc);
+            part = AnimationTools.getFormattedStand(world, loc);
             equip = part.getEquipment();
             equip.setItemInOffHand(getModelItem(Material.LEATHER, 4));
             part.setVelocity(getRandomVector(3).normalize());
 
-            part = AnimationTools.getFormatteStand(world, loc);
+            part = AnimationTools.getFormattedStand(world, loc);
             equip = part.getEquipment();
             equip.setItemInOffHand(getModelItem(Material.LEATHER, 5));
             part.setVelocity(getRandomVector(3).normalize());
 
-            part = AnimationTools.getFormatteStand(world, loc);
+            part = AnimationTools.getFormattedStand(world, loc);
             equip = part.getEquipment();
             equip.setItemInOffHand(head);
             part.setVelocity(getRandomVector(3).normalize());
@@ -507,7 +502,7 @@ public class AnimationTools {
                 var body = new ItemBuilder(Material.LEATHER)
                         .meta(meta -> meta.setCustomModelData(random.nextInt(2)+11)).build();
 
-                var stand = AnimationTools.getFormatteStand(world, loc);
+                var stand = AnimationTools.getFormattedStand(world, loc);
                 var equip = stand.getEquipment();
                 equip.setItemInOffHand(body);
                 equip.setItemInMainHand(head);
@@ -521,7 +516,7 @@ public class AnimationTools {
                 var body = new ItemBuilder(Material.LEATHER)
                         .meta(meta -> meta.setCustomModelData(random.nextInt(4) + 6)).build();
 
-                var stand = AnimationTools.getFormatteStand(world, loc);
+                var stand = AnimationTools.getFormattedStand(world, loc);
                 var equip = stand.getEquipment();
                 equip.setItemInOffHand(head);
                 equip.setItemInMainHand(body);
@@ -538,7 +533,7 @@ public class AnimationTools {
             if (random.nextInt(7) < 2) {
                 var body = new ItemBuilder(Material.LEATHER).meta(meta -> meta.setCustomModelData(random.nextInt(2) + 11)).build();
 
-                var stand = AnimationTools.getFormatteStand(world, loc);
+                var stand = AnimationTools.getFormattedStand(world, loc);
                 var equip = stand.getEquipment();
                 equip.setItemInOffHand(body);
                 equip.setItemInMainHand(head);
@@ -549,7 +544,7 @@ public class AnimationTools {
             } else {
                 var body = new ItemBuilder(Material.LEATHER).meta(meta -> meta.setCustomModelData(random.nextInt(4) + 6)).build();
 
-                var stand = AnimationTools.getFormatteStand(world, loc);
+                var stand = AnimationTools.getFormattedStand(world, loc);
                 var equip = stand.getEquipment();
                 equip.setItemInOffHand(head);
                 equip.setItemInMainHand(body);
