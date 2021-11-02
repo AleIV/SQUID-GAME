@@ -2,7 +2,6 @@ package me.aleiv.core.paper.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import co.aikar.commands.BaseCommand;
@@ -25,7 +24,6 @@ import net.md_5.bungee.api.ChatColor;
 public class SquidCMD extends BaseCommand {
 
     private @NonNull Core instance;
-    Entity current = null;
 
     public SquidCMD(Core instance) {
         this.instance = instance;

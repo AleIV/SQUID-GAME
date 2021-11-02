@@ -41,4 +41,18 @@ public class RopeCMD extends BaseCommand {
         tools.enableRope(bool);
     }
 
+    @Subcommand("right-elevator")
+    public void rightElevator(CommandSender sender, Boolean bool){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Right elevator " + bool);
+        var tools = instance.getGame().getRopeGame();
+        tools.rightElevator(bool);
+    }
+
+    @Subcommand("left-elevator")
+    public void leftElevator(CommandSender sender, Boolean bool){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Left elevator " + bool);
+        var tools = instance.getGame().getRopeGame();
+        tools.leftElevator(bool);
+    }
+
 }

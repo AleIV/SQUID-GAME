@@ -364,6 +364,11 @@ public class AnimationTools {
         });
     }
 
+    public static ArmorStand getArmorStand(String stand){
+        var uuid = UUID.fromString(specialObjects.get(stand));
+        return (ArmorStand) Bukkit.getWorld("world").getEntity(uuid); 
+    }
+
     public static void setScreenValue(List<Location> locations, String str) {
         var array = str.toCharArray();
         var count = 0;
