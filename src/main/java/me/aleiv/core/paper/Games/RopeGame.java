@@ -1,8 +1,7 @@
 package me.aleiv.core.paper.Games;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,7 +10,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -20,6 +19,8 @@ import lombok.Getter;
 import lombok.Setter;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.events.LeftWinsEvent;
+import me.aleiv.core.paper.events.RightWinsEvent;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
 
 public class RopeGame {
@@ -29,17 +30,15 @@ public class RopeGame {
     BossBar flagBar;
     BossBar yellowBar;
 
-    @Getter
-    @Setter
-    Integer points = 0;
+    @Getter @Setter Integer points = 0;
+
+    @Getter @Setter Integer multiplier = 1;
 
     String bar = Character.toString('\u0250');
     String rope = Character.toString('\u0251');
     String flag = Character.toString('\u0252');
 
-    Boolean ropeBossbar = false;
-
-    @Getter HashMap<UUID, List<ArmorStand>> playerMoving = new HashMap<>();
+    @Getter Boolean ropeBossbar = false;
 
     public RopeGame(Core instance) {
         this.instance = instance;
@@ -70,6 +69,29 @@ public class RopeGame {
         ropeBar.setVisible(bool);
         flagBar.setVisible(bool);
         yellowBar.setVisible(bool);
+        updateBossBar();
+    }
+
+    public void addPoints(Integer points){
+        if(this.points == 246 || this.points == -246) return;
+
+        var p = Math.abs(points*multiplier);
+        var v = points < 0 ? -p : p;
+        
+        if(this.points+v >= 246){
+            this.points = 246;
+            Bukkit.getPluginManager().callEvent(new RightWinsEvent(!Bukkit.isPrimaryThread()));
+
+        }else if(this.points+v <= -246){
+            this.points = -246;
+            Bukkit.getPluginManager().callEvent(new LeftWinsEvent(!Bukkit.isPrimaryThread()));
+
+        }else{
+            this.points+=v;
+
+        }
+
+        updateBossBar();
     }
 
     public void rightElevator(Boolean bool) {
@@ -84,36 +106,56 @@ public class RopeGame {
 
         if (!players.isEmpty()) {
 
-            players.forEach(player -> {
-                if (bool) {
-                    player.addPotionEffect(
-                            new PotionEffect(PotionEffectType.LEVITATION, 20 * 11, 2, false, false, false));
-                } else {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20 * 7, 1, false, false, false));
-                }
-            });
-
             var pos1 = AnimationTools.parseLocation(specialObjects.get("ROPE_ELEVATOR_RIGHT_FLOOR_POS1"), world);
             var pos2 = AnimationTools.parseLocation(specialObjects.get("ROPE_ELEVATOR_RIGHT_FLOOR_POS2"), world);
-            
-            var playerReference = players.get(0);
-            var uuid = playerReference.getUniqueId();
 
-            var doorsRight = List.of(AnimationTools.getArmorStand("ROPE_FRONT_RIGHT"),
-                    AnimationTools.getArmorStand("ROPE_BACK_RIGHT"));
+            List<Entity> entitys = new ArrayList<>();
+            entitys.add(AnimationTools.getEntity("ROPE_FRONT_RIGHT"));
+            entitys.add(AnimationTools.getEntity("ROPE_BACK_RIGHT"));
 
-            playerMoving.put(uuid, doorsRight);
+            players.forEach(player -> {
+                player.addPotionEffect(
+                        new PotionEffect(PotionEffectType.LEVITATION, 20 * 15, 255, false, false, false));
+                entitys.add(player);
+            });
+
+            var v = (28f / 300f);
 
             if (bool) {
-                Bukkit.getScheduler().runTaskLater(instance, task->{
-                    playerMoving.remove(uuid);
-                    AnimationTools.fill(pos1, pos2, Material.BARRIER);
-                }, 20*11);
-                
+                players.forEach(player -> {
+                    player.playSound(player.getLocation(), "sound", 1, 1);
+                });
+
+                var tk = AnimationTools.moveEntitys(entitys, 300, 1, 'y', v);
+
+                tk.thenAccept(action -> {
+                    Bukkit.getScheduler().runTask(instance, task -> {
+                        AnimationTools.fill(pos1, pos2, Material.BARRIER);
+                        entitys.forEach(entity -> {
+                            var l = entity.getLocation();
+                            l.setY(62);
+                            entity.teleport(l);
+                        });
+                    });
+                });
+
             } else {
-                Bukkit.getScheduler().runTaskLater(instance, task->{
-                    playerMoving.remove(uuid);
-                }, 20*7);
+                players.forEach(player -> {
+                    player.playSound(player.getLocation(), "sound", 1, 1);
+                });
+
+                var tk = AnimationTools.moveEntitys(entitys, 300, 1, 'y', -v);
+
+                tk.thenAccept(action -> {
+                    Bukkit.getScheduler().runTask(instance, task -> {
+                        entitys.forEach(entity -> {
+                            var l = entity.getLocation();
+                            l.setY(34);
+                            entity.teleport(l);
+                        });
+                    });
+                });
+
                 AnimationTools.fill(pos1, pos2, Material.AIR);
             }
 
@@ -133,36 +175,56 @@ public class RopeGame {
 
         if (!players.isEmpty()) {
 
-            players.forEach(player -> {
-                if (bool) {
-                    player.addPotionEffect(
-                            new PotionEffect(PotionEffectType.LEVITATION, 20 * 11, 2, false, false, false));
-                } else {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20 * 7, 1, false, false, false));
-                }
-            });
-
             var pos1 = AnimationTools.parseLocation(specialObjects.get("ROPE_ELEVATOR_LEFT_FLOOR_POS1"), world);
             var pos2 = AnimationTools.parseLocation(specialObjects.get("ROPE_ELEVATOR_LEFT_FLOOR_POS2"), world);
-            
-            var playerReference = players.get(0);
-            var uuid = playerReference.getUniqueId();
 
-            var doorsRight = List.of(AnimationTools.getArmorStand("ROPE_FRONT_LEFT"),
-                    AnimationTools.getArmorStand("ROPE_BACK_LEFT"));
+            List<Entity> entitys = new ArrayList<>();
+            entitys.add(AnimationTools.getEntity("ROPE_FRONT_LEFT"));
+            entitys.add(AnimationTools.getEntity("ROPE_BACK_LEFT"));
 
-            playerMoving.put(uuid, doorsRight);
+            players.forEach(player -> {
+                player.addPotionEffect(
+                        new PotionEffect(PotionEffectType.LEVITATION, 20 * 15, 255, false, false, false));
+                entitys.add(player);
+            });
+
+            var v = (28f / 300f);
 
             if (bool) {
-                Bukkit.getScheduler().runTaskLater(instance, task->{
-                    playerMoving.remove(uuid);
-                    AnimationTools.fill(pos1, pos2, Material.BARRIER);
-                }, 20*11);
-                
+                players.forEach(player -> {
+                    player.playSound(player.getLocation(), "sound", 1, 1);
+                });
+
+                var tk = AnimationTools.moveEntitys(entitys, 300, 1, 'y', v);
+
+                tk.thenAccept(action -> {
+                    Bukkit.getScheduler().runTask(instance, task -> {
+                        AnimationTools.fill(pos1, pos2, Material.BARRIER);
+                        entitys.forEach(entity -> {
+                            var l = entity.getLocation();
+                            l.setY(62);
+                            entity.teleport(l);
+                        });
+                    });
+                });
+
             } else {
-                Bukkit.getScheduler().runTaskLater(instance, task->{
-                    playerMoving.remove(uuid);
-                }, 20*7);
+                players.forEach(player -> {
+                    player.playSound(player.getLocation(), "sound", 1, 1);
+                });
+
+                var tk = AnimationTools.moveEntitys(entitys, 300, 1, 'y', -v);
+
+                tk.thenAccept(action -> {
+                    Bukkit.getScheduler().runTask(instance, task -> {
+                        entitys.forEach(entity -> {
+                            var l = entity.getLocation();
+                            l.setY(34);
+                            entity.teleport(l);
+                        });
+                    });
+                });
+
                 AnimationTools.fill(pos1, pos2, Material.AIR);
             }
 

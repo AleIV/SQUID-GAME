@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import com.destroystokyo.paper.ParticleBuilder;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,6 +19,7 @@ import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -144,6 +146,14 @@ public class AnimationTools {
 
     public static Vector getVector(Location loc1, Location loc2) {
         return loc1.toVector().subtract(loc2.toVector());
+    }
+
+    public static Vector superNormalize(Vector vector) {
+        var newVector = vector;
+        newVector.setX(vector.getX()*0.03);
+        newVector.setY(vector.getY()*0.03);
+        newVector.setZ(vector.getZ()*0.03);
+        return newVector;
     }
 
     public static CompletableFuture<Boolean> move(String name1, String name2, Integer value, Integer tickSpeed,
@@ -287,6 +297,42 @@ public class AnimationTools {
         return task.execute();
     }
 
+    public static CompletableFuture<Boolean> moveEntitys(List<Entity> entitys, Integer value, Integer tickSpeed, char pos, Float distance) {
+        var task = new BukkitTCT();
+        var v = Math.abs(value);
+        for (int i = 0; i < v; i++) {
+            task.addWithDelay(new BukkitRunnable() {
+                @Override
+                public void run() {
+                    entitys.forEach(stand -> {
+                        var loc = stand.getLocation();
+                        var x = loc.getX();
+                        var y = loc.getY();
+                        var z = loc.getZ();
+                        var v = value < 0 ? -distance : distance;
+                        var l = loc.clone();
+                        switch (pos) {
+                        case 'x':
+                            l.setX(x + v);
+                            break;
+                        case 'y':
+                            l.setY(y + v);
+                            break;
+                        case 'z':
+                            l.setZ(z + v);
+                            break;
+
+                        default:
+                            break;
+                        }
+                        stand.teleport(l);
+                    });
+                }
+            }, 50 * tickSpeed);
+        }
+        return task.execute();
+    }
+
     public static CompletableFuture<Boolean> rotate(String name, Integer value, Integer tickSpeed, Float amount) {
         var uuid = UUID.fromString(specialObjects.get(name));
         var stand = (ArmorStand) Bukkit.getWorld("world").getEntity(uuid);
@@ -369,6 +415,11 @@ public class AnimationTools {
         return (ArmorStand) Bukkit.getWorld("world").getEntity(uuid); 
     }
 
+    public static Entity getEntity(String entity){
+        var uuid = UUID.fromString(specialObjects.get(entity));
+        return Bukkit.getWorld("world").getEntity(uuid); 
+    }
+
     public static void setScreenValue(List<Location> locations, String str) {
         var array = str.toCharArray();
         var count = 0;
@@ -442,6 +493,10 @@ public class AnimationTools {
     public static List<Player> getPlayersInsideCube(Location pos1, Location pos2) {
         return Bukkit.getOnlinePlayers().stream().filter(p -> isInCube(pos1, pos2, p.getLocation()))
                 .map(p -> (Player) p).toList();
+    }
+
+    public static List<Player> getPlayersAdventureInsideCube(Location pos1, Location pos2){
+        return getPlayersInsideCube(pos1, pos2).stream().filter(player -> player.getGameMode() == GameMode.ADVENTURE).toList();
     }
 
     public static ArmorStand getFormattedStand(World world, Location loc) {

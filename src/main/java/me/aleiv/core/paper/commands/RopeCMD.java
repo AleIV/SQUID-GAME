@@ -41,6 +41,21 @@ public class RopeCMD extends BaseCommand {
         tools.enableRope(bool);
     }
 
+    @Subcommand("points")
+    public void points(CommandSender sender, Integer i){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Bossbar points rope " + i);
+        var tools = instance.getGame().getRopeGame();
+        tools.setPoints(i);
+        tools.updateBossBar();
+    }
+
+    @Subcommand("multiplier")
+    public void multiplier(CommandSender sender, Integer i){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Bossbar multiplier points rope " + i);
+        var tools = instance.getGame().getRopeGame();
+        tools.setMultiplier(i);
+    }
+
     @Subcommand("right-elevator")
     public void rightElevator(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Right elevator " + bool);

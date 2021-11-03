@@ -62,8 +62,6 @@ dependencies {
 
     // Npc
     compileOnly 'com.mojang:authlib:1.5.25'
-
-    implementation 'us.jcedeno:NPC-API:0.1.3.6'
     // EffectLib
     implementation 'com.elmakers.mine.bukkit:EffectLib:9.3'
 
