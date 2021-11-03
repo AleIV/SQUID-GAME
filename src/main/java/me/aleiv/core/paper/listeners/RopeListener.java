@@ -85,7 +85,7 @@ public class RopeListener implements Listener {
         var world = Bukkit.getWorld("world");
 
         var centerVector = AnimationTools.parseLocation(specialObjects.get("ROPE_CENTER"), world);
-        centerVector.add(0, 2, 0);
+        centerVector.add(0, 1, 0);
 
         var rightVector = AnimationTools.parseLocation(specialObjects.get("ROPE_RIGHT"), world);
         var vector = AnimationTools.getVector(centerVector, rightVector);
@@ -120,7 +120,7 @@ public class RopeListener implements Listener {
         var world = Bukkit.getWorld("world");
 
         var centerVector = AnimationTools.parseLocation(specialObjects.get("ROPE_CENTER"), world);
-        centerVector.add(0, 2, 0);
+        centerVector.add(0, 1, 0);
 
         var leftVector = AnimationTools.parseLocation(specialObjects.get("ROPE_LEFT"), world);
         var vector = AnimationTools.getVector(centerVector, leftVector);
