@@ -39,6 +39,7 @@ public class BukkitTCT extends TaskChainTool {
 
     @Override
     public CompletableFuture<Boolean> execute() {
+        this.totalTasks = queue.size();
         var future = new CompletableFuture<Boolean>();
 
         EXECUTOR_SERVICE.submit(() -> {

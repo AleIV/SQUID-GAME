@@ -15,8 +15,8 @@ public class TaskChainTool {
      * Use concurrent linked queue to preserve order and ensure many threads can
      * access the same resources at once.
      */
-    private ConcurrentLinkedQueue<Runnable> queue = new ConcurrentLinkedQueue<>();
-
+    protected ConcurrentLinkedQueue<Runnable> queue = new ConcurrentLinkedQueue<>();
+    protected int totalTasks;
     protected static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
 
     /**
@@ -32,6 +32,14 @@ public class TaskChainTool {
 
     public Runnable poll() {
         return queue.poll();
+    }
+
+    public int getTasksLeft(){
+        return totalTasks-queue.size();
+    }
+
+    public int getCurrentTask(){
+        return totalTasks-getTasksLeft();
     }
 
     /**
@@ -110,6 +118,7 @@ public class TaskChainTool {
      * @return CompletableFuture that completes when all tasks are completed.
      */
     public CompletableFuture<Boolean> execute() {
+        this.totalTasks = queue.size();
         var future = new CompletableFuture<Boolean>();
 
         EXECUTOR_SERVICE.submit(() -> {

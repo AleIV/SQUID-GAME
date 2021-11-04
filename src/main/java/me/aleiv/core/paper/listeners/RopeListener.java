@@ -113,7 +113,7 @@ public class RopeListener implements Listener {
     }
 
     @EventHandler
-    public void onRightWins(RightWinsEvent e) {
+    public void onRightWins(RightWinsEvent e){
         instance.broadcastMessage("RIGHT WINS");
 
         var specialObjects = AnimationTools.specialObjects;
@@ -129,6 +129,7 @@ public class RopeListener implements Listener {
         var l2 = AnimationTools.parseLocation(specialObjects.get("LEFT_SIDE_POS2"), world);
 
         var left = AnimationTools.getPlayersAdventureInsideCube(l1, l2);
+        
         var task = new BukkitTCT();
         for (int i = 0; i < 6; i++) {
             task.addWithDelay(new BukkitRunnable() {
