@@ -39,18 +39,21 @@ public class BukkitTCT extends TaskChainTool {
 
     @Override
     public CompletableFuture<Boolean> execute() {
-        return CompletableFuture.supplyAsync(() -> {
-            /** Loop to execute all tasks in order. */
+        var future = new CompletableFuture<Boolean>();
+
+        EXECUTOR_SERVICE.submit(() -> {
             while (!isEmpty()) {
-                var nextRunnable = poll();
+                var nextRunnable = this.poll();
                 if (nextRunnable instanceof BukkitRunnable bukkitRunnable)
                     handleBukkit(bukkitRunnable);
                 else
                     handleRunnable(nextRunnable); // use the method already defined in TaskChainTool.
 
             }
-            return true;
+            future.complete(true);
+
         });
+        return future;
     }
 
     /**
@@ -66,7 +69,7 @@ public class BukkitTCT extends TaskChainTool {
         while (!bukkitTask.isCancelled() && plugin.getServer().getScheduler().isCurrentlyRunning(id)) {
             // Hold on bukkit finishing the task.
             try {
-                Thread.sleep(50);
+                Thread.sleep(40);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -2,6 +2,9 @@ package me.aleiv.core.paper.utilities.TCT;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Quick util that allows developer to chain tasks together without having to
@@ -13,6 +16,15 @@ public class TaskChainTool {
      * access the same resources at once.
      */
     private ConcurrentLinkedQueue<Runnable> queue = new ConcurrentLinkedQueue<>();
+
+    protected static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
+
+    /**
+     * A static method that creates an empty task chain object.
+     */
+    public static TaskChainTool create() {
+        return new TaskChainTool();
+    }
 
     public boolean isEmpty() {
         return queue.isEmpty();
@@ -51,6 +63,27 @@ public class TaskChainTool {
     }
 
     /**
+     * Repeats the last task x amount of times.
+     * 
+     * @param times to repeat the last task.
+     * @return this instance of TaskChainTool.
+     */
+    public TaskChainTool repeat(int times) {
+        // Retrieve the head of queue without removing
+        var head = queue.peek();
+
+        if (head != null) {
+            // If head is not null, then we can repeat it
+            for (int i = 0; i < times; i++) {
+                queue.add(head);
+            }
+        }
+
+        return this;
+
+    }
+
+    /**
      * Builder method to add a task to the chain.
      * 
      * @param runnable The task to add.
@@ -58,14 +91,16 @@ public class TaskChainTool {
      * @return The builder object.
      */
     public TaskChainTool addWithDelay(Runnable runnable, long delay) {
-        queue.add(runnable);
+        queue.add(() -> {
+            runnable.run();
 
-        final var actualDelay = Math.abs(delay);
+            final var actualDelay = Math.abs(delay);
 
-        /** Ensure the delay is greater than 0ms */
-        if (actualDelay > 0)
-            queue.add(DelayTask.of(actualDelay));
+            /** Ensure the delay is greater than 0ms */
+            if (actualDelay > 0)
+                DelayTask.of(actualDelay).run();
 
+        });
         return this;
     }
 
@@ -75,13 +110,16 @@ public class TaskChainTool {
      * @return CompletableFuture that completes when all tasks are completed.
      */
     public CompletableFuture<Boolean> execute() {
-        return CompletableFuture.supplyAsync(() -> {
-            /** Loop to execute all tasks in order. */
+        var future = new CompletableFuture<Boolean>();
+
+        EXECUTOR_SERVICE.submit(() -> {
             while (!queue.isEmpty())
                 handleRunnable(poll());
 
-            return true;
+            future.complete(true);
+
         });
+        return future;
     }
 
     /**
@@ -90,16 +128,30 @@ public class TaskChainTool {
      * @param nextRunnable
      */
     public void handleRunnable(Runnable nextRunnable) {
-        var thread = new Thread(nextRunnable);
+
         try {
-            /**
-             * Join the thread so that it waits until whatever needs to be executed gets
-             * executed.
-             */
-            thread.start();
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            EXECUTOR_SERVICE.submit(nextRunnable).get();
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
         }
+
     }
+
+    /**
+     * Function to clone the current taskchaintool onto a different object.
+     * 
+     */
+    @Override
+    public TaskChainTool clone() {
+        var clone = new TaskChainTool();
+
+        for (var runnable : queue) {
+            clone.add(runnable);
+        }
+
+        return clone;
+    }
+
 }
