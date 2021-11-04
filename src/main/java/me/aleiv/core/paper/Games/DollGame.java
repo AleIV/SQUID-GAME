@@ -37,8 +37,8 @@ public class DollGame {
 
             AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.doll_door_open", 1f, 1f);
 
-            AnimationTools.rotate("DOLL_DOOR1_LEFT", 20, 1, 0.1f);
-            AnimationTools.rotate("DOLL_DOOR1_RIGHT", -20, 1, 0.1f);
+            AnimationTools.rotate("DOLL_DOOR1_LEFT", -20, 1, 0.1f);
+            AnimationTools.rotate("DOLL_DOOR1_RIGHT", 20, 1, 0.1f);
 
         }else{
 
@@ -46,8 +46,8 @@ public class DollGame {
 
             AnimationTools.playSoundDistance(loc1, 30, "squid:sfx.doll_door_close", 1f, 1f);
 
-            AnimationTools.rotate("DOLL_DOOR1_LEFT", -20, 1, 0.1f);
-            AnimationTools.rotate("DOLL_DOOR1_RIGHT", 20, 1, 0.1f);
+            AnimationTools.rotate("DOLL_DOOR1_LEFT", 20, 1, 0.1f);
+            AnimationTools.rotate("DOLL_DOOR1_RIGHT", -20, 1, 0.1f);
 
         }
     }
