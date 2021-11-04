@@ -37,6 +37,32 @@ public class BukkitTCT extends TaskChainTool {
         return plugin != null && plugin.isEnabled();
     }
 
+    /**
+     * Builder method to add a task to the chain.
+     * 
+     * @param runnable The task to add.
+     * @param delay    The delay in milliseconds after the task is executed.
+     * @return The builder object.
+     */
+
+    @Override
+    public TaskChainTool addWithDelay(Runnable runnable, long delay) {
+        queue.add(() -> {
+            if (runnable instanceof BukkitRunnable bRunnable)
+                handleBukkit(bRunnable);
+            else
+                runnable.run();
+
+            final var actualDelay = Math.abs(delay);
+
+            /** Ensure the delay is greater than 0ms */
+            if (actualDelay > 0)
+                DelayTask.of(actualDelay).run();
+
+        });
+        return this;
+    }
+
     @Override
     public CompletableFuture<Boolean> execute() {
         this.totalTasks = queue.size();
