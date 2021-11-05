@@ -3,8 +3,11 @@ package me.aleiv.core.paper.map;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -18,6 +21,7 @@ import lombok.Getter;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.map.commands.MapCommands;
 import me.aleiv.core.paper.map.listener.MapListener;
+import me.aleiv.core.paper.map.objects.AsyncCanvas;
 import me.aleiv.core.paper.map.packet.WrapperPlayServerMap;
 
 /**
@@ -33,6 +37,7 @@ public class MapSystemManager {
     private MapCommands mapCommands;
     public Boolean allowedRotation = false;
     private @Getter Map<MapView, UUID> map = new HashMap<>();
+    private @Getter Map<AsyncCanvas, UUID> canvas = new HashMap<>();
     private @Getter ProtocolManager protocolManager;
 
     /**
@@ -48,6 +53,39 @@ public class MapSystemManager {
         Bukkit.getPluginManager().registerEvents(this.mapListener, this.instance);
 
         this.protocolManager = ProtocolLibrary.getProtocolManager();
+    }
+
+    /**
+     * Gets the map view of a player.
+     * 
+     * @param map The map view.
+     * @return The map view.
+     */
+    public UUID getOwnerOfMap(MapView map) {
+        return this.map.get(map);
+    }
+
+    /**
+     * Get the owner entry of a canvas.
+     * 
+     * @param canvas The canvas.
+     * @return The Entry containing the {@link AsyncCanvas} as a key and
+     *         {@link UUID} as a value.
+     */
+    public Entry<AsyncCanvas, UUID> getOwnerOfCanvas(MapView canvas) {
+        return this.canvas.entrySet().stream().filter(entry -> entry.getKey().getMapView().equals(canvas)).findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * Gets the map views of the UUID.
+     * 
+     * @param player The player.
+     * @return The map views of the player.
+     */
+    public Set<AsyncCanvas> getMapsOfPlayer(Player player) {
+        return this.canvas.entrySet().stream().filter(entry -> entry.getValue().equals(player.getUniqueId()))
+                .map(entry -> entry.getKey()).collect(Collectors.toSet());
     }
 
     /**

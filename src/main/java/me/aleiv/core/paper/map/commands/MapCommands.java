@@ -29,6 +29,7 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.map.MapSystemManager;
+import me.aleiv.core.paper.map.objects.AsyncCanvas;
 import me.aleiv.core.paper.map.renderer.CustomRender;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo;
 
@@ -60,10 +61,11 @@ public class MapCommands extends BaseCommand {
             mapMeta.setMapView(mapView);
         }
         item.setItemMeta(meta);
+        // Put it in the map to store it and use it later.
+        manager.getCanvas().put(AsyncCanvas.of(mapView), sender.getUniqueId());
         // Give the player the map.
         sender.getInventory().addItem(item);
     }
-
 
     @Subcommand("toggle-rotation")
     public void toggleRotation(CommandSender sender) {

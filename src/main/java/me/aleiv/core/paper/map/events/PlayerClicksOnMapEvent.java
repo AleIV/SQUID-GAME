@@ -3,6 +3,7 @@ package me.aleiv.core.paper.map.events;
 import java.util.Optional;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -35,11 +36,14 @@ public class PlayerClicksOnMapEvent extends Event {
     private Block block;
     private Vector clickedPosition;
     public @Getter AsyncCanvas asyncCanvas;
+    private @Getter ItemFrame itemFrame;
 
-    public PlayerClicksOnMapEvent(Player player, Event triggedByEvent, AsyncCanvas asyncCanvas, boolean isAsync) {
+    public PlayerClicksOnMapEvent(Player player, Event triggedByEvent, AsyncCanvas asyncCanvas, ItemFrame itemFrame,
+            boolean isAsync) {
         super(isAsync);
         this.asyncCanvas = asyncCanvas;
         this.triggedByEvent = triggedByEvent;
+        this.itemFrame = itemFrame;
         this.player = player;
         // Calculate the block and clicked positions
         if (triggedByEvent instanceof PlayerInteractAtEntityEvent e) {
