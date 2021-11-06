@@ -3,11 +3,11 @@ package me.aleiv.core.paper.map.events;
 import java.util.Optional;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
@@ -35,11 +35,14 @@ public class PlayerClicksOnMapEvent extends Event {
     private Block block;
     private Vector clickedPosition;
     public @Getter AsyncCanvas asyncCanvas;
+    private @Getter ItemFrame itemFrame;
 
-    public PlayerClicksOnMapEvent(Player player, Event triggedByEvent, AsyncCanvas asyncCanvas, boolean isAsync) {
+    public PlayerClicksOnMapEvent(Player player, Event triggedByEvent, AsyncCanvas asyncCanvas, ItemFrame itemFrame,
+            boolean isAsync) {
         super(isAsync);
         this.asyncCanvas = asyncCanvas;
         this.triggedByEvent = triggedByEvent;
+        this.itemFrame = itemFrame;
         this.player = player;
         // Calculate the block and clicked positions
         if (triggedByEvent instanceof PlayerInteractAtEntityEvent e) {
@@ -47,8 +50,14 @@ public class PlayerClicksOnMapEvent extends Event {
             this.clickedPosition = e.getClickedPosition();
         } else if (triggedByEvent instanceof PlayerInteractEvent e) {
             this.block = e.getClickedBlock();
-            e.getBlockFace();
-            this.clickedPosition = e.getInteractionPoint().toVector();
+            var interactionPoint = e.getInteractionPoint();
+            var clickedBlock = interactionPoint.toBlockLocation();
+            var clickedVector = interactionPoint.toVector().toBlockVector();
+
+            var relativePointX = Math.abs(clickedBlock.getX()) - Math.abs(clickedVector.getX());
+            var relativePointZ = Math.abs(clickedVector.getZ()) - Math.abs(clickedBlock.getZ());
+            this.clickedPosition = new Vector(relativePointX, clickedBlock.getY(), relativePointZ);
+            System.out.println(clickedVector + ", " + clickedBlock + ", " + this.clickedPosition);
         }
     }
 
@@ -84,8 +93,8 @@ public class PlayerClicksOnMapEvent extends Event {
      * @return An optional containing the PlayerInteractEntityEvent, if there is
      *         one.
      */
-    public Optional<PlayerInteractEntityEvent> getTriggedByPlayerInteractEntityEvent() {
-        if (triggedByEvent instanceof PlayerInteractEntityEvent newEvent) {
+    public Optional<PlayerInteractAtEntityEvent> getTriggedByPlayerInteracAtEntityEvent() {
+        if (triggedByEvent instanceof PlayerInteractAtEntityEvent newEvent) {
             return Optional.of(newEvent);
         }
         return Optional.empty();

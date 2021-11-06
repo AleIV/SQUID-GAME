@@ -20,7 +20,6 @@ import org.bukkit.map.MapView;
 import org.bukkit.map.MapView.Scale;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.minecraft.server.v1_16_R3.BlockBase.e;
 
 /**
  * A class that manages the map system. In is intended to be used to handle the

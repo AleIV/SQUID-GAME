@@ -1,8 +1,5 @@
 package me.aleiv.core.paper.map.objects;
 
-import com.comphenix.protocol.events.PacketContainer;
-
-import org.bukkit.Bukkit;
 import org.bukkit.map.MapView;
 
 import lombok.Getter;
@@ -17,6 +14,7 @@ import me.aleiv.core.paper.map.packet.WrapperPlayServerMap;
  */
 public class AsyncCanvas {
 
+    private @Getter Matrix<Byte> matrix;
     private final @Getter MapView mapView;
 
     /**
@@ -26,6 +24,7 @@ public class AsyncCanvas {
      */
     public AsyncCanvas(MapView mapView) {
         this.mapView = mapView;
+        this.matrix = new Matrix<Byte>(128, 128);
     }
 
     /**
@@ -46,6 +45,13 @@ public class AsyncCanvas {
      * @return A packet containing the pixel change
      */
     public WrapperPlayServerMap updateMapPixel(int x, int z) {
+        if (matrix.getAtRowAndColumn(x, z) == null) {
+            matrix.setAtRowAndColumn(x, z, (byte) 24);
+            System.out.println("Pixel " + x + " " + z + " changed to " + matrix.getAtRowAndColumn(x, z));
+        } else {
+            System.out.println("Pixel already is " + matrix.getAtRowAndColumn(x, z));
+            return null;
+        }
         int mapId = mapView.getId();
         // Create a data array to store the 1 pixel update we'll be performing
         byte[] dataArray = new byte[1];
@@ -70,5 +76,4 @@ public class AsyncCanvas {
         return mapDataPacket;
     }
 
-    
 }

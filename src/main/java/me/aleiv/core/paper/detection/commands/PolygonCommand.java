@@ -78,7 +78,7 @@ public class PolygonCommand extends BaseCommand {
                 return;
             }
             polygonsInProgress.remove(id);
-            
+
             collisionManager.getPolygonList().add(polygon);
             player.sendMessage(Core.getMiniMessage().parse("<green>Committed the polygon."));
         } else {
@@ -87,13 +87,18 @@ public class PolygonCommand extends BaseCommand {
     }
 
     /**
+     * The format to stringify the coordinates of a block.
+     */
+    private static final String STRING_BLOCK_FORMAT = "(%s, %s, %s)";
+
+    /**
      * Stringifies a block
      * 
      * @param block The block to be stringified
      * @return
      */
     static String getCoordinates(Block block) {
-        return String.format("(%s, %s, %s)", block.getX(), block.getY(), block.getZ());
+        return String.format(STRING_BLOCK_FORMAT, block.getX(), block.getY(), block.getZ());
     }
 
 }
