@@ -34,7 +34,7 @@ public class SkinChanger {
             @Override
             public void run() {
                 realRun();
-            }
+            }   
 
             public void realRun() {
                 WrappedGameProfile profile = WrappedGameProfile.fromOfflinePlayer(Bukkit.getOfflinePlayer("Notch"));

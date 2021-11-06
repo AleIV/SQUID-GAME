@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -66,6 +67,11 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
+    public void onCredits(PlayerRespawnEvent e){
+
+    }
+
+    @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         var game = instance.getGame();
         var roles = game.getRoles();
@@ -83,7 +89,11 @@ public class GlobalListener implements Listener {
         var timer = game.getTimer();
         timer.getBossBar().addPlayer(player);
 
-        var city = new Location(Bukkit.getWorld("world"), 180.5, 35, 401.5);
+        var city = game.getCity();
+
+        if(city == null) game.setCity(new Location(Bukkit.getWorld("world"), 180.5, 35, 401.5));
+
+        
         if (game.getGameStage() == GameStage.LOBBY) {
             player.teleport(city);
 
@@ -104,16 +114,6 @@ public class GlobalListener implements Listener {
     public void onRespawn(PlayerDeathEvent e) {
         var player = e.getEntity();
 
-        player.setHealth(20);
-        player.setGameMode(GameMode.SPECTATOR);
-        player.getInventory().clear();
-        player.setHealth(20.0);
-        player.setFoodLevel(20);
-        player.setExp(0);
-        player.setLevel(0);
-
-        // player.getActivePotionEffects().forEach(all ->
-        // player.removePotionEffect(all.getType()));
     }
 
     @EventHandler
