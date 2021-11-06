@@ -20,7 +20,7 @@ public class Elevators {
     }
 
     public enum ElevatorType {
-        ONE, TWO, THREE, DOLL, HIDE_SEEK, POTATO, EXIT, CHICKEN
+        ONE, TWO, THREE, DOLL, HIDE_SEEK, POTATO, EXIT1, EXIT2, CHICKEN1, CHICKEN2, GOCHICKEN
     }
 
     public void elevatorTravel(ElevatorType elevator1, ElevatorType elevator2, Boolean bool){
@@ -58,18 +58,58 @@ public class Elevators {
             case POTATO ->{
                 potatoElevator(bool);
             }
-            case EXIT ->{
-                exitElevator(bool);
+            case EXIT1 ->{
+                exitElevator1(bool);
             }
 
-            case CHICKEN ->{
-                exitElevator(bool);
+            case EXIT2 ->{
+                exitElevator2(bool);
+            }
+
+            case CHICKEN1 ->{
+                chickenElevator1(bool);
+            }
+
+            case CHICKEN2 ->{
+                chickenElevator2(bool);
+            }
+
+            case GOCHICKEN ->{
+                goChickenElevator(bool);
             }
 
         }
     }
 
-    public void chickenElevator(Boolean bool){
+    public void goChickenElevator(Boolean bool){
+        var specialObjects = AnimationTools.specialObjects;
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("GOCHICKEN_ELEVATOR_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("GOCHICKEN_ELEVATOR_POS2"), world);
+
+        if(bool){
+
+            AnimationTools.fill(loc1, loc2, Material.AIR);
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
+
+            AnimationTools.move("GOCHICKEN_ELEVATOR_LEFT", "GOCHICKEN_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
+
+        }else{
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
+
+            var task = AnimationTools.move("GOCHICKEN_ELEVATOR_RIGHT", "GOCHICKEN_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
+
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
+        }
+    }
+
+    public void chickenElevator1(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
         var world = Bukkit.getWorld("world");
         var loc1 = AnimationTools.parseLocation(specialObjects.get("CHICKEN_ELEVATOR_POS1"), world);
@@ -88,6 +128,34 @@ public class Elevators {
             AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("CHICKEN_ELEVATOR_RIGHT", "CHICKEN_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
+
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
+        }
+    }
+
+    public void chickenElevator2(Boolean bool){
+        var specialObjects = AnimationTools.specialObjects;
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("CHICKEN_ELEVATOR2_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("CHICKEN_ELEVATOR2_POS2"), world);
+
+        if(bool){
+
+            AnimationTools.fill(loc1, loc2, Material.AIR);
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
+
+            AnimationTools.move("CHICKEN_ELEVATOR2_RIGHT", "CHICKEN_ELEVATOR2_LEFT", 28, 1, 'x', 0.1f);
+
+        }else{
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
+
+            var task = AnimationTools.move("CHICKEN_ELEVATOR2_LEFT", "CHICKEN_ELEVATOR2_RIGHT", 28, 1, 'x', 0.1f);
 
             task.thenAccept(action ->{
                 Bukkit.getScheduler().runTask(instance, tk ->{
@@ -126,11 +194,11 @@ public class Elevators {
         }
     }
 
-    public void exitElevator(Boolean bool){
+    public void exitElevator1(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
         var world = Bukkit.getWorld("world");
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("EXIT_ELEVATOR_POS1"), world);
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("EXIT_ELEVATOR_POS2"), world);
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("EXIT1_ELEVATOR_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("EXIT1_ELEVATOR_POS2"), world);
 
         if(bool){
 
@@ -138,13 +206,41 @@ public class Elevators {
 
             AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
 
-            AnimationTools.move("EXIT_ELEVATOR_LEFT", "EXIT_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
+            AnimationTools.move("EXIT1_ELEVATOR_LEFT", "EXIT1_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
 
         }else{
 
             AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
 
-            var task = AnimationTools.move("EXIT_ELEVATOR_RIGHT", "EXIT_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
+            var task = AnimationTools.move("EXIT1_ELEVATOR_RIGHT", "EXIT1_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
+
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
+        }
+    }
+
+    public void exitElevator2(Boolean bool){
+        var specialObjects = AnimationTools.specialObjects;
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("EXIT2_ELEVATOR_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("EXIT2_ELEVATOR_POS2"), world);
+
+        if(bool){
+
+            AnimationTools.fill(loc1, loc2, Material.AIR);
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_open", 1f, 1f);
+
+            AnimationTools.move("EXIT2_ELEVATOR_RIGHT", "EXIT2_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
+
+        }else{
+
+            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.tp_elevator_close", 1f, 1f);
+
+            var task = AnimationTools.move("EXIT2_ELEVATOR_LEFT", "EXIT2_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
 
             task.thenAccept(action ->{
                 Bukkit.getScheduler().runTask(instance, tk ->{
@@ -333,7 +429,27 @@ public class Elevators {
         loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_CHICKEN_LOC1"), world);
         loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_CHICKEN_LOC2"), world);
 
-        elevators.put(ElevatorType.CHICKEN, new Elevator(loc1, loc2));
+        elevators.put(ElevatorType.CHICKEN1, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR2_CHICKEN_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR2_CHICKEN_LOC2"), world);
+
+        elevators.put(ElevatorType.CHICKEN2, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_EXIT1_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_EXIT1_LOC2"), world);
+
+        elevators.put(ElevatorType.EXIT1, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_EXIT2_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_EXIT2_LOC2"), world);
+
+        elevators.put(ElevatorType.EXIT2, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_GOCHICKEN_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("ELEVATOR_GOCHICKEN_LOC2"), world);
+
+        elevators.put(ElevatorType.GOCHICKEN, new Elevator(loc1, loc2));
 
     }
 }
