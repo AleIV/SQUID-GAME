@@ -2,6 +2,7 @@ package me.aleiv.core.paper.map.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.EventHandler;
@@ -12,10 +13,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 
+import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.map.MapSystemManager;
 import me.aleiv.core.paper.map.events.PlayerClicksOnMapEvent;
+import me.aleiv.core.paper.map.objects.AsyncCanvas;
 import me.aleiv.core.paper.map.packet.WrapperPlayServerMap;
+import me.aleiv.core.paper.utilities.LineVector;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.minecraft.server.v1_16_R3.PacketPlayOutGameStateChange;
 
 public class MapListener implements Listener {
     private MapSystemManager mapSystemManager;
@@ -79,6 +84,35 @@ public class MapListener implements Listener {
 
                 if (owner != null && owner.getValue() == player.getUniqueId()) {
 
+                    var block2 = itemFrame.getLocation().toBlockLocation();
+                    var relativeX = (block2.getX() + 1) - interactionPoint.getX();
+                    var relativeZ = (block2.getZ() + 1) - interactionPoint.getZ();
+                    AsyncCanvas c = owner.getKey();
+
+                    // Get the location of the player's eyes/head.
+                    var playerEyes = player.getEyeLocation();
+                    // Draw particles to see the vector of the player's eyes.
+                    LineVector.of(event.getInteractionPoint().toVector(), playerEyes.toVector()).getPointsInBetween()
+                            .forEach(vectors -> {
+                                var location = vectors.toLocation(player.getWorld());
+
+                                Bukkit.getScheduler().runTaskLater(Core.getInstance(), () -> {
+                                    location.getWorld().spawnParticle(Particle.COMPOSTER, location, 1);
+
+                                }, 100L);
+
+                            });
+
+                    // Currently works with Clockwise edges only
+                    // Obtain the adjusted pixels.
+                    var adjustedX = ((int) (127 * relativeX));
+                    var adjustedY = ((int) (127 - (int) (127 * relativeZ)));
+
+                    System.out.println("Adjusted X: " + adjustedX + " Adjusted Y: " + adjustedY);
+                    // Draw onto canvas
+                    c.updateMapPixel(adjustedX, adjustedY);
+
+                    
                     Bukkit.getPluginManager().callEvent(new PlayerClicksOnMapEvent(player, event, owner.getKey(),
                             itemFrame, !Bukkit.isPrimaryThread()));
 
@@ -153,33 +187,33 @@ public class MapListener implements Listener {
 
             case NONE:
             case FLIPPED: {
-                x = (int) Math.ceil((position.getX()) * 128);
-                z = (int) Math.ceil((position.getZ()) * 128);
-                packet = canvas.updateMapPixel(x, z);
+                x = (int) Math.ceil((position.getX()) * 128) / 2;
+                z = (int) Math.ceil((position.getZ()) * 128) / 2;
+                packet = canvas.updateMapPixel(Math.min(127, x), Math.min(127, z));
                 break;
             }
             case CLOCKWISE_45:
             case FLIPPED_45:
 
-                z = (int) Math.ceil((position.getX()) * 128);
-                x = (int) Math.ceil((position.getZ()) * 128);
-                packet = canvas.updateMapPixel(x, 128 - z);
+                z = (int) Math.ceil((position.getX()) * 128) / 2;
+                x = (int) Math.ceil((position.getZ()) * 128) / 2;
+                packet = canvas.updateMapPixel(Math.min(x, 127), Math.min(128 - z, 127));
 
                 break;
             case COUNTER_CLOCKWISE:
             case CLOCKWISE:
 
-                x = (int) Math.ceil((position.getX()) * 128);
-                z = (int) Math.ceil((position.getZ()) * 128);
-                packet = canvas.updateMapPixel(128 - x, 128 - z);
+                x = (int) Math.ceil((position.getX()) * 128) / 2;
+                z = (int) Math.ceil((position.getZ()) * 128) / 2;
+                packet = canvas.updateMapPixel(Math.min(128 - x, 127), Math.min(128 - z, 127));
 
                 break;
             case COUNTER_CLOCKWISE_45:
             case CLOCKWISE_135:
 
-                z = (int) Math.ceil((position.getX()) * 128);
-                x = (int) Math.ceil((position.getZ()) * 128);
-                packet = canvas.updateMapPixel(128 - x, z);
+                z = (int) Math.ceil((position.getX()) * 128) / 2;
+                x = (int) Math.ceil((position.getZ()) * 128) / 2;
+                packet = canvas.updateMapPixel(Math.min(128 - x, 127), Math.min(127, z));
 
                 break;
             }
@@ -187,6 +221,8 @@ public class MapListener implements Listener {
         }
         if (packet != null)
             packet.broadcastPacket();
+
+        System.out.println("x: " + x + " z: " + z);
 
         // Now somehow get the map involved and render the pixel onto it.
 

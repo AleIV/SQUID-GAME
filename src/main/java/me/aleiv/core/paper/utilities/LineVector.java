@@ -15,7 +15,7 @@ public @Data @AllArgsConstructor(staticName = "of") class LineVector {
     Vector u;
     Vector v;
 
-    public static Double interval = 0.2;
+    public static Double interval = 0.05;
 
     /**
      * @return The distance between the two points. This also represents the length
