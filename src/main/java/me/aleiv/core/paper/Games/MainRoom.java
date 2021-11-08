@@ -3,7 +3,6 @@ package me.aleiv.core.paper.Games;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -18,12 +17,6 @@ public class MainRoom {
     public MainRoom(Core instance){
         this.instance = instance;
 
-    }
-
-    public void makeAllSleep(){
-        var players = Bukkit.getOnlinePlayers().stream().map(player -> (Player) player).toList();
-        var beds = AnimationTools.findLocations("BED");
-        AnimationTools.forceSleep(players, beds);
     }
 
     public void moveTube(Boolean bool){

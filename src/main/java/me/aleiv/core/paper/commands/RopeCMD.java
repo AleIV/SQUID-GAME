@@ -1,5 +1,7 @@
 package me.aleiv.core.paper.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
 import co.aikar.commands.BaseCommand;
@@ -7,6 +9,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
+import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
 
@@ -23,8 +26,26 @@ public class RopeCMD extends BaseCommand {
     @Subcommand("guillotine")
     public void guillotine(CommandSender sender, Boolean bool){
         var tools = instance.getGame().getRopeGame();
-        tools.moveGuillotine(bool);
+        var task = tools.moveGuillotine(bool);
         sender.sendMessage(ChatColor.DARK_AQUA + "Guillotine move " + bool);
+
+        if(!bool){
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    var ropeEntities1 = tools.getLeftRope();
+                    ropeEntities1.forEach(stand -> {
+                    AnimationTools.setStandModel(stand, Material.BRICK, 38);
+
+                    });
+
+                    var ropeEntities2 = tools.getRightRope();
+                    ropeEntities2.forEach(stand -> {
+                    AnimationTools.setStandModel(stand, Material.BRICK, 38);
+                    });
+
+                });
+            });
+        }
     }
 
     @Subcommand("gate")
@@ -34,11 +55,22 @@ public class RopeCMD extends BaseCommand {
         tools.ropeGate(bool);
     }
 
+    @Subcommand("ingame")
+    public void play(CommandSender sender, Boolean bool){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Rope ingame " + bool);
+        var tools = instance.getGame().getRopeGame();
+        tools.setInGame(bool);
+    }
+
     @Subcommand("bossbar")
     public void bossbar(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Bossbar rope " + bool);
         var tools = instance.getGame().getRopeGame();
         tools.enableRope(bool);
+
+        if(tools.getRightRope().isEmpty() || tools.getLeftRope().isEmpty()){
+            tools.initRope();
+        }
     }
 
     @Subcommand("points")

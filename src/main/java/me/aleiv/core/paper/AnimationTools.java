@@ -31,11 +31,13 @@ import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import me.aleiv.core.paper.Game.DeathReason;
+import me.aleiv.core.paper.map.packet.WrapperPlayServerGameStateChange;
 import me.aleiv.core.paper.objects.NoteBlockData;
 import me.aleiv.core.paper.objects.OffSet;
 import me.aleiv.core.paper.utilities.LineVector;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import us.jcedeno.libs.rapidinv.ItemBuilder;
+
 
 public class AnimationTools {
 
@@ -103,6 +105,23 @@ public class AnimationTools {
         var world = Bukkit.getWorld("world");
         return specialObjects.entrySet().stream().filter(entry -> entry.getKey().contains(str))
                 .map(entry -> parseLocation(entry.getValue(), world)).collect(Collectors.toList());
+    }
+
+    public static void sendCredits(Player player) {
+        // Create packet (src https://wiki.vg/Protocol#Change_Game_State)
+        var packet = new WrapperPlayServerGameStateChange();
+        // Set reason to 4 (win game)
+        packet.setReason(4);
+        // Send value to 1 (show end credits)
+        packet.setValue(1);
+        // Send the credits
+        packet.sendPacket(player.getPlayer());
+    }
+
+    public static void setStandModel(ArmorStand stand, Material material, Integer model){
+        var equip = stand.getEquipment();
+        var item = material == Material.AIR ? null : new ItemBuilder(material).meta(meta -> meta.setCustomModelData(model)).build();
+        equip.setHelmet(item);
     }
 
     public static Location getNearbyLocation(List<Location> locations, Location location) {

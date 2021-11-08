@@ -17,6 +17,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerRespawnEvent.RespawnFlag;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -29,10 +30,15 @@ import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.Role;
 import me.aleiv.core.paper.events.GameTickEvent;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.md_5.bungee.api.ChatColor;
 
 public class GlobalListener implements Listener {
 
     Core instance;
+
+    String RED = "<#c11f27>";
+    String CYAN = "<#4be2ba>";
 
     public GlobalListener(Core instance) {
         this.instance = instance;
@@ -62,13 +68,34 @@ public class GlobalListener implements Listener {
             roles.put(uuid, Role.DEAD);
         }
 
-        //TODO: listener for cancel leather take, death msgs, BOOLEAN on travel elevator
+        //TODO: listener for cancel leather take
+
+        if(player.hasPermission("admin.perm")){
+            e.deathMessage(MiniMessage.get().parse(""));
+        }else{
+            e.deathMessage(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "0 " + player.getName() + CYAN + " eliminated."));
+        }
 
     }
 
     @EventHandler
     public void onCredits(PlayerRespawnEvent e){
+        var flags = e.getRespawnFlags();
+        var player = e.getPlayer();
+        player.setGameMode(GameMode.SPECTATOR);
 
+        if(flags.contains(RespawnFlag.BED_SPAWN) && flags.contains(RespawnFlag.END_PORTAL)){
+            //end credits
+            if(!player.hasPermission("admin.perm")){
+                player.kick(MiniMessage.get().parse(RED + "¡Gracias por jugar!"));
+            }
+
+        }else if(flags.contains(RespawnFlag.BED_SPAWN)){
+            //just died
+
+            //TODO: SEND Credits
+            //AnimationTools.sendCredits(player);
+        }
     }
 
     @EventHandler
@@ -77,6 +104,8 @@ public class GlobalListener implements Listener {
         var roles = game.getRoles();
         var player = e.getPlayer();
         var uuid = player.getUniqueId().toString();
+
+        //TODO: JOIN MSGS
 
         if (!roles.containsKey(uuid)) {
             if (player.hasPermission("admin.perm")) {
@@ -107,12 +136,6 @@ public class GlobalListener implements Listener {
         } else {
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
         }
-
-    }
-
-    @EventHandler
-    public void onRespawn(PlayerDeathEvent e) {
-        var player = e.getEntity();
 
     }
 

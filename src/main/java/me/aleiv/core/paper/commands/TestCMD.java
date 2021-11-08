@@ -1,5 +1,7 @@
 package me.aleiv.core.paper.commands;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -43,6 +45,12 @@ public class TestCMD extends BaseCommand {
     @Subcommand("playsound")
     public void test(Player sender, String str) {
         AnimationTools.playSoundDistance(sender.getLocation(), 10, str, 1f, 1f);
+
+    }
+
+    @Subcommand("anim")
+    public void testFade(Player sender, Integer from, Integer until, Integer fadeIn, Integer fadeOut) {
+        instance.getGame().getGlobalGame().playAnimation(List.of(sender), from, until, fadeIn, fadeOut);
 
     }
 

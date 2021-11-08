@@ -2,6 +2,7 @@ package me.aleiv.core.paper.Games;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,6 +11,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -30,15 +32,31 @@ public class RopeGame {
     BossBar flagBar;
     BossBar yellowBar;
 
-    @Getter @Setter Integer points = 0;
+    @Getter
+    @Setter
+    Integer points = 0;
 
-    @Getter @Setter Integer multiplier = 1;
+    @Getter
+    @Setter
+    Integer multiplier = 1;
 
     String bar = Character.toString('\u0250');
     String rope = Character.toString('\u0251');
     String flag = Character.toString('\u0252');
 
-    @Getter Boolean ropeBossbar = false;
+    @Getter
+    Boolean ropeBossbar = false;
+    @Getter
+    @Setter
+    Boolean inGame = false;
+
+    @Getter
+    @Setter
+    List<ArmorStand> rightRope = new ArrayList<>();
+    @Getter
+    @Setter
+    List<ArmorStand> leftRope = new ArrayList<>();
+
 
     public RopeGame(Core instance) {
         this.instance = instance;
@@ -70,24 +88,50 @@ public class RopeGame {
         flagBar.setVisible(bool);
         yellowBar.setVisible(bool);
         updateBossBar();
+
     }
 
-    public void addPoints(Integer points){
-        if(this.points == 246 || this.points == -246) return;
+    public void initRope() {
+        var specialObjects = AnimationTools.specialObjects;
+        var world = Bukkit.getWorld("world");
+        var r1 = AnimationTools.parseLocation(specialObjects.get("RIGHT_SIDE_POS1"), world);
+        var r2 = AnimationTools.parseLocation(specialObjects.get("RIGHT_SIDE_POS2"), world);
 
-        var p = Math.abs(points*multiplier);
+        var l1 = AnimationTools.parseLocation(specialObjects.get("LEFT_SIDE_POS1"), world);
+        var l2 = AnimationTools.parseLocation(specialObjects.get("LEFT_SIDE_POS2"), world);
+
+        var entitys = world.getEntities().stream().filter(entity -> entity instanceof ArmorStand).map(entity -> (ArmorStand) entity).toList();
+
+        rightRope.clear();
+        leftRope.clear();
+
+        entitys.stream().filter(entity -> AnimationTools.isInCube(r1, r2, entity.getLocation())).toList().forEach(stand ->{
+            rightRope.add(stand);
+        });
+
+        entitys.stream().filter(entity -> AnimationTools.isInCube(l1, l2, entity.getLocation())).toList().forEach(stand ->{
+            leftRope.add(stand);
+        });
+
+    }
+
+    public void addPoints(Integer points) {
+        if (this.points == 246 || this.points == -246)
+            return;
+
+        var p = Math.abs(points * multiplier);
         var v = points < 0 ? -p : p;
-        
-        if(this.points+v >= 246){
+
+        if (this.points + v >= 246) {
             this.points = 246;
             Bukkit.getPluginManager().callEvent(new RightWinsEvent(!Bukkit.isPrimaryThread()));
 
-        }else if(this.points+v <= -246){
+        } else if (this.points + v <= -246) {
             this.points = -246;
             Bukkit.getPluginManager().callEvent(new LeftWinsEvent(!Bukkit.isPrimaryThread()));
 
-        }else{
-            this.points+=v;
+        } else {
+            this.points += v;
 
         }
 
@@ -262,14 +306,16 @@ public class RopeGame {
         }
     }
 
-    public void moveGuillotine(Boolean bool) {
+    public CompletableFuture<Boolean> moveGuillotine(Boolean bool) {
         var loc = new Location(Bukkit.getWorld("world"), 241, 61, -301);
         if (bool) {
 
-            AnimationTools.move("ROPE_GUILLOTINE", -12, 1, 'y', 1f);
             AnimationTools.playSoundDistance(loc, 200, "squid:sfx.rope_guillotine", 1f, 1f);
+            return AnimationTools.move("ROPE_GUILLOTINE", -12, 1, 'y', 1f);
+
         } else {
-            AnimationTools.move("ROPE_GUILLOTINE", 12, 1, 'y', 1f);
+
+            return AnimationTools.move("ROPE_GUILLOTINE", 12, 1, 'y', 1f);
         }
     }
 

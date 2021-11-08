@@ -1,6 +1,7 @@
 package me.aleiv.core.paper.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +14,7 @@ import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.events.LeftWinsEvent;
 import me.aleiv.core.paper.events.RightWinsEvent;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import net.md_5.bungee.api.ChatColor;
 
 public class RopeListener implements Listener {
 
@@ -27,7 +29,7 @@ public class RopeListener implements Listener {
         var game = instance.getGame();
         var rope = game.getRopeGame();
         var entity = e.getRightClicked();
-        if (entity instanceof ArmorStand stand && rope.getRopeBossbar()) {
+        if (entity instanceof ArmorStand stand && rope.getRopeBossbar() && rope.getInGame()) {
             var specialObjects = AnimationTools.specialObjects;
             var world = Bukkit.getWorld("world");
 
@@ -52,6 +54,8 @@ public class RopeListener implements Listener {
                     p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
                 });
 
+                //TODO: MAKE SWING
+
             } else if (left.contains(player)) {
                 rope.addPoints(-1);
 
@@ -62,6 +66,7 @@ public class RopeListener implements Listener {
                     p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
                 });
 
+                //TODO: MAKE SWING
             }
 
         }
@@ -79,13 +84,14 @@ public class RopeListener implements Listener {
 
     @EventHandler
     public void onLeftWins(LeftWinsEvent e) {
-        instance.broadcastMessage("LEFT WINS");
+        var game = instance.getGame();
+        var rope = game.getRopeGame();
+        instance.adminMessage(ChatColor.DARK_RED + "LEFT WINS");
 
         var specialObjects = AnimationTools.specialObjects;
         var world = Bukkit.getWorld("world");
 
         var centerVector = AnimationTools.parseLocation(specialObjects.get("ROPE_CENTER"), world);
-        centerVector.add(0, 1, 0);
 
         var rightVector = AnimationTools.parseLocation(specialObjects.get("ROPE_RIGHT"), world);
         var vector = AnimationTools.getVector(centerVector, rightVector);
@@ -96,31 +102,45 @@ public class RopeListener implements Listener {
 
         var right = AnimationTools.getPlayersAdventureInsideCube(r1, r2);
         
-        var task = new BukkitTCT();
-        for (int i = 0; i < 6; i++) {
-            task.addWithDelay(new BukkitRunnable() {
-                @Override
-                public void run() {
-                    right.forEach(p -> {
-                        p.setVelocity(vector);
-                    });
+        var guillotine = rope.moveGuillotine(true);
+
+        guillotine.thenAccept(action ->{
+            var task = new BukkitTCT();
+            for (int i = 0; i < 5; i++) {
+                task.addWithDelay(new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        right.forEach(p -> {
+                            p.setVelocity(vector);
+                        });
+                        
+                    }
                     
-                }
-                
-            }, 50);
-        }
-        task.execute();
+                }, 50);
+            }
+            
+            task.execute();
+
+            Bukkit.getScheduler().runTask(instance, tsk ->{
+                var ropeEntities = rope.getRightRope();
+                ropeEntities.forEach(stand -> {
+                    AnimationTools.setStandModel(stand, Material.AIR, 0);
+                });
+            });
+        });
+
     }
 
     @EventHandler
     public void onRightWins(RightWinsEvent e){
-        instance.broadcastMessage("RIGHT WINS");
+        var game = instance.getGame();
+        var rope = game.getRopeGame();
+        instance.adminMessage(ChatColor.DARK_RED + "RIGHT WINS");
 
         var specialObjects = AnimationTools.specialObjects;
         var world = Bukkit.getWorld("world");
 
         var centerVector = AnimationTools.parseLocation(specialObjects.get("ROPE_CENTER"), world);
-        centerVector.add(0, 1, 0);
 
         var leftVector = AnimationTools.parseLocation(specialObjects.get("ROPE_LEFT"), world);
         var vector = AnimationTools.getVector(centerVector, leftVector);
@@ -130,20 +150,33 @@ public class RopeListener implements Listener {
 
         var left = AnimationTools.getPlayersAdventureInsideCube(l1, l2);
         
-        var task = new BukkitTCT();
-        for (int i = 0; i < 6; i++) {
-            task.addWithDelay(new BukkitRunnable() {
-                @Override
-                public void run() {
-                    left.forEach(p -> {
-                        p.setVelocity(vector);
-                    });
+
+        var guillotine = rope.moveGuillotine(true);
+
+        guillotine.thenAccept(action ->{
+            var task = new BukkitTCT();
+            for (int i = 0; i < 5; i++) {
+                task.addWithDelay(new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        left.forEach(p -> {
+                            p.setVelocity(vector);
+                        });
+                        
+                    }
                     
-                }
-                
-            }, 50);
-        }
-        task.execute();
+                }, 50);
+            }
+            task.execute();
+
+            Bukkit.getScheduler().runTask(instance, tsk ->{
+                var ropeEntities = rope.getLeftRope();
+                ropeEntities.forEach(stand -> {
+                    AnimationTools.setStandModel(stand, Material.AIR, 0);
+                });
+            });
+        });
+
     }
 
 }
