@@ -14,6 +14,7 @@ import me.aleiv.core.paper.Games.ChairGame;
 import me.aleiv.core.paper.Games.CookieGame;
 import me.aleiv.core.paper.Games.DollGame;
 import me.aleiv.core.paper.Games.Elevators;
+import me.aleiv.core.paper.Games.GlobalGame;
 import me.aleiv.core.paper.Games.HideSeekGame;
 import me.aleiv.core.paper.Games.MainRoom;
 import me.aleiv.core.paper.Games.PotatoGame;
@@ -32,6 +33,8 @@ public class Game extends BukkitRunnable {
     Timer timer;
 
     //GAMES
+    GlobalGame globalGame;
+
     MainRoom mainRoom;
     DollGame dollGame;
     RopeGame ropeGame;
@@ -60,6 +63,8 @@ public class Game extends BukkitRunnable {
 
         this.timer = new Timer(instance, (int) gameTime);
 
+        this.globalGame = new GlobalGame(instance);
+        
         this.mainRoom = new MainRoom(instance);
         this.ropeGame = new RopeGame(instance);
         this.dollGame = new DollGame(instance);

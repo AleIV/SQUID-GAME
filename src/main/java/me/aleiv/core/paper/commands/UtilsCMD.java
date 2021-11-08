@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
@@ -38,6 +37,18 @@ public class UtilsCMD extends BaseCommand {
         tools.setCity(sender.getLocation());
     }
 
+    @Subcommand("gas")
+    public void sendGas(CommandSender sender){
+        var tools = instance.getGame();
+        tools.getGlobalGame().applyGas(Bukkit.getOnlinePlayers().stream().map(p -> (Player) p).toList());
+    }
+
+    @Subcommand("countdown")
+    public void sendCount(CommandSender sender){
+        var tools = instance.getGame();
+        tools.getGlobalGame().sendCountDown(Bukkit.getOnlinePlayers().stream().map(p -> (Player) p).toList());
+    }
+
     @Subcommand("role-global")
     public void roleGlobal(CommandSender sender, Role role) {
         var game = instance.getGame();
@@ -50,6 +61,8 @@ public class UtilsCMD extends BaseCommand {
         
         sender.sendMessage(ChatColor.DARK_AQUA + "Global role set to " + role.toString().toLowerCase());
     }
+
+    
 
 
 }
