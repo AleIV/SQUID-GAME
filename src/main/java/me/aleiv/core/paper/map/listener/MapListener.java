@@ -20,7 +20,6 @@ import me.aleiv.core.paper.map.objects.AsyncCanvas;
 import me.aleiv.core.paper.map.packet.WrapperPlayServerMap;
 import me.aleiv.core.paper.utilities.LineVector;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.minecraft.server.v1_16_R3.PacketPlayOutGameStateChange;
 
 public class MapListener implements Listener {
     private MapSystemManager mapSystemManager;
@@ -112,7 +111,6 @@ public class MapListener implements Listener {
                     // Draw onto canvas
                     c.updateMapPixel(adjustedX, adjustedY);
 
-                    
                     Bukkit.getPluginManager().callEvent(new PlayerClicksOnMapEvent(player, event, owner.getKey(),
                             itemFrame, !Bukkit.isPrimaryThread()));
 
