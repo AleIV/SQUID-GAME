@@ -17,12 +17,19 @@ import co.aikar.commands.annotation.Subcommand;
 import me.aleiv.core.paper.Core;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo;
 
+/**
+ * A command to interact with the skin-tool app from minecraft.
+ * 
+ * @author jcedeno
+ */
 @CommandAlias("skin")
 public class SkinCMD extends BaseCommand {
 
     public SkinCMD(Core instance) {
+        // register command completion
         instance.getCommandManager().getCommandCompletions().registerStaticCompletion("variants",
                 List.of("civilian", "guard", "participant", "tux"));
+        // register the command itself
         instance.getCommandManager().registerCommand(this);
     }
 

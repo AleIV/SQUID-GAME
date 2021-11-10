@@ -24,6 +24,7 @@ import me.aleiv.core.paper.commands.HideSeekCMD;
 import me.aleiv.core.paper.commands.MainCMD;
 import me.aleiv.core.paper.commands.PotatoCMD;
 import me.aleiv.core.paper.commands.RopeCMD;
+import me.aleiv.core.paper.commands.SkinCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.commands.TestCMD;
@@ -59,6 +60,7 @@ public class Core extends JavaPlugin {
     private @Getter VectorsManager vectorManager;
     private @Getter MapSystemManager mapSystemManager;
     private @Getter EffectManager effectManager;
+    private @Getter SkinCMD skinCMD;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
@@ -117,6 +119,9 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new UtilsCMD(this));
         commandManager.registerCommand(new SpecialCMD(this));
         commandManager.registerCommand(new TestCMD(this));
+
+        // Register skin command
+        this.skinCMD = new SkinCMD(this);
 
         // Start collision manager
         this.collisionManager = new CollisionManager(this);
