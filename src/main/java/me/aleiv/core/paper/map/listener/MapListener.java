@@ -19,7 +19,6 @@ import me.aleiv.core.paper.map.events.PlayerClicksOnMapEvent;
 import me.aleiv.core.paper.map.objects.AsyncCanvas;
 import me.aleiv.core.paper.map.packet.WrapperPlayServerMap;
 import me.aleiv.core.paper.utilities.LineVector;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class MapListener implements Listener {
     private MapSystemManager mapSystemManager;
@@ -107,7 +106,6 @@ public class MapListener implements Listener {
                     var adjustedX = ((int) (127 * relativeX));
                     var adjustedY = ((int) (127 - (int) (127 * relativeZ)));
 
-                    System.out.println("Adjusted X: " + adjustedX + " Adjusted Y: " + adjustedY);
                     // Draw onto canvas
                     c.updateMapPixel(adjustedX, adjustedY);
 
@@ -119,11 +117,6 @@ public class MapListener implements Listener {
             }
 
         }
-        event.getPlayer()
-                .sendMessage(MiniMessage.get()
-                        .parse("<green>Clicked block is <white>" + block.getType() + "</white> with coordinates <gold>"
-                                + block.getX() + ", " + block.getY() + ", " + block.getZ() + "</gold></green>"));
-
     }
 
     public void createMap(World world) {
@@ -135,10 +128,6 @@ public class MapListener implements Listener {
         var canvas = e.getAsyncCanvas();
 
         var frame = e.getItemFrame();
-        if (frame != null) {
-            e.getPlayer().sendMessage(MiniMessage.get().parse(
-                    "<Green>The clicked map's item frame's rotation is: <b><white> " + frame.getRotation() + "</b>/"));
-        }
 
         int x = 0, z = 0;
         var position = e.getClickedPosition().toBlockVector();
@@ -219,8 +208,6 @@ public class MapListener implements Listener {
         }
         if (packet != null)
             packet.broadcastPacket();
-
-        System.out.println("x: " + x + " z: " + z);
 
         // Now somehow get the map involved and render the pixel onto it.
 

@@ -47,9 +47,10 @@ public class AsyncCanvas {
     public WrapperPlayServerMap updateMapPixel(int x, int z) {
         if (matrix.getAtRowAndColumn(x, z) == null) {
             matrix.setAtRowAndColumn(x, z, (byte) 24);
-            System.out.println("Pixel " + x + " " + z + " changed to " + matrix.getAtRowAndColumn(x, z));
+            // System.out.println("Pixel " + x + " " + z + " changed to " +
+            // matrix.getAtRowAndColumn(x, z));
         } else {
-            System.out.println("Pixel already is " + matrix.getAtRowAndColumn(x, z));
+            // System.out.println("Pixel already is " + matrix.getAtRowAndColumn(x, z));
             return null;
         }
         int mapId = mapView.getId();
