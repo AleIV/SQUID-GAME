@@ -6,6 +6,7 @@ import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.properties.Property;
 
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -40,6 +41,8 @@ public class SkinCMD extends BaseCommand {
         var previousSkins = SkinToolApi.getPlayerSkins(sender.getUniqueId());
 
         if (previousSkins != null) {
+            System.out.println(previousSkins);
+
             var iterator = previousSkins.getAsJsonArray("skins").iterator();
 
             JsonObject finalSkin = null;
@@ -64,7 +67,8 @@ public class SkinCMD extends BaseCommand {
                     return;
                 }
                 // Apply the skin to the player
-                skinSwapper(sender, value, signature.getAsString());
+                Bukkit.getScheduler().runTask(Core.getInstance(),
+                        () -> skinSwapper(sender, value, signature.getAsString()));
 
             } else {
                 // Notify the user that the skin they requested doesn't exist
@@ -111,6 +115,7 @@ public class SkinCMD extends BaseCommand {
     }
 
     private void skinSwapper(Player player, String texture, String signature) {
+        player.sendMessage(Core.getMiniMessage().parse("<green>Changing your skin..."));
         var entityPlayer = ((CraftPlayer) player.getPlayer()).getHandle();
         var prof = entityPlayer.getProfile();
         var con = entityPlayer.playerConnection;

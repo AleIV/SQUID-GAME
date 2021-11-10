@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
@@ -23,9 +24,9 @@ public class SkinToolApi {
     /**
      * The endpoint to check if a player has a skin already created. Get Request.
      */
-    private final static String GET_SKIN_URI = SKIN_TOOL_URI + "/get/";
+    private final static String GET_SKIN_URI = SKIN_TOOL_URI + "/skin/get/";
     /** The endpoint to create a new skin. PUT Request. */
-    private final static String CREATE_SKIN_URI = SKIN_TOOL_URI + "/create/";
+    private final static String CREATE_SKIN_URI = SKIN_TOOL_URI + "/skin/create/";
     /** A http client to make the queries and parse data. */
     private final static HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(15)).build();
     private final static Gson gson = new Gson();
@@ -43,7 +44,10 @@ public class SkinToolApi {
             var response = client.send(request, BodyHandlers.ofString());
             // Return if the response is not null. Assuming a player has already created a
             // skin before.
-            return response.body() == null ? null : gson.fromJson(response.body(), JsonObject.class);
+            if (response.body() != null && !response.body().equalsIgnoreCase("null")) {
+                return gson.fromJson(response.body(), JsonArray.class).get(0).getAsJsonObject();
+            }
+            return null;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
