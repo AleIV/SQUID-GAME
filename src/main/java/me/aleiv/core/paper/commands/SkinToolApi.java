@@ -76,4 +76,22 @@ public class SkinToolApi {
 
         return null;
     }
+
+    public static UUID getUserProfile(String name) {
+        // https://api.ashcon.app/mojang/v2/user/
+
+        var uri = URI.create("https://api.ashcon.app/mojang/v2/user/" + name);
+        var request = HttpRequest.newBuilder(uri).header("accept", "application/json").build();
+        try {
+            var response = client.send(request, BodyHandlers.ofString());
+            var json = gson.fromJson(response.body(), JsonObject.class);
+            return UUID.fromString(json.get("uuid").getAsString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

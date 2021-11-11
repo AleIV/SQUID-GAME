@@ -1,12 +1,14 @@
 package me.aleiv.core.paper.commands;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.properties.Property;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -34,15 +36,40 @@ public class SkinCMD extends BaseCommand {
         instance.getCommandManager().registerCommand(this);
     }
 
+    @Subcommand("set-other")
+    @CommandCompletion("@players @players @variants")
+    public void changeSkinOther(CommandSender sender, String playerTarget, String skinSourcePlayer, String variant) {
+        var player = Bukkit.getPlayer(playerTarget);
+        if (player != null && player.isOnline()) {
+            UUID id = null;
+
+            var ofP = Bukkit.getOfflinePlayerIfCached(skinSourcePlayer);
+
+            if (ofP != null && ofP.getUniqueId() != null) {
+                id = ofP.getUniqueId();
+            } else {
+                id = SkinToolApi.getUserProfile(skinSourcePlayer);
+            }
+
+            if (id != null) {
+                changeSkin(player, id.toString(), variant);
+            } else {
+                sender.sendMessage("§cThe player you specified does not have a skin set.");
+            }
+
+        } else {
+            sender.sendMessage("§cPlayer not found.");
+        }
+
+    }
+
     @Default
     @CommandCompletion("@variants")
-    public void changeSkin(Player sender, String variant) {
+    public void changeSkin(Player sender, String uuid, String variant) {
         // Check if user has skins already, othewise create new one
-        var previousSkins = SkinToolApi.getPlayerSkins(sender.getUniqueId());
+        var previousSkins = SkinToolApi.getPlayerSkins(UUID.fromString(uuid));
 
         if (previousSkins != null) {
-            System.out.println(previousSkins);
-
             var iterator = previousSkins.getAsJsonArray("skins").iterator();
 
             JsonObject finalSkin = null;
@@ -78,8 +105,13 @@ public class SkinCMD extends BaseCommand {
 
         } else {
             // Notify the user that they don't have any skins
-            sender.sendMessage(Core.getMiniMessage()
-                    .parse("<red>You don't have any skins! \n<red>Generate them using <white>/skin generate<red>!"));
+            sender.sendMessage(
+                    Core.getMiniMessage().parse("<red>You don't have any skins! \n<red>Generating them for you..."));
+
+            // ASk to generate the skins
+            SkinToolApi.createPlayerSkins(UUID.fromString(uuid));
+            // Recall this method
+            changeSkin(sender, uuid, variant);
         }
 
     }
@@ -114,8 +146,15 @@ public class SkinCMD extends BaseCommand {
         }
     }
 
+    /**
+     * Function that swaps a player's skin for a different one.
+     * 
+     * @param player    The player to swap the skin for.
+     * @param texture   The texture to apply to the player.
+     * @param signature The signature of the texture.
+     */
     private void skinSwapper(Player player, String texture, String signature) {
-        player.sendMessage(Core.getMiniMessage().parse("<green>Changing your skin..."));
+        player.sendMessage(Core.getMiniMessage().parse("<yellow>Changing your skin..."));
         var entityPlayer = ((CraftPlayer) player.getPlayer()).getHandle();
         var prof = entityPlayer.getProfile();
         var con = entityPlayer.playerConnection;
@@ -131,8 +170,10 @@ public class SkinCMD extends BaseCommand {
         profilePurpur.setProperty(new ProfileProperty(player.getName(), texture, signature));
 
         player.setPlayerProfile(profilePurpur);
+        player.sendMessage(Core.getMiniMessage().parse("<green>Skin changed!"));
         player.setPlayerTime(0, true);
-        player.resetPlayerTime();
+        // Reset player time 2 ticks later.
+        Bukkit.getScheduler().runTaskLater(Core.getInstance(), () -> player.resetPlayerTime(), 2);
     }
 
 }
