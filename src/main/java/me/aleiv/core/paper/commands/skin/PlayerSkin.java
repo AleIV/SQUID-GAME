@@ -15,4 +15,11 @@ public class PlayerSkin {
     String value;
     String signature;
 
+    /**
+     * @return where the skin has been signed and thus uploaded to Mojang or not.
+     */
+    public boolean isItSigned() {
+        return signature != null && !signature.isEmpty();
+    }
+
 }

@@ -13,6 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,41 +29,20 @@ import me.aleiv.core.paper.commands.skin.PlayerSkin;
  */
 public class SkinToolApi {
     /** Skin Tool IPFS Rest endpoint. */
-    private final static String SKIN_TOOL_URI = "http://45.32.172.208:42069";
+    final static String SKIN_TOOL_URI = "http://45.32.172.208:42069";
     /**
      * The endpoint to check if a player has a skin already created. Get Request.
      */
-    private final static String GET_SKIN_URI = SKIN_TOOL_URI + "/skin/get/";
+    final static String GET_SKIN_URI = SKIN_TOOL_URI + "/skin/get/";
     /** The endpoint to create a new skin. PUT Request. */
-    private final static String CREATE_SKIN_URI = SKIN_TOOL_URI + "/skin/create/";
+    final static String CREATE_SKIN_URI = SKIN_TOOL_URI + "/skin/create/";
     /** A http client to make the queries and parse data. */
-    private final static HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(15)).build();
-    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
+    final static HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(15)).build();
+    final static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    /** Predicate to compute the negation of a player skin being signed. */
+    final static Predicate<PlayerSkin> predicate = Predicate.not(PlayerSkin::isItSigned);
+    /** Executor to handle many tasks. */
     protected static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
-
-    /** Demo */
-    public static void main(String[] args) {
-
-        var id = UUID.fromString("476d3e03-e9a5-4f85-ad96-53e46db89d63");
-
-        var optionalJson = getPlayerSkins(id);
-        if (optionalJson.isPresent()) {
-            // PRint out
-            System.out.println(gson.toJson(optionalJson.get()));
-
-        } else {
-            System.out.println("No skins found");
-            // Generate skins if not found
-            var playerSkins = createPlayerSkins(id);
-            // If present, print out, else say it is empty
-            if (playerSkins.isPresent()) {
-                System.out.println(gson.toJson(playerSkins.get()));
-            } else {
-                System.out.println("2:No skins found");
-            }
-        }
-    }
 
     /**
      * A function that gets or creates a player's skin variants. This will return
@@ -72,7 +52,7 @@ public class SkinToolApi {
      * @param uuid The player's uuid
      * @return A list of player skins
      */
-    public CompletableFuture<List<PlayerSkin>> getElseComputeSkins(UUID uuid) {
+    public static CompletableFuture<List<PlayerSkin>> getElseComputeSkins(UUID uuid) {
 
         final var future = new CompletableFuture<List<PlayerSkin>>();
 
@@ -80,28 +60,42 @@ public class SkinToolApi {
             var optionalJson = getPlayerSkins(uuid);
 
             if (optionalJson.isPresent()) {
-                future.complete(optionalJson.get());
+                future.complete(ensureSigned(optionalJson.get(), uuid));
             } else {
                 // Generate skins if not found
                 var playerSkins = createPlayerSkins(uuid);
 
-                /**
-                 * TODO Write a while loop to guarante that the future returns signed skins
-                 * only. Add a limit for the amount of attempt it can take to avoid infinite
-                 * loop.
-                 */
+                while (playerSkins.isEmpty()) {
+                    playerSkins = createPlayerSkins(uuid);
+                }
 
                 // If present, print out, else say it is empty
                 if (playerSkins.isPresent()) {
-                    System.out.println(gson.toJson(playerSkins.get()));
-                } else {
-                    System.out.println("2:No skins found");
+                    future.complete(ensureSigned(playerSkins.get(), uuid));
                 }
             }
 
         });
 
         return future;
+    }
+
+    /**
+     * A function that ensures all skin variants are signed by mojang
+     * 
+     * @param playerSkins The list of player skins
+     * @param uuid        The player's uuid
+     * @return A list of player skins signed
+     */
+    private static List<PlayerSkin> ensureSigned(List<PlayerSkin> playerSkins, UUID uuid) {
+        var anyNotSigned = playerSkins.stream().anyMatch(predicate);
+
+        while (anyNotSigned) {
+            playerSkins = getPlayerSkins(uuid).get();
+            anyNotSigned = playerSkins.stream().anyMatch(predicate);
+        }
+
+        return playerSkins;
     }
 
     /**
