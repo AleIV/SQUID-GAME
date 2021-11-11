@@ -20,6 +20,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import org.bukkit.Bukkit;
+
 import me.aleiv.core.paper.commands.skin.PlayerSkin;
 
 /**
@@ -30,6 +32,7 @@ import me.aleiv.core.paper.commands.skin.PlayerSkin;
 public class SkinToolApi {
     /** Skin Tool IPFS Rest endpoint. */
     final static String SKIN_TOOL_URI = "http://45.32.172.208:42069";
+    final static String ASHCON_URI = "https://api.ashcon.app/mojang/v2/user/";
     /**
      * The endpoint to check if a player has a skin already created. Get Request.
      */
@@ -78,6 +81,36 @@ public class SkinToolApi {
         });
 
         return future;
+    }
+
+    /**
+     * A function that returns the actual skin of any player in the game.
+     * 
+     * @param uuid The player's uuid
+     * @return A list of player skins
+     */
+    public static PlayerSkin getCurrentUserSkin(UUID uuid, boolean useOnline) {
+        if (useOnline) {
+            var player = Bukkit.getOnlinePlayers().stream().filter(p -> p.getUniqueId().compareTo(uuid) == 0)
+                    .findFirst();
+            if (player.isPresent()) {
+                var playerSKin = player.get();
+                var properties = playerSKin.getPlayerProfile().getProperties().iterator().next();
+                return PlayerSkin.of(null, properties.getValue(), properties.getSignature());
+            }
+        }
+
+        var request = HttpRequest.newBuilder(URI.create(ASHCON_URI + uuid.toString())).GET()
+                .header("accept", "application/json").build();
+        try {
+            var json = gson.fromJson(client.send(request, BodyHandlers.ofString()).body(), JsonObject.class)
+                    .getAsJsonObject("textures").getAsJsonObject("raw");
+
+            return gson.fromJson(json, PlayerSkin.class);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

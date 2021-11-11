@@ -17,6 +17,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
+import io.github.znetworkw.znpcservers.NPCLibrary;
 import io.github.znetworkw.znpcservers.NPCWrapper;
 import io.github.znetworkw.znpcservers.npc.NPC;
 import me.aleiv.core.paper.Core;
@@ -33,7 +34,7 @@ public class SkinCMD extends BaseCommand {
     public SkinCMD(Core instance) {
         // register command completion
         instance.getCommandManager().getCommandCompletions().registerStaticCompletion("variants",
-                List.of("civilian", "guard", "participant", "tux"));
+                List.of("civilian", "guard", "participant", "tux", "original"));
         // register the command itself
         instance.getCommandManager().registerCommand(this);
     }
@@ -41,45 +42,60 @@ public class SkinCMD extends BaseCommand {
     @Subcommand("npc-demo")
     public void npcDemo(Player sender, @Default("5") Integer seconds) {
         /** Generate npcs along a circle away from the player */
-        double radius = 10;
+        double radius = 5;
         /** Get the location of the player and store the world as a constant. */
         final var loc = sender.getLocation();
         final var world = loc.getWorld();
 
         /** Obtain the skin variants available for the current sender. */
-        SkinToolApi.getPlayerSkins(sender.getUniqueId());
+        SkinToolApi.getElseComputeSkins(sender.getUniqueId()).whenComplete((skins, exception) -> {
+            if (exception != null) {
+                sender.sendMessage("Command ended exceptionally: " + exception.getMessage());
+                exception.printStackTrace();
+            } else {
+                try {
 
-        // OLD LOGIC:
+                    var t = 360 / skins.size();
+                    var iter = skins.iterator();
 
-        // T value for the circle
-        var t = 360 / 4;
-        // List for the npcs.
-        var list = new ArrayList<NPC>();
+                    var npcs = new ArrayList<NPC>();
 
-        for (int i = 0; i < 360; i += t) {
-            var angle = Math.toRadians(i);
-            // TODO Add distance instead of just degrees to the angle
-            var x = Math.cos(angle) * radius;
-            var z = Math.sin(angle) * radius;
+                    for (int i = 0; i < 360; i += t) {
+                        var angle = Math.toRadians(i);
+                        // TODO Add distance instead of just degrees to the angle
+                        var x = Math.cos(angle) * radius;
+                        var z = Math.sin(angle) * radius;
 
-            // Get the new location
-            final var newLoc = loc.clone().add(x, 0, z);
-            // Change Y To Highest block.
-            newLoc.setY(world.getHighestBlockYAt(newLoc.getBlockX(), newLoc.getBlockZ()) + 1);
-            // Spawn the NPC
-            // NPCLibrary.createPlayerNPC(newLoc, name, display, equipment, player)
+                        // Get the new location
+                        final var newLoc = loc.clone().add(x, 0, z);
+                        // Change Y To Highest block.
+                        newLoc.setY(world.getHighestBlockYAt(newLoc.getBlockX(), newLoc.getBlockZ()) + 1);
+                        var next = iter.next();
+                        // Spawn the NPC
+                        npcs.add(NPCLibrary.createPlayerNPC(newLoc, sender.getName() + "-" + next.getName(), true,
+                                sender.getInventory(), next.getValue(), next.getSignature()));
 
-        }
+                    }
 
-        var wrapper = NPCWrapper.create(list);
-        // Delete the wrapper some seconds later.
-        Bukkit.getScheduler().runTaskLaterAsynchronously(Core.getInstance(), wrapper::deleteAll, 20 * seconds);
+                    var wrapper = NPCWrapper.create(npcs);
+                    // Delete the wrapper some seconds later.
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(Core.getInstance(), wrapper::deleteAll,
+                            20 * seconds);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        });
 
     }
 
     @Subcommand("set-other")
     @CommandCompletion("@players @players @variants")
-    public void changeSkinOther(CommandSender sender, String playerTarget, String skinSourcePlayer, String variant) {
+    public void changeSkinOther(CommandSender sender, String playerTarget, String skinSourcePlayer,
+            @Default("original") String variant) {
         var player = Bukkit.getPlayer(playerTarget);
         if (player != null && player.isOnline()) {
             UUID id = null;
@@ -94,6 +110,29 @@ public class SkinCMD extends BaseCommand {
 
             if (id != null) {
                 // changeSkin(player, id.toString(), variant);
+                if (variant.equalsIgnoreCase("original")) {
+                    var skin = SkinToolApi.getCurrentUserSkin(id, false);
+                    skinSwapper(player, skin.getValue(), skin.getSignature());
+
+                } else {
+                    SkinToolApi.getElseComputeSkins(id).whenComplete((skins, exception) -> {
+                        if (exception != null) {
+                            sender.sendMessage("Command ended exceptionally: " + exception.getMessage());
+                            exception.printStackTrace();
+                        } else {
+                            var skin = skins.stream().filter(s -> s.getName().equalsIgnoreCase(variant)).findFirst();
+                            if (skin.isPresent()) {
+                                var actualSkin = skin.get();
+                                Bukkit.getScheduler().runTask(Core.getInstance(),
+                                        () -> skinSwapper(player, actualSkin.getValue(), actualSkin.getSignature()));
+
+                            } else {
+                                sender.sendMessage("Skin not found");
+                            }
+                        }
+
+                    });
+                }
             } else {
                 sender.sendMessage("§cThe player you specified does not have a skin set.");
             }

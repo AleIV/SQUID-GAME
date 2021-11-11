@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import co.aikar.commands.PaperCommandManager;
 import de.slikey.effectlib.EffectManager;
+import io.github.znetworkw.znpcservers.NPCLibrary;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
 import me.aleiv.core.paper.commands.ChairCMD;
@@ -61,11 +62,14 @@ public class Core extends JavaPlugin {
     private @Getter MapSystemManager mapSystemManager;
     private @Getter EffectManager effectManager;
     private @Getter SkinCMD skinCMD;
+    private @Getter NPCLibrary npcLibrary;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
     public void onEnable() {
         instance = this;
+        this.npcLibrary = new NPCLibrary();
+        this.npcLibrary.register(this);
 
         RapidInvManager.register(this);
         BukkitTCT.registerPlugin(this);
@@ -138,6 +142,7 @@ public class Core extends JavaPlugin {
     @Override
     public void onDisable() {
 
+        this.npcLibrary.unregister();
     }
 
     public void refreshJson() {
