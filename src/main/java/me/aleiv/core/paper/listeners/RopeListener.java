@@ -43,10 +43,13 @@ public class RopeListener implements Listener {
             var left = AnimationTools.getPlayersInsideCube(l1, l2);
 
             var player = e.getPlayer();
+            var loc = player.getLocation();
 
             var centerVector = AnimationTools.parseLocation(specialObjects.get("ROPE_CENTER"), world);
             if (right.contains(player)) {
                 rope.addPoints(1);
+
+                player.playSound(loc, "squid:sfx.rope_pull", 1, 1);
 
                 var leftVector = AnimationTools.parseLocation(specialObjects.get("ROPE_LEFT"), world);
                 var vector = AnimationTools.getVector(centerVector, leftVector);
@@ -58,6 +61,8 @@ public class RopeListener implements Listener {
 
             } else if (left.contains(player)) {
                 rope.addPoints(-1);
+
+                player.playSound(loc, "squid:sfx.rope_pull", 1, 1);
 
                 var rightVector = AnimationTools.parseLocation(specialObjects.get("ROPE_RIGHT"), world);
                 var vector = AnimationTools.getVector(centerVector, rightVector);

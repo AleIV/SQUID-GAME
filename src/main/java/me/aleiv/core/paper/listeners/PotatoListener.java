@@ -33,6 +33,11 @@ public class PotatoListener implements Listener {
             var invPlayer = player.getInventory();
 
             if(invDamager.contains(Material.RABBIT_FOOT) && !invPlayer.contains(Material.RABBIT_FOOT)){
+                var loc1 = player.getLocation();
+                var loc2 = damagerPlayer.getLocation();
+
+                player.playSound(loc1, "squid:sfx.potato_pass", 1, 1);
+                damagerPlayer.playSound(loc2, "squid:sfx.potato_receive", 1, 1);
                 invDamager.remove(Material.RABBIT_FOOT);
                 invPlayer.addItem(potato);
             }

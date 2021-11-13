@@ -25,12 +25,14 @@ public class PotatoCMD extends BaseCommand {
     public void explode(CommandSender sender){
         Bukkit.getOnlinePlayers().forEach(player ->{
             var loc = player.getLocation();
-            //TODO: EXPLODE SOUND
-            player.playSound(loc, "sound", 1, 1);
+           
+            player.playSound(loc, "squid:sfx.potato_explode", 11, 1);
             var inv = player.getInventory();
             if(inv.contains(Material.RABBIT_FOOT)){
-                inv.clear();
-                player.getLocation().createExplosion(2, false, false);
+                Bukkit.getScheduler().runTaskLater(instance, task->{
+                    inv.clear();
+                    player.getLocation().createExplosion(2, false, false);
+                }, 20*10);
             }
         });
     }

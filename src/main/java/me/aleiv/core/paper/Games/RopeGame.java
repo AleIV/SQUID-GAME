@@ -167,7 +167,7 @@ public class RopeGame {
 
             if (bool) {
                 players.forEach(player -> {
-                    player.playSound(player.getLocation(), "sound", 1, 1);
+                    player.playSound(player.getLocation(), "squid:sfx.old_elevator_up", 1, 1);
                 });
 
                 var tk = AnimationTools.moveEntitys(entitys, 300, 1, 'y', v);
@@ -185,7 +185,7 @@ public class RopeGame {
 
             } else {
                 players.forEach(player -> {
-                    player.playSound(player.getLocation(), "sound", 1, 1);
+                    player.playSound(player.getLocation(), "squid:sfx.old_elevator_down", 1, 1);
                 });
 
                 var tk = AnimationTools.moveEntitys(entitys, 300, 1, 'y', -v);
@@ -236,7 +236,7 @@ public class RopeGame {
 
             if (bool) {
                 players.forEach(player -> {
-                    player.playSound(player.getLocation(), "sound", 1, 1);
+                    player.playSound(player.getLocation(), "squid:sfx.old_elevator_up", 11, 1);
                 });
 
                 var tk = AnimationTools.moveEntitys(entitys, 300, 1, 'y', v);
@@ -254,7 +254,7 @@ public class RopeGame {
 
             } else {
                 players.forEach(player -> {
-                    player.playSound(player.getLocation(), "sound", 1, 1);
+                    player.playSound(player.getLocation(), "squid:sfx.old_elevator_down", 11, 1);
                 });
 
                 var tk = AnimationTools.moveEntitys(entitys, 300, 1, 'y', -v);

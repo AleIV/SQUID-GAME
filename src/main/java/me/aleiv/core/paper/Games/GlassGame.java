@@ -42,7 +42,7 @@ public class GlassGame {
     }
 
     public void breakAll(){
-        var locations = AnimationTools.findLocations("GLASSPANE");
+        var locations = AnimationTools.findOrderedLocations("GLASSPANE");
         var world = Bukkit.getWorld("world");
         var task = new BukkitTCT();
 
@@ -59,7 +59,7 @@ public class GlassGame {
                     //TODO:GLASS SOUND
                     AnimationTools.playSoundDistance(loc, 50, "sound", 11f, 1f);
                 }
-            }, 50*10);
+            }, 50*5);
         });
 
         task.execute();

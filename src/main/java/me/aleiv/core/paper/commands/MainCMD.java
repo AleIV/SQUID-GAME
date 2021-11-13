@@ -28,7 +28,7 @@ public class MainCMD extends BaseCommand {
         tools.lights(bool);
     }
 
-    @Subcommand("main-elevator")
+    @Subcommand("elevator")
     public void elevator(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Main elevator " + bool);
         var tools = instance.getGame().getMainRoom();

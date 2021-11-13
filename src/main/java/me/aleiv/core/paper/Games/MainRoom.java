@@ -62,19 +62,21 @@ public class MainRoom {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.main_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 100, "squid:sfx.main_elevator_open", 1f, 1f);
 
-            AnimationTools.move("MAIN_RIGHT_ELEVATOR", 33, 1, 'x', 0.1f);
-            AnimationTools.move("MAIN_LEFT_ELEVATOR", -33, 1, 'x', 0.1f);
+            AnimationTools.move("MAIN_RIGHT_ELEVATOR", "MAIN_LEFT_ELEVATOR", 33, 1, 'x', 0.1f);
 
         }else{
 
-            AnimationTools.fill(loc1, loc2, Material.BARRIER);
+            AnimationTools.playSoundDistance(loc1, 100, "squid:sfx.main_elevator_close", 1f, 1f);
 
-            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.main_elevator_close", 1f, 1f);
+            var task = AnimationTools.move("MAIN_LEFT_ELEVATOR", "MAIN_RIGHT_ELEVATOR", 33, 1, 'x', 0.1f);
 
-            AnimationTools.move("MAIN_RIGHT_ELEVATOR", -33, 1, 'x', 0.1f);
-            AnimationTools.move("MAIN_LEFT_ELEVATOR", 33, 1, 'x', 0.1f);
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
 
         }
     }

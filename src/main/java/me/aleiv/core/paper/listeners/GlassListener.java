@@ -20,7 +20,7 @@ public class GlassListener implements Listener {
         var block = e.getClickedBlock();
         var player = e.getPlayer();
         var glass = instance.getGame().getGlassGame();
-        if(block != null && player.getGameMode() == GameMode.CREATIVE && glass.isGlass(block.getType())){
+        if(block != null && player.getGameMode() == GameMode.CREATIVE && !player.isSneaking() && glass.isGlass(block.getType())){
             glass.breakGlass(block);
             
         }

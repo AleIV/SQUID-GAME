@@ -1,8 +1,11 @@
 package me.aleiv.core.paper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -105,6 +108,26 @@ public class AnimationTools {
         var world = Bukkit.getWorld("world");
         return specialObjects.entrySet().stream().filter(entry -> entry.getKey().contains(str))
                 .map(entry -> parseLocation(entry.getValue(), world)).collect(Collectors.toList());
+    }
+
+    public static List<Location> findOrderedLocations(String str) {
+        var world = Bukkit.getWorld("world");
+        var entry = specialObjects.entrySet().stream().filter(e -> e.getKey().contains(str)).collect(Collectors.toList());
+
+        Collections.sort(entry, new Comparator<Entry<String, String>>() {
+            @Override
+            public int compare(Entry<String, String> p1, Entry<String, String> p2){
+                var s1 = p1.getKey().split("_");
+                Integer n1 = Integer.parseInt(s1[1]);
+
+                var s2 = p2.getKey().split("_");
+                Integer n2 = Integer.parseInt(s2[1]);
+
+                return n1.compareTo(n2);
+            }
+        });
+
+        return entry.stream().map(e -> parseLocation(e.getValue(), world)).toList();
     }
 
     public static void sendCredits(Player player) {

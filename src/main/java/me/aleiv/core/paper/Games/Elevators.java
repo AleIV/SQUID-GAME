@@ -483,5 +483,10 @@ public class Elevators {
 
         elevators.put(ElevatorType.GOCHICKEN, new Elevator(loc1, loc2));
 
+        loc1 = AnimationTools.parseLocation(specialObjects.get("GLASS_ELEVATOR_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("GLASS_ELEVATOR_LOC2"), world);
+
+        elevators.put(ElevatorType.GLASS, new Elevator(loc1, loc2));
+
     }
 }

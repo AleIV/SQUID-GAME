@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.listeners.GreenLightListener;
@@ -18,6 +19,7 @@ import us.jcedeno.libs.rapidinv.ItemBuilder;
 import us.jcedeno.libs.rapidinv.RapidInv;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class GreenLightPanel extends RapidInv{
 
     GreenLightListener greenLightListener;
@@ -47,6 +49,21 @@ public class GreenLightPanel extends RapidInv{
         updateHeadDoll();
 
         
+    }
+
+    public void greenLight(Boolean bool){
+        if(bool){
+            greenLight = true;
+            playersMoved.clear();
+            instance.unregisterListener(greenLightListener);
+            
+        }else{
+            greenLight = false;
+            playersMoved.clear();
+            instance.registerListener(greenLightListener);
+        }
+        updateEnableDisable();
+        updateMovedPlayers();
     }
 
     public void updateEnableDisable(){
