@@ -21,6 +21,7 @@ import me.aleiv.core.paper.commands.ChairCMD;
 import me.aleiv.core.paper.commands.CookieCMD;
 import me.aleiv.core.paper.commands.DollCMD;
 import me.aleiv.core.paper.commands.ElevatorsCMD;
+import me.aleiv.core.paper.commands.GlassCMD;
 import me.aleiv.core.paper.commands.HideSeekCMD;
 import me.aleiv.core.paper.commands.MainCMD;
 import me.aleiv.core.paper.commands.PotatoCMD;
@@ -34,8 +35,10 @@ import me.aleiv.core.paper.detection.CollisionManager;
 import me.aleiv.core.paper.effects.commands.EffectCommands;
 import me.aleiv.core.paper.listeners.CanceledListener;
 import me.aleiv.core.paper.listeners.ChairListener;
+import me.aleiv.core.paper.listeners.GlassListener;
 import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.listeners.HideListener;
+import me.aleiv.core.paper.listeners.ItemListener;
 import me.aleiv.core.paper.listeners.MechanicsListener;
 import me.aleiv.core.paper.listeners.PotatoListener;
 import me.aleiv.core.paper.listeners.RopeListener;
@@ -106,6 +109,8 @@ public class Core extends JavaPlugin {
         registerListener(new ChairListener(this));
         registerListener(new MechanicsListener(this));
         registerListener(new PotatoListener(this));
+        registerListener(new GlassListener(this));
+        registerListener(new ItemListener(this));
 
         // COMMANDS
 
@@ -119,6 +124,7 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new ElevatorsCMD(this));
         commandManager.registerCommand(new ChairCMD(this));
         commandManager.registerCommand(new PotatoCMD(this));
+        commandManager.registerCommand(new GlassCMD(this));
 
         commandManager.registerCommand(new UtilsCMD(this));
         commandManager.registerCommand(new SpecialCMD(this));

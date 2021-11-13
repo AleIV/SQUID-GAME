@@ -5,6 +5,7 @@ import com.destroystokyo.paper.ParticleBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -16,6 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerRespawnEvent.RespawnFlag;
 import org.bukkit.potion.PotionEffect;
@@ -32,6 +34,7 @@ import me.aleiv.core.paper.events.GameTickEvent;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.ChatColor;
+import us.jcedeno.libs.rapidinv.ItemBuilder;
 
 public class GlobalListener implements Listener {
 
@@ -68,8 +71,6 @@ public class GlobalListener implements Listener {
             roles.put(uuid, Role.DEAD);
         }
 
-        //TODO: listener for cancel leather take
-
         if(player.hasPermission("admin.perm")){
             e.deathMessage(MiniMessage.get().parse(""));
         }else{
@@ -99,13 +100,21 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
+    public void onQuit(PlayerQuitEvent e){
+        var player = e.getPlayer();
+        e.quitMessage(MiniMessage.get().parse(""));
+        instance.adminMessage(ChatColor.LIGHT_PURPLE + player.getName() + " left the game");
+    }
+
+    @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         var game = instance.getGame();
         var roles = game.getRoles();
         var player = e.getPlayer();
         var uuid = player.getUniqueId().toString();
 
-        //TODO: JOIN MSGS
+        e.joinMessage(MiniMessage.get().parse(""));
+        instance.adminMessage(ChatColor.YELLOW + player.getName() + " joined the game");
 
         if (!roles.containsKey(uuid)) {
             if (player.hasPermission("admin.perm")) {
@@ -119,15 +128,34 @@ public class GlobalListener implements Listener {
         timer.getBossBar().addPlayer(player);
 
         var city = game.getCity();
+        var whiteLobby = game.getWhiteLobby();
 
-        if(city == null) game.setCity(new Location(Bukkit.getWorld("world"), 180.5, 35, 401.5));
+
+        var world = Bukkit.getWorld("world");
+        if(city == null) game.setCity(new Location(world, 180.5, 35, 401.5));
+        if(whiteLobby == null) game.setWhiteLobby(new Location(world, 274, 55, -61));
 
         
         if (game.getGameStage() == GameStage.LOBBY) {
             player.teleport(city);
 
-        } else if(!player.hasPlayedBefore()){
-            player.teleport(city);
+            if(game.isPlayer(player)){
+                var inv = player.getInventory();
+                inv.clear();
+
+                var card = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(25)).name("●▲■").build();
+                inv.addItem(card);
+
+                //TODO: ADD CIVILIAN SKIN
+
+            }
+
+        }else if(game.getGameStage() ==  GameStage.INGAME){
+
+            if(!player.hasPlayedBefore()){
+
+                player.teleport(whiteLobby);
+            }
         }
 
         if (game.getLights()) {

@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Name;
@@ -33,9 +34,18 @@ public class DollCMD extends BaseCommand {
 
     }
 
+    @Subcommand("runLight")
+    @CommandAlias("runLight")
+    public void runLight(Player sender, Boolean bool) {
+        var game = instance.getGame();
+        game.getDollGame().runLight(bool);
+
+    }
+
     
     @Subcommand("shoot")
     @CommandAlias("shoot")
+    @CommandCompletion("@players")
     public void shoot(Player sender, @Name("target") @Optional @Flags("other") Player target) {
         AnimationTools.shootLocation(target.getLocation());
 

@@ -3,6 +3,7 @@ package me.aleiv.core.paper.Games;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,9 +11,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import us.jcedeno.libs.rapidinv.ItemBuilder;
 
 public class MainRoom {
     Core instance;
+    
     
     public MainRoom(Core instance){
         this.instance = instance;
@@ -166,11 +169,12 @@ public class MainRoom {
     public void refreshPrize(Integer newNumber, Integer delay, Integer value){
         if(newNumber < 0) return;
         var specialObjects = AnimationTools.specialObjects;
-        var dolar = AnimationTools.parseLocation(specialObjects.get("SCREEN_DOLAR"), Bukkit.getWorld("world"));
+        var world = Bukkit.getWorld("world");
+        var dolar = AnimationTools.parseLocation(specialObjects.get("SCREEN_DOLAR"), world);
         AnimationTools.setBlockValue(true, dolar, "$");
 
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PRIZE_VALUE_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PRIZE_VALUE_POS2"), Bukkit.getWorld("world"));
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PRIZE_VALUE_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("SCREEN_PRIZE_VALUE_POS2"), world);
 
         var game = instance.getGame();
         var currentPrizeText = game.getTotalPrize();
@@ -206,6 +210,12 @@ public class MainRoom {
                     game.setTotalPrize(formatted);
                     AnimationTools.setScreenValue(prizeValueText, formatted);
                     AnimationTools.playSoundDistance(loc1, 100, "squid:sfx.main_board", 1f, 1f);
+
+                    var money = new ItemBuilder(Material.GOLDEN_HOE).flags(ItemFlag.HIDE_ATTRIBUTES).build();
+
+                    var moneyLoc = AnimationTools.parseLocation(specialObjects.get("MONEY_FALL"), Bukkit.getWorld("world"));
+                    world.dropItemNaturally(moneyLoc, money);
+
                 }
             }, 50*delay);
 

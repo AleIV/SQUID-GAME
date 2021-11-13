@@ -73,6 +73,7 @@ public class GlobalGame {
             Bukkit.getScheduler().runTask(instance, tks ->{
                 game.setHideMode(HideMode.INGAME);
                 game.setGameStage(GameStage.INGAME);
+                game.refreshHide();
 
                 Bukkit.getWorlds().forEach(world ->{
                     world.setTime(20000);

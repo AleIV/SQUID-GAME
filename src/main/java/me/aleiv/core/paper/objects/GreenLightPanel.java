@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import lombok.Getter;
+import lombok.Data;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.listeners.GreenLightListener;
@@ -17,17 +17,18 @@ import net.md_5.bungee.api.ChatColor;
 import us.jcedeno.libs.rapidinv.ItemBuilder;
 import us.jcedeno.libs.rapidinv.RapidInv;
 
+@Data
 public class GreenLightPanel extends RapidInv{
 
     GreenLightListener greenLightListener;
     Core instance;
 
-    @Getter List<Player> playersMoved = new ArrayList<>();
-    @Getter Boolean greenLight = true;
-    @Getter Boolean door1 = false;
-    @Getter Boolean door2 = false;
-    @Getter Boolean door3 = false;
-    @Getter Boolean headDoll = true;
+    List<Player> playersMoved = new ArrayList<>();
+    Boolean greenLight = true;
+    Boolean door1 = false;
+    Boolean door2 = false;
+    Boolean door3 = false;
+    Boolean headDoll = true;
      
 
     public GreenLightPanel(Core instance){

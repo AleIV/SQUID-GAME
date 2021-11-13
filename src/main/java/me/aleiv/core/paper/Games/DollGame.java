@@ -1,5 +1,7 @@
 package me.aleiv.core.paper.Games;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,11 +22,58 @@ public class DollGame {
 
     @Setter Location pos1;
     @Setter Location pos2;
+
+    Integer currentSound = 0;
+
+    HashMap<Integer, String> normalLight = new HashMap<Integer, String>() {
+        {
+            put(5, "squid:sfx.luz_verde_1");
+            put(6, "squid:sfx.luz_verde_2");
+            put(6, "squid:sfx.luz_verde_6");
+            put(5, "squid:sfx.luz_verde_8");
+
+        }
+    };
+    
+    HashMap<Integer, String> fastLight = new HashMap<Integer, String>() {
+        {
+            put(3, "squid:sfx.luz_verde_3");
+            put(4, "squid:sfx.luz_verde_4");
+            put(3, "squid:sfx.luz_verde_5");
+            put(2, "squid:sfx.luz_verde_7");
+        }
+    };
     
     public DollGame(Core instance){
         this.instance = instance;
 
         this.greenLightPanel = new GreenLightPanel(instance);
+    }
+
+    public void runLight(Boolean bool){
+        var list = bool ? normalLight.entrySet().stream().toList() : fastLight.entrySet().stream().toList(); 
+        if(currentSound > 3) currentSound = 0;
+        var sound = list.get(currentSound);
+        currentSound++;
+
+        var timerLocations = instance.getGame().getTimer().getTimerLocations();
+        var loc = timerLocations.get(TimerType.RED_GREEN).get(0);
+
+        AnimationTools.playSoundDistance(loc, 200, sound.getValue(), 11f, 1f);
+
+        greenLightPanel.setGreenLight(true);
+        greenLightPanel.updateEnableDisable();
+        greenLightPanel.updateMovedPlayers();
+
+        dollHead(true);
+
+        Bukkit.getScheduler().runTaskLater(instance, task ->{
+            greenLightPanel.setGreenLight(false);
+            greenLightPanel.updateEnableDisable();
+            greenLightPanel.updateMovedPlayers();
+
+            dollHead(false);
+        }, (20*sound.getKey()) + 20);
     }
 
     public void dollDoor1(Boolean bool){

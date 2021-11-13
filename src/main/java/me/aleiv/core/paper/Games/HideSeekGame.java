@@ -23,7 +23,7 @@ public class HideSeekGame {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.wood_door_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.wood_door_open", 1f, 1f);
 
             AnimationTools.rotate("HIDE_SEEK_DOOR_RIGHT", 17, 1, 0.1f);
             AnimationTools.rotate("HIDE_SEEK_DOOR_LEFT", -17, 1, 0.1f);
@@ -32,7 +32,7 @@ public class HideSeekGame {
 
             AnimationTools.fill(loc1, loc2, Material.BARRIER);
 
-            AnimationTools.playSoundDistance(loc1, 40, "squid:sfx.wood_door_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.wood_door_close", 1f, 1f);
 
             AnimationTools.rotate("HIDE_SEEK_DOOR_RIGHT", -17, 1, 0.1f);
             AnimationTools.rotate("HIDE_SEEK_DOOR_LEFT", 17, 1, 0.1f);

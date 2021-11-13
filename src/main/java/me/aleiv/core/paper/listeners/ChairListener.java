@@ -1,5 +1,7 @@
 package me.aleiv.core.paper.listeners;
 
+import java.util.List;
+
 import com.destroystokyo.paper.ParticleBuilder;
 
 import org.bukkit.Bukkit;
@@ -19,6 +21,8 @@ public class ChairListener implements Listener {
     public ChairListener(Core instance) {
         this.instance = instance;
     }
+
+    List<Integer> sitModels = List.of(40, 23, 53);
     
     @EventHandler
     public void gameTickEvent(GameTickEvent e){
@@ -49,7 +53,7 @@ public class ChairListener implements Listener {
             var brick = equip.getHelmet();
             if(brick != null && brick.hasItemMeta() && brick.getItemMeta().hasCustomModelData()){
                 var model = brick.getItemMeta().getCustomModelData();
-                if((model == 40) && stand.getPassengers().isEmpty()){
+                if(sitModels.contains(model) && stand.getPassengers().isEmpty()){
                     var player = e.getPlayer();
                     stand.addPassenger(player);
                 }

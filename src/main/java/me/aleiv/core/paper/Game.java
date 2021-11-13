@@ -14,6 +14,7 @@ import me.aleiv.core.paper.Games.ChairGame;
 import me.aleiv.core.paper.Games.CookieGame;
 import me.aleiv.core.paper.Games.DollGame;
 import me.aleiv.core.paper.Games.Elevators;
+import me.aleiv.core.paper.Games.GlassGame;
 import me.aleiv.core.paper.Games.GlobalGame;
 import me.aleiv.core.paper.Games.HideSeekGame;
 import me.aleiv.core.paper.Games.MainRoom;
@@ -43,6 +44,7 @@ public class Game extends BukkitRunnable {
     Elevators elevators;
     ChairGame chairGame;
     PotatoGame potatoGame;
+    GlassGame glassGame;
 
     HashMap<String, Role> roles = new HashMap<>();
 
@@ -56,6 +58,7 @@ public class Game extends BukkitRunnable {
     String totalPrize = "000000";
 
     Location city;
+    Location whiteLobby;
 
     public Game(Core instance) {
         this.instance = instance;
@@ -73,6 +76,7 @@ public class Game extends BukkitRunnable {
         this.elevators = new Elevators(instance);
         this.chairGame = new ChairGame(instance);
         this.potatoGame = new PotatoGame(instance);
+        this.glassGame = new GlassGame(instance);
     }
 
     public enum PvPType{
