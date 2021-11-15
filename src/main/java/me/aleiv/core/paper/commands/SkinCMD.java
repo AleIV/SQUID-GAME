@@ -72,8 +72,9 @@ public class SkinCMD extends BaseCommand {
                         newLoc.setY(world.getHighestBlockYAt(newLoc.getBlockX(), newLoc.getBlockZ()) + 1);
                         var next = iter.next();
                         // Spawn the NPC
-                        npcs.add(NPCLibrary.createPlayerNPC(newLoc, sender.getName() + "-" + next.getName(), true,
-                                sender.getInventory(), next.getValue(), next.getSignature()));
+                        var name = Core.getMiniMessage().parse("<rainbow>" + sender.getName() + "-" + next.getName());
+                        npcs.add(NPCLibrary.createPlayerNPC(newLoc, name.toString(), true, sender.getInventory(),
+                                next.getValue(), next.getSignature()));
 
                     }
 
