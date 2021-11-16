@@ -7,4 +7,9 @@ package us.jcedeno.guns.event;
  */
 public class GunReloadEvent extends BaseEvent {
 
+    public GunReloadEvent(boolean async) {
+        super(async);
+        //TODO Auto-generated constructor stub
+    }
+
 }

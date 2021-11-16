@@ -16,4 +16,8 @@ public class BaseEvent extends Event {
     @SuppressWarnings({ "java:S116", "java:S1170" })
     private final @Getter HandlerList Handlers = HandlerList;
 
+    public BaseEvent(boolean async) {
+        super(async);
+    }
+
 }

@@ -1,5 +1,6 @@
 package us.jcedeno.cookie.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ItemFrame;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 
 import us.jcedeno.cookie.CookieManager;
+import us.jcedeno.cookie.events.PlayerClickedCookieEvent;
 
 /**
  * Listener for interactions with item frames.
@@ -41,9 +43,12 @@ public class CookieClickedListener implements Listener {
 
                 var entry = cookieManager.getFrameMap().get(entity.getLocation().getBlock());
                 if (entry != null) {
-                    e.getPlayer().sendMessage("Works");
-                } else {
-                    e.getPlayer().sendMessage("Error");
+
+                    var interactionPoint = entity.getLocation().add(e.getClickedPosition());
+
+                    Bukkit.getPluginManager().callEvent(new PlayerClickedCookieEvent(interactionPoint, e.getPlayer(),
+                            frame, !Bukkit.isPrimaryThread()));
+
                 }
             }
 
@@ -56,29 +61,31 @@ public class CookieClickedListener implements Listener {
      */
     @EventHandler
     public void onPlayerInteractAtItemFramesBlock(PlayerInteractEvent e) {
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
-        }
-        if (e.getBlockFace() != BlockFace.UP) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getBlockFace() != BlockFace.UP) {
             return;
         }
         var block = e.getClickedBlock().getRelative(BlockFace.UP);
         // send location to player
-        e.getPlayer().sendMessage("X: " + block.getX() + " Y: " + block.getY() + " Z: " + block.getZ());
 
         var map = cookieManager.getFrameMap().get(block);
         if (map != null) {
-            e.getPlayer().sendMessage("Works2");
-        } else {
-            e.getPlayer().sendMessage("Error2");
-        }
+            var interaction = e.getInteractionPoint();
+            if (interaction != null) {
 
-        var interaction = e.getInteractionPoint();
-        if (interaction != null) {
-            // Send interaction to player on message
-            e.getPlayer().sendMessage(
-                    "x: " + interaction.getX() + " \ny: " + interaction.getY() + " \nz: " + interaction.getZ());
+                Bukkit.getPluginManager().callEvent(
+                        new PlayerClickedCookieEvent(interaction, e.getPlayer(), map, !Bukkit.isPrimaryThread()));
+
+            }
         }
+    }
+
+    @EventHandler
+    public void onPlayerClickedCookie(PlayerClickedCookieEvent e) {
+        var player = e.getPlayer();
+        var frame = e.getItemFrame();
+        var interaction = e.getInteractionPoint();
+
+        player.sendMessage("You've clicked at interaction " + interaction.toString());
     }
 
 }
