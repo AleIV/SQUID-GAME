@@ -4,6 +4,7 @@ import org.bukkit.map.MapView;
 
 import lombok.Getter;
 import me.aleiv.core.paper.map.packet.WrapperPlayServerMap;
+import us.jcedeno.cookie.objects.Matrix;
 
 /**
  * A class designed to act as a wrapper for a MapView object to make it easier

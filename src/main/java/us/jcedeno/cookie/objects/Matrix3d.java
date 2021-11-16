@@ -1,4 +1,6 @@
-package me.aleiv.core.paper.map.objects;
+package us.jcedeno.cookie.objects;
+
+import org.bukkit.Location;
 
 import lombok.Data;
 
@@ -7,12 +9,12 @@ import lombok.Data;
  * 
  * @author jcedeno
  */
-public @Data class Matrix<T> {
-    T[][] matrix;
+public @Data class Matrix3d<T> {
+    volatile T[][][] matrix;
 
     @SuppressWarnings("unchecked")
-    public Matrix(int rows, int columns) {
-        this.matrix = (T[][]) new Object[rows][columns];
+    public Matrix3d(int rows, int columns, int depth) {
+        this.matrix = (T[][][]) new Object[rows][columns][depth];
     }
 
     /**
@@ -22,8 +24,8 @@ public @Data class Matrix<T> {
      * @param column The column of the object.
      * @return The object at the specified position.
      */
-    public T getAtRowAndColumn(int row, int column) {
-        return matrix[row][column];
+    public T getAt(int row, int column, int depth) {
+        return matrix[row][column][depth];
     }
 
     /**
@@ -34,8 +36,12 @@ public @Data class Matrix<T> {
      * @param object The object to set.
      * @return The object at the specified position.
      */
-    public T setAtRowAndColumn(int row, int column, T object) {
-        return matrix[row][column] = object;
+    public T setAt(int row, int column, int depth, T object) {
+        return matrix[row][column][depth] = object;
+    }
+
+    public T getAt(Location loc) {
+        return getAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
 
 }

@@ -55,6 +55,14 @@ public class CookieCaseListener implements Listener {
             // Make it fixed.
             itemFrame.setFixed(true);
 
+            var itemLocation = itemFrame.getLocation();
+
+            // Add to 3d matrix for caching
+            cookieManager.getFrameMap().put(itemLocation.getBlock(), itemFrame);
+
+            e.getPlayer().sendMessage("Cookie placed in matrix at " + itemLocation.getBlockX() + " "
+                    + itemLocation.getBlockY() + " " + itemLocation.getBlockZ());
+
             // Give a needle to the player
             e.getPlayer().getInventory().setItem(e.getPlayer().getInventory().getHeldItemSlot(), new ItemStack(NEEDLE));
 

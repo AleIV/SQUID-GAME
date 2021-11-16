@@ -1,14 +1,18 @@
 package us.jcedeno.cookie;
 
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
+import org.bukkit.entity.ItemFrame;
 
 import lombok.Getter;
 import me.aleiv.core.paper.Core;
 import us.jcedeno.cookie.commands.CookieCMD;
 import us.jcedeno.cookie.listener.CookieCaseListener;
+import us.jcedeno.cookie.listener.CookieClickedListener;
 import us.jcedeno.cookie.objects.CookieMap;
 
 /**
@@ -22,12 +26,16 @@ public class CookieManager {
     private @Getter static Core instance;
     private @Getter CookieCMD cookieCMD;
     private @Getter ConcurrentHashMap<UUID, CookieMap> cookieMaps;
+    private @Getter volatile HashMap<Block, ItemFrame> frameMap = new HashMap<Block, ItemFrame>();
+
     public static boolean EDIT = false;
 
     public CookieManager(Core plugin) {
         instance = plugin;
         this.cookieCMD = new CookieCMD(plugin, this);
         this.cookieMaps = new ConcurrentHashMap<>();
+
+        Bukkit.getPluginManager().registerEvents(new CookieClickedListener(this), plugin);
 
         Bukkit.getPluginManager().registerEvents(new CookieCaseListener(this), plugin);
 
