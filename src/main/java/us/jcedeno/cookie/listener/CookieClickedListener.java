@@ -71,10 +71,15 @@ public class CookieClickedListener implements Listener {
         var map = cookieManager.getFrameMap().get(block);
         if (map != null) {
             var interaction = e.getInteractionPoint();
+
+            var vec = interaction.toVector().clone();
+            var normie = e.getPlayer().getEyeLocation().toVector().subtract(vec).normalize();
+            var l = interaction.toVector().clone().add(normie.multiply(0.05)).toLocation(block.getWorld());
+
             if (interaction != null) {
 
-                Bukkit.getPluginManager().callEvent(
-                        new PlayerClickedCookieEvent(interaction, e.getPlayer(), map, !Bukkit.isPrimaryThread()));
+                Bukkit.getPluginManager()
+                        .callEvent(new PlayerClickedCookieEvent(l, e.getPlayer(), map, !Bukkit.isPrimaryThread()));
 
             }
         }
@@ -95,7 +100,8 @@ public class CookieClickedListener implements Listener {
         var relativeX = position.getX() - bX;
         var relativeZ = position.getZ() - bZ;
         // Send relative to player
-        player.sendMessage("rotation: " + frame.getRotation() + ", " + relativeX + ", " + relativeZ);
+        // player.sendMessage("rotation: " + frame.getRotation() + ", " + relativeX + ",
+        // " + relativeZ);
         var cookieMap = cookieManager.getCookieMaps().get(player.getUniqueId());
         int x, z;
         WrapperPlayServerMap packet = null;
