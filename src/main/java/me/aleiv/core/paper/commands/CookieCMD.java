@@ -7,6 +7,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 
@@ -39,6 +40,16 @@ public class CookieCMD extends BaseCommand {
         
             default: break;
         }
+    }
+
+    /**
+     * Give Cookie to user
+     */
+    @Subcommand("give")
+    public void giveToPlayer(CommandSender sender, OnlinePlayer player){
+        var tools = instance.getGame().getCookieGame();
+        // tools.giveCookie(player);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Cookie given to " + player);
     }
 
 }
