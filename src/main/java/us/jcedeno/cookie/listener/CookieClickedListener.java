@@ -104,8 +104,9 @@ public class CookieClickedListener implements Listener {
 
         case NONE:
         case FLIPPED: {
-            x = (int) Math.ceil((position.getX()) * 128);
-            z = (int) Math.ceil((position.getZ()) * 128);
+            x = (int) (relativeX * 128);
+            // Add 1 - z to adjust for rotation.
+            z = (int) ((relativeZ) * 128);
             packet = cookieMap.paintPixel(Math.min(127, x), Math.min(127, z), (byte) 24);
             break;
         }
