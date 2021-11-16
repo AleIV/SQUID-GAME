@@ -8,4 +8,9 @@ package us.jcedeno.guns.event;
  * @author jcedeno
  */
 public class GunMagazineEmptyEvent extends BaseEvent {
+
+    public GunMagazineEmptyEvent(boolean async) {
+        super(async);
+        //TODO Auto-generated constructor stub
+    }
 }

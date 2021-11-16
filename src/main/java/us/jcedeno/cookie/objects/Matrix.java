@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.map.objects;
+package us.jcedeno.cookie.objects;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import lombok.Data;
  * @author jcedeno
  */
 public @Data class Matrix<T> {
-    T[][] matrix;
+    volatile T[][] matrix;
 
     @SuppressWarnings("unchecked")
     public Matrix(int rows, int columns) {

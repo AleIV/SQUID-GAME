@@ -63,8 +63,6 @@ dependencies {
     // Npc
     implementation 'us.jcedeno:znpc-servers:1.0.2.1'
     compileOnly 'com.mojang:authlib:1.5.25'
-    // EffectLib
-    implementation 'com.elmakers.mine.bukkit:EffectLib:9.3'
     
     implementation 'com.google.guava:guava:31.0.1-jre'
     implementation 'com.google.code.gson:gson:2.8.9'

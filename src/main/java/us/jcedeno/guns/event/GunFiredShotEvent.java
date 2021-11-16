@@ -8,4 +8,9 @@ package us.jcedeno.guns.event;
  */
 public class GunFiredShotEvent extends BaseEvent {
 
+    public GunFiredShotEvent(boolean async) {
+        super(async);
+        //TODO Auto-generated constructor stub
+    }
+
 }
