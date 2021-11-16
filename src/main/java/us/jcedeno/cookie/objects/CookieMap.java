@@ -80,6 +80,18 @@ public class CookieMap {
         return item;
     }
 
+    private static Material CASE = Material.FERMENTED_SPIDER_EYE;
+
+    /**
+     * A function that returns a case
+     * 
+     * @return
+     */
+    public ItemStack getCookieCase() {
+        var item = new ItemStack(CASE);
+        return item;
+    }
+
     /**
      * 
      * Functional that paints a pixel and then returns a packet with that update

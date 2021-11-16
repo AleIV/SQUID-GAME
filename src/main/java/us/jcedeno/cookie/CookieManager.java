@@ -3,9 +3,12 @@ package us.jcedeno.cookie;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.Bukkit;
+
 import lombok.Getter;
 import me.aleiv.core.paper.Core;
 import us.jcedeno.cookie.commands.CookieCMD;
+import us.jcedeno.cookie.listener.CookieCaseListener;
 import us.jcedeno.cookie.objects.CookieMap;
 
 /**
@@ -22,8 +25,10 @@ public class CookieManager {
 
     public CookieManager(Core plugin) {
         instance = plugin;
-        this.cookieCMD = new CookieCMD(plugin);
+        this.cookieCMD = new CookieCMD(plugin, this);
         this.cookieMaps = new ConcurrentHashMap<>();
+
+        Bukkit.getPluginManager().registerEvents(new CookieCaseListener(this), plugin);
 
     }
 

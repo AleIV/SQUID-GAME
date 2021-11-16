@@ -7,6 +7,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Subcommand;
 import me.aleiv.core.paper.Core;
+import us.jcedeno.cookie.CookieManager;
 import us.jcedeno.cookie.objects.CookieEnum;
 import us.jcedeno.cookie.objects.CookieMap;
 
@@ -15,13 +16,14 @@ import us.jcedeno.cookie.objects.CookieMap;
  */
 @CommandAlias("cookie")
 public class CookieCMD extends BaseCommand {
-    private Core instance;
 
-    public CookieCMD(Core instance) {
-        this.instance = instance;
+    private CookieManager cookieManager;
 
-        this.instance.getCommandManager().registerCommand(this);
-        this.instance.getCommandManager().getCommandCompletions().registerStaticCompletion("cookies",
+    public CookieCMD(Core instance, CookieManager cookieManager) {
+
+        this.cookieManager = cookieManager;
+        instance.getCommandManager().registerCommand(this);
+        instance.getCommandManager().getCommandCompletions().registerStaticCompletion("cookies",
                 CookieEnum.getAll().stream().map(m -> m.name()).toList());
 
     }
@@ -36,10 +38,15 @@ public class CookieCMD extends BaseCommand {
         }
 
         var cookieMap = new CookieMap(sender.getWorld(), cookie);
+        // Put to map
+        cookieManager.getCookieMaps().put(sender.getUniqueId(), cookieMap);
 
-        var item = cookieMap.getMapAsItem();
+        var item = cookieMap.getCookieCase();
 
         sender.getInventory().addItem(item);
+
+        // Send message
+        sender.sendMessage("You have been given a " + cookie.name() + " cookie!");
 
     }
 
