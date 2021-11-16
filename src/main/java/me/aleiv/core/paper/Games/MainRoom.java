@@ -184,8 +184,6 @@ public class MainRoom {
         var moneyLoc = AnimationTools.parseLocation(specialObjects.get("MONEY_FALL"), world);
         var prizeValueText = AnimationTools.getBlocksInsideCube(loc1, loc2);
 
-        AnimationTools.playSoundDistance(loc1, 100, "squid:sfx.piggybank_win", 1f, 1f);
-
         var fromPrize = Integer.parseInt(currentPrizeText);
 
         var addOrRemove = newNumber > fromPrize;

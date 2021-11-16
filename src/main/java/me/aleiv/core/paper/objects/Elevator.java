@@ -37,17 +37,19 @@ public class Elevator {
         if(bool){
             Bukkit.getOnlinePlayers().forEach(player ->{
                 player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                
             });
+            Core.getInstance().getGame().setLights(false);
+            
         }
 
         players.forEach(p ->{
             var loc = p.getLocation().clone().add(xOffSet, yOffSet, zOffSet);
-            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*1, 0, false, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*2, 0, false, false, false));
             p.teleport(loc);
 
             if(bool){
                 p.playSound(loc, "squid:sfx.main_lights_off", 1, 1);
-                Core.getInstance().getGame().setLights(false);
 
             }
 
