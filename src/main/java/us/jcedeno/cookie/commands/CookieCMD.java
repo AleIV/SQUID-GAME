@@ -1,7 +1,9 @@
 package us.jcedeno.cookie.commands;
 
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -11,7 +13,6 @@ import co.aikar.commands.annotation.Subcommand;
 import me.aleiv.core.paper.Core;
 import us.jcedeno.cookie.CookieManager;
 import us.jcedeno.cookie.objects.CookieEnum;
-import us.jcedeno.cookie.objects.CookieMap;
 
 /**
  * @author jcedeno
@@ -39,16 +40,13 @@ public class CookieCMD extends BaseCommand {
             return;
         }
 
-        var cookieMap = new CookieMap(sender.getWorld(), cookie);
-        // Put to map
-        cookieManager.getCookieMaps().put(sender.getUniqueId(), cookieMap);
+        var cookieCase = new ItemStack(Material.FERMENTED_SPIDER_EYE);
+        var itemMeta = cookieCase.getItemMeta();
+        itemMeta.setCustomModelData(cookie.getModelData());
 
-        var item = cookieMap.getCookieCase();
+        cookieCase.setItemMeta(itemMeta);
 
-        sender.getInventory().addItem(item);
-
-        // Send message
-        sender.sendMessage("You have been given a " + cookie.name() + " cookie!");
+        sender.getInventory().addItem(cookieCase);
 
     }
 
