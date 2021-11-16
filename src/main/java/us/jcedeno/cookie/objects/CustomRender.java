@@ -28,7 +28,7 @@ public class CustomRender extends MapRenderer {
     }
 
     private void drawImage(String fileName, MapCanvas canvas) throws IOException {
-        var img = ImageIO.read(new File(System.getProperty("user.dir") + File.pathSeparatorChar + fileName));
+        var img = ImageIO.read(new File(fileName));
 
         canvas.drawImage(0, 0, img);
 
@@ -51,7 +51,7 @@ public class CustomRender extends MapRenderer {
      * @param fileName The name of the image file to be drawn.
      * @return A new instance of the CustomRender class.
      */
-    public static CustomRender fromFile(String fileName) {
-        return new CustomRender(fileName);
+    public static CustomRender fromFile(String fileLocation) {
+        return new CustomRender(fileLocation);
     }
 }

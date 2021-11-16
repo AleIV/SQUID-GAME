@@ -20,7 +20,8 @@ public enum CookieEnum {
      * the assets folder with the format of "cookie_{enumType}.png".
      */
     CookieEnum() {
-        assetLocation = "assets" + File.pathSeparatorChar + "cookie_" + name().toLowerCase() + ".png";
+        assetLocation = System.getProperty("user.dir") + File.separatorChar + "assets" + File.separatorChar + "cookie_"
+                + toString().toLowerCase() + ".png";
     }
 
     /**

@@ -42,7 +42,6 @@ import me.aleiv.core.paper.listeners.ItemListener;
 import me.aleiv.core.paper.listeners.MechanicsListener;
 import me.aleiv.core.paper.listeners.PotatoListener;
 import me.aleiv.core.paper.listeners.RopeListener;
-import me.aleiv.core.paper.map.MapSystemManager;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
@@ -51,6 +50,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
+import us.jcedeno.cookie.CookieManager;
 import us.jcedeno.libs.rapidinv.RapidInvManager;
 
 @SpigotPlugin
@@ -62,10 +62,11 @@ public class Core extends JavaPlugin {
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
     private @Getter CollisionManager collisionManager;
     private @Getter VectorsManager vectorManager;
-    private @Getter MapSystemManager mapSystemManager;
+    // private @Getter MapSystemManager mapSystemManager;
     private @Getter EffectManager effectManager;
     private @Getter SkinCMD skinCMD;
     private @Getter NPCLibrary npcLibrary;
+    private @Getter CookieManager cookieManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
@@ -138,10 +139,12 @@ public class Core extends JavaPlugin {
         // Start vectors manager
         this.vectorManager = new VectorsManager(this);
         // Start map system manager
-        this.mapSystemManager = new MapSystemManager(this);
+        // this.mapSystemManager = new MapSystemManager(this);
         // Start effect manager
         this.effectManager = new EffectManager(this);
         this.commandManager.registerCommand(new EffectCommands(this));
+        // Start cookie manager
+        this.cookieManager = new CookieManager(this);
 
     }
 
