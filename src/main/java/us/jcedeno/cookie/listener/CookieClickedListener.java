@@ -35,24 +35,27 @@ public class CookieClickedListener implements Listener {
      */
     @EventHandler
     public void onInteractAtEntity(PlayerInteractAtEntityEvent e) {
-        var entity = e.getRightClicked();
 
-        if (entity != null && entity instanceof ItemFrame frame) {
-            ItemStack itemInFrame = frame.getItem();
-            if (itemInFrame != null && itemInFrame.getType() == Material.FILLED_MAP
-                    && itemInFrame.getItemMeta() instanceof MapMeta map) {
+        if (CookieManager.EDIT) {
+            var entity = e.getRightClicked();
 
-                var entry = cookieManager.getFrameMap().get(entity.getLocation().getBlock());
-                if (entry != null) {
+            if (entity != null && entity instanceof ItemFrame frame) {
+                ItemStack itemInFrame = frame.getItem();
+                if (itemInFrame != null && itemInFrame.getType() == Material.FILLED_MAP
+                        && itemInFrame.getItemMeta() instanceof MapMeta map) {
 
-                    var interactionPoint = entity.getLocation().add(e.getClickedPosition());
+                    var entry = cookieManager.getFrameMap().get(entity.getLocation().getBlock());
+                    if (entry != null) {
 
-                    Bukkit.getPluginManager().callEvent(new PlayerClickedCookieEvent(interactionPoint, e.getPlayer(),
-                            frame, !Bukkit.isPrimaryThread()));
+                        var interactionPoint = entity.getLocation().add(e.getClickedPosition());
 
+                        Bukkit.getPluginManager().callEvent(new PlayerClickedCookieEvent(interactionPoint,
+                                e.getPlayer(), frame, !Bukkit.isPrimaryThread()));
+
+                    }
                 }
-            }
 
+            }
         }
     }
 
@@ -62,25 +65,28 @@ public class CookieClickedListener implements Listener {
      */
     @EventHandler
     public void onPlayerInteractAtItemFramesBlock(PlayerInteractEvent e) {
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getBlockFace() != BlockFace.UP) {
-            return;
-        }
-        var block = e.getClickedBlock().getRelative(BlockFace.UP);
-        // send location to player
 
-        var map = cookieManager.getFrameMap().get(block);
-        if (map != null) {
-            var interaction = e.getInteractionPoint();
-            if (interaction != null) {
-
-                var vec = interaction.toVector().clone();
-                var normie = e.getPlayer().getEyeLocation().toVector().subtract(vec).normalize();
-                var l = interaction.toVector().clone().add(normie.multiply(0.05)).toLocation(block.getWorld());
-
-                Bukkit.getPluginManager()
-                        .callEvent(new PlayerClickedCookieEvent(l, e.getPlayer(), map, !Bukkit.isPrimaryThread()));
+        if (CookieManager.EDIT) {
+            if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getBlockFace() != BlockFace.UP) {
+                return;
             }
+            var block = e.getClickedBlock().getRelative(BlockFace.UP);
+            // send location to player
 
+            var map = cookieManager.getFrameMap().get(block);
+            if (map != null) {
+                var interaction = e.getInteractionPoint();
+                if (interaction != null) {
+
+                    var vec = interaction.toVector().clone();
+                    var normie = e.getPlayer().getEyeLocation().toVector().subtract(vec).normalize();
+                    var l = interaction.toVector().clone().add(normie.multiply(0.05)).toLocation(block.getWorld());
+
+                    Bukkit.getPluginManager()
+                            .callEvent(new PlayerClickedCookieEvent(l, e.getPlayer(), map, !Bukkit.isPrimaryThread()));
+                }
+
+            }
         }
     }
 
