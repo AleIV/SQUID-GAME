@@ -22,6 +22,7 @@ public class CookieManager {
     private @Getter static Core instance;
     private @Getter CookieCMD cookieCMD;
     private @Getter ConcurrentHashMap<UUID, CookieMap> cookieMaps;
+    public static boolean EDIT = false;
 
     public CookieManager(Core plugin) {
         instance = plugin;
