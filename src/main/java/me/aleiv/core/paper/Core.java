@@ -13,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import co.aikar.commands.PaperCommandManager;
-import de.slikey.effectlib.EffectManager;
 import io.github.znetworkw.znpcservers.NPCLibrary;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
@@ -62,7 +61,6 @@ public class Core extends JavaPlugin {
     private @Getter CollisionManager collisionManager;
     private @Getter VectorsManager vectorManager;
     // private @Getter MapSystemManager mapSystemManager;
-    private @Getter EffectManager effectManager;
     private @Getter SkinCMD skinCMD;
     private @Getter NPCLibrary npcLibrary;
     private @Getter CookieManager cookieManager;
@@ -140,7 +138,6 @@ public class Core extends JavaPlugin {
         // Start map system manager
         // this.mapSystemManager = new MapSystemManager(this);
         // Start effect manager
-        this.effectManager = new EffectManager(this);
         // Start cookie manager
         this.cookieManager = new CookieManager(this);
 
