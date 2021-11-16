@@ -32,7 +32,6 @@ import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.commands.TestCMD;
 import me.aleiv.core.paper.commands.UtilsCMD;
 import me.aleiv.core.paper.detection.CollisionManager;
-import me.aleiv.core.paper.effects.commands.EffectCommands;
 import me.aleiv.core.paper.listeners.CanceledListener;
 import me.aleiv.core.paper.listeners.ChairListener;
 import me.aleiv.core.paper.listeners.GlassListener;
@@ -142,7 +141,6 @@ public class Core extends JavaPlugin {
         // this.mapSystemManager = new MapSystemManager(this);
         // Start effect manager
         this.effectManager = new EffectManager(this);
-        this.commandManager.registerCommand(new EffectCommands(this));
         // Start cookie manager
         this.cookieManager = new CookieManager(this);
 
