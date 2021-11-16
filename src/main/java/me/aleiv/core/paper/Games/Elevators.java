@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
@@ -20,22 +21,29 @@ public class Elevators {
     }
 
     public enum ElevatorType {
-        ONE, TWO, THREE, DOLL, HIDE_SEEK, POTATO, EXIT1, EXIT2, CHICKEN1, CHICKEN2, GOCHICKEN, GLASS
+        ONE, TWO, THREE, DOLL, HIDE_SEEK, POTATO, EXIT1, EXIT2, CHICKEN1, CHICKEN2, GOCHICKEN, GLASS,
+        VIP_MAIN, VIP_ADMIN, VIP_GLASS, VIP_ROPE, VIP_DOLL, MAIN_ROOM
     }
 
-    public void elevatorTravel(ElevatorType elevator1, ElevatorType elevator2, Boolean bool){
+    public void elevatorTravel(Player player, ElevatorType elevator2, Boolean bool){
 
         if(elevators.isEmpty()){
             registerElevators();
         }
 
-        if(elevators.containsKey(elevator1) && elevators.containsKey(elevator2)){
-            var elev1 = elevators.get(elevator1);
-            var elev2 = elevators.get(elevator2);
+        var ele = elevators.entrySet().stream().filter(entry -> entry.getValue().containsPlayer(player)).findAny().orElse(null);
 
-            elev1.travel(elev2, bool);
-            instance.getGame().setLights(bool);
+        if(ele != null){
+            var elevator1 = ele.getKey();
+            if(elevators.containsKey(elevator1) && elevators.containsKey(elevator2)){
+                var elev1 = elevators.get(elevator1);
+                var elev2 = elevators.get(elevator2);
+    
+                elev1.travel(elev2, bool);
+                instance.getGame().setLights(bool);
+            }
         }
+
     }
 
     public void elevatorDoor(ElevatorType elevatorType, Boolean bool){
@@ -81,7 +89,50 @@ public class Elevators {
             case GLASS ->{
                 glassElevator(bool);
             }
+            case VIP_MAIN ->{
+                moveElevator28("VIP_MAIN", bool);
+            }
+            case VIP_ADMIN ->{
+                moveElevator28("VIP_ADMIN", bool);
+            }
+            case VIP_GLASS ->{
+                moveElevator28("VIP_GLASS", bool);
+            }
+            case VIP_ROPE ->{
+                moveElevator28("VIP_ROPE", bool);
+            }
+            case VIP_DOLL ->{
+                moveElevator28("VIP_DOLL", bool);
+            }
 
+        }
+    }
+
+    public void moveElevator28(String name, Boolean bool){
+        var specialObjects = AnimationTools.specialObjects;
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get(name + "_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get(name + "_POS2"), world);
+
+        if(bool){
+
+            AnimationTools.fill(loc1, loc2, Material.AIR);
+
+            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+
+            AnimationTools.move(name + "_RIGHT", name + "_LEFT", 28, 1, 'x', 0.1f);
+
+        }else{
+
+            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+
+            var task = AnimationTools.move(name + "_LEFT", name + "_RIGHT", 28, 1, 'x', 0.1f);
+
+            task.thenAccept(action ->{
+                Bukkit.getScheduler().runTask(instance, tk ->{
+                    AnimationTools.fill(loc1, loc2, Material.PRISMARINE_WALL);
+                });
+            });
         }
     }
 
@@ -487,6 +538,38 @@ public class Elevators {
         loc2 = AnimationTools.parseLocation(specialObjects.get("GLASS_ELEVATOR_LOC2"), world);
 
         elevators.put(ElevatorType.GLASS, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("VIP_MAIN_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("VIP_MAIN_LOC2"), world);
+
+        elevators.put(ElevatorType.VIP_MAIN, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("VIP_DOLL_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("VIP_DOLL_LOC2"), world);
+
+        elevators.put(ElevatorType.VIP_DOLL, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("VIP_ADMIN_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("VIP_ADMIN_LOC2"), world);
+
+        elevators.put(ElevatorType.VIP_ADMIN, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("VIP_GLASS_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("VIP_GLASS_LOC2"), world);
+
+        elevators.put(ElevatorType.VIP_GLASS, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("VIP_ROPE_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("VIP_ROPE_LOC2"), world);
+
+        elevators.put(ElevatorType.VIP_ROPE, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("MAIN_ROOM_POS1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("MAIN_ROOM_POS2"), world);
+
+        elevators.put(ElevatorType.MAIN_ROOM, new Elevator(loc1, loc2));
+
+        
 
     }
 }

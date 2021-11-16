@@ -10,7 +10,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import lombok.Data;
 import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
 
 @Data
 public class Elevator {
@@ -39,7 +38,6 @@ public class Elevator {
                 player.removePotionEffect(PotionEffectType.NIGHT_VISION);
                 
             });
-            Core.getInstance().getGame().setLights(false);
             
         }
 
@@ -60,5 +58,9 @@ public class Elevator {
 
     public List<Player> getPlayersInside(){
         return AnimationTools.getPlayersInsideCube(loc1, loc2);
+    }
+
+    public boolean containsPlayer(Player player){
+        return getPlayersInside().contains(player);
     }
 }
