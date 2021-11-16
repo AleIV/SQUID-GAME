@@ -54,4 +54,5 @@ public class CustomRender extends MapRenderer {
     public static CustomRender fromFile(String fileLocation) {
         return new CustomRender(fileLocation);
     }
+
 }

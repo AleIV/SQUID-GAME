@@ -14,6 +14,7 @@ public enum CookieEnum {
     CREEPER(0), EYE(1), RODOLFO(2), SQUID(3);
 
     final String assetLocation;
+    final File assetFile;
     final int modelData;
 
     /**
@@ -22,8 +23,9 @@ public enum CookieEnum {
      */
     CookieEnum(int modelData) {
         this.modelData = modelData;
-        assetLocation = System.getProperty("user.dir") + File.separatorChar + "assets" + File.separatorChar + "cookie_"
-                + toString().toLowerCase() + ".png";
+        this.assetLocation = System.getProperty("user.dir") + File.separatorChar + "assets" + File.separatorChar
+                + "cookie_" + toString().toLowerCase() + ".png";
+        this.assetFile = new File(assetLocation);
     }
 
     /**
@@ -47,6 +49,25 @@ public enum CookieEnum {
      */
     public int getModelData() {
         return modelData;
+    }
+
+    /**
+     * @return Returns the CookieEnum that matches the given modelData.
+     */
+    public static CookieEnum getByModelData(int modelData) {
+        for (CookieEnum cookieEnum : values()) {
+            if (cookieEnum.getModelData() == modelData) {
+                return cookieEnum;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return Returns the file for the CookieEnum.
+     */
+    public File getAssetFile() {
+        return assetFile;
     }
 
 }
