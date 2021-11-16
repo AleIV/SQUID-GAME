@@ -1,5 +1,9 @@
 package us.jcedeno.cookie;
 
+import lombok.Getter;
+import me.aleiv.core.paper.Core;
+import us.jcedeno.cookie.commands.CookieCMD;
+
 /**
  * The CookieManager class is a singleton that manages the cookie map views for
  * the SquidGame Cookie Game. Yes yes.
@@ -8,9 +12,13 @@ package us.jcedeno.cookie;
  */
 public class CookieManager {
 
-    private static CookieManager instance;
+    private @Getter static Core instance;
+    private @Getter CookieCMD cookieCMD;;
 
-    private CookieManager() {
+    private CookieManager(Core plugin) {
+        instance = plugin;
+        this.cookieCMD = new CookieCMD(plugin);
+
     }
 
 }

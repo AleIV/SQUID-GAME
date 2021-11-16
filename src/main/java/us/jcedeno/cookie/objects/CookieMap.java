@@ -11,6 +11,7 @@ import org.bukkit.map.MapView;
 import org.bukkit.map.MapView.Scale;
 
 import lombok.Getter;
+import me.aleiv.core.paper.map.packet.WrapperPlayServerMap;
 
 /**
  * An object which represents an abstract MapView and Canvas that get's updated
@@ -76,6 +77,43 @@ public class CookieMap {
         item.setItemMeta(meta);
 
         return item;
+    }
+
+    /**
+     * 
+     * Functional that paints a pixel and then returns a packet with that update
+     * contained.
+     * 
+     * @param x     The x coordinate of the pixel to be painted.
+     * @param y     The y coordinate of the pixel to be painted. Also called Z by
+     *              spigot.
+     * @param color A byte color, look into mojang colors for this value.
+     * @return A new packet or null if color already same.
+     */
+    public WrapperPlayServerMap paintPixel(int x, int y, byte color) {
+        /** If coolor same, return null */
+        if (asyncPixelCanvas[x][y] != null && asyncPixelCanvas[x][y] == color)
+            return null;
+        /** Paint pixel in storage matrix. */
+        asyncPixelCanvas[x][y] = color;
+        /** Create and return packet */
+        var packet = new WrapperPlayServerMap();
+        /** Set map id */
+        packet.setItemDamage(mapId);
+        /** Set scale */
+        packet.setScale((byte) 4);
+        /** Set rows and colms */
+        packet.setColumns(1);
+        packet.setRows(1);
+        /** Set tracking position */
+        packet.setTrackingPosition(false);
+        packet.setX(x);
+        packet.setZ(y);
+        /** Set map data to array of 1 pixel of the given color */
+        packet.setData(new byte[] { color });
+
+        return packet;
+
     }
 
 }
