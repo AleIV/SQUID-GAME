@@ -463,6 +463,7 @@ public class AnimationTools {
     }
 
     public static void setScreenValue(List<Location> locations, String str) {
+        AnimationTools.playSoundDistance(locations.get(0), 100, "squid:sfx.main_board", 1f, 1f);
         var array = str.toCharArray();
         var count = 0;
         for (char c : array) {

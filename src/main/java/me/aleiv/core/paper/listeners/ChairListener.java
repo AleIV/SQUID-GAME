@@ -22,7 +22,7 @@ public class ChairListener implements Listener {
         this.instance = instance;
     }
 
-    List<Integer> sitModels = List.of(40, 23, 53);
+    List<Integer> sitModels = List.of(40, 23, 53, 60, 61, 66, 67, 68, 69);
     
     @EventHandler
     public void gameTickEvent(GameTickEvent e){

@@ -51,12 +51,13 @@ public class MainRoom {
             });
 
         }
-    } 
+    }
 
     public void mainElevator(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
-        var loc1 = AnimationTools.parseLocation(specialObjects.get("MAIN_ELEVATOR_POS1"), Bukkit.getWorld("world"));
-        var loc2 = AnimationTools.parseLocation(specialObjects.get("MAIN_ELEVATOR_POS2"), Bukkit.getWorld("world"));
+        var world = Bukkit.getWorld("world");
+        var loc1 = AnimationTools.parseLocation(specialObjects.get("MAIN_ELEVATOR_POS1"), world);
+        var loc2 = AnimationTools.parseLocation(specialObjects.get("MAIN_ELEVATOR_POS2"), world);
 
         if(bool){
 
@@ -180,6 +181,7 @@ public class MainRoom {
 
         var game = instance.getGame();
         var currentPrizeText = game.getTotalPrize();
+        var moneyLoc = AnimationTools.parseLocation(specialObjects.get("MONEY_FALL"), world);
         var prizeValueText = AnimationTools.getBlocksInsideCube(loc1, loc2);
 
         var fromPrize = Integer.parseInt(currentPrizeText);
@@ -211,11 +213,9 @@ public class MainRoom {
 
                     game.setTotalPrize(formatted);
                     AnimationTools.setScreenValue(prizeValueText, formatted);
-                    AnimationTools.playSoundDistance(loc1, 100, "squid:sfx.main_board", 1f, 1f);
 
                     var money = new ItemBuilder(Material.GOLDEN_HOE).flags(ItemFlag.HIDE_ATTRIBUTES).build();
 
-                    var moneyLoc = AnimationTools.parseLocation(specialObjects.get("MONEY_FALL"), Bukkit.getWorld("world"));
                     world.dropItemNaturally(moneyLoc, money);
 
                 }
@@ -281,7 +281,7 @@ public class MainRoom {
 
                     game.setTotalPlayers(formatted);
                     AnimationTools.setScreenValue(playersValueText, formatted);
-                    AnimationTools.playSoundDistance(loc1, 100, "squid:sfx.main_board", 1f, 1f);
+
                 }
             }, 50*delay);
 

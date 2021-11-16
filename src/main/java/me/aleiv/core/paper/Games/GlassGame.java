@@ -25,15 +25,20 @@ public class GlassGame {
         return material == Material.GLASS;
     }
 
-    public void breakGlass(Block block) {
+    public void breakGlass(Block block, Boolean bool) {
         var item = new ItemStack(Material.AIR);
         var type = block.getType();
         if (isGlass(type)) {
             block.breakNaturally(item, true);
+            var loc = block.getLocation();
+            if(bool){
+                AnimationTools.playSoundDistance(loc, 100, "squid:sfx.glass_break", 11f, 1f);
+            }
+            
             for (BlockFace face : BlockFace.values()) {
                 if (face.equals(BlockFace.DOWN) || face.equals(BlockFace.UP) || face.equals(BlockFace.NORTH)
                         || face.equals(BlockFace.EAST) || face.equals(BlockFace.SOUTH) || face.equals(BlockFace.WEST)) {
-                    breakGlass(block.getRelative(face));
+                    breakGlass(block.getRelative(face), bool);
                 }
             }
 
@@ -46,6 +51,9 @@ public class GlassGame {
         var world = Bukkit.getWorld("world");
         var task = new BukkitTCT();
 
+        
+        AnimationTools.playSoundDistance(locations.get(0), 100, "squid:sfx.glass_explosion", 11f, 1f);
+
         locations.forEach(loc ->{
             task.addWithDelay(new BukkitRunnable(){
                 @Override
@@ -54,10 +62,8 @@ public class GlassGame {
                     .offset(1, 1, 1).extra(1).spawn();
                     var block = world.getBlockAt(loc);
                     if(block.getType() == Material.GLASS){
-                        breakGlass(block);
+                        breakGlass(block, false);
                     }
-                    //TODO:GLASS SOUND
-                    AnimationTools.playSoundDistance(loc, 50, "sound", 11f, 1f);
                 }
             }, 50*5);
         });

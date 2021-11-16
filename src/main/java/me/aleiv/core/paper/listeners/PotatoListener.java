@@ -23,7 +23,6 @@ public class PotatoListener implements Listener {
     }
 
 
-
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e){
         var entity = e.getEntity();

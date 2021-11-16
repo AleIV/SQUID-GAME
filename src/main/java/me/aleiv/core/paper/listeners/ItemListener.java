@@ -12,7 +12,7 @@ public class ItemListener implements Listener {
 
     Core instance;
 
-    List<Integer> helmetModel = List.of(4, 5, 6, 7, 24);
+    List<Integer> helmetModel = List.of(4, 5, 6, 7, 24, 62, 63, 64, 65);
 
     public ItemListener(Core instance){
         this.instance = instance;
