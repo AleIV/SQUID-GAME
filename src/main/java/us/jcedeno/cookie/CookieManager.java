@@ -1,8 +1,12 @@
 package us.jcedeno.cookie;
 
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import lombok.Getter;
 import me.aleiv.core.paper.Core;
 import us.jcedeno.cookie.commands.CookieCMD;
+import us.jcedeno.cookie.objects.CookieMap;
 
 /**
  * The CookieManager class is a singleton that manages the cookie map views for
@@ -13,11 +17,13 @@ import us.jcedeno.cookie.commands.CookieCMD;
 public class CookieManager {
 
     private @Getter static Core instance;
-    private @Getter CookieCMD cookieCMD;;
+    private @Getter CookieCMD cookieCMD;
+    private @Getter ConcurrentHashMap<UUID, CookieMap> cookieMaps;
 
-    private CookieManager(Core plugin) {
+    public CookieManager(Core plugin) {
         instance = plugin;
         this.cookieCMD = new CookieCMD(plugin);
+        this.cookieMaps = new ConcurrentHashMap<>();
 
     }
 
