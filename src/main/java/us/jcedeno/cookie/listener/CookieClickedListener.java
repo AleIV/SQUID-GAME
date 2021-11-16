@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 
+import me.aleiv.core.paper.map.packet.WrapperPlayServerMap;
 import us.jcedeno.cookie.CookieManager;
 import us.jcedeno.cookie.events.PlayerClickedCookieEvent;
 
@@ -83,9 +84,62 @@ public class CookieClickedListener implements Listener {
     public void onPlayerClickedCookie(PlayerClickedCookieEvent e) {
         var player = e.getPlayer();
         var frame = e.getItemFrame();
-        var interaction = e.getInteractionPoint();
+        var position = e.getInteractionPoint();
 
-        player.sendMessage("You've clicked at interaction " + interaction.toString());
+        // player.sendMessage(position.toString() + ", \n" +
+        // frame.getLocation().toString());
+
+        var bX = frame.getLocation().getBlockX();
+        var bZ = frame.getLocation().getBlockZ();
+
+        var relativeX = position.getX() - bX;
+        var relativeZ = position.getZ() - bZ;
+        // Send relative to player
+        player.sendMessage("rotation: " + frame.getRotation() + ", " + relativeX + ", " + relativeZ);
+        var cookieMap = cookieManager.getCookieMaps().get(player.getUniqueId());
+        int x, z;
+        WrapperPlayServerMap packet = null;
+
+        switch (frame.getRotation()) {
+
+        case NONE:
+        case FLIPPED: {
+            x = (int) Math.ceil((position.getX()) * 128);
+            z = (int) Math.ceil((position.getZ()) * 128);
+            packet = cookieMap.paintPixel(Math.min(127, x), Math.min(127, z), (byte) 24);
+            break;
+        }
+        case CLOCKWISE_45:
+        case FLIPPED_45:
+
+            z = (int) Math.ceil((position.getX()) * 128);
+            x = (int) Math.ceil((position.getZ()) * 128);
+            packet = cookieMap.paintPixel(Math.min(x, 127), Math.min(128 - z, 127), (byte) 24);
+
+            break;
+        case COUNTER_CLOCKWISE:
+        case CLOCKWISE:
+
+            x = (int) Math.ceil((position.getX()) * 128);
+            z = (int) Math.ceil((position.getZ()) * 128);
+            packet = cookieMap.paintPixel(Math.min(128 - x, 127), Math.min(128 - z, 127), (byte) 24);
+
+            break;
+        case COUNTER_CLOCKWISE_45:
+        case CLOCKWISE_135:
+
+            z = (int) Math.ceil((position.getX()) * 128);
+            x = (int) Math.ceil((position.getZ()) * 128);
+            packet = cookieMap.paintPixel(Math.min(128 - x, 127), Math.min(127, z), (byte) 24);
+
+            break;
+        }
+        if (packet != null) {
+            packet.broadcastPacket();
+        }
+
+        // player.sendMessage("You've clicked at interaction " + frame.toString());
+
     }
 
 }
