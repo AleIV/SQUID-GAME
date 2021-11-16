@@ -1,5 +1,7 @@
 package us.jcedeno.cookie.objects;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -18,15 +20,24 @@ import lombok.Getter;
  * @author jcedeno
  */
 public class CookieMap {
-
-    /** MapView used by bukkit to handle all the logic of the bukkit map */
+    /** Constant for admins to access any map. */
+    public static String EDIT_MAP_PERMISSION = "cookie.admin.edit";
+    /** MapView used by bukkit to handle all the logic of the bukkit map. */
     private @Getter MapView mapView;
-    /** A Map Id obtained from MapView */
+    /** A Map Id obtained from MapView. */
     private final @Getter Integer mapId;
     /** Renderer used to draw the pixels of the images that we use. */
     private @Getter CustomRender mapRenderer;
     /** The type of the current cookie. */
     private @Getter CookieEnum cookieType;
+    /** Owner, the only owner allowed to edit the map. */
+    private @Getter UUID owner;
+    /** Whether the owner is currently allowed to edit or not. */
+    private @Getter Boolean lockedForEditing;
+    /**
+     * A thread-safe 2D byte array to represent the color of all pixels in this map.
+     */
+    private volatile @Getter Byte[][] asyncPixelCanvas;
 
     /**
      * Constructor for the CookieMap object.
@@ -38,6 +49,8 @@ public class CookieMap {
         this.mapView = Bukkit.createMap(world);
         this.mapId = mapView.getId();
         this.cookieType = cookieType;
+        /** Initialize the canvas with the 128x128 pixel size. */
+        this.asyncPixelCanvas = new Byte[128][128];
 
         /** Intialize map with all the important stuff. */
         this.mapView.getRenderers().forEach(mapView::removeRenderer);
