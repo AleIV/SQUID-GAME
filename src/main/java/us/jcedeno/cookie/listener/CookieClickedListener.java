@@ -71,17 +71,16 @@ public class CookieClickedListener implements Listener {
         var map = cookieManager.getFrameMap().get(block);
         if (map != null) {
             var interaction = e.getInteractionPoint();
-
-            var vec = interaction.toVector().clone();
-            var normie = e.getPlayer().getEyeLocation().toVector().subtract(vec).normalize();
-            var l = interaction.toVector().clone().add(normie.multiply(0.05)).toLocation(block.getWorld());
-
             if (interaction != null) {
+
+                var vec = interaction.toVector().clone();
+                var normie = e.getPlayer().getEyeLocation().toVector().subtract(vec).normalize();
+                var l = interaction.toVector().clone().add(normie.multiply(0.05)).toLocation(block.getWorld());
 
                 Bukkit.getPluginManager()
                         .callEvent(new PlayerClickedCookieEvent(l, e.getPlayer(), map, !Bukkit.isPrimaryThread()));
-
             }
+
         }
     }
 
