@@ -29,7 +29,7 @@ public class CookieCaseListener implements Listener {
 
     @EventHandler
     public void onPlayerOpenCookieBox(PlayerInteractEvent e) {
-        if (e.getItem() == null)
+        if (e.getItem() == null || !CookieManager.EDIT)
             return;
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getItem().getType() == Material.FERMENTED_SPIDER_EYE) {
             var meta = e.getItem().getItemMeta();

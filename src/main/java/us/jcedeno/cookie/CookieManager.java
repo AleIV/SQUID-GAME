@@ -28,7 +28,7 @@ public class CookieManager {
     private @Getter ConcurrentHashMap<UUID, CookieMap> cookieMaps;
     private @Getter volatile HashMap<Block, ItemFrame> frameMap = new HashMap<Block, ItemFrame>();
 
-    public static boolean EDIT = false;
+    public static boolean EDIT = true;
 
     public CookieManager(Core plugin) {
         instance = plugin;
