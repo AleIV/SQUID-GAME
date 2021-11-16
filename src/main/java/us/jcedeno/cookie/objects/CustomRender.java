@@ -13,6 +13,12 @@ import org.jetbrains.annotations.NotNull;
 
 import lombok.Getter;
 
+/**
+ * 
+ * Custom renderer used to quickly paint an image onto a minecraft map canvas.
+ * 
+ * @author jcedeno
+ */
 public class CustomRender extends MapRenderer {
     private final String fileName;
     private @Getter MapCanvas canvas;
@@ -21,9 +27,8 @@ public class CustomRender extends MapRenderer {
         this.fileName = fileName;
     }
 
-    private void drawImage(MapCanvas canvas) throws IOException {
-        var img = ImageIO.read(
-                new File(System.getProperty("user.dir") + File.separatorChar + "maps" + File.separatorChar + fileName));
+    private void drawImage(String fileName, MapCanvas canvas) throws IOException {
+        var img = ImageIO.read(new File(System.getProperty("user.dir") + File.pathSeparatorChar + fileName));
 
         canvas.drawImage(0, 0, img);
 
@@ -32,7 +37,7 @@ public class CustomRender extends MapRenderer {
     @Override
     public void render(@NotNull MapView map, @NotNull MapCanvas canvas, @NotNull Player player) {
         try {
-            drawImage(canvas);
+            drawImage(this.fileName, canvas);
             this.canvas = canvas;
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,4 +45,13 @@ public class CustomRender extends MapRenderer {
 
     }
 
+    /**
+     * Static constructor for the Custom Renderer class.
+     * 
+     * @param fileName The name of the image file to be drawn.
+     * @return A new instance of the CustomRender class.
+     */
+    public static CustomRender fromFile(String fileName) {
+        return new CustomRender(fileName);
+    }
 }

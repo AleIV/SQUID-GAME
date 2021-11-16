@@ -1,5 +1,6 @@
 package us.jcedeno.cookie.objects;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public enum CookieEnum {
      * the assets folder with the format of "cookie_{enumType}.png".
      */
     CookieEnum() {
-        assetLocation = "assets/cookie_" + name().toLowerCase() + ".png";
+        assetLocation = "assets" + File.pathSeparatorChar + "cookie_" + name().toLowerCase() + ".png";
     }
 
     /**
