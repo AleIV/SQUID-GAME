@@ -2,6 +2,7 @@ package me.aleiv.core.paper.objects;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -9,6 +10,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import lombok.Data;
 import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
 
 @Data
 public class Elevator {
@@ -32,19 +34,24 @@ public class Elevator {
 
         var players = getPlayersInside();
         
+        if(bool){
+            Bukkit.getOnlinePlayers().forEach(player ->{
+                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+            });
+        }
+
         players.forEach(p ->{
             var loc = p.getLocation().clone().add(xOffSet, yOffSet, zOffSet);
-            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*2, 0, false, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*1, 0, false, false, false));
             p.teleport(loc);
 
             if(bool){
-                p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
-            }else{
-                p.removePotionEffect(PotionEffectType.NIGHT_VISION);
                 p.playSound(loc, "squid:sfx.main_lights_off", 1, 1);
+                Core.getInstance().getGame().setLights(false);
+
             }
 
-            p.playSound(loc, "squid:sfx.elevator_move", 1, 1);
+            p.playSound(loc, "squid:sfx.big_elevator_move", 1, 1);
         });
 
     }
