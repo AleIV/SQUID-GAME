@@ -104,6 +104,8 @@ public class Elevators {
             case VIP_DOLL ->{
                 moveElevator28("VIP_DOLL", bool);
             }
+        case MAIN_ROOM -> throw new UnsupportedOperationException("Unimplemented case: " + elevatorType);
+        default -> throw new IllegalArgumentException("Unexpected value: " + elevatorType);
 
         }
     }
@@ -118,13 +120,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move(name + "_RIGHT", name + "_LEFT", 28, 1, 'x', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move(name + "_LEFT", name + "_RIGHT", 28, 1, 'x', 0.1f);
 
@@ -146,13 +148,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("GLASS_ELEVATOR_RIGHT", "GLASS_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("GLASS_ELEVATOR_LEFT", "GLASS_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
 
@@ -174,13 +176,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("GOCHICKEN_ELEVATOR_LEFT", "GOCHICKEN_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("GOCHICKEN_ELEVATOR_RIGHT", "GOCHICKEN_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
 
@@ -202,13 +204,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("CHICKEN_ELEVATOR_LEFT", "CHICKEN_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("CHICKEN_ELEVATOR_RIGHT", "CHICKEN_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
 
@@ -230,13 +232,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("CHICKEN_ELEVATOR2_RIGHT", "CHICKEN_ELEVATOR2_LEFT", 28, 1, 'x', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("CHICKEN_ELEVATOR2_LEFT", "CHICKEN_ELEVATOR2_RIGHT", 28, 1, 'x', 0.1f);
 
@@ -258,13 +260,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("POTATO_ELEVATOR_LEFT", "POTATO_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("POTATO_ELEVATOR_RIGHT", "POTATO_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
 
@@ -287,13 +289,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("EXIT1_ELEVATOR_LEFT", "EXIT1_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("EXIT1_ELEVATOR_RIGHT", "EXIT1_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
 
@@ -315,13 +317,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("EXIT2_ELEVATOR_RIGHT", "EXIT2_ELEVATOR_LEFT", 28, 1, 'x', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("EXIT2_ELEVATOR_LEFT", "EXIT2_ELEVATOR_RIGHT", 28, 1, 'x', 0.1f);
 
@@ -343,13 +345,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("DOLL_ELEVATOR_LEFT", "DOLL_ELEVATOR_RIGHT", 32, 1, 'z', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("DOLL_ELEVATOR_RIGHT", "DOLL_ELEVATOR_LEFT", 32, 1, 'z', 0.1f);
 
@@ -372,12 +374,12 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("HIDE_SEEK_ELEVATOR_RIGHT", "HIDE_SEEK_ELEVATOR_LEFT", 32, 1, 'z', 0.1f);
 
         }else{
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("HIDE_SEEK_ELEVATOR_LEFT", "HIDE_SEEK_ELEVATOR_RIGHT", 32, 1, 'z', 0.1f);
 
@@ -400,13 +402,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("ELEVATOR1_RIGHT", "ELEVATOR1_LEFT", 32, 1, 'z', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("ELEVATOR1_LEFT", "ELEVATOR1_RIGHT", 32, 1, 'z', 0.1f);
 
@@ -428,13 +430,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("ELEVATOR2_LEFT", "ELEVATOR2_RIGHT", 32, 1, 'z', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("ELEVATOR2_RIGHT", "ELEVATOR2_LEFT", 32, 1, 'z', 0.1f);
             
@@ -457,13 +459,13 @@ public class Elevators {
 
             AnimationTools.fill(loc1, loc2, Material.AIR);
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_open", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_open", 1f, 1f);
 
             AnimationTools.move("ELEVATOR3_LEFT", "ELEVATOR3_RIGHT", 28, 1, 'x', 0.1f);
 
         }else{
 
-            AnimationTools.playSoundDistance(loc1, 20, "squid:sfx.tp_elevator_close", 1f, 1f);
+            AnimationTools.playSoundDistance(loc1, 10, "squid:sfx.tp_elevator_close", 1f, 1f);
 
             var task = AnimationTools.move("ELEVATOR3_RIGHT", "ELEVATOR3_LEFT", 28, 1, 'x', 0.1f);
 
