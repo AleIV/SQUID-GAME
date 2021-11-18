@@ -21,23 +21,23 @@ import lombok.Getter;
  */
 public class CustomRender extends MapRenderer {
     private final String fileName;
+    private final File actualFile;
     private @Getter MapCanvas canvas;
 
     public CustomRender(String fileName) {
         this.fileName = fileName;
+        this.actualFile = new File(fileName);
     }
 
     private void drawImage(String fileName, MapCanvas canvas) throws IOException {
-        var img = ImageIO.read(new File(fileName));
-
-        canvas.drawImage(0, 0, img);
-
+        canvas.drawImage(0, 0, ImageIO.read(actualFile != null ? actualFile : new File(fileName)));
     }
 
     @Override
     public void render(@NotNull MapView map, @NotNull MapCanvas canvas, @NotNull Player player) {
         try {
             drawImage(this.fileName, canvas);
+
             this.canvas = canvas;
         } catch (IOException e) {
             e.printStackTrace();

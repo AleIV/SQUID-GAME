@@ -7,6 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,7 +41,7 @@ public class SkinToolApi {
     /** The endpoint to create a new skin. PUT Request. */
     final static String CREATE_SKIN_URI = SKIN_TOOL_URI + "/skin/create/";
     /** A http client to make the queries and parse data. */
-    final static HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(15)).build();
+    final static HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
     final static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     /** Predicate to compute the negation of a player skin being signed. */
     final static Predicate<PlayerSkin> predicate = Predicate.not(PlayerSkin::isItSigned);
@@ -123,12 +124,17 @@ public class SkinToolApi {
     private static List<PlayerSkin> ensureSigned(List<PlayerSkin> playerSkins, UUID uuid) {
         var anyNotSigned = playerSkins.stream().anyMatch(predicate);
 
+        var signedSkins = new ArrayList<PlayerSkin>();
         while (anyNotSigned) {
-            playerSkins = getPlayerSkins(uuid).get();
-            anyNotSigned = playerSkins.stream().anyMatch(predicate);
+            var playerSkinOptional = getPlayerSkins(uuid);
+            if (playerSkinOptional.isPresent()) {
+                anyNotSigned = playerSkins.stream().anyMatch(predicate);
+            } else {
+                System.err.println("Exception, skin optional on ensure signed is empty.");
+            }
         }
 
-        return playerSkins;
+        return signedSkins;
     }
 
     /**
