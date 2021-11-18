@@ -40,6 +40,7 @@ public class DollGame {
 
     HashMap<String, Integer> fastLight = new HashMap<String, Integer>() {
         {
+            
             put("squid:sfx.luz_verde_3", 2);
             put("squid:sfx.luz_verde_4", 4);
             put("squid:sfx.luz_verde_5", 2);

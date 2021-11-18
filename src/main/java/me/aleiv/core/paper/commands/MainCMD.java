@@ -28,6 +28,14 @@ public class MainCMD extends BaseCommand {
         tools.lights(bool);
     }
 
+    @Subcommand("pasiveLights")
+    public void pasiveLights(CommandSender sender, Boolean bool){
+        sender.sendMessage(ChatColor.DARK_AQUA + "Pasive Lights " + bool);
+
+        var tools = instance.getGame().getMainRoom();
+        tools.pasiveLights(bool);
+    }
+
     @Subcommand("elevator")
     public void elevator(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Main elevator " + bool);

@@ -18,6 +18,7 @@ import me.aleiv.core.paper.Games.GlassGame;
 import me.aleiv.core.paper.Games.GlobalGame;
 import me.aleiv.core.paper.Games.HideSeekGame;
 import me.aleiv.core.paper.Games.MainRoom;
+import me.aleiv.core.paper.Games.PhoneGame;
 import me.aleiv.core.paper.Games.PotatoGame;
 import me.aleiv.core.paper.Games.RopeGame;
 import me.aleiv.core.paper.events.GameTickEvent;
@@ -45,6 +46,7 @@ public class Game extends BukkitRunnable {
     ChairGame chairGame;
     PotatoGame potatoGame;
     GlassGame glassGame;
+    PhoneGame phoneGame;
 
     HashMap<String, Role> roles = new HashMap<>();
 
@@ -77,6 +79,7 @@ public class Game extends BukkitRunnable {
         this.chairGame = new ChairGame(instance);
         this.potatoGame = new PotatoGame(instance);
         this.glassGame = new GlassGame(instance);
+        this.phoneGame = new PhoneGame(instance);
     }
 
     public enum PvPType{
@@ -84,7 +87,7 @@ public class Game extends BukkitRunnable {
     }
 
     public enum Role {
-        GUARD, PLAYER, DEAD
+        GUARD, PLAYER, VIP
     }
 
     public enum TimerType{
@@ -96,7 +99,7 @@ public class Game extends BukkitRunnable {
     }
 
     public enum GameStage{
-        INGAME, LOBBY
+        INGAME, LOBBY, PAUSE
     }
 
     public enum DeathReason{

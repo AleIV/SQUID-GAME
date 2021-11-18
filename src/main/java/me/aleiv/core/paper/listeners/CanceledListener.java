@@ -5,10 +5,14 @@ import java.util.List;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -17,6 +21,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTakeLecternBookEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
 import me.aleiv.core.paper.Core;
 
 public class CanceledListener implements Listener {
@@ -31,10 +36,26 @@ public class CanceledListener implements Listener {
         this.instance = instance;
     }
 
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void checkForMute(AsyncChatEvent e) {
+        if (!e.getPlayer().hasPermission("globalmute.talk")) {
+            e.setCancelled(true);
+        }
+    }
+
     @EventHandler
     public void onSpawn(CreatureSpawnEvent e){
         if(e.getSpawnReason().toString().contains("NATURAL")){
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent e){
+        var game = instance.getGame();
+        var entity = e.getEntity();
+        if(entity instanceof Player player && game.isGuard(player)){
+            e.setDamage(1);
         }
     }
 
@@ -44,7 +65,22 @@ public class CanceledListener implements Listener {
         var block = e.getClickedBlock();
         var action = e.getAction();
 
-        if(block != null && block.getType() == Material.BIRCH_TRAPDOOR) return;
+        if(block != null && block.getType() == Material.BIRCH_TRAPDOOR){
+            e.setCancelled(true);
+
+            var face = e.getBlockFace();
+            if(face == BlockFace.DOWN){
+                var loc = block.getRelative(BlockFace.UP).getLocation();
+                player.teleport(loc);
+
+            }else if(face == BlockFace.UP){
+                var loc = block.getRelative(BlockFace.DOWN).getLocation();
+                player.teleport(loc);
+            }
+            
+
+            return;
+        }
 
         if(block == null || action != Action.RIGHT_CLICK_BLOCK || player.getGameMode() == GameMode.CREATIVE) return;
         

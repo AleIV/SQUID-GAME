@@ -28,6 +28,7 @@ public class PotatoCMD extends BaseCommand {
            
             player.playSound(loc, "squid:sfx.potato_explode", 11, 1);
             var inv = player.getInventory();
+
             if(inv.contains(Material.RABBIT_FOOT)){
                 Bukkit.getScheduler().runTaskLater(instance, task->{
                     inv.clear();

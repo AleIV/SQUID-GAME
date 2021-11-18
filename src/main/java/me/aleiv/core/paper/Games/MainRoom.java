@@ -53,6 +53,21 @@ public class MainRoom {
         }
     }
 
+    public void pasiveLights(Boolean bool){
+        instance.getGame().setLights(bool);
+        if(bool){
+            Bukkit.getOnlinePlayers().forEach(player->{
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*1000000, 100, false, false, false));
+            });
+
+        }else{
+            Bukkit.getOnlinePlayers().forEach(player->{
+                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+            });
+
+        }
+    }
+
     public void mainElevator(Boolean bool){
         var specialObjects = AnimationTools.specialObjects;
         var world = Bukkit.getWorld("world");

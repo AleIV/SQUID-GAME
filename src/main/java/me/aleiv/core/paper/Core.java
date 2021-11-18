@@ -17,12 +17,12 @@ import io.github.znetworkw.znpcservers.NPCLibrary;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
 import me.aleiv.core.paper.commands.ChairCMD;
-import me.aleiv.core.paper.commands.CookieCMD;
 import me.aleiv.core.paper.commands.DollCMD;
 import me.aleiv.core.paper.commands.ElevatorsCMD;
 import me.aleiv.core.paper.commands.GlassCMD;
 import me.aleiv.core.paper.commands.HideSeekCMD;
 import me.aleiv.core.paper.commands.MainCMD;
+import me.aleiv.core.paper.commands.PhoneCMD;
 import me.aleiv.core.paper.commands.PotatoCMD;
 import me.aleiv.core.paper.commands.RopeCMD;
 import me.aleiv.core.paper.commands.SkinCMD;
@@ -38,6 +38,7 @@ import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.listeners.HideListener;
 import me.aleiv.core.paper.listeners.ItemListener;
 import me.aleiv.core.paper.listeners.MechanicsListener;
+import me.aleiv.core.paper.listeners.PhoneListener;
 import me.aleiv.core.paper.listeners.PotatoListener;
 import me.aleiv.core.paper.listeners.RopeListener;
 import me.aleiv.core.paper.utilities.JsonConfig;
@@ -109,6 +110,7 @@ public class Core extends JavaPlugin {
         registerListener(new PotatoListener(this));
         registerListener(new GlassListener(this));
         registerListener(new ItemListener(this));
+        registerListener(new PhoneListener(this));
 
         // COMMANDS
 
@@ -118,11 +120,11 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new SquidCMD(this));
         commandManager.registerCommand(new RopeCMD(this));
         commandManager.registerCommand(new HideSeekCMD(this));
-        commandManager.registerCommand(new CookieCMD(this));
         commandManager.registerCommand(new ElevatorsCMD(this));
         commandManager.registerCommand(new ChairCMD(this));
         commandManager.registerCommand(new PotatoCMD(this));
         commandManager.registerCommand(new GlassCMD(this));
+        commandManager.registerCommand(new PhoneCMD(this));
 
         commandManager.registerCommand(new UtilsCMD(this));
         commandManager.registerCommand(new SpecialCMD(this));

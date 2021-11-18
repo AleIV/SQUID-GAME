@@ -7,6 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
@@ -36,7 +38,12 @@ public class PotatoListener implements Listener {
                 var loc2 = damagerPlayer.getLocation();
 
                 damagerPlayer.playSound(loc1, "squid:sfx.potato_pass", 1, 1);
+                player.removePotionEffect(PotionEffectType.GLOWING);
+
                 player.playSound(loc2, "squid:sfx.potato_receive", 1, 1);
+                damagerPlayer.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 10000*20, 0, false, false, false));
+                
+
                 invDamager.remove(Material.RABBIT_FOOT);
                 invPlayer.addItem(potato);
             }

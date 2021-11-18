@@ -17,14 +17,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.events.LeftWinsEvent;
 import me.aleiv.core.paper.events.RightWinsEvent;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
 
+@Data
 public class RopeGame {
     Core instance;
 
@@ -32,29 +32,20 @@ public class RopeGame {
     BossBar flagBar;
     BossBar yellowBar;
 
-    @Getter
-    @Setter
     Integer points = 0;
 
-    @Getter
-    @Setter
     Integer multiplier = 1;
 
     String bar = Character.toString('\u0250');
     String rope = Character.toString('\u0251');
     String flag = Character.toString('\u0252');
 
-    @Getter
     Boolean ropeBossbar = false;
-    @Getter
-    @Setter
     Boolean inGame = false;
+    Boolean boolMode = false;
+    Boolean boolModeBool = false;
 
-    @Getter
-    @Setter
     List<ArmorStand> rightRope = new ArrayList<>();
-    @Getter
-    @Setter
     List<ArmorStand> leftRope = new ArrayList<>();
 
 

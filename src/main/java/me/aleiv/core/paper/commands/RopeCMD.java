@@ -48,6 +48,14 @@ public class RopeCMD extends BaseCommand {
         }
     }
 
+    @Subcommand("boolMode")
+    public void boolMode(CommandSender sender, Boolean bool){
+        var tools = instance.getGame().getRopeGame();
+        tools.setBoolMode(bool);
+        sender.sendMessage(ChatColor.DARK_AQUA + "BoolMode move " + bool);
+        
+    }
+
     @Subcommand("gate")
     public void gate(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Rope gate " + bool);

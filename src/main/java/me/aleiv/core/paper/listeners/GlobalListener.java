@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -68,10 +69,10 @@ public class GlobalListener implements Listener {
                     AnimationTools.summonDeadBody(player, DeathReason.NORMAL, null);
                 }
             }
-            roles.put(uuid, Role.DEAD);
+            //TODO:make dead
         }
 
-        if(player.hasPermission("admin.perm")){
+        if(player.hasPermission("admin.perm") || game.isGuard(player)){
             e.deathMessage(MiniMessage.get().parse(""));
         }else{
             e.deathMessage(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "0 " + player.getName() + CYAN + " eliminated."));
@@ -83,20 +84,27 @@ public class GlobalListener implements Listener {
     public void onCredits(PlayerRespawnEvent e){
         var flags = e.getRespawnFlags();
         var player = e.getPlayer();
+        var game = instance.getGame();
         player.setGameMode(GameMode.SPECTATOR);
 
         if(flags.contains(RespawnFlag.BED_SPAWN) && flags.contains(RespawnFlag.END_PORTAL)){
             //end credits
-            if(!player.hasPermission("admin.perm")){
+            if(game.isPlayer(player)){
                 player.kick(MiniMessage.get().parse(RED + "¡Gracias por jugar!"));
             }
 
         }else if(flags.contains(RespawnFlag.BED_SPAWN)){
             //just died
 
+            e.setRespawnLocation(new Location(Bukkit.getWorld("world"), 18, 69, -6));
             //TODO: SEND Credits
             //AnimationTools.sendCredits(player);
         }
+    }
+
+    @EventHandler
+    public void onFood(FoodLevelChangeEvent e){
+        e.setCancelled(true);
     }
 
     @EventHandler
@@ -133,9 +141,11 @@ public class GlobalListener implements Listener {
 
         var world = Bukkit.getWorld("world");
         if(city == null) game.setCity(new Location(world, 180.5, 35, 401.5));
-        if(whiteLobby == null) game.setWhiteLobby(new Location(world, 274, 55, -61));
+        //if(whiteLobby == null) game.setWhiteLobby(new Location(world, 274, 55, -61));
 
-        
+        //TODO WHITE LOBBY
+        if(whiteLobby == null) game.setWhiteLobby(new Location(world, 18, 69, -6));
+
         if (game.getGameStage() == GameStage.LOBBY) {
             player.teleport(city);
 

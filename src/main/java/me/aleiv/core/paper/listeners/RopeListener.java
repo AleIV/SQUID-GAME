@@ -1,5 +1,7 @@
 package me.aleiv.core.paper.listeners;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -19,6 +21,7 @@ import net.md_5.bungee.api.ChatColor;
 public class RopeListener implements Listener {
 
     Core instance;
+    Random random = new Random();
 
     public RopeListener(Core instance) {
         this.instance = instance;
@@ -47,9 +50,20 @@ public class RopeListener implements Listener {
 
             var centerVector = AnimationTools.parseLocation(specialObjects.get("ROPE_CENTER"), world);
             if (right.contains(player)) {
-                rope.addPoints(1);
+                
+                if(rope.getBoolMode()){
+                    if(rope.getBoolModeBool()){
+                        rope.addPoints(1);
+                    }
+                    rope.setBoolModeBool(!rope.getBoolModeBool());
 
-                player.playSound(loc, "squid:sfx.rope_pull", 1, 1);
+                }else{
+                    rope.addPoints(1);
+                }
+
+                if(random.nextInt(10) == 0){
+                    player.playSound(loc, "squid:sfx.rope_pull", 1, 1);
+                }
 
                 var leftVector = AnimationTools.parseLocation(specialObjects.get("ROPE_LEFT"), world);
                 var vector = AnimationTools.getVector(centerVector, leftVector);
@@ -60,9 +74,19 @@ public class RopeListener implements Listener {
                 //TODO: MAKE SWING
 
             } else if (left.contains(player)) {
-                rope.addPoints(-1);
+                if(rope.getBoolMode()){
+                    if(rope.getBoolModeBool()){
+                        rope.addPoints(-1);
+                    }
+                    rope.setBoolModeBool(!rope.getBoolModeBool());
+                    
+                }else{
+                    rope.addPoints(-1);
+                }
 
-                player.playSound(loc, "squid:sfx.rope_pull", 1, 1);
+                if(random.nextInt(10) == 0){
+                    player.playSound(loc, "squid:sfx.rope_pull", 1, 1);
+                }
 
                 var rightVector = AnimationTools.parseLocation(specialObjects.get("ROPE_RIGHT"), world);
                 var vector = AnimationTools.getVector(centerVector, rightVector);
@@ -92,6 +116,7 @@ public class RopeListener implements Listener {
         var game = instance.getGame();
         var rope = game.getRopeGame();
         instance.adminMessage(ChatColor.DARK_RED + "LEFT WINS");
+        rope.setInGame(false);
 
         var specialObjects = AnimationTools.specialObjects;
         var world = Bukkit.getWorld("world");
@@ -131,6 +156,15 @@ public class RopeListener implements Listener {
                 ropeEntities.forEach(stand -> {
                     AnimationTools.setStandModel(stand, Material.AIR, 0);
                 });
+
+                var p1 = AnimationTools.parseLocation(specialObjects.get("ROPE_BORDER_RIGHT_POS1"), world);
+                var p2 = AnimationTools.parseLocation(specialObjects.get("ROPE_BORDER_RIGHT_POS2"), world);
+
+                AnimationTools.fill(p1, p2, Material.AIR);
+
+                Bukkit.getScheduler().runTaskLater(instance, tk ->{
+                    AnimationTools.fill(p1, p2, Material.END_STONE);
+                }, 10);
             });
         });
 
@@ -141,6 +175,7 @@ public class RopeListener implements Listener {
         var game = instance.getGame();
         var rope = game.getRopeGame();
         instance.adminMessage(ChatColor.DARK_RED + "RIGHT WINS");
+        rope.setInGame(false);
 
         var specialObjects = AnimationTools.specialObjects;
         var world = Bukkit.getWorld("world");
@@ -155,7 +190,6 @@ public class RopeListener implements Listener {
 
         var left = AnimationTools.getPlayersAdventureInsideCube(l1, l2);
         
-
         var guillotine = rope.moveGuillotine(true);
 
         guillotine.thenAccept(action ->{
@@ -176,9 +210,22 @@ public class RopeListener implements Listener {
 
             Bukkit.getScheduler().runTask(instance, tsk ->{
                 var ropeEntities = rope.getLeftRope();
+
                 ropeEntities.forEach(stand -> {
                     AnimationTools.setStandModel(stand, Material.AIR, 0);
                 });
+
+                
+                var p1 = AnimationTools.parseLocation(specialObjects.get("ROPE_BORDER_LEFT_POS1"), world);
+                var p2 = AnimationTools.parseLocation(specialObjects.get("ROPE_BORDER_LEFT_POS2"), world);
+
+                AnimationTools.fill(p1, p2, Material.AIR);
+
+                Bukkit.getScheduler().runTaskLater(instance, tk ->{
+                    AnimationTools.fill(p1, p2, Material.END_STONE);
+                }, 10);
+
+
             });
         });
 
