@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
 import io.github.znetworkw.znpcservers.NPCLibrary;
@@ -29,6 +30,7 @@ import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo;
  * 
  * @author jcedeno
  */
+@CommandPermission("admin.skin.cmd")
 @CommandAlias("skin")
 public class SkinCMD extends BaseCommand {
 

@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import me.aleiv.core.paper.Core;
@@ -17,6 +18,8 @@ import us.jcedeno.cookie.objects.CookieEnum;
 /**
  * @author jcedeno
  */
+
+@CommandPermission("admin.cookie.cmd")
 @CommandAlias("cookie")
 public class CookieCMD extends BaseCommand {
 
