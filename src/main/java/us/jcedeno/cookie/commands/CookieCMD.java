@@ -66,4 +66,9 @@ public class CookieCMD extends BaseCommand {
         sender.sendMessage("Cookie edit mode is now: " + CookieManager.EDIT);
     }
 
+    @Subcommand("reload assets")
+    public void reloadAssets(CommandSender sender) {
+        sender.sendMessage("Reloading assets...");
+        CookieEnum.reloadAllAssets();
+    }
 }

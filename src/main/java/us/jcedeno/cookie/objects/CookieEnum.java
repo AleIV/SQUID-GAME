@@ -85,11 +85,11 @@ public enum CookieEnum {
 
     public void reloadAsset() {
         try {
-            System.out.println("Registered asset " + assetLocation);
             this.bufferedImage = ImageIO.read(assetFile);
+            System.out.println("Registered asset " + assetLocation);
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("Failed to register asset " + assetLocation);
+            e.printStackTrace();
         }
     }
 
