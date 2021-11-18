@@ -37,6 +37,7 @@ public class CookieCMD extends BaseCommand {
     @CommandCompletion("@cookies")
     @Subcommand("give")
     public void giveCookie(Player sender, String cookieType) {
+
         CookieEnum cookie = CookieEnum.valueOf(cookieType.toUpperCase());
         if (cookie == null) {
             sender.sendMessage("Invalid cookie type");

@@ -1,8 +1,12 @@
 package us.jcedeno.cookie.objects;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 /**
  * Enum designed to hold the possible cookie types for the CookieGame.
@@ -16,6 +20,7 @@ public enum CookieEnum {
     final String assetLocation;
     final File assetFile;
     final int modelData;
+    BufferedImage bufferedImage;
 
     /**
      * Constructor for CookieEnum. It simply assumes the image location to be under
@@ -26,6 +31,11 @@ public enum CookieEnum {
         this.assetLocation = System.getProperty("user.dir") + File.separatorChar + "assets" + File.separatorChar
                 + "cookie_" + toString().toLowerCase() + ".png";
         this.assetFile = new File(assetLocation);
+        try {
+            this.bufferedImage = ImageIO.read(assetFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -68,6 +78,13 @@ public enum CookieEnum {
      */
     public File getAssetFile() {
         return assetFile;
+    }
+
+    /**
+     * @return Returns the bufferedImage for the CookieEnum.
+     */
+    public BufferedImage getBufferedImage() {
+        return bufferedImage;
     }
 
 }

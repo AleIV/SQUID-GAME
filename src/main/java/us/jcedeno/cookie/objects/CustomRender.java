@@ -1,9 +1,6 @@
 package us.jcedeno.cookie.objects;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
@@ -20,26 +17,19 @@ import lombok.Getter;
  * @author jcedeno
  */
 public class CustomRender extends MapRenderer {
-    private final String fileName;
-    private final File actualFile;
     private @Getter MapCanvas canvas;
+    private @Getter BufferedImage image;
 
-    public CustomRender(String fileName) {
-        this.fileName = fileName;
-        this.actualFile = new File(fileName);
-    }
-
-    private void drawImage(String fileName, MapCanvas canvas) throws IOException {
-        canvas.drawImage(0, 0, ImageIO.read(actualFile != null ? actualFile : new File(fileName)));
+    public CustomRender(CookieEnum cookie) {
+        this.image = cookie.getBufferedImage();
     }
 
     @Override
     public void render(@NotNull MapView map, @NotNull MapCanvas canvas, @NotNull Player player) {
         try {
-            drawImage(this.fileName, canvas);
-
+            canvas.drawImage(0, 0, image);
             this.canvas = canvas;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -51,8 +41,8 @@ public class CustomRender extends MapRenderer {
      * @param fileName The name of the image file to be drawn.
      * @return A new instance of the CustomRender class.
      */
-    public static CustomRender fromFile(String fileLocation) {
-        return new CustomRender(fileLocation);
+    public static CustomRender fromFile(CookieEnum cookie) {
+        return new CustomRender(cookie);
     }
 
 }
