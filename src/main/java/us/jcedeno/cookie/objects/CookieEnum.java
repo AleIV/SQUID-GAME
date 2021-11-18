@@ -31,11 +31,7 @@ public enum CookieEnum {
         this.assetLocation = System.getProperty("user.dir") + File.separatorChar + "assets" + File.separatorChar
                 + "cookie_" + toString().toLowerCase() + ".png";
         this.assetFile = new File(assetLocation);
-        try {
-            this.bufferedImage = ImageIO.read(assetFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        reloadAsset();
     }
 
     /**
@@ -85,6 +81,22 @@ public enum CookieEnum {
      */
     public BufferedImage getBufferedImage() {
         return bufferedImage;
+    }
+
+    public void reloadAsset() {
+        try {
+            System.out.println("Registered asset " + assetLocation);
+            this.bufferedImage = ImageIO.read(assetFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to register asset " + assetLocation);
+        }
+    }
+
+    public static void reloadAllAssets() {
+        for (CookieEnum cookieEnum : values()) {
+            cookieEnum.reloadAsset();
+        }
     }
 
 }
