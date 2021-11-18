@@ -3,6 +3,7 @@ package me.aleiv.core.paper.commands;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.mojang.authlib.properties.Property;
@@ -97,49 +98,62 @@ public class SkinCMD extends BaseCommand {
     @CommandCompletion("@players @players @variants")
     public void changeSkinOther(CommandSender sender, String playerTarget, String skinSourcePlayer,
             @Default("original") String variant) {
-        var player = Bukkit.getPlayer(playerTarget);
-        if (player != null && player.isOnline()) {
-            UUID id = null;
+        CompletableFuture.supplyAsync(() -> {
+            try {
 
-            var ofP = Bukkit.getOfflinePlayerIfCached(skinSourcePlayer);
+                var player = Bukkit.getPlayer(playerTarget);
 
-            if (ofP != null && ofP.getUniqueId() != null) {
-                id = ofP.getUniqueId();
-            } else {
-                id = SkinToolApi.getUserProfile(skinSourcePlayer);
-            }
+                if (player != null && player.isOnline()) {
+                    UUID id = null;
 
-            if (id != null) {
-                if (variant.equalsIgnoreCase("original")) {
-                    var skin = SkinToolApi.getCurrentUserSkin(id, false);
-                    skinSwapper(player, skin.getValue(), skin.getSignature());
+                    var ofP = Bukkit.getPlayer(skinSourcePlayer);
+
+                    if (ofP != null && ofP.getUniqueId() != null) {
+                        id = ofP.getUniqueId();
+                    } else {
+                        id = SkinToolApi.getUserProfile(skinSourcePlayer);
+                    }
+
+                    if (id != null) {
+                        if (variant.equalsIgnoreCase("original")) {
+                            var skin = SkinToolApi.getCurrentUserSkin(id, false);
+                            Bukkit.getScheduler().runTask(Core.getInstance(),
+                                    () -> skinSwapper(player, skin.getValue(), skin.getSignature()));
+
+                        } else {
+                            SkinToolApi.getElseComputeSkins(id).whenComplete((skins, exception) -> {
+                                if (exception != null) {
+                                    sender.sendMessage("Command ended exceptionally: " + exception.getMessage());
+                                    exception.printStackTrace();
+                                } else {
+                                    var skin = skins.stream().filter(s -> s.getName().equalsIgnoreCase(variant))
+                                            .findFirst();
+                                    if (skin.isPresent()) {
+                                        var actualSkin = skin.get();
+                                        Bukkit.getScheduler().runTask(Core.getInstance(), () -> skinSwapper(player,
+                                                actualSkin.getValue(), actualSkin.getSignature()));
+
+                                    } else {
+                                        sender.sendMessage("Skin not found");
+                                    }
+                                }
+
+                            });
+                        }
+                    } else {
+                        sender.sendMessage("§cThe player you specified does not have a skin set.");
+                    }
 
                 } else {
-                    SkinToolApi.getElseComputeSkins(id).whenComplete((skins, exception) -> {
-                        if (exception != null) {
-                            sender.sendMessage("Command ended exceptionally: " + exception.getMessage());
-                            exception.printStackTrace();
-                        } else {
-                            var skin = skins.stream().filter(s -> s.getName().equalsIgnoreCase(variant)).findFirst();
-                            if (skin.isPresent()) {
-                                var actualSkin = skin.get();
-                                Bukkit.getScheduler().runTask(Core.getInstance(),
-                                        () -> skinSwapper(player, actualSkin.getValue(), actualSkin.getSignature()));
-
-                            } else {
-                                sender.sendMessage("Skin not found");
-                            }
-                        }
-
-                    });
+                    sender.sendMessage("§cPlayer not found.");
                 }
-            } else {
-                sender.sendMessage("§cThe player you specified does not have a skin set.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                sender.sendMessage("Error changin skins: " + e.getMessage());
             }
 
-        } else {
-            sender.sendMessage("§cPlayer not found.");
-        }
+            return false;
+        });
     }
 
     /**
