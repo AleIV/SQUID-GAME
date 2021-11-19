@@ -166,7 +166,7 @@ public class SkinCMD extends BaseCommand {
      * @param texture   The texture to apply to the player.
      * @param signature The signature of the texture.
      */
-    private void skinSwapper(Player player, String texture, String signature) {
+    public static void skinSwapper(Player player, String texture, String signature) {
         player.sendMessage(Core.getMiniMessage().parse("<yellow>Changing your skin..."));
         var entityPlayer = ((CraftPlayer) player.getPlayer()).getHandle();
         var prof = entityPlayer.getProfile();
