@@ -64,24 +64,28 @@ public class SkinToolApi {
         final var future = new CompletableFuture<List<PlayerSkin>>();
 
         EXECUTOR_SERVICE.submit(() -> {
-            var optionalJson = getPlayerSkins(uuid);
+            try {
+                var optionalJson = getPlayerSkins(uuid);
 
-            if (optionalJson.isPresent()) {
-                future.complete(ensureSigned(optionalJson.get(), uuid));
-            } else {
-                // Generate skins if not found
-                var playerSkins = createPlayerSkins(uuid);
+                if (optionalJson.isPresent()) {
+                    future.complete(ensureSigned(optionalJson.get(), uuid));
+                } else {
+                    // Generate skins if not found
+                    var playerSkins = createPlayerSkins(uuid);
 
-                while (playerSkins.isEmpty()) {
-                    playerSkins = createPlayerSkins(uuid);
+                    while (playerSkins.isEmpty()) {
+                        playerSkins = createPlayerSkins(uuid);
+                    }
+
+                    // If present, print out, else say it is empty
+                    if (playerSkins.isPresent()) {
+                        future.complete(ensureSigned(playerSkins.get(), uuid));
+                    }
                 }
 
-                // If present, print out, else say it is empty
-                if (playerSkins.isPresent()) {
-                    future.complete(ensureSigned(playerSkins.get(), uuid));
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
         });
 
         return future;
@@ -249,8 +253,11 @@ public class SkinToolApi {
      */
     private static List<PlayerSkin> ensureSigned(List<PlayerSkin> playerSkins, UUID uuid) {
         var anyNotSigned = playerSkins.stream().anyMatch(predicate);
-
         var signedSkins = new ArrayList<PlayerSkin>();
+        if (!anyNotSigned) {
+            // Return self
+            return playerSkins;
+        }
         while (anyNotSigned) {
             var playerSkinOptional = getPlayerSkins(uuid);
             if (playerSkinOptional.isPresent()) {

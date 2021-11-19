@@ -2,6 +2,7 @@ package us.jcedeno.skins;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.bukkit.Bukkit;
@@ -12,23 +13,10 @@ public class SkinsMain {
 
     public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
 
-        var playersSkinsOptional = SkinToolApi.getAllVariant("civilian");
+        var playersSkinsOptional = SkinToolApi
+                .getElseComputeSkins(UUID.fromString("5de6e184-af8d-498a-bbde-055e50653316")).get(5, TimeUnit.SECONDS);
 
-        if (playersSkinsOptional.isPresent()) {
-            var playersSkins = playersSkinsOptional.get();
-            playersSkins.forEach(System.out::println);
-
-        } else {
-            System.out.println("Empty lol.");
-        }
-        SkinToolApi.addSkinsToComputeQueue(UUID.fromString("776cc5cd-6db4-41bc-b2a2-dcb5346fac6d"));
-
-        // Ask the api for all skins of this type
-        var optionalSkins = SkinToolApi.getAllVariant("civilian");
-        if (optionalSkins.isPresent()) {
-            var skins = optionalSkins.get();
-
-        }
+        playersSkinsOptional.forEach(System.out::println);
 
     }
 
