@@ -20,6 +20,7 @@ import org.mineskin.data.MineskinException;
 import org.mineskin.data.Skin;
 import org.mineskin.data.SkinCallback;
 
+@SuppressWarnings("all")
 public class MineskinClient {
 
     private static final String API_BASE = "https://api.mineskin.org";

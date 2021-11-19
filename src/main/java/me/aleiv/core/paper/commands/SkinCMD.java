@@ -24,6 +24,7 @@ import io.github.znetworkw.znpcservers.NPCWrapper;
 import io.github.znetworkw.znpcservers.npc.NPC;
 import me.aleiv.core.paper.Core;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo;
+import us.jcedeno.skins.SkinToolApi;
 
 /**
  * A command to interact with the skin-tool app from minecraft.

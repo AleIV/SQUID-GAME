@@ -6,21 +6,17 @@ import java.util.UUID;
 import com.destroystokyo.paper.ParticleBuilder;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
-import org.bukkit.util.Vector;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Subcommand;
 import me.aleiv.core.paper.Core;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 /**
  * A command design to play around with vectors in minecraft.
@@ -70,7 +66,6 @@ public class VectorsCommand extends BaseCommand {
             // Check if targetVector is not present, if not set it
             if (entry.getV() == null) {
                 entry.setV(vector);
-                var retrieve = lineVectorMap.get(id);
                 // Send a message to the player
                 player.sendMessage(
                         Core.getMiniMessage().parse("<green>Set the target vector <white>" + getCoordinates(block)));
@@ -85,8 +80,7 @@ public class VectorsCommand extends BaseCommand {
 
     @Subcommand("trace-vector")
     @CommandCompletion("<material>")
-    public void traceVector(Player sender, String materialName) {
-        var material = Material.getMaterial(materialName.toUpperCase());
+    public void traceVector(Player sender) {
         var lineVector = lineVectorMap.get(sender.getUniqueId());
         var origin = lineVector.getU();
         var target = lineVector.getV();
@@ -112,11 +106,6 @@ public class VectorsCommand extends BaseCommand {
             }
         });
 
-    }
-
-    private Component getClickableVector(Vector v) {
-        return MiniMessage.get().parse(String.format("<click:run_commmand:/tp %s %s %s> Teleport to %s %s %s</click>",
-                v.getX(), v.getY(), v.getZ(), v.getX(), v.getY(), v.getZ()));
     }
 
     /**

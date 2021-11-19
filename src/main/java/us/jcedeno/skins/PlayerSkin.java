@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.commands.skin;
+package us.jcedeno.skins;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
