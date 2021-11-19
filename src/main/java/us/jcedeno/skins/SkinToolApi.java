@@ -29,7 +29,7 @@ import org.bukkit.Bukkit;
  */
 public class SkinToolApi {
     /** Skin Tool IPFS Rest endpoint. */
-    private final static String SKIN_TOOL_URI = "http://45.32.172.208:8080";
+    private final static String SKIN_TOOL_URI = "http://45.32.172.208:42069";
     private final static String ASHCON_URI = "https://api.ashcon.app/mojang/v2/user/";
     /**
      * The endpoint to check if a player has a skin already created. Get Request.
