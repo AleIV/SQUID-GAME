@@ -94,7 +94,8 @@ public class CanceledListener implements Listener {
     public void inventoryOpen(InventoryOpenEvent e){
         var player = e.getPlayer();
         var inv = e.getInventory();
-        if(player.getGameMode() != GameMode.CREATIVE && !inv.getType().toString().contains("CHEST") && !inv.getType().toString().contains("BARREL")){
+        if(player.getGameMode() != GameMode.CREATIVE && !inv.getType().toString().contains("CHEST") && !inv.getType().toString().contains("BARREL") 
+            && !inv.getType().toString().contains("LECTERN")){
             e.setCancelled(true);
         }
     }

@@ -50,18 +50,18 @@ public class RopeListener implements Listener {
 
             var centerVector = AnimationTools.parseLocation(specialObjects.get("ROPE_CENTER"), world);
             if (right.contains(player)) {
-                
-                if(rope.getBoolMode()){
-                    if(rope.getBoolModeBool()){
+
+                if (rope.getBoolMode()) {
+                    if (rope.getBoolModeBool()) {
                         rope.addPoints(1);
                     }
                     rope.setBoolModeBool(!rope.getBoolModeBool());
 
-                }else{
+                } else {
                     rope.addPoints(1);
                 }
 
-                if(random.nextInt(10) == 0){
+                if (random.nextInt(10) == 0) {
                     player.playSound(loc, "squid:sfx.rope_pull", 1, 1);
                 }
 
@@ -71,20 +71,20 @@ public class RopeListener implements Listener {
                     p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
                 });
 
-                //TODO: MAKE SWING
+                // TODO: MAKE SWING
 
             } else if (left.contains(player)) {
-                if(rope.getBoolMode()){
-                    if(rope.getBoolModeBool()){
+                if (rope.getBoolMode()) {
+                    if (rope.getBoolModeBool()) {
                         rope.addPoints(-1);
                     }
                     rope.setBoolModeBool(!rope.getBoolModeBool());
-                    
-                }else{
+
+                } else {
                     rope.addPoints(-1);
                 }
 
-                if(random.nextInt(10) == 0){
+                if (random.nextInt(10) == 0) {
                     player.playSound(loc, "squid:sfx.rope_pull", 1, 1);
                 }
 
@@ -95,7 +95,7 @@ public class RopeListener implements Listener {
                     p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
                 });
 
-                //TODO: MAKE SWING
+                // TODO: MAKE SWING
             }
 
         }
@@ -122,6 +122,7 @@ public class RopeListener implements Listener {
         var world = Bukkit.getWorld("world");
 
         var centerVector = AnimationTools.parseLocation(specialObjects.get("ROPE_CENTER"), world);
+        centerVector.add(0, 0.5, 0);
 
         var rightVector = AnimationTools.parseLocation(specialObjects.get("ROPE_RIGHT"), world);
         var vector = AnimationTools.getVector(centerVector, rightVector);
@@ -129,12 +130,11 @@ public class RopeListener implements Listener {
         var r1 = AnimationTools.parseLocation(specialObjects.get("RIGHT_SIDE_POS1"), world);
         var r2 = AnimationTools.parseLocation(specialObjects.get("RIGHT_SIDE_POS2"), world);
 
-
         var right = AnimationTools.getPlayersAdventureInsideCube(r1, r2);
-        
+
         var guillotine = rope.moveGuillotine(true);
 
-        guillotine.thenAccept(action ->{
+        guillotine.thenAccept(action -> {
             var task = new BukkitTCT();
             for (int i = 0; i < 5; i++) {
                 task.addWithDelay(new BukkitRunnable() {
@@ -143,35 +143,33 @@ public class RopeListener implements Listener {
                         right.forEach(p -> {
                             p.setVelocity(vector);
                         });
-                        
+
                     }
-                    
+
                 }, 50);
             }
-            
+
             task.execute();
 
-            Bukkit.getScheduler().runTask(instance, tsk ->{
+            Bukkit.getScheduler().runTask(instance, tsk -> {
                 var ropeEntities = rope.getRightRope();
                 ropeEntities.forEach(stand -> {
+                    var equip = stand.getEquipment();
+                    var helmet = equip.getHelmet();
+                    if (helmet != null && helmet.getItemMeta().hasCustomModelData()
+                            && helmet.getItemMeta().getCustomModelData() == 39) {
+                        return;
+                    }
                     AnimationTools.setStandModel(stand, Material.AIR, 0);
                 });
 
-                var p1 = AnimationTools.parseLocation(specialObjects.get("ROPE_BORDER_RIGHT_POS1"), world);
-                var p2 = AnimationTools.parseLocation(specialObjects.get("ROPE_BORDER_RIGHT_POS2"), world);
-
-                AnimationTools.fill(p1, p2, Material.AIR);
-
-                Bukkit.getScheduler().runTaskLater(instance, tk ->{
-                    AnimationTools.fill(p1, p2, Material.END_STONE);
-                }, 10);
             });
         });
 
     }
 
     @EventHandler
-    public void onRightWins(RightWinsEvent e){
+    public void onRightWins(RightWinsEvent e) {
         var game = instance.getGame();
         var rope = game.getRopeGame();
         instance.adminMessage(ChatColor.DARK_RED + "RIGHT WINS");
@@ -181,6 +179,7 @@ public class RopeListener implements Listener {
         var world = Bukkit.getWorld("world");
 
         var centerVector = AnimationTools.parseLocation(specialObjects.get("ROPE_CENTER"), world);
+        centerVector.add(0, 0.5, 0);
 
         var leftVector = AnimationTools.parseLocation(specialObjects.get("ROPE_LEFT"), world);
         var vector = AnimationTools.getVector(centerVector, leftVector);
@@ -189,10 +188,10 @@ public class RopeListener implements Listener {
         var l2 = AnimationTools.parseLocation(specialObjects.get("LEFT_SIDE_POS2"), world);
 
         var left = AnimationTools.getPlayersAdventureInsideCube(l1, l2);
-        
+
         var guillotine = rope.moveGuillotine(true);
 
-        guillotine.thenAccept(action ->{
+        guillotine.thenAccept(action -> {
             var task = new BukkitTCT();
             for (int i = 0; i < 5; i++) {
                 task.addWithDelay(new BukkitRunnable() {
@@ -201,30 +200,25 @@ public class RopeListener implements Listener {
                         left.forEach(p -> {
                             p.setVelocity(vector);
                         });
-                        
+
                     }
-                    
+
                 }, 50);
             }
             task.execute();
 
-            Bukkit.getScheduler().runTask(instance, tsk ->{
+            Bukkit.getScheduler().runTask(instance, tsk -> {
                 var ropeEntities = rope.getLeftRope();
 
                 ropeEntities.forEach(stand -> {
+                    var equip = stand.getEquipment();
+                    var helmet = equip.getHelmet();
+                    if (helmet != null && helmet.getItemMeta().hasCustomModelData()
+                            && helmet.getItemMeta().getCustomModelData() == 39) {
+                        return;
+                    }
                     AnimationTools.setStandModel(stand, Material.AIR, 0);
                 });
-
-                
-                var p1 = AnimationTools.parseLocation(specialObjects.get("ROPE_BORDER_LEFT_POS1"), world);
-                var p2 = AnimationTools.parseLocation(specialObjects.get("ROPE_BORDER_LEFT_POS2"), world);
-
-                AnimationTools.fill(p1, p2, Material.AIR);
-
-                Bukkit.getScheduler().runTaskLater(instance, tk ->{
-                    AnimationTools.fill(p1, p2, Material.END_STONE);
-                }, 10);
-
 
             });
         });

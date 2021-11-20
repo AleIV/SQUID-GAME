@@ -72,7 +72,7 @@ public class GlobalListener implements Listener {
             //TODO:make dead
         }
 
-        if(player.hasPermission("admin.perm") || game.isGuard(player)){
+        if(player.hasPermission("admin.perm") || game.isGuard(player) || player.getGameMode() != GameMode.ADVENTURE){
             e.deathMessage(MiniMessage.get().parse(""));
         }else{
             e.deathMessage(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "0 " + player.getName() + CYAN + " eliminated."));
@@ -104,7 +104,10 @@ public class GlobalListener implements Listener {
 
     @EventHandler
     public void onFood(FoodLevelChangeEvent e){
-        e.setCancelled(true);
+        var player = (Player) e.getEntity();
+        if(!player.hasPotionEffect(PotionEffectType.SATURATION) && !player.hasPotionEffect(PotionEffectType.HUNGER)){
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler

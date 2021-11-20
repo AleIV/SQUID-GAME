@@ -143,6 +143,7 @@ public class AnimationTools {
 
     public static void setStandModel(ArmorStand stand, Material material, Integer model){
         var equip = stand.getEquipment();
+
         var item = material == Material.AIR ? null : new ItemBuilder(material).meta(meta -> meta.setCustomModelData(model)).build();
         equip.setHelmet(item);
     }
