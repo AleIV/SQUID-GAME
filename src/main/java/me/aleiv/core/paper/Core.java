@@ -25,7 +25,6 @@ import me.aleiv.core.paper.commands.MainCMD;
 import me.aleiv.core.paper.commands.PhoneCMD;
 import me.aleiv.core.paper.commands.PotatoCMD;
 import me.aleiv.core.paper.commands.RopeCMD;
-import me.aleiv.core.paper.commands.SkinCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.commands.TestCMD;
@@ -51,6 +50,7 @@ import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
 import us.jcedeno.cookie.CookieManager;
 import us.jcedeno.libs.rapidinv.RapidInvManager;
+import us.jcedeno.skins.SkinCMD;
 
 @SpigotPlugin
 public class Core extends JavaPlugin {

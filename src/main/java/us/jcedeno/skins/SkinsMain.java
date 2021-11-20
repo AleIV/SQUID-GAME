@@ -7,8 +7,6 @@ import java.util.concurrent.TimeoutException;
 
 import org.bukkit.Bukkit;
 
-import me.aleiv.core.paper.commands.SkinCMD;
-
 public class SkinsMain {
 
     public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {

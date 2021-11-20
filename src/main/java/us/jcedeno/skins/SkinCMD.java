@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.commands;
+package us.jcedeno.skins;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,6 @@ import io.github.znetworkw.znpcservers.NPCWrapper;
 import io.github.znetworkw.znpcservers.npc.NPC;
 import me.aleiv.core.paper.Core;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo;
-import us.jcedeno.skins.SkinToolApi;
 
 /**
  * A command to interact with the skin-tool app from minecraft.
@@ -129,6 +128,7 @@ public class SkinCMD extends BaseCommand {
                                     sender.sendMessage("Command ended exceptionally: " + exception.getMessage());
                                     exception.printStackTrace();
                                 } else {
+                                    skins.stream().forEach(System.out::println);
                                     var skin = skins.stream().filter(s -> s.getName().equalsIgnoreCase(variant))
                                             .findFirst();
                                     if (skin.isPresent()) {
