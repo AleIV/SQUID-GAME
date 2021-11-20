@@ -261,10 +261,12 @@ public class SkinToolApi {
         }
         while (anyNotSigned) {
             var playerSkinOptional = getPlayerSkins(uuid);
+
             if (playerSkinOptional.isPresent()) {
-                anyNotSigned = playerSkins.stream().anyMatch(predicate);
+                var localPSkins = playerSkinOptional.get();
+                anyNotSigned = localPSkins.stream().anyMatch(predicate);
                 if (!anyNotSigned) {
-                    return playerSkinOptional.get();
+                    signedSkins = new ArrayList<PlayerSkin>(localPSkins);
                 }
             } else {
                 System.err.println("Exception, skin optional on ensure signed is empty.");
