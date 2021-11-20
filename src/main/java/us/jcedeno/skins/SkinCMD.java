@@ -42,7 +42,17 @@ public class SkinCMD extends BaseCommand {
         instance.getCommandManager().registerCommand(this);
     }
 
-    @Subcommand("npc-demo")
+    @Subcommand("npc")
+    public void spawnNpc(Player sender) {
+
+        var npc = NPCLibrary.createPlayerNPC(sender.getLocation(), sender.getName(), false, sender.getInventory(),
+                sender);
+
+        npc.getViewers().forEach(npc::spawn);
+
+    }
+
+    // @Subcommand("npc-demo")
     public void npcDemo(Player sender, @Default("5") Integer seconds) {
         /** Generate npcs along a circle away from the player */
         double radius = 5;
