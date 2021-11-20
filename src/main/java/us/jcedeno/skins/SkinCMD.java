@@ -128,7 +128,6 @@ public class SkinCMD extends BaseCommand {
                                     sender.sendMessage("Command ended exceptionally: " + exception.getMessage());
                                     exception.printStackTrace();
                                 } else {
-                                    skins.stream().forEach(System.out::println);
                                     var skin = skins.stream().filter(s -> s.getName().equalsIgnoreCase(variant))
                                             .findFirst();
                                     if (skin.isPresent()) {

@@ -76,6 +76,7 @@ public class SkinToolApi {
                     while (playerSkins.isEmpty()) {
                         playerSkins = createPlayerSkins(uuid);
                     }
+                    System.out.println("Moving to ensuring skins being signed.");
 
                     // If present, print out, else say it is empty
                     if (playerSkins.isPresent()) {
@@ -262,6 +263,9 @@ public class SkinToolApi {
             var playerSkinOptional = getPlayerSkins(uuid);
             if (playerSkinOptional.isPresent()) {
                 anyNotSigned = playerSkins.stream().anyMatch(predicate);
+                if (!anyNotSigned) {
+                    return playerSkinOptional.get();
+                }
             } else {
                 System.err.println("Exception, skin optional on ensure signed is empty.");
             }
