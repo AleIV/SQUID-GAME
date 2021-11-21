@@ -92,6 +92,10 @@ public class SkinToolApi {
         return future;
     }
 
+    public static boolean addSkinsToComputeQueue(List<UUID> users){
+        return addSkinsToComputeQueue(users.toArray(new UUID[]{}));
+    }
+
     /**
      * ✅ A function that adds several users to the queue of skins to be created.
      * 

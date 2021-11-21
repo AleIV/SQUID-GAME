@@ -23,6 +23,7 @@ import io.github.znetworkw.znpcservers.NPCLibrary;
 import io.github.znetworkw.znpcservers.NPCWrapper;
 import io.github.znetworkw.znpcservers.npc.NPC;
 import me.aleiv.core.paper.Core;
+import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo;
 
 /**
@@ -33,8 +34,10 @@ import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo;
 @CommandPermission("admin.skin.cmd")
 @CommandAlias("skin")
 public class SkinCMD extends BaseCommand {
+    Core instance;
 
     public SkinCMD(Core instance) {
+        this.instance = instance;
         // register command completion
         instance.getCommandManager().getCommandCompletions().registerStaticCompletion("variants",
                 List.of("civilian", "guard", "participant", "tux", "original"));
@@ -103,6 +106,87 @@ public class SkinCMD extends BaseCommand {
             }
 
         });
+
+    }
+
+    @Subcommand("add")
+    @CommandCompletion("@players")
+    public void addQueue(CommandSender sender, String... names) {
+
+        List<UUID> users = new ArrayList<>();
+
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                for (String name : names) {
+
+                    var uuid = SkinToolApi.getUserProfile(name);
+
+                    if (uuid == null) {
+                        sender.sendMessage(ChatColor.RED + "Player " + name + " doesn't exist.");
+                        return false;
+                    }
+                    users.add(uuid);
+
+                    sender.sendMessage(ChatColor.DARK_AQUA + name + " added to the queue.");
+                }
+
+                SkinToolApi.addSkinsToComputeQueue(users);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                sender.sendMessage(ChatColor.RED + "An error ocurred.");
+            }
+
+            return false;
+        });
+
+    }
+
+    @Subcommand("random")
+    @CommandCompletion("@variants")
+    public void randomSkins(CommandSender sender, String variant) {
+
+        CompletableFuture.supplyAsync(() -> {
+            // Ask the api for all skins of this type
+            var optionalSkins = SkinToolApi.getAllVariant(variant);
+            if (optionalSkins.isPresent()) {
+                // Fitler out the not signed skins.
+                var skins = optionalSkins.get().stream().filter(PlayerSkin::isItSigned).toList();
+                if (skins.size() > 0) {
+                    // Take a snapshot o of all players online to change their skins.
+                    var players = Bukkit.getOnlinePlayers().stream().map(m -> m.getPlayer()).toList();
+                    int skinIndex = 0;
+                    // Get an iterator to easily loop through the players.
+                    var playerIter = players.iterator();
+
+                    while (playerIter.hasNext()) {
+                        var nextPlayer = playerIter.next();
+                        // Get current index and add 1
+                        var skin = skins.get(skinIndex++);
+                        // Ensure skin not null.
+                        if (skin != null){
+                            Bukkit.getScheduler().runTask(instance, task ->{
+                                SkinCMD.skinSwapper(nextPlayer, skin.getValue(), skin.getSignature()); // Swap the Player's
+                                // skin
+                            });
+                        }
+                            
+                        // Handle possible out of bounds exception.
+                        if (skinIndex > skins.size() - 1)
+                            skinIndex = 0;
+                    }
+                }
+            }
+            return false;
+        }).whenComplete((action, ex) ->{
+            sender.sendMessage(ChatColor.DARK_AQUA + "Task skins random completed.");
+        });
+
+    }
+
+    @Subcommand("list")
+    @CommandCompletion("@variants")
+    public void listVariants(CommandSender sender, String variants){
 
     }
 
