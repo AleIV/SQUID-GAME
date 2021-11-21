@@ -61,7 +61,7 @@ dependencies {
     implementation 'com.github.noobstersmc:RapidInv:v0.0.1'
 
     // Npc
-    implementation 'us.jcedeno:znpc-servers:1.0.3'
+    implementation 'us.jcedeno:znpc-servers:1.0.3.2'
     compileOnly 'com.mojang:authlib:1.5.25'
     
     implementation 'com.google.guava:guava:31.0.1-jre'
