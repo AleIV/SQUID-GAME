@@ -9,6 +9,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
@@ -35,6 +36,15 @@ public class CookieCMD extends BaseCommand {
         instance.getCommandManager().getCommandCompletions().registerStaticCompletion("cookies",
                 CookieEnum.getAll().stream().map(m -> m.name()).toList());
 
+    }
+
+    @Subcommand("map-async")
+    public void generatePacketEntity(Player sender, @Default("0") Integer rotation) {
+        var targetBlock = sender.getTargetBlock(5);
+        if (targetBlock != null) {
+            cookieManager.packetCookieMap(sender, targetBlock.getLocation(), rotation);
+            sender.sendMessage("Spawning itemframe.");
+        }
     }
 
     @CommandCompletion("@cookies")
