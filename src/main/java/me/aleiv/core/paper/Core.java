@@ -50,6 +50,7 @@ import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
 import us.jcedeno.cookie.CookieManager;
 import us.jcedeno.libs.rapidinv.RapidInvManager;
+import us.jcedeno.packets.PacketToolManager;
 import us.jcedeno.skins.SkinCMD;
 
 @SpigotPlugin
@@ -65,6 +66,7 @@ public class Core extends JavaPlugin {
     private @Getter SkinCMD skinCMD;
     private @Getter NPCLibrary npcLibrary;
     private @Getter CookieManager cookieManager;
+    private @Getter PacketToolManager packetToolManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
@@ -142,7 +144,7 @@ public class Core extends JavaPlugin {
         // Start effect manager
         // Start cookie manager
         this.cookieManager = new CookieManager(this);
-
+        this.packetToolManager = new PacketToolManager(this);
     }
 
     @Override
