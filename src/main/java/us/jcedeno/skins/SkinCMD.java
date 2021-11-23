@@ -1,10 +1,12 @@
 package us.jcedeno.skins;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.mojang.authlib.properties.Property;
@@ -22,6 +24,7 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
 import io.github.znetworkw.znpcservers.NPCLibrary;
 import io.github.znetworkw.znpcservers.NPCWrapper;
+import io.github.znetworkw.znpcservers.configuration.ConfigurationConstants;
 import io.github.znetworkw.znpcservers.npc.NPC;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
@@ -112,6 +115,8 @@ public class SkinCMD extends BaseCommand {
 
     private static ConcurrentHashMap<UUID, NPCWrapper> npcSkinnedCache = new ConcurrentHashMap<>();
 
+    private AtomicInteger npcRandomCount = new AtomicInteger(0);
+
     @Subcommand("spawn-here")
     @CommandCompletion("@variants")
     public void spawnRandomHere(Player sender, String variant) {
@@ -134,7 +139,9 @@ public class SkinCMD extends BaseCommand {
                     sender.sendMessage(Core.getMiniMessage().parse("<red>No skins found for variant: " + variant));
                 }
 
-                var actualSkins = skins.stream().findAny().get();
+                var randomSkin = skins.get(npcRandomCount.getAndIncrement() < skins.size() ? npcRandomCount.get()
+                        : npcRandomCount.getAndSet(0));
+                var actualSkins = randomSkin;
 
                 if (actualSkins != null) {
                     skinTexture = actualSkins.getValue();
@@ -146,10 +153,47 @@ public class SkinCMD extends BaseCommand {
             var npc = NPCLibrary.createPlayerNPC(loc, sender.getName() + "-" + variant, false, sender.getInventory(),
                     skinTexture, skinSignature);
 
+            sender.sendMessage(
+                    Core.getMiniMessage().parse("<green>Npc created with id <white>" + npc.getNpcPojo().getId()));
+
             wrapper.getNpcs().add(npc);
 
             npc.getViewers().forEach(npc::spawn);
         });
+
+    }
+
+    /**
+     * 
+     * @param sender
+     */
+
+    @Subcommand("delete-last")
+    public void deleteLast(Player sender) {
+
+        if (npcSkinnedCache.containsKey(sender.getUniqueId())) {
+            var wrapper = npcSkinnedCache.get(sender.getUniqueId());
+
+            sender.sendMessage("Deleting last NPC.");
+
+            var npcs = new ArrayList<>(wrapper.getNpcs());
+            Collections.reverse(npcs);
+
+            var first = npcs.get(0);
+
+            try {
+                NPC.unregister(first.getNpcPojo().getId());
+                ConfigurationConstants.NPC_LIST.remove(first.getNpcPojo());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            npcs.remove(0);
+
+            Collections.reverse(npcs);
+            wrapper.setNpcs(npcs);
+
+        }
 
     }
 
@@ -163,6 +207,50 @@ public class SkinCMD extends BaseCommand {
 
             wrapper.deleteAll();
         }
+    }
+
+    @CommandCompletion("[integer]")
+    @Subcommand("kill-radius")
+    public void killInRadius(Player sender, @Default("2") Integer radius) {
+
+        sender.getLocation();
+
+        var allWrappers = npcSkinnedCache.values();
+
+        var iter = allWrappers.iterator();
+
+        OUTER: while (iter.hasNext()) {
+            var next = iter.next();
+
+            var npcs = next.getNpcs();
+
+            var newList = new ArrayList<>(npcs);
+
+            var skinsIter = newList.iterator();
+
+            while (skinsIter.hasNext()) {
+                var npc = skinsIter.next();
+
+                if (npc.getLocation().distance(sender.getLocation()) < radius) {
+
+                    sender.sendMessage(Core.getMiniMessage().parse("<green>Killing NPC: " + npc.getNpcPojo().getId()));
+
+                    try {
+                        NPC.unregister(npc.getNpcPojo().getId());
+                        ConfigurationConstants.NPC_LIST.remove(npc.getNpcPojo());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    skinsIter.remove();
+
+                    next.setNpcs(newList);
+                    break OUTER;
+                }
+            }
+
+        }
+
     }
 
     @Subcommand("add")
