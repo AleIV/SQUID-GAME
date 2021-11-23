@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.mojang.authlib.properties.Property;
@@ -109,6 +110,61 @@ public class SkinCMD extends BaseCommand {
 
     }
 
+    private static ConcurrentHashMap<UUID, NPCWrapper> npcSkinnedCache = new ConcurrentHashMap<>();
+
+    @Subcommand("spawn-here")
+    @CommandCompletion("@variants")
+    public void spawnRandomHere(Player sender, String variant) {
+
+        var id = sender.getUniqueId();
+
+        final var wrapper = npcSkinnedCache.computeIfAbsent(id, (uid) -> NPCWrapper.create(new ArrayList<NPC>()));
+
+        CompletableFuture.runAsync(() -> {
+
+            var loc = sender.getLocation();
+            var skinTexture = "";
+            var skinSignature = "";
+
+            var skinsOptional = SkinToolApi.getAllVariant(variant);
+            if (skinsOptional.isPresent()) {
+                var skins = skinsOptional.get();
+
+                if (skins.size() < 1) {
+                    sender.sendMessage(Core.getMiniMessage().parse("<red>No skins found for variant: " + variant));
+                }
+
+                var actualSkins = skins.stream().findAny().get();
+
+                if (actualSkins != null) {
+                    skinTexture = actualSkins.getValue();
+                    skinSignature = actualSkins.getSignature();
+                }
+
+            }
+
+            var npc = NPCLibrary.createPlayerNPC(loc, sender.getName() + "-" + variant, false, sender.getInventory(),
+                    skinTexture, skinSignature);
+
+            wrapper.getNpcs().add(npc);
+
+            npc.getViewers().forEach(npc::spawn);
+        });
+
+    }
+
+    @Subcommand("delete-spawned-here")
+    public void deleteNpcs(Player sender) {
+
+        if (npcSkinnedCache.containsKey(sender.getUniqueId())) {
+            var wrapper = npcSkinnedCache.get(sender.getUniqueId());
+
+            sender.sendMessage("Deleting " + wrapper.getNpcs().size() + " npcs");
+
+            wrapper.deleteAll();
+        }
+    }
+
     @Subcommand("add")
     @CommandCompletion("@players")
     public void addQueue(CommandSender sender, String... names) {
@@ -164,13 +220,14 @@ public class SkinCMD extends BaseCommand {
                         // Get current index and add 1
                         var skin = skins.get(skinIndex++);
                         // Ensure skin not null.
-                        if (skin != null){
-                            Bukkit.getScheduler().runTask(instance, task ->{
-                                SkinCMD.skinSwapper(nextPlayer, skin.getValue(), skin.getSignature()); // Swap the Player's
+                        if (skin != null) {
+                            Bukkit.getScheduler().runTask(instance, task -> {
+                                SkinCMD.skinSwapper(nextPlayer, skin.getValue(), skin.getSignature()); // Swap the
+                                                                                                       // Player's
                                 // skin
                             });
                         }
-                            
+
                         // Handle possible out of bounds exception.
                         if (skinIndex > skins.size() - 1)
                             skinIndex = 0;
@@ -178,7 +235,7 @@ public class SkinCMD extends BaseCommand {
                 }
             }
             return false;
-        }).whenComplete((action, ex) ->{
+        }).whenComplete((action, ex) -> {
             sender.sendMessage(ChatColor.DARK_AQUA + "Task skins random completed.");
         });
 
@@ -186,7 +243,7 @@ public class SkinCMD extends BaseCommand {
 
     @Subcommand("list")
     @CommandCompletion("@variants")
-    public void listVariants(CommandSender sender, String variants){
+    public void listVariants(CommandSender sender, String variants) {
 
     }
 

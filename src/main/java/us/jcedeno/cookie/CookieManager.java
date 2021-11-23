@@ -61,6 +61,7 @@ public class CookieManager {
         spawnPacket.setX(loc.getX());
         spawnPacket.setY(loc.getY() + 1);
         spawnPacket.setZ(loc.getZ());
+
         // Object data here is rotation. 1 is rotation up. see protocol
         // https://wiki.vg/Object_Data
 
