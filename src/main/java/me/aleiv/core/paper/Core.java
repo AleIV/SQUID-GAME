@@ -48,6 +48,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
+import uk.lewdev.entitylib.FakeEntityPlugin;
 import us.jcedeno.cookie.CookieManager;
 import us.jcedeno.libs.rapidinv.RapidInvManager;
 import us.jcedeno.packets.PacketToolManager;
@@ -68,9 +69,11 @@ public class Core extends JavaPlugin {
     private @Getter CookieManager cookieManager;
     private @Getter PacketToolManager packetToolManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private @Getter FakeEntityPlugin fakeEntityPlugin;
 
     @Override
     public void onEnable() {
+
         instance = this;
         this.npcLibrary = new NPCLibrary();
         this.npcLibrary.register(this);
@@ -145,12 +148,17 @@ public class Core extends JavaPlugin {
         // Start cookie manager
         this.cookieManager = new CookieManager(this);
         this.packetToolManager = new PacketToolManager(this);
+
+        this.fakeEntityPlugin = new FakeEntityPlugin();
+
+        this.fakeEntityPlugin.onEnable();
     }
 
     @Override
     public void onDisable() {
 
         this.npcLibrary.unregister();
+        this.fakeEntityPlugin.onDisable();
     }
 
     public void refreshJson() {

@@ -29,6 +29,7 @@ import io.github.znetworkw.znpcservers.npc.NPC;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo;
+import uk.lewdev.entitylib.entity.FakePlayer;
 
 /**
  * A command to interact with the skin-tool app from minecraft.
@@ -207,6 +208,14 @@ public class SkinCMD extends BaseCommand {
 
             wrapper.deleteAll();
         }
+    }
+
+    @Subcommand("spawn-new")
+    public void spawnNewMethod(Player sender) {
+
+        var npc = new FakePlayer(sender, sender.getLocation());
+        npc.show(sender);
+
     }
 
     @CommandCompletion("[integer]")
