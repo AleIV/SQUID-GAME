@@ -1,29 +1,31 @@
 package uk.lewdev.entitylib.entity.protocol;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.function.Predicate;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Sets;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 /**
  * @author Lewys Davies (Lew_)
  */
 public class VisibilityHandler {
 
-    private final static int RENDER_DISTANCE = 100; // Blocks
+    private final static int RENDER_DISTANCE = 224; // Blocks
 
     private final static Predicate<Player> NOT_ONLINE = Predicates.not(Player::isOnline);
 
     private final FakeEntity entity;
 
-    private final Set<Player> visibleTo = Sets.newConcurrentHashSet();   // Players who could see this entity, if render conditions are met
-    private final Set<Player> invisibleTo = Sets.newConcurrentHashSet();  // Players who can never see this entity
-    private final Set<Player> renderedTo = Sets.newConcurrentHashSet();   // Players this entity is currently rendered to
+    private final Set<Player> visibleTo = Sets.newConcurrentHashSet(); // Players who could see this entity, if render
+                                                                       // conditions are met
+    private final Set<Player> invisibleTo = Sets.newConcurrentHashSet(); // Players who can never see this entity
+    private final Set<Player> renderedTo = Sets.newConcurrentHashSet(); // Players this entity is currently rendered to
 
     private boolean globalVisibility = false;
 
@@ -41,11 +43,12 @@ public class VisibilityHandler {
     }
 
     /**
-     * Update all players who could see this entity
-     * Removes any players who are no longer with us : (
+     * Update all players who could see this entity Removes any players who are no
+     * longer with us : (
      */
     protected synchronized final void tick() {
-        if (this.entity.isDead()) return;
+        if (this.entity.isDead())
+            return;
 
         // Remove any logged out players
         this.visibleTo.removeIf(NOT_ONLINE);
@@ -76,7 +79,8 @@ public class VisibilityHandler {
      */
     protected final Collection<? extends Player> visibleTo() {
         if (this.globalVisibility) {
-            if (this.invisibleTo.isEmpty()) return Bukkit.getOnlinePlayers();
+            if (this.invisibleTo.isEmpty())
+                return Bukkit.getOnlinePlayers();
             Collection<? extends Player> players = new ArrayList<Player>(Bukkit.getOnlinePlayers());
             players.removeAll(this.invisibleTo);
             return players;
@@ -89,16 +93,21 @@ public class VisibilityHandler {
      * @return True if Player could see this entity
      */
     public final boolean isVisible(Player player) {
-        if (this.invisibleTo.contains(player)) return false;
-        if (this.globalVisibility) return true;
+        if (this.invisibleTo.contains(player))
+            return false;
+        if (this.globalVisibility)
+            return true;
         return this.visibleTo.contains(player);
     }
 
     public final void setVisible(Player player) {
         this.invisibleTo.remove(player);
-        if (this.globalVisibility) return;
-        if (this.entity.isDead()) return;
-        if (this.visibleTo.contains(player)) return;
+        if (this.globalVisibility)
+            return;
+        if (this.entity.isDead())
+            return;
+        if (this.visibleTo.contains(player))
+            return;
 
         this.visibleTo.add(player);
 
@@ -112,7 +121,8 @@ public class VisibilityHandler {
      * @throws IllegalStateException if {@link #isGloballyVisible()}
      */
     public final void setNotVisible(Player player) {
-        if (this.entity.isDead()) return;
+        if (this.entity.isDead())
+            return;
         this.invisibleTo.add(player);
         this.visibleTo.remove(player);
         this.unRender(player);
@@ -129,7 +139,8 @@ public class VisibilityHandler {
      * @param visibleToAll
      */
     public final void setGloballyVisible(boolean visibleToAll) {
-        if (this.globalVisibility == visibleToAll) return;
+        if (this.globalVisibility == visibleToAll)
+            return;
 
         this.globalVisibility = visibleToAll;
 
@@ -169,7 +180,7 @@ public class VisibilityHandler {
      */
     private final boolean shouldRenderTo(Player player) {
         return this.entity.getWorld().equals(player.getWorld()) && (!this.invisibleTo.contains(player))
-          && this.isInRange(player);
+                && this.isInRange(player);
     }
 
     /**
@@ -180,12 +191,11 @@ public class VisibilityHandler {
      */
     private final boolean isInRange(Player player) {
         return Math.abs(this.entity.getX() - player.getLocation().getX()) < RENDER_DISTANCE
-          && Math.abs(this.entity.getZ() - player.getLocation().getZ()) < RENDER_DISTANCE;
+                && Math.abs(this.entity.getZ() - player.getLocation().getZ()) < RENDER_DISTANCE;
     }
 
     /**
-     * Send spawn packet and add to rendered list
-     * Will not render if currently is
+     * Send spawn packet and add to rendered list Will not render if currently is
      *
      * @param player
      */
@@ -201,8 +211,8 @@ public class VisibilityHandler {
     }
 
     /**
-     * Send destroy packet and remove from rendered list
-     * Will not un-render if not already rendered
+     * Send destroy packet and remove from rendered list Will not un-render if not
+     * already rendered
      *
      * @param player
      */

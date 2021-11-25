@@ -158,7 +158,10 @@ public class Core extends JavaPlugin {
     public void onDisable() {
 
         this.npcLibrary.unregister();
-        this.fakeEntityPlugin.onDisable();
+        try {
+            this.fakeEntityPlugin.onDisable();
+        } catch (Exception e) {
+        }
     }
 
     public void refreshJson() {

@@ -29,8 +29,8 @@ public class FakeEntityPlugin implements FakeEntityAPI {
     }
 
     public void onDisable() {
-        ProtocolLibrary.getProtocolManager().removePacketListeners(Core.getInstance());
         FakeEntity.ALL_ALIVE_INSTANCES.values().forEach(FakeEntity::destroy);
+        ProtocolLibrary.getProtocolManager().removePacketListeners(Core.getInstance());
     }
 
     @NotNull

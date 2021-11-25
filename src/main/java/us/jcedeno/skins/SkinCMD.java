@@ -2,6 +2,7 @@ package us.jcedeno.skins;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -30,6 +31,7 @@ import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo;
 import uk.lewdev.entitylib.entity.FakePlayer;
+import uk.lewdev.entitylib.entity.protocol.wrappers.WrapperPlayServerScoreboardTeam;
 
 /**
  * A command to interact with the skin-tool app from minecraft.
@@ -210,11 +212,40 @@ public class SkinCMD extends BaseCommand {
         }
     }
 
+    private HashMap<UUID, FakePlayer> minions = new HashMap<>();
+
     @Subcommand("spawn-new")
     public void spawnNewMethod(Player sender) {
 
-        var npc = new FakePlayer(sender, sender.getLocation());
+        var prof = sender.getPlayerProfile().getProperties().iterator().next();
+        var loc = sender.getLocation();
+        var randomName = UUID.randomUUID().toString().split("-")[0];
+
+        var fakeTeam = new WrapperPlayServerScoreboardTeam();
+        fakeTeam.setMode(0);
+        fakeTeam.setNameTagVisibility("never");
+        fakeTeam.setName(UUID.randomUUID().toString().split("-")[0]);
+        fakeTeam.setPlayers(List.of(randomName));
+
+        var npc = new FakePlayer(randomName, sender.getWorld(), prof.getValue(), prof.getSignature(), loc.getX(),
+                loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch(), loc.getYaw());
+
+        npc.setCustomNameVisible(false);
+        npc.showSecondSkinLayer(true);
+
         npc.show(sender);
+
+        fakeTeam.sendPacket(sender);
+
+    }
+
+    @Subcommand("move-here-bruh")
+    public void moveHereBruh(Player sender) {
+        var npc = minions.get(sender.getUniqueId());
+
+        if (npc != null) {
+            var loc = sender.getLocation();
+        }
 
     }
 
