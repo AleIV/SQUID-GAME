@@ -2,6 +2,7 @@ package us.jcedeno.skins;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -29,6 +30,7 @@ import io.github.znetworkw.znpcservers.npc.NPC;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo;
+import uk.lewdev.entitylib.entity.FakePlayer;
 
 /**
  * A command to interact with the skin-tool app from minecraft.
@@ -207,6 +209,29 @@ public class SkinCMD extends BaseCommand {
 
             wrapper.deleteAll();
         }
+    }
+
+    private HashMap<UUID, FakePlayer> minions = new HashMap<>();
+
+    @Subcommand("spawn-new")
+    public void spawnNewMethod(Player sender) {
+        var prof = sender.getPlayerProfile().getProperties().iterator().next();
+        var loc = sender.getLocation();
+
+        var npc = FakePlayer.of(sender.getName(), loc, prof.getValue(), prof.getSignature());
+
+        npc.show(sender);
+
+    }
+
+    @Subcommand("move-here-bruh")
+    public void moveHereBruh(Player sender) {
+        var npc = minions.get(sender.getUniqueId());
+
+        if (npc != null) {
+            var loc = sender.getLocation();
+        }
+
     }
 
     @CommandCompletion("[integer]")

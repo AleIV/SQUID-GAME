@@ -28,4 +28,11 @@ public class PacketRecorder {
         this.record = !this.record;
         return this.record;
     }
+
+    /**
+     * @return A new instance of Packet Recorder with the same settings.
+     */
+    public static PacketRecorder ofDefaults(){
+        return new PacketRecorder(false, new HashMap<>());
+    }
 }

@@ -16,6 +16,7 @@ import org.bukkit.plugin.Plugin;
 
 import lombok.Getter;
 import me.aleiv.core.paper.Core;
+import uk.lewdev.entitylib.FakeEntityPlugin;
 import us.jcedeno.packets.commands.PacketCommands;
 
 /**
@@ -55,7 +56,7 @@ public class PacketToolManager {
 
                         final var player = event.getPlayer();
                         var recorder = packetRecording.computeIfAbsent(player.getUniqueId(),
-                                (u) -> PacketRecorder.of(false, new HashMap<>()));
+                                (u) -> PacketRecorder.ofDefaults());
 
                         // If player has packet recording enabled, record packets to ram.
                         if (recorder.getRecord()) {
