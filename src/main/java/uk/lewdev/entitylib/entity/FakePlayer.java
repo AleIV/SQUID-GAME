@@ -26,6 +26,7 @@ import me.aleiv.core.paper.Core;
 import uk.lewdev.entitylib.entity.protocol.FakeEquippableEntity;
 import uk.lewdev.entitylib.entity.protocol.wrappers.WrapperPlayServerNamedEntitySpawn;
 import uk.lewdev.entitylib.entity.protocol.wrappers.WrapperPlayServerPlayerInfo;
+import uk.lewdev.entitylib.entity.protocol.wrappers.WrapperPlayServerScoreboardTeam;
 import uk.lewdev.entitylib.utils.AngleUtil;
 import uk.lewdev.entitylib.utils.MCVersion;
 
@@ -42,13 +43,20 @@ public class FakePlayer extends FakeEquippableEntity {
 
     private final WrappedGameProfile playerProfile;
 
+    private WrapperPlayServerScoreboardTeam teamPacket;
+
     private final WrappedDataWatcherObject playerByteWatcher = new WrappedDataWatcherObject(PlayerMetaData.byteIndex(),
             Registry.get(Byte.class));
 
     private final String name;
 
-    public FakePlayer(String name, World world, String texture, String signature, double x, double y, double z,
-            float yaw, float headPitch, float headYaw) {
+    public static FakePlayer of(String name, Location loc, String texture, String signature) {
+        return new FakePlayer(name, true, true, loc.getWorld(), texture, signature, loc.getX(), loc.getY(), loc.getZ(),
+                loc.getYaw(), loc.getPitch(), loc.getYaw());
+    }
+
+    public FakePlayer(String name, Boolean hideTag, Boolean collide, World world, String texture, String signature,
+            double x, double y, double z, float yaw, float headPitch, float headYaw) {
         super(EntityType.PLAYER, UUID.randomUUID(), world, x, y, z, yaw, headPitch, headYaw);
 
         this.name = name;
@@ -56,22 +64,28 @@ public class FakePlayer extends FakeEquippableEntity {
 
         this.playerProfile = new WrappedGameProfile(super.getUUID(), this.name);
         this.playerProfile.getProperties().put("textures", new WrappedSignedProperty("textures", texture, signature));
+
+        if (hideTag)
+            teamPacket = generatePacketFor(name, collide);
+
+        showSecondSkinLayer(true);
+
     }
 
-    public FakePlayer(String name, Location loc, float headYaw) {
-        this(name, loc.getWorld(), DEFAULT_SKIN, DEFAULT_SKIN_SIG, loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
-                loc.getPitch(), headYaw);
+    public FakePlayer(String name, Boolean hideTag, Boolean collide, Location loc, float headYaw) {
+        this(name, hideTag, collide, loc.getWorld(), DEFAULT_SKIN, DEFAULT_SKIN_SIG, loc.getX(), loc.getY(), loc.getZ(),
+                loc.getYaw(), loc.getPitch(), headYaw);
     }
 
-    public FakePlayer(String name, World world, double x, double y, double z) {
-        this(name, world, DEFAULT_SKIN, DEFAULT_SKIN_SIG, x, y, z, 0, 0, 0);
+    public FakePlayer(String name, Boolean hideTag, Boolean collide, World world, double x, double y, double z) {
+        this(name, hideTag, collide, world, DEFAULT_SKIN, DEFAULT_SKIN_SIG, x, y, z, 0, 0, 0);
     }
 
-    public FakePlayer(OfflinePlayer player, Location loc) {
-        this(Objects.requireNonNull(player.getPlayer()), loc);
+    public FakePlayer(OfflinePlayer player, Boolean hideTag, Boolean collide, Location loc) {
+        this(Objects.requireNonNull(player.getPlayer()), hideTag, collide, loc);
     }
 
-    public FakePlayer(Player player, Location loc) {
+    public FakePlayer(Player player, Boolean hideTag, Boolean collide, Location loc) {
         super(EntityType.PLAYER, UUID.randomUUID(), loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
                 loc.getPitch(), loc.getYaw());
 
@@ -82,9 +96,14 @@ public class FakePlayer extends FakeEquippableEntity {
         this.playerProfile = new WrappedGameProfile(super.getUUID(), this.name);
         this.playerProfile.getProperties().put("textures",
                 actualProfile.getProperties().get("textures").iterator().next());
+
+        if (hideTag)
+            teamPacket = generatePacketFor(name, collide);
+
+        showSecondSkinLayer(true);
     }
 
-    public FakePlayer(WrappedGameProfile profile, Location loc) {
+    public FakePlayer(WrappedGameProfile profile, Boolean hideTag, Boolean collide, Location loc) {
         super(EntityType.PLAYER, profile.getUUID(), loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
                 loc.getPitch(), loc.getYaw());
 
@@ -92,6 +111,22 @@ public class FakePlayer extends FakeEquippableEntity {
         super.setCustomName(this.name);
 
         this.playerProfile = profile;
+
+        if (hideTag)
+            teamPacket = generatePacketFor(name, collide);
+
+        showSecondSkinLayer(true);
+    }
+
+    private static WrapperPlayServerScoreboardTeam generatePacketFor(String name, boolean collide) {
+        WrapperPlayServerScoreboardTeam teamPacket = new WrapperPlayServerScoreboardTeam();
+        teamPacket.setMode(0);
+        teamPacket.setNameTagVisibility("never");
+        if (!collide)
+            teamPacket.setCollisionRule("never");
+        teamPacket.setName(UUID.randomUUID().toString().split("-")[0]);
+        teamPacket.setPlayers(List.of(name));
+        return teamPacket;
     }
 
     public final String getName() {
@@ -126,6 +161,8 @@ public class FakePlayer extends FakeEquippableEntity {
         try {
             protocol.sendServerPacket(player, playerInfoPacket.getHandle());
             protocol.sendServerPacket(player, playerSpawnPacket.getHandle());
+            if (teamPacket != null)
+                protocol.sendServerPacket(player, teamPacket.getHandle());
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
