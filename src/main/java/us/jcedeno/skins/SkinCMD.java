@@ -1,13 +1,10 @@
 package us.jcedeno.skins;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.mojang.authlib.properties.Property;
@@ -23,10 +20,6 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
-import io.github.znetworkw.znpcservers.NPCLibrary;
-import io.github.znetworkw.znpcservers.NPCWrapper;
-import io.github.znetworkw.znpcservers.configuration.ConfigurationConstants;
-import io.github.znetworkw.znpcservers.npc.NPC;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo;
@@ -51,25 +44,18 @@ public class SkinCMD extends BaseCommand {
         instance.getCommandManager().registerCommand(this);
     }
 
-    @Subcommand("npc")
-    public void spawnNpc(Player sender) {
+    
 
-        var npc = NPCLibrary.createPlayerNPC(sender.getLocation(), sender.getName(), false, sender.getInventory(),
-                sender);
-
-        npc.getViewers().forEach(npc::spawn);
-
-    }
-
-    // @Subcommand("npc-demo")
+    /*
+    @Subcommand("npc-demo")
     public void npcDemo(Player sender, @Default("5") Integer seconds) {
-        /** Generate npcs along a circle away from the player */
+        //Generate npcs along a circle away from the player 
         double radius = 5;
-        /** Get the location of the player and store the world as a constant. */
+        // Get the location of the player and store the world as a constant. 
         final var loc = sender.getLocation();
         final var world = loc.getWorld();
 
-        /** Obtain the skin variants available for the current sender. */
+        // Obtain the skin variants available for the current sender. 
         SkinToolApi.getElseComputeSkins(sender.getUniqueId()).whenComplete((skins, exception) -> {
             if (exception != null) {
                 sender.sendMessage("Command ended exceptionally: " + exception.getMessage());
@@ -95,15 +81,13 @@ public class SkinCMD extends BaseCommand {
                         var next = iter.next();
                         // Spawn the NPC
                         var name = Core.getMiniMessage().parse("<rainbow>" + sender.getName() + "-" + next.getName());
-                        npcs.add(NPCLibrary.createPlayerNPC(newLoc, name.toString(), true, sender.getInventory(),
-                                next.getValue(), next.getSignature()));
+                        //npcs.add(NPCLibrary.createPlayerNPC(newLoc, name.toString(), true, sender.getInventory(), next.getValue(), next.getSignature()));
 
                     }
 
-                    var wrapper = NPCWrapper.create(npcs);
+                    //var wrapper = NPCWrapper.create(npcs);
                     // Delete the wrapper some seconds later.
-                    Bukkit.getScheduler().runTaskLaterAsynchronously(Core.getInstance(), wrapper::deleteAll,
-                            20 * seconds);
+                    //Bukkit.getScheduler().runTaskLaterAsynchronously(Core.getInstance(), wrapper::deleteAll, 20 * seconds);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -164,12 +148,14 @@ public class SkinCMD extends BaseCommand {
         });
 
     }
+    */
 
     /**
      * 
      * @param sender
      */
 
+     /*
     @Subcommand("delete-last")
     public void deleteLast(Player sender) {
 
@@ -211,26 +197,6 @@ public class SkinCMD extends BaseCommand {
         }
     }
 
-    private HashMap<UUID, FakePlayer> minions = new HashMap<>();
-
-    @Subcommand("spawn-new")
-    public void spawnNewMethod(Player sender) {
-        var prof = sender.getPlayerProfile().getProperties().iterator().next();
-        var loc = sender.getLocation();
-
-        var npc = FakePlayer.of(sender.getName(), loc, prof.getValue(), prof.getSignature());
-
-        npc.show(sender);
-
-    }
-
-    @Subcommand("move-here-bruh")
-    public void moveHereBruh(Player sender) {
-        var npc = minions.get(sender.getUniqueId());
-
-        if (npc != null) {
-            var loc = sender.getLocation();
-        }
 
     }
 
@@ -275,6 +241,32 @@ public class SkinCMD extends BaseCommand {
             }
 
         }
+
+    }
+    
+     @Subcommand("move-here-bruh")
+    public void moveHereBruh(Player sender) {
+        var npc = minions.get(sender.getUniqueId());
+
+        if (npc != null) {
+            var loc = sender.getLocation();
+        }
+
+    }
+    
+    */
+
+    private HashMap<UUID, FakePlayer> minions = new HashMap<>();
+
+    @Subcommand("spawn-new")
+    public void spawnNewMethod(Player sender) {
+        var prof = sender.getPlayerProfile().getProperties().iterator().next();
+        var loc = sender.getLocation();
+
+        var npc = FakePlayer.of(sender.getName(), loc, prof.getValue(), prof.getSignature());
+
+        npc.show(sender);
+        
 
     }
 
@@ -351,12 +343,6 @@ public class SkinCMD extends BaseCommand {
         }).whenComplete((action, ex) -> {
             sender.sendMessage(ChatColor.DARK_AQUA + "Task skins random completed.");
         });
-
-    }
-
-    @Subcommand("list")
-    @CommandCompletion("@variants")
-    public void listVariants(CommandSender sender, String variants) {
 
     }
 
