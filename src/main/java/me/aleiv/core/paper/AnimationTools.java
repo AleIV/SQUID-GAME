@@ -34,7 +34,6 @@ import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import me.aleiv.core.paper.Game.DeathReason;
-import me.aleiv.core.paper.map.packet.WrapperPlayServerGameStateChange;
 import me.aleiv.core.paper.objects.NoteBlockData;
 import me.aleiv.core.paper.objects.OffSet;
 import me.aleiv.core.paper.utilities.LineVector;
@@ -128,17 +127,6 @@ public class AnimationTools {
         });
 
         return entry.stream().map(e -> parseLocation(e.getValue(), world)).toList();
-    }
-
-    public static void sendCredits(Player player) {
-        // Create packet (src https://wiki.vg/Protocol#Change_Game_State)
-        var packet = new WrapperPlayServerGameStateChange();
-        // Set reason to 4 (win game)
-        packet.setReason(4);
-        // Send value to 1 (show end credits)
-        packet.setValue(1);
-        // Send the credits
-        packet.sendPacket(player.getPlayer());
     }
 
     public static void setStandModel(ArmorStand stand, Material material, Integer model){

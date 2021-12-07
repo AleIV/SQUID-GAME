@@ -1,5 +1,6 @@
 package me.aleiv.core.paper;
 
+import java.net.CookieManager;
 import java.time.Duration;
 
 import com.google.gson.Gson;
@@ -48,10 +49,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
 import uk.lewdev.entitylib.FakeEntityPlugin;
-import us.jcedeno.cookie.CookieManager;
 import us.jcedeno.libs.rapidinv.RapidInvManager;
-import us.jcedeno.packets.PacketToolManager;
-import us.jcedeno.skins.SkinCMD;
 
 @SpigotPlugin
 public class Core extends JavaPlugin {
@@ -63,9 +61,7 @@ public class Core extends JavaPlugin {
     private @Getter CollisionManager collisionManager;
     private @Getter VectorsManager vectorManager;
     // private @Getter MapSystemManager mapSystemManager;
-    private @Getter SkinCMD skinCMD;
     private @Getter CookieManager cookieManager;
-    private @Getter PacketToolManager packetToolManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private @Getter FakeEntityPlugin fakeEntityPlugin;
 
@@ -132,7 +128,6 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new TestCMD(this));
 
         // Register skin command
-        this.skinCMD = new SkinCMD(this);
 
         // Start collision manager
         this.collisionManager = new CollisionManager(this);
@@ -142,8 +137,6 @@ public class Core extends JavaPlugin {
         // this.mapSystemManager = new MapSystemManager(this);
         // Start effect manager
         // Start cookie manager
-        this.cookieManager = new CookieManager(this);
-        this.packetToolManager = new PacketToolManager(this);
 
         this.fakeEntityPlugin = new FakeEntityPlugin();
 

@@ -55,6 +55,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok:1.18.12'
 	testCompileOnly 'org.projectlombok:lombok:1.18.12'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+    
     //ACF
     implementation 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
     //GUIs
