@@ -1,6 +1,5 @@
 package me.aleiv.core.paper;
 
-import java.net.CookieManager;
 import java.time.Duration;
 
 import com.google.gson.Gson;
@@ -29,6 +28,7 @@ import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.commands.TestCMD;
 import me.aleiv.core.paper.commands.UtilsCMD;
+import me.aleiv.core.paper.cookie.CookieManager;
 import me.aleiv.core.paper.detection.CollisionManager;
 import me.aleiv.core.paper.listeners.CanceledListener;
 import me.aleiv.core.paper.listeners.ChairListener;
@@ -133,10 +133,11 @@ public class Core extends JavaPlugin {
         this.collisionManager = new CollisionManager(this);
         // Start vectors manager
         this.vectorManager = new VectorsManager(this);
-        // Start map system manager
-        // this.mapSystemManager = new MapSystemManager(this);
+
         // Start effect manager
         // Start cookie manager
+
+        this.cookieManager = new CookieManager(this);
 
         this.fakeEntityPlugin = new FakeEntityPlugin();
 
