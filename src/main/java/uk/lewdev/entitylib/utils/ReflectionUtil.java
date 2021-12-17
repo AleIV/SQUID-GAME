@@ -127,7 +127,7 @@ public class ReflectionUtil {
      * @param fieldName The name of the field
      * @return The field object
      */
-    // TODO: Do more research on storing DECLARED fields in memory.
+    // : Do more research on storing DECLARED fields in memory.
     public static Field getDeclaredField(Class<?> clazz, String fieldName) throws NoSuchFieldException, SecurityException {
         Field field = clazz.getDeclaredField(fieldName);
         field.setAccessible(true);
@@ -176,7 +176,7 @@ public class ReflectionUtil {
      * @param params     Any parameters that the method has
      * @return The method with appropriate paramaters
      */
-    // TODO: Do more research on storing DECLARED methods in memory.
+    //: Do more research on storing DECLARED methods in memory.
     public static Method getDeclaredMethod(Class<?> clazz, String methodName, Class<?>... params) throws NoSuchMethodException, SecurityException {
         Method method = clazz.getDeclaredMethod(methodName, params);
         method.setAccessible(true);

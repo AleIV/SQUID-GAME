@@ -40,12 +40,16 @@ public class GlobalGame {
         return playAnimation(players, 3602, 4392, 0, 0);
     }
 
-    public void makeAllSleep(List<Player> players){
+    public void makeAllSleep(){
+        var game = instance.getGame();
         var beds = AnimationTools.findLocations("BED");
-        players.forEach(player -> {
-            player.setGameMode(GameMode.ADVENTURE);
-        });
-        AnimationTools.forceSleep(players, beds);
+        var guardBeds = AnimationTools.findLocations("BED_GUARD");
+        var players = Bukkit.getOnlinePlayers();
+        var participants = players.stream().filter(player -> game.isPlayer(player)).map(player -> (Player) player).toList();
+        var guards = players.stream().filter(player -> game.isGuard(player)).map(player -> (Player) player).toList();
+        
+        AnimationTools.forceSleep(participants, beds);
+        AnimationTools.forceSleep(guards, guardBeds);
     }
 
     public void sleep(Player player, Location loc){
@@ -84,19 +88,14 @@ public class GlobalGame {
                 allPlayers.forEach(player -> {
                     player.teleport(new Location(Bukkit.getWorld("world"), 232, 6, -80));
                     instance.sendActionBar(player, Character.toString('\u3400') + "");
+                    player.setGameMode(GameMode.ADVENTURE);
                     var inv = player.getInventory();
                     inv.clear();
                     
                 });
 
-                var players = allPlayers.stream().filter(player -> game.isPlayer(player)).map(player -> (Player) player).toList();
-
-                players.forEach(player ->{
-                    //TODO: PLAYER UNIFORM
-                });
-
                 try {
-                    makeAllSleep(players);
+                    makeAllSleep();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

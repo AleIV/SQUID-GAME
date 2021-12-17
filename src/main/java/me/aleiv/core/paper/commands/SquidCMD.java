@@ -68,10 +68,30 @@ public class SquidCMD extends BaseCommand {
     @CommandCompletion("@players")
     public void role(CommandSender sender, @Flags("other") Player player, Role role) {
         var game = instance.getGame();
-        var roles = game.getRoles();
+        var participants = game.getParticipants();
         var uuid = player.getUniqueId().toString();
-        roles.put(uuid, role);
-        sender.sendMessage(ChatColor.DARK_AQUA + player.getName() + " role set to " + role.toString().toLowerCase());
+
+        if(participants.containsKey(uuid)){
+            var participant = participants.get(uuid);
+            participant.setRole(role);
+            
+            sender.sendMessage(ChatColor.DARK_AQUA + player.getName() + " role set to " + role.toString().toLowerCase());
+        }
+    }
+
+    @Subcommand("dead")
+    @CommandCompletion("@players")
+    public void dead(CommandSender sender, @Flags("other") Player player, Boolean dead) {
+        var game = instance.getGame();
+        var participants = game.getParticipants();
+        var uuid = player.getUniqueId().toString();
+
+        if(participants.containsKey(uuid)){
+            var participant = participants.get(uuid);
+            participant.setDead(dead);
+            
+            sender.sendMessage(ChatColor.DARK_AQUA + player.getName() + " dead mode set to " + dead);
+        }
     }
 
     @Subcommand("timer")

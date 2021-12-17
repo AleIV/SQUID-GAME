@@ -40,7 +40,7 @@ public class SpecialCMD extends BaseCommand {
     
                 specialObjects.put(name, entity.getUniqueId().toString());
                 sender.sendMessage(ChatColor.DARK_AQUA + "Special object " + name + " added.");
-                instance.refreshJson();
+                instance.saveSpecialJson();
             }
 
         }else{
@@ -64,7 +64,7 @@ public class SpecialCMD extends BaseCommand {
                 var loc = block.getLocation();
                 specialObjects.put(name, (int) loc.getX() + ";" + (int) loc.getY() + ";" + (int) loc.getZ());
                 sender.sendMessage(ChatColor.DARK_AQUA + "Special object " + name + " added.");
-                instance.refreshJson();
+                instance.saveSpecialJson();
             }
 
         }else{
@@ -74,7 +74,7 @@ public class SpecialCMD extends BaseCommand {
     }
 
     @Subcommand("delete")
-    public void move(CommandSender sender, String name){
+    public void delete(CommandSender sender, String name){
         var specialObjects = AnimationTools.specialObjects;
 
         if(!specialObjects.containsKey(name)){
@@ -84,8 +84,23 @@ public class SpecialCMD extends BaseCommand {
 
             specialObjects.remove(name);
             sender.sendMessage(ChatColor.DARK_AQUA + "Special object " + name + " deleted.");
-            instance.refreshJson();
+            instance.saveSpecialJson();
         }
+
+    }
+
+    @Subcommand("delete-this")
+    public void deleteThis(CommandSender sender, String name){
+        var specialObjects = AnimationTools.specialObjects;
+
+        for (var special : specialObjects.entrySet()) {
+            if(special.getKey().contains(name)){
+                specialObjects.remove(special.getKey());
+            }
+        }
+
+        sender.sendMessage(ChatColor.DARK_AQUA + "Special object all " + name + " deleted.");
+        instance.saveSpecialJson();
 
     }
 
@@ -144,19 +159,19 @@ public class SpecialCMD extends BaseCommand {
     }
 
     @Subcommand("add-bed")
-    public void sleep(Player sender){
+    public void sleep(Player sender, String str){
        var specialObjects = AnimationTools.specialObjects;
         var block = sender.getTargetBlock(5);
 
         if(block != null){
 
-            var n = AnimationTools.findLocations("BED").size();
+            var n = AnimationTools.findLocations(str).size();
             var loc = block.getLocation();
-            var name = "BED_" + (n+1);
+            var name = str + "_" + (n+1);
             specialObjects.put(name, (int) loc.getX() + ";" + (int) loc.getY() + ";" + (int) loc.getZ());
             sender.sendMessage(ChatColor.DARK_AQUA + "Special object " + name + " added.");
 
-            instance.refreshJson();
+            instance.saveSpecialJson();
 
         }else{
             sender.sendMessage(ChatColor.RED + "You don't have target.");

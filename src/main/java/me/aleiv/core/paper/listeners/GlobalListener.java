@@ -32,6 +32,7 @@ import me.aleiv.core.paper.Game.GameStage;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.Role;
 import me.aleiv.core.paper.events.GameTickEvent;
+import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.ChatColor;
@@ -52,11 +53,12 @@ public class GlobalListener implements Listener {
     public void onDeath(PlayerDeathEvent e){
         var player = e.getEntity();
         var game = instance.getGame();
-        var roles = game.getRoles();
+        var participants = game.getParticipants();
         var uuid = player.getUniqueId().toString();
-        var role = roles.get(uuid);
+        var participant = participants.get(uuid);
         var gamemode = player.getGameMode();
-        if(role == Role.PLAYER && gamemode == GameMode.ADVENTURE){
+
+        if(participant.getRole() == Role.PLAYER && gamemode == GameMode.ADVENTURE){
             var damageEvent = player.getLastDamageCause();
             if(damageEvent instanceof EntityDamageByEntityEvent damageEntity && damageEntity.getDamager() instanceof Projectile projectile){
                 AnimationTools.summonDeadBody(player, DeathReason.PROJECTILE, projectile);
@@ -69,7 +71,8 @@ public class GlobalListener implements Listener {
                     AnimationTools.summonDeadBody(player, DeathReason.NORMAL, null);
                 }
             }
-            //TODO:make dead
+            participant.setDead(true);
+
         }
 
         if(player.hasPermission("admin.perm") || game.isGuard(player) || player.getGameMode() != GameMode.ADVENTURE){
@@ -84,21 +87,29 @@ public class GlobalListener implements Listener {
     public void onCredits(PlayerRespawnEvent e){
         var flags = e.getRespawnFlags();
         var player = e.getPlayer();
-        var game = instance.getGame();
+
         player.setGameMode(GameMode.SPECTATOR);
 
-        if(flags.contains(RespawnFlag.BED_SPAWN) && flags.contains(RespawnFlag.END_PORTAL)){
-            //end credits
-            if(game.isPlayer(player)){
-                player.kick(MiniMessage.get().parse(RED + "¡Gracias por jugar!"));
-            }
+        instance.broadcastMessage(flags.toString());
 
-        }else if(flags.contains(RespawnFlag.BED_SPAWN)){
+        if(flags.contains(RespawnFlag.END_PORTAL)){
+            //end credits
+            instance.broadcastMessage("JOINED");
+            Bukkit.getScheduler().runTaskLater(instance, task->{
+                player.kick(MiniMessage.get().parse(RED + "¡Gracias por jugar!"));
+                instance.broadcastMessage("TRIED");
+            }, 1);
+            
+
+        }else if(!player.hasPermission("admin.perm")){
             //just died
 
             e.setRespawnLocation(new Location(Bukkit.getWorld("world"), 18, 69, -6));
-            //TODO: SEND Credits
-            //AnimationTools.sendCredits(player);
+            
+            Bukkit.getScheduler().runTaskLater(instance, task->{
+                AnimationTools.sendCredits(player);
+            }, 1);
+
         }
     }
 
@@ -120,19 +131,15 @@ public class GlobalListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         var game = instance.getGame();
-        var roles = game.getRoles();
+        var participants = game.getParticipants();
         var player = e.getPlayer();
         var uuid = player.getUniqueId().toString();
 
         e.joinMessage(MiniMessage.get().parse(""));
         instance.adminMessage(ChatColor.YELLOW + player.getName() + " joined the game");
 
-        if (!roles.containsKey(uuid)) {
-            if (player.hasPermission("admin.perm")) {
-                roles.put(uuid, Role.GUARD);
-            } else {
-                roles.put(uuid, Role.PLAYER);
-            }
+        if (!participants.containsKey(uuid)) {
+            participants.put(uuid, new Participant(uuid));
         }
 
         var timer = game.getTimer();
@@ -144,9 +151,7 @@ public class GlobalListener implements Listener {
 
         var world = Bukkit.getWorld("world");
         if(city == null) game.setCity(new Location(world, 180.5, 35, 401.5));
-        //if(whiteLobby == null) game.setWhiteLobby(new Location(world, 274, 55, -61));
 
-        //TODO WHITE LOBBY
         if(whiteLobby == null) game.setWhiteLobby(new Location(world, 18, 69, -6));
 
         if (game.getGameStage() == GameStage.LOBBY) {
@@ -158,8 +163,6 @@ public class GlobalListener implements Listener {
 
                 var card = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(25)).name("●▲■").build();
                 inv.addItem(card);
-
-                //TODO: ADD CIVILIAN SKIN
 
             }
 
@@ -231,16 +234,16 @@ public class GlobalListener implements Listener {
         if (entity instanceof Player player) {
 
             var game = instance.getGame();
-            var roles = game.getRoles();
+            var participants = game.getParticipants();
             var uuid = player.getUniqueId().toString();
-            var role = roles.get(uuid);
+            var role = participants.get(uuid).getRole();
             var pvp = game.getPvp();
             var loc = player.getLocation().clone().add(0, 1, 0);
 
             var animation = 0;
 
             if (damager instanceof Player playerDamager && pvp != PvPType.ALL) {
-                var damagerRole = roles.get(playerDamager.getUniqueId().toString());
+                var damagerRole = participants.get(playerDamager.getUniqueId().toString()).getRole();
 
                 if (role == Role.GUARD && role == damagerRole && !playerDamager.hasPermission("admin.perm")) {
                     // GUARD TO GUARD CASE

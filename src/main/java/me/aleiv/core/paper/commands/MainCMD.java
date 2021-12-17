@@ -1,5 +1,6 @@
 package me.aleiv.core.paper.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import co.aikar.commands.BaseCommand;
@@ -83,6 +84,17 @@ public class MainCMD extends BaseCommand {
         var tools = instance.getGame().getMainRoom();
         tools.refreshPlayers(newPrize, delay, value);
         sender.sendMessage(ChatColor.DARK_AQUA + "Refreshed players " + newPrize + " " + delay);
+    }
+
+    @Subcommand("pass-night")
+    public void makeAllSleep(CommandSender sender){
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            instance.showTitle(player, Character.toString('\u3400'), "", 100, 20, 100);
+        });
+
+        Bukkit.getScheduler().runTaskLater(instance, task ->{
+            instance.getGame().getGlobalGame().makeAllSleep();
+        }, 110);
     }
 
 

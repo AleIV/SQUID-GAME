@@ -9,6 +9,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import uk.lewdev.entitylib.FakeEntityPlugin;
 import uk.lewdev.entitylib.entity.protocol.FakeEntity;
@@ -20,7 +21,7 @@ public class ProtocolLibListeners {
 
     private static boolean hasInit = false;
 
-    private final FakeEntityPlugin plugin;
+    private final @NonNull FakeEntityPlugin plugin;
 
     public ProtocolLibListeners(FakeEntityPlugin plugin) {
         if (hasInit) {

@@ -22,6 +22,7 @@ import me.aleiv.core.paper.Games.PhoneGame;
 import me.aleiv.core.paper.Games.PotatoGame;
 import me.aleiv.core.paper.Games.RopeGame;
 import me.aleiv.core.paper.events.GameTickEvent;
+import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.objects.Timer;
 
 @Data
@@ -48,7 +49,7 @@ public class Game extends BukkitRunnable {
     GlassGame glassGame;
     PhoneGame phoneGame;
 
-    HashMap<String, Role> roles = new HashMap<>();
+    HashMap<String, Participant> participants = new HashMap<>();
 
     Boolean lights = true;
     PvPType pvp = PvPType.ONLY_GUARDS;
@@ -107,18 +108,18 @@ public class Game extends BukkitRunnable {
     }
 
     public boolean isGuard(Player player){
-        return roles.get(player.getUniqueId().toString()) == Role.GUARD;
+        return participants.get(player.getUniqueId().toString()).getRole() == Role.GUARD;
     }
 
     public boolean isPlayer(Player player){
-        return roles.get(player.getUniqueId().toString()) == Role.PLAYER;
+        return participants.get(player.getUniqueId().toString()).getRole() == Role.PLAYER;
     }
 
     public void refreshHide(){
         var players = Bukkit.getOnlinePlayers().stream().map(p -> (Player) p).toList();
 
         switch (hideMode) {
-            case INGAME ->{
+            case INGAME -> {
                 players.forEach(player ->{
                     var gamemode = player.getGameMode();
 

@@ -13,7 +13,7 @@ import java.util.UUID;
 public abstract class FakeLivingEntity extends FakeEntity {
 
     private float headYaw = 0f;
-    //TODO private byte livingByte = (byte) 0;
+    //private byte livingByte = (byte) 0;
 
     // Note: Pitch is used for HeadPitch in living entities
     protected FakeLivingEntity(EntityType type, UUID uuid, World world, double x, double y, double z, float yaw, float headPitch, float headYaw) {

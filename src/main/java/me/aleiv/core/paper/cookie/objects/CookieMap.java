@@ -73,12 +73,12 @@ public class CookieMap {
     }
 
     public void increaseCorrectPixels() {
-        // TODO Maybe add some more logic here?
+        // Maybe add some more logic here?
         this.correctPixels++;
     }
 
     public void increaseIncorrectPixels() {
-        // TODO Maybe add some more logic here?
+        // Maybe add some more logic here?
         this.incorrectPixels++;
     }
 

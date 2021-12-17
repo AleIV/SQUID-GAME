@@ -71,8 +71,6 @@ public class RopeListener implements Listener {
                     p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
                 });
 
-                // TODO: MAKE SWING
-
             } else if (left.contains(player)) {
                 if (rope.getBoolMode()) {
                     if (rope.getBoolModeBool()) {
@@ -95,7 +93,6 @@ public class RopeListener implements Listener {
                     p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
                 });
 
-                // TODO: MAKE SWING
             }
 
         }

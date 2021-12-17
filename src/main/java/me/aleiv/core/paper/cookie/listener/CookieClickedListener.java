@@ -94,7 +94,7 @@ public class CookieClickedListener implements Listener {
 
     @EventHandler
     public void onPlayerClickedCookie(final PlayerClickedCookieEvent e) {
-        // TODO Ensure that players can only edit a cookie if it belongs to them.
+        // Ensure that players can only edit a cookie if it belongs to them.
         if (CookieManager.EDIT) {
             var player = e.getPlayer();
             var frame = e.getItemFrame();
@@ -169,7 +169,7 @@ public class CookieClickedListener implements Listener {
     @EventHandler
     public void onPlayerPaintedMap(final PlayerPaintedCookieEvent e) {
         /*
-         * TODO Detection
+         * Detection
          * Color que clickear = -93
          * Safe zone = -96
          * error = -94

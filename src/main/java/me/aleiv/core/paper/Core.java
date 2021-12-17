@@ -2,6 +2,8 @@ package me.aleiv.core.paper;
 
 import java.time.Duration;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -40,6 +42,7 @@ import me.aleiv.core.paper.listeners.MechanicsListener;
 import me.aleiv.core.paper.listeners.PhoneListener;
 import me.aleiv.core.paper.listeners.PotatoListener;
 import me.aleiv.core.paper.listeners.RopeListener;
+import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
@@ -60,7 +63,7 @@ public class Core extends JavaPlugin {
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
     private @Getter CollisionManager collisionManager;
     private @Getter VectorsManager vectorManager;
-    // private @Getter MapSystemManager mapSystemManager;
+    private @Getter ProtocolManager protocolManager;
     private @Getter CookieManager cookieManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private @Getter FakeEntityPlugin fakeEntityPlugin;
@@ -70,31 +73,16 @@ public class Core extends JavaPlugin {
 
         instance = this;
 
+        protocolManager = ProtocolLibrary.getProtocolManager();
         RapidInvManager.register(this);
         BukkitTCT.registerPlugin(this);
         NegativeSpaces.registerCodes();
 
-        try {
-            var jsonConfig = new JsonConfig("special.json");
-            var list = jsonConfig.getJsonObject();
-            var iter = list.entrySet().iterator();
-            var map = AnimationTools.specialObjects;
-
-            while (iter.hasNext()) {
-                var entry = iter.next();
-                var name = entry.getKey();
-                var value = entry.getValue();
-                map.put(name, value.getAsString());
-
-            }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
+
+        pullSpecialJson();
+        pullParticipantJson();
 
         // LISTENERS
 
@@ -154,7 +142,45 @@ public class Core extends JavaPlugin {
         }
     }
 
-    public void refreshJson() {
+    public void pullParticipantJson(){
+        try {
+            var jsonConfig = new JsonConfig("participants.json");
+            var list = jsonConfig.getJsonObject();
+            var iter = list.entrySet().iterator();
+            var map = game.getParticipants();
+
+            while (iter.hasNext()) {
+                var entry = iter.next();
+                var name = entry.getKey();
+                var value = entry.getValue();
+                var participant = gson.fromJson(value, Participant.class);
+                map.put(name, participant);
+
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    public void saveParticipantJson(){
+        var list = game.getParticipants();
+
+        try {
+            var jsonConfig = new JsonConfig("participants.json");
+            var json = gson.toJson(list);
+            var obj = gson.fromJson(json, JsonObject.class);
+            jsonConfig.setJsonObject(obj);
+            jsonConfig.save();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    public void saveSpecialJson() {
         var list = AnimationTools.specialObjects;
 
         try {
@@ -163,6 +189,27 @@ public class Core extends JavaPlugin {
             var obj = gson.fromJson(json, JsonObject.class);
             jsonConfig.setJsonObject(obj);
             jsonConfig.save();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    private void pullSpecialJson() {
+        try {
+            var jsonConfig = new JsonConfig("special.json");
+            var list = jsonConfig.getJsonObject();
+            var iter = list.entrySet().iterator();
+            var map = AnimationTools.specialObjects;
+
+            while (iter.hasNext()) {
+                var entry = iter.next();
+                var name = entry.getKey();
+                var value = entry.getValue();
+                map.put(name, value.getAsString());
+
+            }
 
         } catch (Exception e) {
 

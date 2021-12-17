@@ -1,5 +1,6 @@
 package me.aleiv.core.paper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +12,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketContainer;
 import com.destroystokyo.paper.ParticleBuilder;
 
 import org.bukkit.Bukkit;
@@ -38,6 +42,7 @@ import me.aleiv.core.paper.objects.NoteBlockData;
 import me.aleiv.core.paper.objects.OffSet;
 import me.aleiv.core.paper.utilities.LineVector;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import net.minecraft.server.v1_16_R3.PacketPlayOutGameStateChange;
 import us.jcedeno.libs.rapidinv.ItemBuilder;
 
 
@@ -682,6 +687,23 @@ public class AnimationTools {
 
     public static double getDifference(double a, double b) {
         return b - a;
+    }
+
+    public static void sendCredits(final Player player) {
+        final PacketContainer packet = new PacketContainer(PacketType.Play.Server.GAME_STATE_CHANGE);
+        packet.getSpecificModifier(PacketPlayOutGameStateChange.a.class).write(0, PacketPlayOutGameStateChange.e);
+
+        packet.getFloat().write(0, 1.0f);
+
+        try {
+            ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
+
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(
+                "Cannot send packet " + packet, e);
+        }
+
+        
     }
 
 }
