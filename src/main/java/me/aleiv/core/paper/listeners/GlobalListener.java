@@ -121,7 +121,7 @@ public class GlobalListener implements Listener {
             e.deathMessage(MiniMessage.get().parse(""));
         }else{
 
-            e.deathMessage(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + participant.getNumber() + player.getName() + CYAN + " eliminated."));
+            e.deathMessage(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "#" + participant.getNumber() + player.getName() + CYAN + " eliminated."));
         }
 
     }
