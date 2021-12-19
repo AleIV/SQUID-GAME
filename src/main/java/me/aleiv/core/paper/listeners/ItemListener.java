@@ -64,7 +64,7 @@ public class ItemListener implements Listener {
         var item = equip.getItemInMainHand();
         if(entity instanceof Player target){
 
-            if(item != null && item.getItemMeta().hasDisplayName()){
+            if(item != null && item.hasItemMeta() && item.getItemMeta().hasDisplayName()){
                 if(item.displayName().toString().contains("push")){
                     var direction = player.getLocation().getDirection();
                     target.setVelocity(direction.normalize());

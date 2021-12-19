@@ -36,11 +36,24 @@ public class PlayersCMD extends BaseCommand {
         if(participants.containsKey(uuid)){
             var participant = participants.get(uuid);
             participant.setRole(role);
+
+            if(role == Role.PLAYER){
+                participant.chooseNumber();
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard players set " + participant.getName() + " number " + participant.getNumber());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team leave " + participant.getName());
+
+            }else{
+                participant.setNumber(0);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard players set " + participant.getName() + " number " + 0);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team join funny " + participant.getName());
+            }
+
+            player.setLevel(participant.getNumber());
             
             sender.sendMessage(ChatColor.DARK_AQUA + player.getName() + " role set to " + role.toString().toLowerCase());
-        }
 
-        instance.saveParticipantJson();
+            instance.saveParticipantJson();
+        }
     }
 
     @Subcommand("dead")

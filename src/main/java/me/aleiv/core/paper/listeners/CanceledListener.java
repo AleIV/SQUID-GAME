@@ -2,6 +2,8 @@ package me.aleiv.core.paper.listeners;
 
 import java.util.List;
 
+import com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent;
+
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,14 +15,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTakeLecternBookEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.potion.PotionEffectType;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.aleiv.core.paper.Core;
@@ -80,6 +84,19 @@ public class CanceledListener implements Listener {
         var entity = e.getEntity();
         if(entity instanceof Player player && game.isGuard(player)){
             e.setDamage(1);
+        }
+    }
+
+    @EventHandler
+    public void onExperience(PlayerPickupExperienceEvent e){
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onFood(FoodLevelChangeEvent e){
+        var player = (Player) e.getEntity();
+        if(!player.hasPotionEffect(PotionEffectType.SATURATION) && !player.hasPotionEffect(PotionEffectType.HUNGER)){
+            e.setCancelled(true);
         }
     }
 

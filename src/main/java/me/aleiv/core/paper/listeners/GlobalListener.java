@@ -11,10 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -128,14 +126,6 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
-    public void onFood(FoodLevelChangeEvent e){
-        var player = (Player) e.getEntity();
-        if(!player.hasPotionEffect(PotionEffectType.SATURATION) && !player.hasPotionEffect(PotionEffectType.HUNGER)){
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
     public void onQuit(PlayerQuitEvent e){
         var player = e.getPlayer();
         e.quitMessage(MiniMessage.get().parse(""));
@@ -156,6 +146,9 @@ public class GlobalListener implements Listener {
             participants.put(uuid, new Participant(uuid, player.getName()));
         }
 
+        var participant = participants.get(uuid);
+        player.setLevel(participant.getNumber());
+        
         instance.saveParticipantJson();
 
         var timer = game.getTimer();
@@ -163,7 +156,6 @@ public class GlobalListener implements Listener {
 
         var city = game.getCity();
         var whiteLobby = game.getWhiteLobby();
-
 
         var world = Bukkit.getWorld("world");
         if(city == null) game.setCity(new Location(world, 180.5, 35, 401.5));
@@ -197,13 +189,6 @@ public class GlobalListener implements Listener {
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
         }
 
-    }
-
-    @EventHandler
-    public void onSpawn(CreatureSpawnEvent e) {
-        if (e.getSpawnReason().toString().contains("NATURAL")) {
-            e.setCancelled(true);
-        }
     }
 
     @EventHandler
