@@ -120,7 +120,8 @@ public class GlobalListener implements Listener {
         if(player.hasPermission("admin.perm") || game.isGuard(player) || player.getGameMode() != GameMode.ADVENTURE){
             e.deathMessage(MiniMessage.get().parse(""));
         }else{
-            e.deathMessage(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "0 " + player.getName() + CYAN + " eliminated."));
+
+            e.deathMessage(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + participant.getNumber() + player.getName() + CYAN + " eliminated."));
         }
 
     }
