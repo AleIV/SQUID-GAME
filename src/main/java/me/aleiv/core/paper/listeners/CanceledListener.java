@@ -14,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -30,10 +31,33 @@ public class CanceledListener implements Listener {
 
     List<Material> bannedMoveList = List.of(Material.NOTE_BLOCK);
     List<Material> bannedSpawnList = List.of(Material.TWISTING_VINES);
+    List<Material> bannedDropList = List.of(Material.FERMENTED_SPIDER_EYE, Material.CLAY_BALL);
+    List<Material> bannedInteract = List.of(Material.ENDER_EYE);
     List<Integer> customModelAntiDrop = List.of(25, 24);
 
     public CanceledListener(Core instance) {
         this.instance = instance;
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e){
+        var item = e.getItem();
+        var player = e.getPlayer();
+
+        if(item != null && bannedInteract.contains(item.getType())){
+            var targetBlock = player.getTargetBlock(5);
+            if(targetBlock != null && targetBlock.getType() == Material.END_PORTAL_FRAME) return;
+            
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void damage(EntityDamageEvent e){
+        var cause = e.getCause();
+        if(cause == DamageCause.SUFFOCATION){
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -120,8 +144,11 @@ public class CanceledListener implements Listener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent e){
-        var item = e.getItemDrop().getItemStack().getItemMeta();
-        if(item.hasCustomModelData() && customModelAntiDrop.contains(item.getCustomModelData())){
+        var item = e.getItemDrop().getItemStack();
+        if(item.getItemMeta().hasCustomModelData() && customModelAntiDrop.contains(item.getItemMeta().getCustomModelData())){
+            e.setCancelled(true);
+        }
+        if(bannedDropList.contains(item.getType())){
             e.setCancelled(true);
         }
     }

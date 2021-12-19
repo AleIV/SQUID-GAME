@@ -100,7 +100,7 @@ public class Game extends BukkitRunnable {
     }
 
     public enum GameStage{
-        INGAME, LOBBY, PAUSE
+        INGAME, LOBBY, PAUSE, STARTING
     }
 
     public enum DeathReason{

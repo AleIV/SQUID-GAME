@@ -13,7 +13,6 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.objects.Participant;
 import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("utils")
@@ -25,16 +24,6 @@ public class UtilsCMD extends BaseCommand {
     public UtilsCMD(Core instance) {
         this.instance = instance;
 
-        /*instance.getProtocolManager().addPacketListener(
-                new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Server.GAME_STATE_CHANGE) {
-                    @Override
-                    public void onPacketSending(PacketEvent event) {
-                        var floats = event.getPacket().getFloat();
-                        instance.broadcastMessage(floats.getValues().toString());
-                       
-                        
-                    }
-                });*/
     }
 
     @Subcommand("make-all-sleep")
@@ -64,13 +53,13 @@ public class UtilsCMD extends BaseCommand {
         tools.setCity(sender.getLocation());
     }
 
-    @Subcommand("gas")
+    //@Subcommand("gas")
     public void sendGas(CommandSender sender) {
         var tools = instance.getGame();
         tools.getGlobalGame().applyGas(Bukkit.getOnlinePlayers().stream().map(p -> (Player) p).toList());
     }
 
-    @Subcommand("countdown")
+    //@Subcommand("countdown")
     public void sendCount(CommandSender sender) {
         var tools = instance.getGame();
         tools.getGlobalGame().sendCountDown(Bukkit.getOnlinePlayers().stream().map(p -> (Player) p).toList());
@@ -80,21 +69,6 @@ public class UtilsCMD extends BaseCommand {
     public void start(CommandSender sender) {
         var tools = instance.getGame();
         tools.getGlobalGame().playSquidGameStart();
-    }
-
-    @Subcommand("reset-roles")
-    public void roleGlobal(CommandSender sender) {
-        var game = instance.getGame();
-        var participants = game.getParticipants();
-
-        participants.clear();
-
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            var uuid = player.getUniqueId().toString();
-            participants.put(uuid, new Participant(uuid));
-        });
-
-        sender.sendMessage(ChatColor.DARK_AQUA + "Reset roles set to ");
     }
 
     @Subcommand("title-black")

@@ -24,6 +24,7 @@ import me.aleiv.core.paper.commands.GlassCMD;
 import me.aleiv.core.paper.commands.HideSeekCMD;
 import me.aleiv.core.paper.commands.MainCMD;
 import me.aleiv.core.paper.commands.PhoneCMD;
+import me.aleiv.core.paper.commands.PlayersCMD;
 import me.aleiv.core.paper.commands.PotatoCMD;
 import me.aleiv.core.paper.commands.RopeCMD;
 import me.aleiv.core.paper.commands.SpecialCMD;
@@ -114,6 +115,7 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new UtilsCMD(this));
         commandManager.registerCommand(new SpecialCMD(this));
         commandManager.registerCommand(new TestCMD(this));
+        commandManager.registerCommand(new PlayersCMD(this));
 
         // Register skin command
 

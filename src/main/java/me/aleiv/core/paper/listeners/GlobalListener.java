@@ -13,8 +13,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -47,6 +47,48 @@ public class GlobalListener implements Listener {
 
     public GlobalListener(Core instance) {
         this.instance = instance;
+
+        /*instance.getProtocolManager().addPacketListener(
+                new PacketAdapter(instance, ListenerPriority.NORMAL, PacketType.Play.Server.GAME_STATE_CHANGE) {
+                    @Override
+                    public void onPacketSending(PacketEvent event) {
+                        var floats = event.getPacket().getFloat();
+                        instance.broadcastMessage(ChatColor.RED + "111");
+                        instance.broadcastMessage(ChatColor.GREEN + event.getPacketType().toString());
+                        instance.broadcastMessage(floats.getValues().toString());
+                        instance.broadcastMessage(ChatColor.GREEN + event.getPacket().getBytes().toString());
+                       
+                        
+                    }
+                });*/
+    }
+
+    @EventHandler
+    public void onCredits(PlayerRespawnEvent e){
+        var flags = e.getRespawnFlags();
+        var player = e.getPlayer();
+
+        player.setGameMode(GameMode.SPECTATOR);
+
+        if(flags.contains(RespawnFlag.END_PORTAL)){
+            //end credits
+
+            Bukkit.getScheduler().runTaskLater(instance, task->{
+                player.kick(MiniMessage.get().parse(RED + "¡Gracias por jugar!"));
+            }, 1);
+            
+
+        }else if(!player.hasPermission("admin.perm")){
+            //just died
+
+            e.setRespawnLocation(new Location(Bukkit.getWorld("world"), 18, 69, -6));
+            
+            Bukkit.getScheduler().runTaskLater(instance, task-> {
+                AnimationTools.sendCredits(player);
+                
+            }, 1);
+
+        }
     }
 
     @EventHandler
@@ -73,6 +115,8 @@ public class GlobalListener implements Listener {
             }
             participant.setDead(true);
 
+            instance.saveParticipantJson();
+
         }
 
         if(player.hasPermission("admin.perm") || game.isGuard(player) || player.getGameMode() != GameMode.ADVENTURE){
@@ -81,36 +125,6 @@ public class GlobalListener implements Listener {
             e.deathMessage(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "0 " + player.getName() + CYAN + " eliminated."));
         }
 
-    }
-
-    @EventHandler
-    public void onCredits(PlayerRespawnEvent e){
-        var flags = e.getRespawnFlags();
-        var player = e.getPlayer();
-
-        player.setGameMode(GameMode.SPECTATOR);
-
-        instance.broadcastMessage(flags.toString());
-
-        if(flags.contains(RespawnFlag.END_PORTAL)){
-            //end credits
-            instance.broadcastMessage("JOINED");
-            Bukkit.getScheduler().runTaskLater(instance, task->{
-                player.kick(MiniMessage.get().parse(RED + "¡Gracias por jugar!"));
-                instance.broadcastMessage("TRIED");
-            }, 1);
-            
-
-        }else if(!player.hasPermission("admin.perm")){
-            //just died
-
-            e.setRespawnLocation(new Location(Bukkit.getWorld("world"), 18, 69, -6));
-            
-            Bukkit.getScheduler().runTaskLater(instance, task->{
-                AnimationTools.sendCredits(player);
-            }, 1);
-
-        }
     }
 
     @EventHandler
@@ -139,8 +153,10 @@ public class GlobalListener implements Listener {
         instance.adminMessage(ChatColor.YELLOW + player.getName() + " joined the game");
 
         if (!participants.containsKey(uuid)) {
-            participants.put(uuid, new Participant(uuid));
+            participants.put(uuid, new Participant(uuid, player.getName()));
         }
+
+        instance.saveParticipantJson();
 
         var timer = game.getTimer();
         timer.getBossBar().addPlayer(player);
@@ -199,6 +215,27 @@ public class GlobalListener implements Listener {
             if (timer.isActive()) {
                 var currentTime = (int) game.getGameTime();
                 timer.refreshTime(currentTime);
+            }
+
+            if(game.getGameStage() == GameStage.PAUSE){
+                var players = Bukkit.getOnlinePlayers();
+                players.forEach(player ->{
+                    if(!player.hasPermission("admin.perm")){
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5*20, 255, false, false, false));
+                        instance.showTitle(player, Character.toString('\u0264') + "", "", 0, 40, 0);
+                        instance.sendActionBar(player, Character.toString('\u3400') + "");
+                    }
+                });
+            }else if(game.getGameStage() == GameStage.STARTING){
+                var players = Bukkit.getOnlinePlayers();
+                var size = game.getParticipants().entrySet().stream().filter(entry-> entry.getValue().getRole() ==  Role.PLAYER).toList().size();
+                players.forEach(player ->{
+                    if(!player.hasPermission("admin.perm")){
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5*20, 255, false, false, false));
+                        instance.showTitle(player, Character.toString('\u0265') + "", size + "", 0, 40, 0);
+                        instance.sendActionBar(player, Character.toString('\u3400') + "");
+                    }
+                });
             }
 
         });

@@ -41,6 +41,9 @@ public class GlobalGame {
     }
 
     public void makeAllSleep(){
+        Bukkit.getWorlds().forEach(it ->{
+            it.setTime(20000);
+        });
         var game = instance.getGame();
         var beds = AnimationTools.findLocations("BED");
         var guardBeds = AnimationTools.findLocations("BED_GUARD");
@@ -50,6 +53,10 @@ public class GlobalGame {
         
         AnimationTools.forceSleep(participants, beds);
         AnimationTools.forceSleep(guards, guardBeds);
+    }
+
+    public void instantMakeAllSleep(){
+
     }
 
     public void sleep(Player player, Location loc){
