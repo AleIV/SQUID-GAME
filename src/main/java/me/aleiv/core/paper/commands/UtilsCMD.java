@@ -53,13 +53,13 @@ public class UtilsCMD extends BaseCommand {
         tools.setCity(sender.getLocation());
     }
 
-    //@Subcommand("gas")
+    @Subcommand("gas")
     public void sendGas(CommandSender sender) {
         var tools = instance.getGame();
         tools.getGlobalGame().applyGas(Bukkit.getOnlinePlayers().stream().map(p -> (Player) p).toList());
     }
 
-    //@Subcommand("countdown")
+    @Subcommand("countdown")
     public void sendCount(CommandSender sender) {
         var tools = instance.getGame();
         tools.getGlobalGame().sendCountDown(Bukkit.getOnlinePlayers().stream().map(p -> (Player) p).toList());

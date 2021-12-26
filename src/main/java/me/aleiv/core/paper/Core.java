@@ -18,6 +18,7 @@ import co.aikar.commands.PaperCommandManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
 import me.aleiv.core.paper.commands.ChairCMD;
+import me.aleiv.core.paper.commands.CookieCMD;
 import me.aleiv.core.paper.commands.DollCMD;
 import me.aleiv.core.paper.commands.ElevatorsCMD;
 import me.aleiv.core.paper.commands.GlassCMD;
@@ -31,7 +32,6 @@ import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.commands.TestCMD;
 import me.aleiv.core.paper.commands.UtilsCMD;
-import me.aleiv.core.paper.cookie.CookieManager;
 import me.aleiv.core.paper.detection.CollisionManager;
 import me.aleiv.core.paper.listeners.CanceledListener;
 import me.aleiv.core.paper.listeners.ChairListener;
@@ -52,7 +52,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
-import uk.lewdev.entitylib.FakeEntityPlugin;
 import us.jcedeno.libs.rapidinv.RapidInvManager;
 
 @SpigotPlugin
@@ -65,9 +64,7 @@ public class Core extends JavaPlugin {
     private @Getter CollisionManager collisionManager;
     private @Getter VectorsManager vectorManager;
     private @Getter ProtocolManager protocolManager;
-    private @Getter CookieManager cookieManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private @Getter FakeEntityPlugin fakeEntityPlugin;
 
     @Override
     public void onEnable() {
@@ -111,6 +108,7 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new PotatoCMD(this));
         commandManager.registerCommand(new GlassCMD(this));
         commandManager.registerCommand(new PhoneCMD(this));
+        commandManager.registerCommand(new CookieCMD(this));
 
         commandManager.registerCommand(new UtilsCMD(this));
         commandManager.registerCommand(new SpecialCMD(this));
@@ -125,23 +123,13 @@ public class Core extends JavaPlugin {
         this.vectorManager = new VectorsManager(this);
 
         // Start effect manager
-        // Start cookie manager
 
-        this.cookieManager = new CookieManager(this);
-
-        this.fakeEntityPlugin = new FakeEntityPlugin();
-
-        this.fakeEntityPlugin.onEnable();
     }
 
     @Override
     public void onDisable() {
 
-        try {
-            this.fakeEntityPlugin.onDisable();
-        } catch (Exception e) {
 
-        }
     }
 
     public void pullParticipantJson(){
