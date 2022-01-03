@@ -13,6 +13,7 @@ import me.aleiv.core.paper.Game.GameStage;
 import me.aleiv.core.paper.Game.HideMode;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.TimerType;
+import me.aleiv.core.paper.listeners.FrozeListener;
 import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("squid")
@@ -20,10 +21,25 @@ import net.md_5.bungee.api.ChatColor;
 public class SquidCMD extends BaseCommand {
 
     private @NonNull Core instance;
+    FrozeListener frozeListener;
 
     public SquidCMD(Core instance) {
         this.instance = instance;
 
+        this.frozeListener = new FrozeListener(instance);
+
+    }
+
+    @Subcommand("froze")
+    public void froze(CommandSender sender, boolean bool) {
+        if(bool){
+            instance.registerListener(frozeListener);
+
+        }else{
+            instance.unregisterListener(frozeListener);
+        }
+
+        sender.sendMessage(ChatColor.DARK_AQUA + "Froze " + bool);
     }
 
     @Subcommand("pvp")

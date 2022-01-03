@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.NotePlayEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -135,11 +136,18 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
+    public void onNote(NotePlayEvent e){
+        e.setCancelled(true);
+    }
+
+    @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         var game = instance.getGame();
         var participants = game.getParticipants();
         var player = e.getPlayer();
         var uuid = player.getUniqueId().toString();
+
+        player.setCollidable(false);
 
         e.joinMessage(MiniMessage.get().parse(""));
         instance.adminMessage(ChatColor.YELLOW + player.getName() + " joined the game");

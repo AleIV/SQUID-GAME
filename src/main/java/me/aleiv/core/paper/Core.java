@@ -40,14 +40,15 @@ import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.listeners.HideListener;
 import me.aleiv.core.paper.listeners.ItemListener;
 import me.aleiv.core.paper.listeners.MechanicsListener;
-import me.aleiv.core.paper.listeners.PhoneListener;
 import me.aleiv.core.paper.listeners.PotatoListener;
 import me.aleiv.core.paper.listeners.RopeListener;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
+import me.aleiv.core.paper.utilities.ResourcePackManager;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import me.aleiv.core.paper.vectors.VectorsManager;
+import me.aleiv.modeltool.core.EntityModelManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
@@ -64,6 +65,8 @@ public class Core extends JavaPlugin {
     private @Getter CollisionManager collisionManager;
     private @Getter VectorsManager vectorManager;
     private @Getter ProtocolManager protocolManager;
+    private @Getter EntityModelManager entityModelManager;
+    private @Getter ResourcePackManager resourcePackManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
@@ -75,6 +78,10 @@ public class Core extends JavaPlugin {
         RapidInvManager.register(this);
         BukkitTCT.registerPlugin(this);
         NegativeSpaces.registerCodes();
+        entityModelManager = new EntityModelManager(this);
+        resourcePackManager = new ResourcePackManager(this);
+        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/4d5750f7836ef0b5e9dadd94637a33968de6a88a.zip");
+        resourcePackManager.setResourcePackHash("4d5750f7836ef0b5e9dadd94637a33968de6a88a");
 
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
@@ -93,7 +100,6 @@ public class Core extends JavaPlugin {
         registerListener(new PotatoListener(this));
         registerListener(new GlassListener(this));
         registerListener(new ItemListener(this));
-        registerListener(new PhoneListener(this));
 
         // COMMANDS
 

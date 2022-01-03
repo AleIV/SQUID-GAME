@@ -1,7 +1,9 @@
 package me.aleiv.core.paper.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 
 import co.aikar.commands.BaseCommand;
@@ -76,6 +78,19 @@ public class UtilsCMD extends BaseCommand {
         Bukkit.getOnlinePlayers().forEach(player -> {
             instance.showTitle(player, Character.toString('\u3400'), "", fadeIn, 20, fadeOut);
         });
+
+    }
+
+    @Subcommand("kill-bodys")
+    public void onBody(Player sender, int i){
+        var stands = sender.getLocation().getNearbyEntities(i, i, i).stream()
+            .filter(entity -> entity instanceof ArmorStand).map(stand -> (ArmorStand) stand)
+            .filter(stand -> (stand.getEquipment().getItemInMainHand() != null 
+            && stand.getEquipment().getItemInMainHand().getType() ==  Material.PLAYER_HEAD) || (stand.getEquipment().getItemInOffHand() != null 
+            && stand.getEquipment().getItemInOffHand().getType() ==  Material.PLAYER_HEAD)).toList();
+        for (var armorStand : stands) {
+            armorStand.damage(10);
+        }
 
     }
 

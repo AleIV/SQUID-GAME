@@ -1,17 +1,20 @@
 package me.aleiv.core.paper.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Flags;
-import co.aikar.commands.annotation.Name;
-import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
+import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
+import me.aleiv.modeltool.exceptions.InvalidModelIdException;
+import me.aleiv.modeltool.models.EntityMood;
 import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("phone")
@@ -24,10 +27,37 @@ public class PhoneCMD extends BaseCommand {
         this.instance = instance;
     }
 
-    @Subcommand("target")
-    public void target(CommandSender sender, @Name("target") @Optional @Flags("other") Player target){
-        //var tools = instance.getGame().getPhoneGame();
+    @Subcommand("sound")
+    public void sound(CommandSender sender){
+        var stand = AnimationTools.getArmorStand("PHONE");
+        var loc = stand.getLocation();
+        AnimationTools.playSoundDistance(loc, 100, "squid:sfx.ringing_phone", 1, 1);
+        AnimationTools.setStandModel(stand, Material.BRICK, 59);
+        Bukkit.getScheduler().runTaskLater(instance, task ->{
+            AnimationTools.setStandModel(stand, Material.BRICK, 58);
+        }, 20*3);
+
+        sender.sendMessage(ChatColor.DARK_AQUA + "Phone ringing");
+    }
+
+    @Subcommand("disguise")
+    public void disguise(Player player, boolean bool){
+        var manager = instance.getEntityModelManager();
         
-        sender.sendMessage(ChatColor.DARK_AQUA + "Target " + target);
+        if(bool){
+            
+            try {
+                var loc = player.getLocation();
+                var entity = manager.spawnEntityModel("pug", 20, "pug", loc, EntityType.WOLF, EntityMood.NEUTRAL);
+                manager.disguisePlayer(player, entity);
+
+            } catch (InvalidModelIdException e) {
+                e.printStackTrace();
+            }
+            
+        }else{
+            manager.undisguisePlayer(player);
+            
+        }
     }
 }

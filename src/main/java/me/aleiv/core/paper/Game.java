@@ -18,7 +18,6 @@ import me.aleiv.core.paper.Games.GlassGame;
 import me.aleiv.core.paper.Games.GlobalGame;
 import me.aleiv.core.paper.Games.HideSeekGame;
 import me.aleiv.core.paper.Games.MainRoom;
-import me.aleiv.core.paper.Games.PhoneGame;
 import me.aleiv.core.paper.Games.PotatoGame;
 import me.aleiv.core.paper.Games.RopeGame;
 import me.aleiv.core.paper.events.GameTickEvent;
@@ -35,6 +34,8 @@ public class Game extends BukkitRunnable {
 
     Timer timer;
 
+    boolean froze = false;
+
     //GAMES
     GlobalGame globalGame;
 
@@ -47,7 +48,6 @@ public class Game extends BukkitRunnable {
     ChairGame chairGame;
     PotatoGame potatoGame;
     GlassGame glassGame;
-    PhoneGame phoneGame;
 
     HashMap<String, Participant> participants = new HashMap<>();
 
@@ -80,7 +80,6 @@ public class Game extends BukkitRunnable {
         this.chairGame = new ChairGame(instance);
         this.potatoGame = new PotatoGame(instance);
         this.glassGame = new GlassGame(instance);
-        this.phoneGame = new PhoneGame(instance);
     }
 
     public enum PvPType{

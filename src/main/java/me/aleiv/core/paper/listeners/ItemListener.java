@@ -86,6 +86,7 @@ public class ItemListener implements Listener {
         
         }else if(entity instanceof ArmorStand stand){
             var uuid = stand.getUniqueId().toString();
+            //TODO:CHECK WELL
 
             var table = AnimationTools.getEntity("BOX_EYE");
             var inv = player.getInventory();

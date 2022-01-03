@@ -46,7 +46,7 @@ public class GlobalGame {
         });
         var game = instance.getGame();
         var beds = AnimationTools.findLocations("BED");
-        var guardBeds = AnimationTools.findLocations("BED_GUARD");
+        var guardBeds = AnimationTools.findLocations("GUARDB");
         var players = Bukkit.getOnlinePlayers();
         var participants = players.stream().filter(player -> game.isPlayer(player)).map(player -> (Player) player).toList();
         var guards = players.stream().filter(player -> game.isGuard(player)).map(player -> (Player) player).toList();

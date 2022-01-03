@@ -2,12 +2,11 @@ package me.aleiv.core.paper.listeners;
 
 import java.util.List;
 
-import com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent;
-
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -84,12 +84,15 @@ public class CanceledListener implements Listener {
         var entity = e.getEntity();
         if(entity instanceof Player player && game.isGuard(player)){
             e.setDamage(1);
+            //TODO: GUARD DAMAGE
         }
     }
 
     @EventHandler
-    public void onExperience(PlayerPickupExperienceEvent e){
-        e.setCancelled(true);
+    public void onExperience(EntitySpawnEvent e){
+        if(e.getEntity() instanceof ExperienceOrb){
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler
