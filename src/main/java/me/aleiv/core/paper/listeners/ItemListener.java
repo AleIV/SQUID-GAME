@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
@@ -43,6 +44,19 @@ public class ItemListener implements Listener {
                 equip.setItemInMainHand(null);
             }
         }
+    }
+
+    @EventHandler
+    public void onShoot(EntityShootBowEvent e){
+        var entity = e.getEntity();
+        var proj = e.getProjectile();
+        if(entity instanceof Player player && proj instanceof Arrow arrow){
+            var vector = player.getLocation().getDirection();
+            vector.add(vector);
+            vector.add(vector);
+            arrow.setVelocity(vector);
+        }
+        
     }
 
     @EventHandler
