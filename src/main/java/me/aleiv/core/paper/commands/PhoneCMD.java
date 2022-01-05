@@ -1,5 +1,7 @@
 package me.aleiv.core.paper.commands;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -13,6 +15,7 @@ import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
+import me.aleiv.modeltool.exceptions.AlreadyUsedNameException;
 import me.aleiv.modeltool.exceptions.InvalidModelIdException;
 import me.aleiv.modeltool.models.EntityMood;
 import net.md_5.bungee.api.ChatColor;
@@ -48,10 +51,10 @@ public class PhoneCMD extends BaseCommand {
             
             try {
                 var loc = player.getLocation();
-                var entity = manager.spawnEntityModel("pug", 20, "pug", loc, EntityType.WOLF, EntityMood.NEUTRAL);
+                var entity = manager.spawnEntityModel(UUID.randomUUID().toString(), 20, "pug", loc, EntityType.WOLF, EntityMood.NEUTRAL);
                 manager.disguisePlayer(player, entity);
 
-            } catch (InvalidModelIdException e) {
+            } catch (InvalidModelIdException | AlreadyUsedNameException e) {
                 e.printStackTrace();
             }
             
