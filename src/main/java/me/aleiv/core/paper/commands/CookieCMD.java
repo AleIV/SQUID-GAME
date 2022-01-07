@@ -1,5 +1,12 @@
 package me.aleiv.core.paper.commands;
 
+import me.Fupery.ArtMap.ArtMap;
+import me.Fupery.ArtMap.Easel.Easel;
+import me.aleiv.core.paper.Games.CookieGame;
+import me.aleiv.core.paper.objects.CookieCapsule;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 
 import co.aikar.commands.BaseCommand;
@@ -9,6 +16,17 @@ import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.map.MapCanvas;
+import org.bukkit.map.MapRenderer;
+import org.bukkit.map.MapView;
+import org.jetbrains.annotations.NotNull;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 @CommandPermission("admin.perm")
 @CommandAlias("cookie")
@@ -70,5 +88,26 @@ public class CookieCMD extends BaseCommand {
             default:
                 break;
         }
+    }
+
+    @Subcommand("test")
+    public void test(Player player, boolean bool) {
+        CookieCapsule cc = instance.getGame().getCookieGame().getCapsule(player);
+        if (bool) {
+            cc.mount();
+        } else {
+            cc.unmount(true);
+        }
+    }
+
+    @Subcommand("test2")
+    public void test2(Player player) {
+        instance.getGame().getCookieGame().destroyCapsule(player);
+    }
+
+    @Subcommand("test3")
+    public void test3(Player player) {
+        ItemStack item = instance.getGame().getCookieGame().generateMap(CookieGame.CookieType.SQUID);
+        player.getInventory().addItem(item);
     }
 }

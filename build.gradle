@@ -39,12 +39,6 @@ repositories {
     maven { url 'https://repo.aikar.co/content/groups/aikar/' }
     
     maven { url 'https://mvn.lumine.io/repository/maven-public/' }
-    maven {
-        url 'http://repo.dolphln.com/artifactory/public/'
-        allowInsecureProtocol true 
-        }
-    
-
 }
 
 
@@ -74,6 +68,9 @@ dependencies {
     compileOnly 'com.ticxo.modelengine:api:R2.2.0'
     implementation 'com.github.AleIV:Model-Tool:v1.0.1'
 
+    // ArtMap for Cookie Game
+    compileOnly files('lib/ArtMap-SquidGame.jar')
+
 }
 
 spigot {
@@ -82,7 +79,7 @@ spigot {
     version '0.1'
     name 'SquidGame'
     load STARTUP
-    //depends = ['ProtocolLib']
+    depends = ['ArtMap']
 }
 
 shadowJar {
@@ -95,8 +92,5 @@ shadowJar {
     minimize()
     
 }
-
-
-
 
 build.dependsOn shadowJar
