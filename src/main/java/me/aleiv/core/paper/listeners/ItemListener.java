@@ -102,6 +102,34 @@ public class ItemListener implements Listener {
             var uuid = stand.getUniqueId().toString();
             //TODO:CHECK WELL
 
+            // TODO: @aleiv hay un fallo
+            /*
+            [22:26:04 ERROR]: Could not pass event PlayerInteractAtEntityEvent to SquidGame v0.1
+java.lang.NullPointerException: Cannot invoke "String.length()" because "name" is null
+        at java.util.UUID.fromString(UUID.java:237) ~[?:?]
+        at me.aleiv.core.paper.AnimationTools.getEntity(AnimationTools.java:450) ~[?:?]
+        at me.aleiv.core.paper.listeners.ItemListener.onMechanics(ItemListener.java:105) ~[?:?]
+        at com.destroystokyo.paper.event.executor.asm.generated.GeneratedEventExecutor66.execute(Unknown Source) ~[?:?]
+        at org.bukkit.plugin.EventExecutor.lambda$create$1(EventExecutor.java:69) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at co.aikar.timings.TimedEventExecutor.execute(TimedEventExecutor.java:80) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at org.bukkit.plugin.RegisteredListener.callEvent(RegisteredListener.java:70) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at org.bukkit.plugin.SimplePluginManager.callEvent(SimplePluginManager.java:624) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.PlayerConnection.a(PlayerConnection.java:2491) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.PacketPlayInUseEntity.a(PacketPlayInUseEntity.java:55) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.PacketPlayInUseEntity.a(PacketPlayInUseEntity.java:12) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.PlayerConnectionUtils.lambda$ensureMainThread$1(PlayerConnectionUtils.java:55) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.TickTask.run(SourceFile:18) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.IAsyncTaskHandler.executeTask(IAsyncTaskHandler.java:136) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.IAsyncTaskHandlerReentrant.executeTask(SourceFile:23) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.IAsyncTaskHandler.executeNext(IAsyncTaskHandler.java:109) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.MinecraftServer.bb(MinecraftServer.java:1339) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.MinecraftServer.executeNext(MinecraftServer.java:1332) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.IAsyncTaskHandler.awaitTasks(IAsyncTaskHandler.java:119) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.MinecraftServer.sleepForTick(MinecraftServer.java:1308) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.MinecraftServer.w(MinecraftServer.java:1152) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at net.minecraft.server.v1_16_R3.MinecraftServer.lambda$a$0(MinecraftServer.java:293) ~[patched_1.16.5.jar:git-Purpur-1171]
+        at java.lang.Thread.run(Thread.java:831) [?:?]
+            */
             var table = AnimationTools.getEntity("BOX_EYE");
             var inv = player.getInventory();
 
