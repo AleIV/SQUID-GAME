@@ -73,7 +73,6 @@ dependencies {
 
     // ArtMap for Cookie Game
     compileOnly files('lib/ArtMap-SquidGame.jar')
-    // compileOnly files('lib/ArtMap128.jar')
 
 }
 
@@ -89,8 +88,6 @@ spigot {
 shadowJar {
     relocate 'co.aikar.commands', 'shadded.acf'
     relocate 'co.aikar.locales', 'shadded.acf.locales'
-    relocate 'acf-minecraft_', 'shadded.acf.properties.acf-minecraft_'
-    relocate 'acf-core_', 'shadded.acf.properties.acf-core_'
     relocate 'us.jcedeno.libs.rapidinv', 'shadded.squidgame.lib.rapidiinv'
     relocate 'de.slikey', 'shadded.squidgame.lib.particles'
     minimize()
