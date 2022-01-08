@@ -295,7 +295,7 @@ public class CookieGame {
             return null;
         }
 
-        CookieCapsule cookieCapsule = new CookieCapsule(player, loc, CookieType.SQUID);
+        CookieCapsule cookieCapsule = new CookieCapsule(player, loc, type);
         this.capsules.put(player.getUniqueId(), cookieCapsule);
 
         return cookieCapsule;
