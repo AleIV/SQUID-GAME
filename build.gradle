@@ -69,7 +69,7 @@ dependencies {
     implementation 'com.github.AleIV:Model-Tool:v1.0.1'
 
     // CinematicTool
-    compileOnly 'com.github.AleIV:CinematicCore-Premium:9fd30b0'
+    compileOnly 'com.github.AleIV:CinematicCore-Premium:980f5c2'
 
     // ArtMap for Cookie Game
     compileOnly files('lib/ArtMap-SquidGame.jar')
