@@ -136,6 +136,7 @@ public class CookieCapsule {
                     this.artmapMap,
                     EaselPart.getYawOffset(easel.getFacing()));
             this.player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 200, false, false, false));
+            this.player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 2, false, false, false));
         } catch (ReflectiveOperationException | IOException | SQLException e) {
             e.printStackTrace();
         }
@@ -161,6 +162,7 @@ public class CookieCapsule {
         }
 
         this.player.removePotionEffect(PotionEffectType.INVISIBILITY);
+        this.player.removePotionEffect(PotionEffectType.SLOW);
         this.player.teleport(this.locCache);
         Bukkit.getScheduler().scheduleSyncDelayedTask(ArtMap.instance(), () -> this.player.teleport(this.locCache), 2L);
     }
