@@ -8,6 +8,7 @@ import me.Fupery.ArtMap.Easel.Easel;
 import me.Fupery.ArtMap.Easel.EaselPart;
 import me.Fupery.ArtMap.Event.PlayerPaintedEvent;
 import me.Fupery.ArtMap.IO.Database.Map;
+import me.Fupery.ArtMap.Painting.CanvasRenderer;
 import me.aleiv.cinematicCore.paper.CinematicTool;
 import me.aleiv.cinematicCore.paper.objects.NPCInfo;
 import me.aleiv.core.paper.Core;
@@ -40,6 +41,7 @@ public class CookieCapsule {
     private NPC npc;
     @Getter private boolean mounted;
     @Getter private boolean blocked;
+    @Getter private boolean done;
     @Getter private int errors;
     @Getter private boolean onError;
 
@@ -52,9 +54,9 @@ public class CookieCapsule {
 
     private final Material BLACK_BLOCK = Material.BLACK_CONCRETE;
     private final Material WHITE_BLOCK = Material.WHITE_CONCRETE;
-    private final byte RED_COLOR = 4;
-    private final byte GRAY_COLOR = 9;
-    private final byte GREEN_COLOR = 27;
+    private final byte RED_COLOR = 18;
+    private final byte OUTSIDE_COLOR = 9;
+    private final byte GREEN_COLOR = 7;
 
     public CookieCapsule(Player player, Location loc, CookieGame.CookieType cookieType) {
         this.player = player;
@@ -62,6 +64,7 @@ public class CookieCapsule {
         this.location = loc;
         this.mounted = false;
         this.blocked = false;
+        this.done = false;
         this.errors = 0;
         this.onError = false;
 
@@ -183,7 +186,7 @@ public class CookieCapsule {
             return;
         }
 
-        if (e.getOldColor() == -94) {
+        if (e.getOldColor() == -94 || e.getOldColor() == -96) {
             this.onError = true;
             this.errors++;
             e.getPixel().setColour(RED_COLOR);
@@ -198,15 +201,40 @@ public class CookieCapsule {
                 player.sendMessage(ChatColor.BLUE + "Continue");
                 this.onError = false;
             }, 3*20L);
-        } else if (e.getOldColor() == -95 || e.getOldColor() == -96) {
+        } else if (e.getOldColor() == -95) {
             // Not bad, but not good
-            e.getPixel().setColour(GRAY_COLOR);
+            e.getPixel().setColour(OUTSIDE_COLOR);
         } else if (e.getOldColor() == -93) {
             // Good
             e.getPixel().setColour(GREEN_COLOR);
+            Bukkit.getScheduler().runTaskAsynchronously(Core.getInstance(), () -> {
+                CanvasRenderer renderer = e.getCanvasRenderer();
+
+                // Check if there is any byte left with a value of -93
+                boolean hasGood = false;
+                for (int i = 0; i < renderer.getAxisLength(); i++) {
+                    for (int j = 0; j < renderer.getAxisLength(); j++) {
+                        if (renderer.getPixel(i, j) == -93) {
+                            hasGood = true;
+                        }
+                    }
+                }
+
+                if (!hasGood) {
+                    Bukkit.getScheduler().runTask(Core.getInstance(), this::win);
+                }
+            });
         } else {
             e.getPixel().setColour(e.getOldColor());
         }
+    }
+
+    public void win() {
+        this.done = true;
+        this.onError = false;
+        this.block();
+        // TODO: Glow & Message
+        this.player.sendTitle(ChatColor.WHITE + " ", ChatColor.GREEN + "Has completado la galleta", 0, 20, 40);
     }
 
 

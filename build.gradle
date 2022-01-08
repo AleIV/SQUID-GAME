@@ -68,6 +68,9 @@ dependencies {
     compileOnly 'com.ticxo.modelengine:api:R2.2.0'
     implementation 'com.github.AleIV:Model-Tool:v1.0.1'
 
+    // InventoryFramework
+    implementation 'com.github.stefvanschie.inventoryframework:IF:0.10.4'
+
     // CinematicTool
     compileOnly 'com.github.AleIV:CinematicCore-Premium:980f5c2'
 

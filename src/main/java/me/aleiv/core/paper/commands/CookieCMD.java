@@ -3,7 +3,10 @@ package me.aleiv.core.paper.commands;
 import co.aikar.commands.annotation.*;
 import me.Fupery.ArtMap.ArtMap;
 import me.Fupery.ArtMap.Easel.Easel;
+import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Games.CookieGame;
+import me.aleiv.core.paper.gui.CookieGUI;
+import me.aleiv.core.paper.gui.CookieWinnerGUI;
 import me.aleiv.core.paper.objects.CookieCapsule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -102,13 +105,22 @@ public class CookieCMD extends BaseCommand {
             return;
         }
 
-        // TODO: Pasar las locations
-        List<Location> locations = new ArrayList<>();
+        List<Location> locations = AnimationTools.findLocations("COOKIEBOX");
         locations.add(player.getLocation().clone().add(0, 25, 0));
         locations.add(player.getLocation().clone().add(0, 25, 10));
         locations.add(player.getLocation().clone().add(0, 25, 20));
 
         this.instance.getGame().getCookieGame().start(locations);
+    }
+
+    @Subcommand("fails")
+    public void menuFails(Player player) {
+        new CookieGUI(player);
+    }
+
+    @Subcommand("winners")
+    public void menuWinners(Player player) {
+        new CookieWinnerGUI(player);
     }
 
     @Subcommand("add-location")
@@ -266,6 +278,29 @@ public class CookieCMD extends BaseCommand {
 
         this.cookieGame.createCapsule(target, type);
         player.sendMessage(ChatColor.DARK_AQUA + "Capsule forced successfully");
+    }
+
+    @Subcommand("force win")
+    @CommandCompletion("@players")
+    @Syntax("<player>")
+    public void onForceWin(Player player, String playerName) {
+        Player target = Bukkit.getPlayer(playerName);
+        if (target == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player not found");
+            return;
+        }
+
+        CookieCapsule capsule = this.cookieGame.getCapsule(target);
+        if (capsule == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player doesn't have a capsule");
+            return;
+        }
+        if (!capsule.isMounted()) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player isn't mounted");
+            return;
+        }
+        capsule.win();
+        player.sendMessage(ChatColor.DARK_AQUA + "Player won");
     }
 
     @Subcommand("test")
