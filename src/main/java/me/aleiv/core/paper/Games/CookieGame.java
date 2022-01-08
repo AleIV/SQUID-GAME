@@ -312,6 +312,10 @@ public class CookieGame {
         cc.destroy();
     }
 
+    public List<CookieCapsule> getAllCapules() {
+        return new ArrayList<>(this.capsules.values());
+    }
+
     public boolean isStarted() {
         return started;
     }

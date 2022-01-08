@@ -1,6 +1,8 @@
 package me.aleiv.core.paper;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -8,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import me.aleiv.core.paper.Games.CookieGame;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -104,6 +107,9 @@ public class Core extends JavaPlugin {
         // COMMANDS
 
         commandManager = new PaperCommandManager(this);
+
+        commandManager.getCommandCompletions().registerStaticCompletion("cookieTypes", Arrays.stream(CookieGame.CookieType.values()).map(CookieGame.CookieType::name).collect(Collectors.toList()));
+
         commandManager.registerCommand(new DollCMD(this));
         commandManager.registerCommand(new MainCMD(this));
         commandManager.registerCommand(new SquidCMD(this));
