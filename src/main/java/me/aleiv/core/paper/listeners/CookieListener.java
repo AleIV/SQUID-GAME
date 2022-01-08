@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.spigotmc.event.entity.EntityDismountEvent;
@@ -51,6 +52,11 @@ public class CookieListener implements Listener {
         if (capsule != null && capsule.isMounted()) {
             capsule.unmount(true);
         }
+    }
+
+    @EventHandler
+    public void onDisable(PluginDisableEvent e) {
+        this.plugin.getGame().getCookieGame().stop();
     }
 
     @EventHandler

@@ -295,27 +295,9 @@ public class CookieCMD extends BaseCommand {
             player.sendMessage(ChatColor.DARK_AQUA + "Player doesn't have a capsule");
             return;
         }
-        if (!capsule.isMounted()) {
-            player.sendMessage(ChatColor.DARK_AQUA + "Player isn't mounted");
-            return;
-        }
+
         capsule.win();
         player.sendMessage(ChatColor.DARK_AQUA + "Player won");
-    }
-
-    @Subcommand("test")
-    public void test(Player player, boolean bool) {
-        CookieCapsule cc = instance.getGame().getCookieGame().getCapsule(player);
-        if (bool) {
-            cc.mount();
-        } else {
-            cc.unmount(true);
-        }
-    }
-
-    @Subcommand("test2")
-    public void test2(Player player) {
-        instance.getGame().getCookieGame().destroyCapsule(player);
     }
 
 }

@@ -53,7 +53,7 @@ public class CookieCapsule {
     private Canvas canvas;
 
     private final Material BLACK_BLOCK = Material.BLACK_CONCRETE;
-    private final Material WHITE_BLOCK = Material.WHITE_CONCRETE;
+    private final Material WHITE_BLOCK = Material.GLOWSTONE;
     private final byte RED_COLOR = 18;
     private final byte OUTSIDE_COLOR = 9;
     private final byte GREEN_COLOR = 7;
@@ -162,7 +162,6 @@ public class CookieCapsule {
 
         this.player.removePotionEffect(PotionEffectType.INVISIBILITY);
         this.player.teleport(this.locCache);
-        System.out.println("Location cache: " + this.locCache.getBlockX() + ", " + this.locCache.getBlockY() + ", " + this.locCache.getBlockZ());
         Bukkit.getScheduler().scheduleSyncDelayedTask(ArtMap.instance(), () -> this.player.teleport(this.locCache), 2L);
     }
 
@@ -233,7 +232,11 @@ public class CookieCapsule {
         this.done = true;
         this.onError = false;
         this.block();
-        // TODO: Glow & Message
+
+        Bukkit.getOnlinePlayers().parallelStream().filter(p -> Core.getInstance().getGame().isGuard(p)).forEach(player -> {
+            player.sendMessage(ChatColor.GREEN + this.player.getName() + " ha terminado la galleta.");
+        });
+
         this.player.sendTitle(ChatColor.WHITE + " ", ChatColor.GREEN + "Has completado la galleta", 0, 20, 40);
     }
 

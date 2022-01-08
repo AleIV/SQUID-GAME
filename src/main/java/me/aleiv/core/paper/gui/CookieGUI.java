@@ -6,6 +6,7 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Game;
 import me.aleiv.core.paper.objects.CookieCapsule;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -75,7 +76,7 @@ public class CookieGUI {
                 ccs.stream().map(cc -> new GuiItem(this.getPlayerItem(cc), e -> {
                     e.setCancelled(true);
                     cc.block();
-                    // TODO: GLOW
+
                     Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, () -> this.player.teleport(cc.getPlayer().getLocation()), 5L);
                     player.closeInventory();
                 })).collect(Collectors.toList())
