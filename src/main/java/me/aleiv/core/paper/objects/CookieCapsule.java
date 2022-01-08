@@ -2,7 +2,6 @@ package me.aleiv.core.paper.objects;
 
 import com.github.juliarn.npc.NPC;
 import lombok.Getter;
-import lombok.Setter;
 import me.Fupery.ArtMap.ArtMap;
 import me.Fupery.ArtMap.Easel.Canvas;
 import me.Fupery.ArtMap.Easel.Easel;
@@ -51,12 +50,15 @@ public class CookieCapsule {
     private MapView mapView;
     private Canvas canvas;
 
-    private final Material blackBlock = Material.BLACK_CONCRETE;
-    private final Material whiteBlock = Material.WHITE_CONCRETE;
+    private final Material BLACK_BLOCK = Material.BLACK_CONCRETE;
+    private final Material WHITE_BLOCK = Material.WHITE_CONCRETE;
+    private final byte RED_COLOR = 4;
+    private final byte GRAY_COLOR = 9;
+    private final byte GREEN_COLOR = 27;
 
     public CookieCapsule(Player player, Location loc, CookieGame.CookieType cookieType) {
         this.player = player;
-        this.locCache = this.player.getLocation();
+        this.locCache = this.player.getLocation().clone();
         this.location = loc;
         this.mounted = false;
         this.blocked = false;
@@ -72,34 +74,16 @@ public class CookieCapsule {
     }
 
     private void buildCapsule() {
-        buildFloor(-1, blackBlock);
-        buildFloor(3, blackBlock);
-
-        // TODO: Build rest
-
-        buildBlock(0, 1, 2, whiteBlock);
+        List<Block> outerBlocks = this.getBlocksForCube(location.clone().add(0, 1, 0).getBlock(), 4);
+        List<Block> innerBlocks = this.getBlocksForCube(location.clone().add(0, 1, 0).getBlock(), 3);
+        outerBlocks.forEach(b -> b.setType(BLACK_BLOCK));
+        innerBlocks.forEach(b -> b.setType(Material.AIR));
+        buildBlock(0, 1, 2, WHITE_BLOCK);
     }
 
     private void unbuildCapsule() {
-        Material air = Material.AIR;
-        buildFloor(-1, air);
-        buildFloor(3, air);
-
-        // TODO: Unbuild rest
-
-        buildBlock(0, 1, 2, air);
-    }
-
-    private void buildFloor(int y, Material mat) {
-        this.buildBlock(0, y, 0, mat);
-        this.buildBlock(1, y, 0, mat);
-        this.buildBlock(1, y, 1, mat);
-        this.buildBlock(0, y, 1, mat);
-        this.buildBlock(-1, y, 0, mat);
-        this.buildBlock(-1, y, -1, mat);
-        this.buildBlock(0, y, -1, mat);
-        this.buildBlock(-1, y, 1, mat);
-        this.buildBlock(1, y, -1, mat);
+        List<Block> outerBlocks = this.getBlocksForCube(location.clone().add(0, 1, 0).getBlock(), 4);
+        outerBlocks.forEach(b -> b.setType(Material.AIR));
     }
 
     private List<Block> getBlocksForCube(Block start, int radius){
@@ -175,6 +159,8 @@ public class CookieCapsule {
 
         this.player.removePotionEffect(PotionEffectType.INVISIBILITY);
         this.player.teleport(this.locCache);
+        System.out.println("Location cache: " + this.locCache.getBlockX() + ", " + this.locCache.getBlockY() + ", " + this.locCache.getBlockZ());
+        Bukkit.getScheduler().scheduleSyncDelayedTask(ArtMap.instance(), () -> this.player.teleport(this.locCache), 2L);
     }
 
     public void destroy() {
@@ -200,7 +186,7 @@ public class CookieCapsule {
         if (e.getOldColor() == -94) {
             this.onError = true;
             this.errors++;
-            e.getPixel().setColour((byte) 10);
+            e.getPixel().setColour(RED_COLOR);
 
             // TODO: Pantalla roja, sonidos, etc.
             // Placeholder
@@ -214,10 +200,10 @@ public class CookieCapsule {
             }, 3*20L);
         } else if (e.getOldColor() == -95 || e.getOldColor() == -96) {
             // Not bad, but not good
-            e.getPixel().setColour((byte) 9);
+            e.getPixel().setColour(GRAY_COLOR);
         } else if (e.getOldColor() == -93) {
             // Good
-            e.getPixel().setColour((byte) 7);
+            e.getPixel().setColour(GREEN_COLOR);
         } else {
             e.getPixel().setColour(e.getOldColor());
         }
