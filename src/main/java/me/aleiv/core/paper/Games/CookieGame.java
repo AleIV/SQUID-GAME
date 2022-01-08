@@ -5,13 +5,14 @@ import me.Fupery.ArtMap.ArtMap;
 import me.aleiv.core.paper.listeners.CookieListener;
 import me.aleiv.core.paper.objects.CookieCapsule;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapRenderer;
@@ -21,19 +22,23 @@ import org.jetbrains.annotations.NotNull;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class CookieGame {
     Core instance;
 
     private CookieListener cookieListener;
+    private boolean started;
 
     @Getter private final BufferedImage cookieCreeper;
     @Getter private final BufferedImage cookieEye;
     @Getter private final BufferedImage cookieRodolfo;
     @Getter private final BufferedImage cookieSquid;
 
+    @Getter private final List<Location> capsuleLocations;
     private final HashMap<UUID, CookieCapsule> capsules;
     
     public CookieGame(Core instance){
@@ -42,6 +47,7 @@ public class CookieGame {
         BufferedImage cookieEye;
         BufferedImage cookieCreeper;
         this.instance = instance;
+        this.started = false;
 
         try {
             cookieCreeper = ImageIO.read(Core.getInstance().getResource("cookie_creeper.png"));
@@ -61,6 +67,7 @@ public class CookieGame {
         this.cookieEye = cookieEye;
         this.cookieCreeper = cookieCreeper;
 
+        this.capsuleLocations = new ArrayList<>();
         this.cookieListener = new CookieListener(instance);
         instance.registerListener(this.cookieListener);
 
@@ -204,6 +211,22 @@ public class CookieGame {
         }
     }
 
+    public void start(List<Location> locs) {
+        this.started = true;
+        this.capsuleLocations.addAll(locs);
+    }
+
+    public void stop() {
+        this.started = false;
+        this.capsuleLocations.clear();
+
+        this.capsules.forEach((uuid, c) -> {
+            c.unmount(true);
+            c.destroy();
+        });
+        this.capsules.clear();
+    }
+
     public ItemStack generateMap(CookieType type) {
         BufferedImage image;
         switch (type) {
@@ -254,18 +277,42 @@ public class CookieGame {
         return item;
     }
 
-    public CookieCapsule getCapsule(Player player) {
-        CookieCapsule cookieCapsule = this.capsules.get(player.getUniqueId());
-        if (cookieCapsule == null) {
-            cookieCapsule = new CookieCapsule(player, player.getLocation().add(0, 50, 0), CookieType.RODOLFO);
-            this.capsules.put(player.getUniqueId(), cookieCapsule);
+    public CookieCapsule createCapsule(Player player, CookieType type) {
+        Location loc = null;
+        if (this.capsules.containsKey(player.getUniqueId())) {
+            CookieCapsule capsule = this.capsules.get(player.getUniqueId());
+            capsule.unmount(true);
+            capsule.destroy();
+            loc = capsule.getLocation();
+            this.capsules.remove(player.getUniqueId());
         }
 
+        if (loc == null) {
+            loc = this.capsuleLocations.remove(0);
+        }
+        if (loc == null) {
+            player.sendMessage(ChatColor.RED + "No hay mas capsulas disponibles!");
+            return null;
+        }
+
+        CookieCapsule cookieCapsule = new CookieCapsule(player, loc, CookieType.SQUID);
+        this.capsules.put(player.getUniqueId(), cookieCapsule);
+
         return cookieCapsule;
+    }
+
+    public CookieCapsule getCapsule(Player player) {
+        if (!this.started) return null;
+
+        return this.capsules.get(player.getUniqueId());
     }
 
     public void destroyCapsule(Player player) {
         CookieCapsule cc = this.capsules.remove(player.getUniqueId());
         cc.destroy();
+    }
+
+    public boolean isStarted() {
+        return started;
     }
 }

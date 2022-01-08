@@ -5,6 +5,7 @@ import me.Fupery.ArtMap.Easel.Easel;
 import me.aleiv.core.paper.Games.CookieGame;
 import me.aleiv.core.paper.objects.CookieCapsule;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
@@ -27,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @CommandPermission("admin.perm")
 @CommandAlias("cookie")
@@ -34,8 +37,12 @@ public class CookieCMD extends BaseCommand {
 
     private @NonNull Core instance;
 
+    private CookieGame cookieGame;
+
     public CookieCMD(Core instance) {
         this.instance = instance;
+
+        this.cookieGame = this.instance.getGame().getCookieGame();
         //instance.getCommandManager().getCommandCompletions().registerStaticCompletion("cookies",
                 //CookieEnum.getAll().stream().map(m -> m.name()).toList());
     }
@@ -90,6 +97,39 @@ public class CookieCMD extends BaseCommand {
         }
     }
 
+    @Subcommand("start")
+    public void start(Player player) {
+        if (this.cookieGame.isStarted()) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Game already started");
+            return;
+        }
+
+        // TODO: Pasar las locations
+        List<Location> locations = new ArrayList<>();
+        locations.add(player.getLocation().clone().add(0, 25, 0));
+        locations.add(player.getLocation().clone().add(0, 25, 10));
+        locations.add(player.getLocation().clone().add(0, 25, 20));
+
+        this.instance.getGame().getCookieGame().start(locations);
+    }
+
+    @Subcommand("add-location")
+    public void addLocation(Player player) {
+        this.cookieGame.getCapsuleLocations().add(player.getLocation().clone());
+        player.sendMessage(ChatColor.DARK_AQUA + "Location added");
+    }
+
+    @Subcommand("stop")
+    public void stop(Player player) {
+        if (!this.cookieGame.isStarted()) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Game not started");
+            return;
+        }
+
+        this.cookieGame.stop();
+        player.sendMessage(ChatColor.DARK_AQUA + "Game stopped");
+    }
+
     @Subcommand("test")
     public void test(Player player, boolean bool) {
         CookieCapsule cc = instance.getGame().getCookieGame().getCapsule(player);
@@ -105,9 +145,4 @@ public class CookieCMD extends BaseCommand {
         instance.getGame().getCookieGame().destroyCapsule(player);
     }
 
-    @Subcommand("test3")
-    public void test3(Player player) {
-        ItemStack item = instance.getGame().getCookieGame().generateMap(CookieGame.CookieType.SQUID);
-        player.getInventory().addItem(item);
-    }
 }

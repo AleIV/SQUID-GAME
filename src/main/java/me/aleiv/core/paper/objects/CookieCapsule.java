@@ -1,6 +1,7 @@
 package me.aleiv.core.paper.objects;
 
 import com.github.juliarn.npc.NPC;
+import lombok.Getter;
 import me.Fupery.ArtMap.ArtMap;
 import me.Fupery.ArtMap.Easel.Canvas;
 import me.Fupery.ArtMap.Easel.Easel;
@@ -10,20 +11,14 @@ import me.aleiv.cinematicCore.paper.CinematicTool;
 import me.aleiv.cinematicCore.paper.objects.NPCInfo;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Games.CookieGame;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -32,10 +27,10 @@ public class CookieCapsule {
 
     private Player player;
     private Easel easel;
-    private Location loc;
+    @Getter private Location location;
     private Location locCache;
     private NPC npc;
-    private boolean mounted;
+    @Getter private boolean mounted;
 
     private CookieGame.CookieType cookieType;
 
@@ -50,7 +45,7 @@ public class CookieCapsule {
     public CookieCapsule(Player player, Location loc, CookieGame.CookieType cookieType) {
         this.player = player;
         this.locCache = this.player.getLocation();
-        this.loc = loc;
+        this.location = loc;
         this.mounted = false;
 
         this.easel = Easel.spawnEasel(loc.clone().set(loc.getBlockX(), loc.getBlockY()+1, loc.getBlockZ()+2), BlockFace.NORTH);
@@ -93,7 +88,7 @@ public class CookieCapsule {
     }
 
     private void buildBlock(int x, int y, int z, Material mat) {
-        loc.getWorld().getBlockAt(loc.clone().add(x, y, z)).setType(mat);
+        location.getWorld().getBlockAt(location.clone().add(x, y, z)).setType(mat);
     }
 
     private void createMap() {

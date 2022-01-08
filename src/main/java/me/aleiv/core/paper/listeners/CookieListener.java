@@ -23,6 +23,7 @@ public class CookieListener implements Listener {
     @EventHandler
     public void onPixelClick(PlayerPaintedEvent e) {
         // TODO: Make the checks
+        System.out.println("x = " + e.getX() + " | y = " + e.getY());
     }
 
     @EventHandler
@@ -30,8 +31,9 @@ public class CookieListener implements Listener {
         if (e.getDismounted().getType() != EntityType.PLAYER) return;
         Player player = (Player) e.getDismounted();
 
-        if (ArtMap.instance().getArtistHandler().containsPlayer(player)) {
-            plugin.getGame().getCookieGame().getCapsule(player).unmount(true);
+        CookieCapsule capsule = plugin.getGame().getCookieGame().getCapsule(player);
+        if (capsule != null && capsule.isMounted()) {
+            capsule.unmount(true);
         }
     }
 
