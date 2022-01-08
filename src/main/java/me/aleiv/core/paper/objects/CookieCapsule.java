@@ -2,6 +2,7 @@ package me.aleiv.core.paper.objects;
 
 import com.github.juliarn.npc.NPC;
 import lombok.Getter;
+import lombok.Setter;
 import me.Fupery.ArtMap.ArtMap;
 import me.Fupery.ArtMap.Easel.Canvas;
 import me.Fupery.ArtMap.Easel.Easel;
@@ -31,6 +32,7 @@ public class CookieCapsule {
     private Location locCache;
     private NPC npc;
     @Getter private boolean mounted;
+    @Getter private boolean blocked;
 
     private CookieGame.CookieType cookieType;
 
@@ -105,7 +107,7 @@ public class CookieCapsule {
     }
 
     public void mount() {
-        if (this.mounted) return;
+        if (this.mounted || this.blocked) return;
         this.mounted = true;
 
         this.locCache = this.player.getLocation().clone();
@@ -147,6 +149,15 @@ public class CookieCapsule {
     public void destroy() {
         unbuildCapsule();
         this.easel.breakEasel();
+    }
+
+    public void block() {
+        this.blocked = true;
+        this.unmount(true);
+    }
+
+    public void unblock() {
+        this.blocked = false;
     }
 
 

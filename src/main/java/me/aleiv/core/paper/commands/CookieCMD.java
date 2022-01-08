@@ -1,5 +1,6 @@
 package me.aleiv.core.paper.commands;
 
+import co.aikar.commands.annotation.*;
 import me.Fupery.ArtMap.ArtMap;
 import me.Fupery.ArtMap.Easel.Easel;
 import me.aleiv.core.paper.Games.CookieGame;
@@ -11,9 +12,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
@@ -128,6 +126,146 @@ public class CookieCMD extends BaseCommand {
 
         this.cookieGame.stop();
         player.sendMessage(ChatColor.DARK_AQUA + "Game stopped");
+    }
+
+    @Subcommand("block")
+    @CommandCompletion("@players")
+    @Syntax("<player>")
+    public void onBlock(Player player, String playerName) {
+        Player target = Bukkit.getPlayer(playerName);
+        if (target == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player not found");
+            return;
+        }
+
+        CookieCapsule capsule = this.cookieGame.getCapsule(target);
+        if (capsule == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player doesn't have a capsule");
+            return;
+        }
+        if (capsule.isBlocked()) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player already blocked");
+            return;
+        }
+        capsule.block();
+        player.sendMessage(ChatColor.DARK_AQUA + "Player blocked");
+    }
+
+    @Subcommand("unblock")
+    @CommandCompletion("@players")
+    @Syntax("<player>")
+    public void onUnblock(Player player, String playerName) {
+        Player target = Bukkit.getPlayer(playerName);
+        if (target == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player not found");
+            return;
+        }
+
+        CookieCapsule capsule = this.cookieGame.getCapsule(target);
+        if (capsule == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player doesn't have a capsule");
+            return;
+        }
+        if (!capsule.isBlocked()) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player isn't blocked");
+            return;
+        }
+        capsule.unblock();
+        player.sendMessage(ChatColor.DARK_AQUA + "Player unblocked");
+    }
+
+    @Subcommand("force mount")
+    @CommandCompletion("@players")
+    @Syntax("<player>")
+    public void onForceMount(Player player, String playerName) {
+        Player target = Bukkit.getPlayer(playerName);
+        if (target == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player not found");
+            return;
+        }
+
+        CookieCapsule capsule = this.cookieGame.getCapsule(target);
+        if (capsule == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player doesn't have a capsule");
+            return;
+        }
+        if (capsule.isMounted()) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player already mounted");
+            return;
+        }
+        capsule.mount();
+        player.sendMessage(ChatColor.DARK_AQUA + "Player mounted");
+    }
+
+    @Subcommand("force unmount")
+    @CommandCompletion("@players")
+    @Syntax("<player>")
+    public void onForceUnmount(Player player, String playerName) {
+        Player target = Bukkit.getPlayer(playerName);
+        if (target == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player not found");
+            return;
+        }
+
+        CookieCapsule capsule = this.cookieGame.getCapsule(target);
+        if (capsule == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player doesn't have a capsule");
+            return;
+        }
+        if (!capsule.isMounted()) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player isn't mounted");
+            return;
+        }
+        capsule.unmount(true);
+        player.sendMessage(ChatColor.DARK_AQUA + "Player unmounted");
+    }
+
+    @Subcommand("force unmountNoEasel")
+    @CommandCompletion("@players")
+    @Syntax("<player>")
+    public void onForceUnmountNoEasel(Player player, String playerName) {
+        Player target = Bukkit.getPlayer(playerName);
+        if (target == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player not found");
+            return;
+        }
+
+        CookieCapsule capsule = this.cookieGame.getCapsule(target);
+        if (capsule == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player doesn't have a capsule");
+            return;
+        }
+        if (!capsule.isMounted()) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player isn't mounted");
+            return;
+        }
+        capsule.unmount(false);
+        player.sendMessage(ChatColor.DARK_AQUA + "Player unmounted");
+    }
+
+    @Subcommand("force create")
+    @CommandCompletion("@players @cookieTypes")
+    @Syntax("<player> <cookieType>")
+    public void onForceCreate(Player player, String playerName, String cookieType) {
+        Player target = Bukkit.getPlayer(playerName);
+        if (target == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player not found");
+            return;
+        }
+
+        CookieGame.CookieType type;
+        try {
+            type = CookieGame.CookieType.valueOf(cookieType.toUpperCase());
+        } catch (Exception e) {
+            type = null;
+        }
+        if (type == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Invalid cookie type");
+            return;
+        }
+
+        this.cookieGame.createCapsule(target, type);
+        player.sendMessage(ChatColor.DARK_AQUA + "Capsule forced successfully");
     }
 
     @Subcommand("test")
