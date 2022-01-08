@@ -68,6 +68,9 @@ dependencies {
     compileOnly 'com.ticxo.modelengine:api:R2.2.0'
     implementation 'com.github.AleIV:Model-Tool:v1.0.1'
 
+    // CinematicTool
+    compileOnly 'com.github.AleIV:CinematicCore-Premium:9fd30b0'
+
     // ArtMap for Cookie Game
     compileOnly files('lib/ArtMap-SquidGame.jar')
 
@@ -93,4 +96,4 @@ shadowJar {
     
 }
 
-build.dependsOn shadowJar
+tasks.build.dependsOn tasks.shadowJar
