@@ -1,10 +1,13 @@
 package me.aleiv.core.paper.objects;
 
+import com.github.juliarn.npc.NPC;
 import me.Fupery.ArtMap.ArtMap;
 import me.Fupery.ArtMap.Easel.Canvas;
 import me.Fupery.ArtMap.Easel.Easel;
 import me.Fupery.ArtMap.Easel.EaselPart;
 import me.Fupery.ArtMap.IO.Database.Map;
+import me.aleiv.cinematicCore.paper.CinematicTool;
+import me.aleiv.cinematicCore.paper.objects.NPCInfo;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Games.CookieGame;
 import org.bukkit.Bukkit;
@@ -31,6 +34,7 @@ public class CookieCapsule {
     private Easel easel;
     private Location loc;
     private Location locCache;
+    private NPC npc;
     private boolean mounted;
 
     private CookieGame.CookieType cookieType;
@@ -110,7 +114,10 @@ public class CookieCapsule {
         this.mounted = true;
 
         this.locCache = this.player.getLocation().clone();
-        // TODO: Spawn NPC
+        NPCInfo npcInfo = new NPCInfo(this.player);
+        NPC npc = npcInfo.createBuilder().build(CinematicTool.getInstance().getNpcPool());
+        this.npc = npc;
+
         try {
             ArtMap.instance().getArtistHandler().addPlayer(player, easel,
                     this.artmapMap,
@@ -134,7 +141,11 @@ public class CookieCapsule {
                 }
             }
         }
-        // TODO: Remove NPC
+
+        if (this.npc != null) {
+            CinematicTool.getInstance().getNpcPool().removeNPC(this.npc.getEntityId());
+        }
+
         this.player.teleport(this.locCache);
     }
 
