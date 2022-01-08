@@ -1,11 +1,5 @@
 package me.aleiv.core.paper.listeners;
 
-import me.Fupery.ArtMap.ArtMap;
-import me.Fupery.ArtMap.Event.PlayerPaintedEvent;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Games.CookieGame;
-import me.aleiv.core.paper.objects.CookieCapsule;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -18,6 +12,11 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.spigotmc.event.entity.EntityDismountEvent;
+
+import me.Fupery.ArtMap.Event.PlayerPaintedEvent;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Games.CookieGame;
+import me.aleiv.core.paper.objects.CookieCapsule;
 
 public class CookieListener implements Listener {
 

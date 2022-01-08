@@ -1,13 +1,15 @@
 package me.aleiv.core.paper.gui;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Game;
-import me.aleiv.core.paper.objects.CookieCapsule;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,11 +19,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.objects.CookieCapsule;
 
 public class CookieGUI {
 

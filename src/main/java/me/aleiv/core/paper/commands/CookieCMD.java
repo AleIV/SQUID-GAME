@@ -1,36 +1,26 @@
 package me.aleiv.core.paper.commands;
 
-import co.aikar.commands.annotation.*;
-import me.Fupery.ArtMap.ArtMap;
-import me.Fupery.ArtMap.Easel.Easel;
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
+import lombok.NonNull;
 import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Games.CookieGame;
 import me.aleiv.core.paper.gui.CookieGUI;
 import me.aleiv.core.paper.gui.CookieWinnerGUI;
 import me.aleiv.core.paper.objects.CookieCapsule;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
-import org.bukkit.command.CommandSender;
-
-import co.aikar.commands.BaseCommand;
-import lombok.NonNull;
-import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapRenderer;
-import org.bukkit.map.MapView;
-import org.jetbrains.annotations.NotNull;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @CommandPermission("admin.perm")
 @CommandAlias("cookie")

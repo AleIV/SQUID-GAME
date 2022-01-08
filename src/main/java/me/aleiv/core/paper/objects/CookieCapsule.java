@@ -1,18 +1,13 @@
 package me.aleiv.core.paper.objects;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+
 import com.github.juliarn.npc.NPC;
-import lombok.Getter;
-import me.Fupery.ArtMap.ArtMap;
-import me.Fupery.ArtMap.Easel.Canvas;
-import me.Fupery.ArtMap.Easel.Easel;
-import me.Fupery.ArtMap.Easel.EaselPart;
-import me.Fupery.ArtMap.Event.PlayerPaintedEvent;
-import me.Fupery.ArtMap.IO.Database.Map;
-import me.Fupery.ArtMap.Painting.CanvasRenderer;
-import me.aleiv.cinematicCore.paper.CinematicTool;
-import me.aleiv.cinematicCore.paper.objects.NPCInfo;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Games.CookieGame;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -26,11 +21,18 @@ import org.bukkit.map.MapView;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
+import lombok.Getter;
+import me.Fupery.ArtMap.ArtMap;
+import me.Fupery.ArtMap.Easel.Canvas;
+import me.Fupery.ArtMap.Easel.Easel;
+import me.Fupery.ArtMap.Easel.EaselPart;
+import me.Fupery.ArtMap.Event.PlayerPaintedEvent;
+import me.Fupery.ArtMap.IO.Database.Map;
+import me.Fupery.ArtMap.Painting.CanvasRenderer;
+import me.aleiv.cinematicCore.paper.CinematicTool;
+import me.aleiv.cinematicCore.paper.objects.NPCInfo;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Games.CookieGame;
 
 public class CookieCapsule {
 
