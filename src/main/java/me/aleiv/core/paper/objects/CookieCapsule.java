@@ -13,10 +13,7 @@ import me.aleiv.cinematicCore.paper.CinematicTool;
 import me.aleiv.cinematicCore.paper.objects.NPCInfo;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Games.CookieGame;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -126,6 +123,9 @@ public class CookieCapsule {
         if (this.mounted || this.blocked) return;
         this.mounted = true;
 
+        player.playSound(player.getLocation(), "sfx.cookie_box_open", 1, 1);
+        // TODO: Aplicar blindness a lo mejor?
+
         this.locCache = this.player.getLocation().clone();
         NPCInfo npcInfo = new NPCInfo(this.player);
         NPC npc = CinematicTool.getInstance().getNpcManager().spawnNPC(npcInfo);
@@ -143,7 +143,7 @@ public class CookieCapsule {
     }
 
     public void unmount(boolean removeEaselUser) {
-        if (!this.mounted || this.onError) return;
+        if (!this.mounted) return;
         this.mounted = false;
 
         if (removeEaselUser) {
@@ -165,6 +165,7 @@ public class CookieCapsule {
         this.player.removePotionEffect(PotionEffectType.SLOW);
         this.player.teleport(this.locCache);
         Bukkit.getScheduler().scheduleSyncDelayedTask(ArtMap.instance(), () -> this.player.teleport(this.locCache), 2L);
+        this.player.playSound(player.getLocation(), "sfx.cookie_box_close", 1, 1);
     }
 
     public void destroy() {
@@ -192,21 +193,26 @@ public class CookieCapsule {
             this.errors++;
             e.getPixel().setColour(RED_COLOR);
 
-            // TODO: Pantalla roja, sonidos, etc.
-            // Placeholder
-            player.sendMessage(ChatColor.RED + "Error ");
+            player.playSound(player.getLocation(), "sfx.cookie_break_loud", 1f, 1f);
+            player.sendTitle("\u025D", "", 0, 10, 50);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 4, false, false, false));
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(CinematicTool.getInstance(), () -> {
-                // TODO: Sacar pantalla roja, etc.
-                // Placeholder
-                player.sendMessage(ChatColor.BLUE + "Continue");
                 this.onError = false;
+                if (this.mounted) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 2, false, false, false));
+                }
             }, 3*20L);
         } else if (e.getOldColor() == -95) {
             // Not bad, but not good
             e.getPixel().setColour(OUTSIDE_COLOR);
         } else if (e.getOldColor() == -93) {
             // Good
+            player.playSound(player.getLocation(), "sfx.cookie_break", 1f, 1f);
+
+            // TODO: Particles
+            //player.spawnParticle(Particle.FALLING_DUST, player.getLocation().getDirection().);
+
             e.getPixel().setColour(GREEN_COLOR);
             Bukkit.getScheduler().runTaskAsynchronously(Core.getInstance(), () -> {
                 CanvasRenderer renderer = e.getCanvasRenderer();
@@ -239,7 +245,8 @@ public class CookieCapsule {
             player.sendMessage(ChatColor.GREEN + this.player.getName() + " ha terminado la galleta.");
         });
 
-        this.player.sendTitle(ChatColor.WHITE + " ", ChatColor.GREEN + "Has completado la galleta", 0, 20, 40);
+        player.playSound(player.getLocation(), "sfx.right", 2f, 1f);
+        this.player.sendTitle(ChatColor.WHITE + " ", ChatColor.GREEN + "Has completado la galleta", 4, 20, 40);
     }
 
 
