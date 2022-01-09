@@ -62,7 +62,7 @@ public class CookieListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (!plugin.getGame().getCookieGame().isStarted()) return;
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getAction() != Action.RIGHT_CLICK_AIR) return;
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
 
         Player player = e.getPlayer();
         ItemStack item = e.getItem();
@@ -70,16 +70,9 @@ public class CookieListener implements Listener {
 
         if (item != null && item.getType() == Material.FERMENTED_SPIDER_EYE && meta.hasCustomModelData()) {
             e.setCancelled(true);
-            if (!player.getInventory().contains(Material.CLAY_BALL)) {
-                // TODO: Cambiar mensaje
-                player.sendMessage("No tienes la aguja!");
-                return;
-            }
 
             CookieCapsule cookieCapsule = plugin.getGame().getCookieGame().getCapsule(e.getPlayer());
-            if (cookieCapsule != null && !cookieCapsule.isMounted()) {
-                cookieCapsule.mount();
-            } else if (cookieCapsule == null) {
+            if (cookieCapsule == null) {
                 CookieGame.CookieType type = switch (meta.getCustomModelData()) {
                     case 0 -> CookieGame.CookieType.CREEPER;
                     case 1 -> CookieGame.CookieType.EYE;
@@ -90,8 +83,11 @@ public class CookieListener implements Listener {
                 if (type == null) return;
 
                 cookieCapsule = plugin.getGame().getCookieGame().createCapsule(player, type);
+            }
+            if (!cookieCapsule.isMounted()) {
                 cookieCapsule.mount();
             }
+
         }
     }
 
