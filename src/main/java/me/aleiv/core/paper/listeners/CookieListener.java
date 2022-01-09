@@ -42,7 +42,11 @@ public class CookieListener implements Listener {
 
         CookieCapsule capsule = plugin.getGame().getCookieGame().getCapsule(player);
         if (capsule != null && capsule.isMounted()) {
-            capsule.unmount(true);
+            if (capsule.isOnError()) {
+                e.setCancelled(true);
+            } else {
+                capsule.unmount(true);
+            }
         }
     }
 
