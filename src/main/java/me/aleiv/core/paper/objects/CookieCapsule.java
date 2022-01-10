@@ -123,7 +123,7 @@ public class CookieCapsule {
         if (this.mounted || this.blocked) return;
         this.mounted = true;
 
-        player.playSound(player.getLocation(), "sfx.cookie_box_open", 1, 1);
+        player.playSound(player.getLocation(), "squid:sfx.cookie_box_open", 1, 1);
         // TODO: Aplicar blindness a lo mejor?
 
         this.locCache = this.player.getLocation().clone();
@@ -165,7 +165,7 @@ public class CookieCapsule {
         this.player.removePotionEffect(PotionEffectType.SLOW);
         this.player.teleport(this.locCache);
         Bukkit.getScheduler().scheduleSyncDelayedTask(ArtMap.instance(), () -> this.player.teleport(this.locCache), 2L);
-        this.player.playSound(player.getLocation(), "sfx.cookie_box_close", 1, 1);
+        this.player.playSound(player.getLocation(), "squid:sfx.cookie_box_close", 1, 1);
     }
 
     public void destroy() {
@@ -193,7 +193,8 @@ public class CookieCapsule {
             this.errors++;
             e.getPixel().setColour(RED_COLOR);
 
-            player.playSound(player.getLocation(), "sfx.cookie_break_loud", 1f, 1f);
+            // TODO: Runnable
+            player.playSound(player.getLocation(), "squid:sfx.cookie_break_loud", 1f, 1f);
             player.sendTitle("\u025D", "", 0, 10, 50);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 4, false, false, false));
 
@@ -208,7 +209,7 @@ public class CookieCapsule {
             e.getPixel().setColour(OUTSIDE_COLOR);
         } else if (e.getOldColor() == -93) {
             // Good
-            player.playSound(player.getLocation(), "sfx.cookie_break", 1f, 1f);
+            player.playSound(player.getLocation(), "squid:sfx.cookie_break", 1f, 1f);
 
             // TODO: Particles
             //player.spawnParticle(Particle.FALLING_DUST, player.getLocation().getDirection().);
@@ -245,7 +246,7 @@ public class CookieCapsule {
             player.sendMessage(ChatColor.GREEN + this.player.getName() + " ha terminado la galleta.");
         });
 
-        player.playSound(player.getLocation(), "sfx.right", 2f, 1f);
+        player.playSound(player.getLocation(), "squid:sfx.right", 2f, 1f);
         this.player.sendTitle(ChatColor.WHITE + " ", ChatColor.GREEN + "Has completado la galleta", 4, 20, 40);
     }
 
