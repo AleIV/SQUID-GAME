@@ -70,9 +70,10 @@ public class CookieListener implements Listener {
 
         Player player = e.getPlayer();
         ItemStack item = e.getItem();
-        ItemMeta meta = item.getItemMeta();
+        if (item == null) return;
 
-        if (item != null && item.getType() == Material.FERMENTED_SPIDER_EYE && meta.hasCustomModelData()) {
+        ItemMeta meta = item.getItemMeta();
+        if (item.getType() == Material.FERMENTED_SPIDER_EYE && meta.hasCustomModelData()) {
             e.setCancelled(true);
 
             CookieCapsule cookieCapsule = plugin.getGame().getCookieGame().getCapsule(e.getPlayer());
