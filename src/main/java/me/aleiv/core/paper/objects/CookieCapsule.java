@@ -125,8 +125,13 @@ public class CookieCapsule {
         this.mounted = true;
 
         player.playSound(player.getLocation(), "squid:sfx.cookie_box_open", 1, 1);
+        this.player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 10, 1, false, false, false));
 
         this.locCache = this.player.getLocation().clone();
+        Location dirLoc = this.player.getLocation();
+        dirLoc.setPitch(0);
+        dirLoc.setYaw(0);
+        this.player.teleport(dirLoc);
         NPCInfo npcInfo = new NPCInfo(this.player);
         NPC npc = CinematicTool.getInstance().getNpcManager().spawnNPC(npcInfo);
         this.npc = npc;
@@ -137,6 +142,7 @@ public class CookieCapsule {
                     EaselPart.getYawOffset(easel.getFacing()));
             this.player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 200, false, false, false));
             this.player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 2, false, false, false));
+            this.player.removePotionEffect(PotionEffectType.BLINDNESS);
         } catch (ReflectiveOperationException | IOException | SQLException e) {
             e.printStackTrace();
         }
