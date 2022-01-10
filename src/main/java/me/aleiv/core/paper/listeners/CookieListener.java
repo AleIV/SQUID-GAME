@@ -1,5 +1,6 @@
 package me.aleiv.core.paper.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -42,7 +43,7 @@ public class CookieListener implements Listener {
         CookieCapsule capsule = plugin.getGame().getCookieGame().getCapsule(player);
         if (capsule != null && capsule.isMounted()) {
             if (capsule.isOnError()) {
-                e.setCancelled(true);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> e.getDismounted().addPassenger(player), 3L);
             } else {
                 capsule.unmount(true);
             }
