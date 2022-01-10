@@ -13,6 +13,7 @@ import me.aleiv.cinematicCore.paper.CinematicTool;
 import me.aleiv.cinematicCore.paper.objects.NPCInfo;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Games.CookieGame;
+import me.aleiv.modeltool.utilities.RandomUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -193,9 +194,8 @@ public class CookieCapsule {
             this.errors++;
             e.getPixel().setColour(RED_COLOR);
 
-            // TODO: Runnable
             player.playSound(player.getLocation(), "squid:sfx.cookie_break_loud", 1f, 1f);
-            player.sendTitle("\u025D", "", 0, 10, 50);
+            player.sendTitle("\u025D", "", 5, 5, 50);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 4, false, false, false));
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(CinematicTool.getInstance(), () -> {
@@ -209,7 +209,9 @@ public class CookieCapsule {
             e.getPixel().setColour(OUTSIDE_COLOR);
         } else if (e.getOldColor() == -93) {
             // Good
-            player.playSound(player.getLocation(), "squid:sfx.cookie_break", 1f, 1f);
+            if (RandomUtils.generateInt(0, 2) == 2) {
+                player.playSound(player.getLocation(), "squid:sfx.cookie_break", 1f, (float) (RandomUtils.generateInt(80, 150)/100));
+            }
 
             // TODO: Particles
             //player.spawnParticle(Particle.FALLING_DUST, player.getLocation().getDirection().);
