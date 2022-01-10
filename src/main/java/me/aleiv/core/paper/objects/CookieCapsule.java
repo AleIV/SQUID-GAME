@@ -125,7 +125,6 @@ public class CookieCapsule {
         this.mounted = true;
 
         player.playSound(player.getLocation(), "squid:sfx.cookie_box_open", 1, 1);
-        // TODO: Aplicar blindness a lo mejor?
 
         this.locCache = this.player.getLocation().clone();
         NPCInfo npcInfo = new NPCInfo(this.player);
