@@ -195,17 +195,19 @@ public class CookieCapsule {
             e.getPixel().setColour(RED_COLOR);
 
             player.playSound(player.getLocation(), "squid:sfx.cookie_break_loud", 1f, 1f);
+            player.playSound(player.getLocation(), "squid:sfx.wrong", 1f, 1f);
             player.sendTitle("\u025D", "", 5, 5, 50);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 4, false, false, false));
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(CinematicTool.getInstance(), () -> {
                 this.onError = false;
                 if (this.mounted) {
+                    player.removePotionEffect(PotionEffectType.SLOW);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 2, false, false, false));
                 }
             }, 3*20L);
         } else if (e.getOldColor() == -95 || e.getOldColor() == -93) {
-            if (RandomUtils.generateInt(0, 2) == 2) {
+            if (RandomUtils.generateInt(0, 4) == 1) {
                 player.playSound(player.getLocation(), "squid:sfx.cookie_break", 1f, (float) (RandomUtils.generateInt(80, 150)/100));
             }
             if (e.getOldColor() == -95) { // Not bad, but not good
