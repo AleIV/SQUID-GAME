@@ -204,17 +204,14 @@ public class CookieCapsule {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 2, false, false, false));
                 }
             }, 3*20L);
-        } else if (e.getOldColor() == -95) {
-            // Not bad, but not good
-            e.getPixel().setColour(OUTSIDE_COLOR);
-        } else if (e.getOldColor() == -93) {
-            // Good
+        } else if (e.getOldColor() == -95 || e.getOldColor() == -93) {
             if (RandomUtils.generateInt(0, 2) == 2) {
                 player.playSound(player.getLocation(), "squid:sfx.cookie_break", 1f, (float) (RandomUtils.generateInt(80, 150)/100));
             }
-
-            // TODO: Particles
-            //player.spawnParticle(Particle.FALLING_DUST, player.getLocation().getDirection().);
+            if (e.getOldColor() == -95) { // Not bad, but not good
+                e.getPixel().setColour(OUTSIDE_COLOR);
+                return;
+            }
 
             e.getPixel().setColour(GREEN_COLOR);
             Bukkit.getScheduler().runTaskAsynchronously(Core.getInstance(), () -> {
