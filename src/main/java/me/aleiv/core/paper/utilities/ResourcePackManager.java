@@ -51,11 +51,11 @@ public class ResourcePackManager implements Listener {
         this.javaPlugin = javaPlugin;
         this.waitingPlayers = new ArrayList<>();
 
-        this.questionMessage = ChatColor.translateAlternateColorCodes('&', "&ePorfavor, dale a aceptar para continuar. &c&l(Si no aceptas, seras expulsado.)");
+        this.questionMessage = ChatColor.translateAlternateColorCodes('&', "");
         this.kickMessage = ChatColor.translateAlternateColorCodes('&', "&cNecesitas el paquete de texturas para continuar.");
         this.failKickMessage = ChatColor.translateAlternateColorCodes('&', "&cHa ocurrido un fallo descargado el paquete de texturas.");
-        this.downloadingMessage = ChatColor.translateAlternateColorCodes('&', "&aDescargando el paquete de recursos... &f&lSE TE PARARÁ EL JUEGO POR 5-10 SEGUNDOS, ES NORMAL, NO LO TOQUES PORFAVOR.");
-        this.downloadedMessage = ChatColor.translateAlternateColorCodes('&', "&aSe han cargado las texturas correctamente. Ya puedes jugar!");
+        this.downloadingMessage = ChatColor.translateAlternateColorCodes('&', "");
+        this.downloadedMessage = ChatColor.translateAlternateColorCodes('&', "");
 
         this.force = true;
 

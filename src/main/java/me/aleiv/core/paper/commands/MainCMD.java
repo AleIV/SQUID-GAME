@@ -9,6 +9,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.objects.Participant.Role;
 import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("main")
@@ -78,6 +79,27 @@ public class MainCMD extends BaseCommand {
         tools.refreshPrize(newPrize, delay, value);
         sender.sendMessage(ChatColor.DARK_AQUA + "Refreshed prize " + newPrize + " " + delay);
     }
+
+    @Subcommand("prize")
+    public void prize(CommandSender sender, Integer newPrize){
+        var tools = instance.getGame().getMainRoom();
+        
+        tools.refreshPrize(newPrize, 2, 50);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Refreshed prize " + newPrize);
+    }
+
+    @Subcommand("refresh-players")
+    public void players(CommandSender sender, Integer delay){
+        var game = instance.getGame();
+        var tools = game.getMainRoom();
+        var participants = game.getParticipants().values();
+        var totalParticipants = participants.stream().filter(p -> p.getRole() == Role.PLAYER).toList();
+        var deathPlayers = totalParticipants.stream().filter(p -> p.isDead()).toList();
+        var newValue = totalParticipants.size()-deathPlayers.size();
+        tools.refreshPlayers(newValue, delay, 1);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Refreshed players ");
+    }
+    
 
     @Subcommand("refresh-players")
     public void refreshPlayers(CommandSender sender, Integer newPrize, Integer delay, Integer value){

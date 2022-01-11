@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.commands;
+package me.aleiv.core.paper.commands.gamesCMD;
 
 import org.bukkit.command.CommandSender;
 
@@ -10,21 +10,21 @@ import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
 
-@CommandAlias("glass")
+@CommandAlias("hideSeek")
 @CommandPermission("admin.perm")
-public class GlassCMD extends BaseCommand {
+public class HideSeekCMD extends BaseCommand {
 
     private @NonNull Core instance;
 
-    public GlassCMD(Core instance){
+    public HideSeekCMD(Core instance){
         this.instance = instance;
     }
 
-    @Subcommand("break-all")
-    public void glass(CommandSender sender){
-        var tools = instance.getGame().getGlassGame();
-        tools.breakAll();
-        sender.sendMessage(ChatColor.DARK_AQUA + "BREAK ALL GLASS");
+    @Subcommand("door")
+    public void door(CommandSender sender, Boolean bool){
+        var tools = instance.getGame().getHideSeekGame();
+        tools.door(bool);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Hide Seek door " + bool);
     }
 
 }

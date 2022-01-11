@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.commands;
+package me.aleiv.core.paper.commands.gamesCMD;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

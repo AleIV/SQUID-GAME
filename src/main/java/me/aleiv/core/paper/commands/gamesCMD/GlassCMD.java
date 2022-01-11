@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.commands;
+package me.aleiv.core.paper.commands.gamesCMD;
 
 import org.bukkit.command.CommandSender;
 
@@ -10,20 +10,21 @@ import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
 
-@CommandAlias("chair")
+@CommandAlias("glass")
 @CommandPermission("admin.perm")
-public class ChairCMD extends BaseCommand {
+public class GlassCMD extends BaseCommand {
 
     private @NonNull Core instance;
 
-    public ChairCMD(Core instance){
+    public GlassCMD(Core instance){
         this.instance = instance;
     }
 
-    @Subcommand("music")
-    public void door(CommandSender sender, String music, Boolean bool){
-        var tools = instance.getGame().getChairGame();
-        tools.turnMusic(music, bool);
-        sender.sendMessage(ChatColor.DARK_AQUA + "MUSIC TURN " + bool);
+    @Subcommand("break-all")
+    public void glass(CommandSender sender){
+        var tools = instance.getGame().getGlassGame();
+        tools.breakAll();
+        sender.sendMessage(ChatColor.DARK_AQUA + "BREAK ALL GLASS");
     }
+
 }
