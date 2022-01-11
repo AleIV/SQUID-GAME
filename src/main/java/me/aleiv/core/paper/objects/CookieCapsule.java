@@ -201,7 +201,7 @@ public class CookieCapsule {
 
             player.playSound(player.getLocation(), "squid:sfx.cookie_break_loud", 1f, 1f);
             player.playSound(player.getLocation(), "squid:sfx.wrong", 1f, 1f);
-            player.sendTitle("\u025D", "", 5, 10,  90);
+            player.sendTitle("\u025D", "", 5, 10,  50);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 4, false, false, false));
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(CinematicTool.getInstance(), () -> {
@@ -210,7 +210,7 @@ public class CookieCapsule {
                     player.removePotionEffect(PotionEffectType.SLOW);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 2, false, false, false));
                 }
-            }, 5*20L);
+            }, 3*20L);
         } else if (e.getOldColor() == -95 || e.getOldColor() == -93) {
             if (RandomUtils.generateInt(0, 4) == 1) {
                 player.playSound(player.getLocation(), "squid:sfx.cookie_break", 1f, (float) (RandomUtils.generateInt(80, 150)/100));
