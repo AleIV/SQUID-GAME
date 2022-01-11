@@ -15,6 +15,8 @@ import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
 
+import java.util.HashMap;
+
 @CommandAlias("special")
 @CommandPermission("admin.perm")
 public class SpecialCMD extends BaseCommand {
@@ -93,11 +95,11 @@ public class SpecialCMD extends BaseCommand {
     public void deleteThis(CommandSender sender, String name){
         var specialObjects = AnimationTools.specialObjects;
 
-        for (var special : specialObjects.entrySet()) {
-            if(special.getKey().contains(name)){
-                specialObjects.remove(special.getKey());
+        new HashMap<>(specialObjects).forEach((key, value) -> {
+            if(key.contains(name)){
+                specialObjects.remove(value);
             }
-        }
+        });
 
         sender.sendMessage(ChatColor.DARK_AQUA + "Special object all " + name + " deleted.");
         instance.saveSpecialJson();
