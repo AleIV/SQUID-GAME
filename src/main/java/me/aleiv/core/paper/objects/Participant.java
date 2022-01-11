@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 
 import lombok.Data;
 import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Game.Role;
 
 @Data   
 public class Participant {
@@ -63,6 +62,10 @@ public class Participant {
 
     private boolean contains(Collection<Participant> participants, int n){
         return !participants.stream().filter(par -> par.getNumber() == n).toList().isEmpty();
+    }
+
+    public enum Role {
+        GUARD, PLAYER, VIP
     }
 
 }

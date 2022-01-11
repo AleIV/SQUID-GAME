@@ -22,6 +22,7 @@ import me.aleiv.core.paper.Games.PotatoGame;
 import me.aleiv.core.paper.Games.RopeGame;
 import me.aleiv.core.paper.events.GameTickEvent;
 import me.aleiv.core.paper.objects.Participant;
+import me.aleiv.core.paper.objects.Participant.Role;
 import me.aleiv.core.paper.objects.Timer;
 
 @Data
@@ -84,10 +85,6 @@ public class Game extends BukkitRunnable {
 
     public enum PvPType{
         ONLY_GUARDS, ALL, ONLY_PVP
-    }
-
-    public enum Role {
-        GUARD, PLAYER, VIP
     }
 
     public enum TimerType{

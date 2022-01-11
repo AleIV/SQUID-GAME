@@ -12,8 +12,8 @@ import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Game.Role;
 import me.aleiv.core.paper.objects.Participant;
+import me.aleiv.core.paper.objects.Participant.Role;
 import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("players")

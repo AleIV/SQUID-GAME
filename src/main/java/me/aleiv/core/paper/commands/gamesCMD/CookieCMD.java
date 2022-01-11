@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.commands;
+package me.aleiv.core.paper.commands.gamesCMD;
 
 import java.util.List;
 
