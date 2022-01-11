@@ -79,10 +79,10 @@ public class CookieListener implements Listener {
             CookieCapsule cookieCapsule = plugin.getGame().getCookieGame().getCapsule(e.getPlayer());
             if (cookieCapsule == null) {
                 CookieGame.CookieType type = switch (meta.getCustomModelData()) {
-                    case 0 -> CookieGame.CookieType.CREEPER;
+                    case 3 -> CookieGame.CookieType.CREEPER;
                     case 1 -> CookieGame.CookieType.EYE;
-                    case 2 -> CookieGame.CookieType.RODOLFO;
-                    case 3 -> CookieGame.CookieType.SQUID;
+                    case 4 -> CookieGame.CookieType.RODOLFO;
+                    case 2 -> CookieGame.CookieType.SQUID;
                     default -> null;
                 };
                 if (type == null) return;
