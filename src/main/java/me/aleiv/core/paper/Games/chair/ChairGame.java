@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.Games;
+package me.aleiv.core.paper.Games.chair;
 
 import java.util.ArrayList;
 import java.util.List;

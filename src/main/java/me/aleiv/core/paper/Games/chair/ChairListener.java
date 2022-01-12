@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.listeners;
+package me.aleiv.core.paper.Games.chair;
 
 
 import java.util.List;

@@ -1,8 +1,7 @@
-package me.aleiv.core.paper.Games;
+package me.aleiv.core.paper.Games.cookie;
 
 import lombok.Getter;
 import me.Fupery.ArtMap.ArtMap;
-import me.aleiv.core.paper.listeners.CookieListener;
 import me.aleiv.core.paper.objects.CookieCapsule;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

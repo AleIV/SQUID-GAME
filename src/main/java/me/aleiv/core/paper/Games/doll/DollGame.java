@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.Games;
+package me.aleiv.core.paper.Games.doll;
 
 import java.util.HashMap;
 

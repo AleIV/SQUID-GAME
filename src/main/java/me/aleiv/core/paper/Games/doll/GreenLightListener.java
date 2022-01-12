@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.listeners;
+package me.aleiv.core.paper.Games.doll;
 
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;

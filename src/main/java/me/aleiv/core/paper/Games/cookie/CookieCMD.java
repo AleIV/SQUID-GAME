@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.commands.gamesCMD;
+package me.aleiv.core.paper.Games.cookie;
 
 import java.util.List;
 
@@ -16,7 +16,6 @@ import co.aikar.commands.annotation.Syntax;
 import lombok.NonNull;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Games.CookieGame;
 import me.aleiv.core.paper.gui.CookieGUI;
 import me.aleiv.core.paper.gui.CookieWinnerGUI;
 import me.aleiv.core.paper.objects.CookieCapsule;

@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.Games;
+package me.aleiv.core.paper.Games.glass;
 
 import com.destroystokyo.paper.ParticleBuilder;
 
