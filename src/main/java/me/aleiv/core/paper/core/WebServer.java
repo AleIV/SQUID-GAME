@@ -1,8 +1,16 @@
 package me.aleiv.core.paper.core;
 
+import com.google.gson.JsonObject;
 import fi.iki.elonen.NanoHTTPD;
 import me.aleiv.core.paper.Core;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 
 public class WebServer extends NanoHTTPD {
@@ -26,9 +34,20 @@ public class WebServer extends NanoHTTPD {
     @Override
     public Response serve(IHTTPSession session) {
         // Set application sending json
+        File file = new File(System.getProperty("user.dir") + File.separatorChar + "secrets/participants.json");
         session.getHeaders().put("Content-Type", "application/json");
-        // TODO: Get JSON
-        return newFixedLengthResponse("{}");
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(file.getPath()),
+                    Charset.defaultCharset());
+            StringBuilder json = new StringBuilder();
+            for (String line : lines) {
+                json.append(line);
+            }
+            return newFixedLengthResponse(json.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return newFixedLengthResponse("{\"error\": true}");
     }
 
 }
