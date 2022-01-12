@@ -99,7 +99,7 @@ public class GlobalListener implements Listener {
         var participant = participants.get(uuid);
         var gamemode = player.getGameMode();
 
-        if(participant.getRole() == Role.PLAYER && gamemode == GameMode.ADVENTURE){
+        if(participant.getRole() == Role.PLAYER && gamemode == GameMode.ADVENTURE && !participant.isDead()){
             var damageEvent = player.getLastDamageCause();
             if(damageEvent instanceof EntityDamageByEntityEvent damageEntity && damageEntity.getDamager() instanceof Projectile projectile){
                 AnimationTools.summonDeadBody(player, DeathReason.PROJECTILE, projectile);
@@ -123,7 +123,7 @@ public class GlobalListener implements Listener {
             
         }else{
 
-            e.deathMessage(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "#" + participant.getNumber() + player.getName() + CYAN + " eliminated."));
+            e.deathMessage(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "#" + participant.getNumber() + " " + player.getName() + CYAN + " eliminated."));
         }
 
     }

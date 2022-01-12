@@ -47,7 +47,7 @@ public class DollCMD extends BaseCommand {
     @CommandAlias("shoot")
     @CommandCompletion("@players")
     public void shoot(Player sender, @Name("target") @Optional @Flags("other") Player target) {
-        AnimationTools.shootLocation(target.getLocation());
+        AnimationTools.shootLocation(target);
 
     }
 

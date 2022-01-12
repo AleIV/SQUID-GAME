@@ -20,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import co.aikar.commands.PaperCommandManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
+import me.aleiv.core.paper.commands.ClothesCMD;
 import me.aleiv.core.paper.commands.ElevatorsCMD;
 import me.aleiv.core.paper.commands.MainCMD;
 import me.aleiv.core.paper.commands.PlayersCMD;
@@ -82,9 +83,9 @@ public class Core extends JavaPlugin {
         BukkitTCT.registerPlugin(this);
         NegativeSpaces.registerCodes();
         entityModelManager = new EntityModelManager(this);
-        /*resourcePackManager = new ResourcePackManager(this);
+        resourcePackManager = new ResourcePackManager(this);
         resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/e8520d9599c981837da0f6c2c7f39ef3b603028b.zip");
-        resourcePackManager.setResourcePackHash("e8520d9599c981837da0f6c2c7f39ef3b603028b");*/
+        resourcePackManager.setResourcePackHash("e8520d9599c981837da0f6c2c7f39ef3b603028b");
 
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
@@ -126,6 +127,8 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new SpecialCMD(this));
         commandManager.registerCommand(new TestCMD(this));
         commandManager.registerCommand(new PlayersCMD(this));
+        commandManager.registerCommand(new ClothesCMD(this));
+
 
         // Register skin command
 
