@@ -65,7 +65,7 @@ public class Participant {
     }
 
     public enum Role {
-        GUARD, PLAYER, VIP
+        GUARD, PLAYER, VIP, SPEC
     }
 
 }

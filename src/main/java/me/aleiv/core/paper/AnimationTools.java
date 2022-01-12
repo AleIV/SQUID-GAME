@@ -156,12 +156,13 @@ public class AnimationTools {
         return Math.abs(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(z2 - z1, 2)));
     }
 
-    public static void shootLocation(Location loc) {
+    public static void shootLocation(Player player) {
+        var loc = player.getLocation();
         var locations = findLocations("WALL_GUN");
         var wallGun = getNearbyLocation(locations, loc);
-        var vector = getVector(loc.add(0, 1.40, 0), wallGun);
+        //var vector = getVector(loc.add(0, 1.40, 0), wallGun);
 
-        wallGun.getWorld().spawnArrow(wallGun, vector, 20, 0);
+        //wallGun.getWorld().spawnArrow(wallGun, vector, 20, 0);
         AnimationTools.playSoundDistance(wallGun, 300, "squid:sfx.dramatic_shot", 1f, 1f);
         var origin = wallGun.toVector();
         var target = loc.toVector();
@@ -172,6 +173,8 @@ public class AnimationTools {
             new ParticleBuilder(Particle.COMPOSTER).location(l).receivers(300).force(true).count(100)
                     .offset(0.000001, 0.000001, 0.000001).extra(0).spawn();
         });
+
+        player.damage(100);
 
     }
 

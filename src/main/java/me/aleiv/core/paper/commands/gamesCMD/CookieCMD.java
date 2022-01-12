@@ -99,6 +99,7 @@ public class CookieCMD extends BaseCommand {
         locations.add(player.getLocation().clone().add(0, 25, 0));
         locations.add(player.getLocation().clone().add(0, 25, 10));
         locations.add(player.getLocation().clone().add(0, 25, 20));
+        //TODO:?
 
         this.instance.getGame().getCookieGame().start(locations);
     }

@@ -175,7 +175,7 @@ public class GreenLightPanel extends RapidInv{
     }
 
     public void shoot(Player player){
-        AnimationTools.shootLocation(player.getLocation());
+        AnimationTools.shootLocation(player);
     }
 
 }

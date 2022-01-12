@@ -19,9 +19,12 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupArrowEvent;
 import org.bukkit.event.player.PlayerTakeLecternBookEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.potion.PotionEffectType;
@@ -35,7 +38,8 @@ public class CanceledListener implements Listener {
 
     List<Material> bannedMoveList = List.of(Material.NOTE_BLOCK);
     List<Material> bannedSpawnList = List.of(Material.TWISTING_VINES);
-    List<Material> bannedDropList = List.of(Material.FERMENTED_SPIDER_EYE, Material.CLAY_BALL);
+    List<Material> bannedDropList = List.of(Material.DIAMOND_CHESTPLATE, Material.DIAMOND_LEGGINGS, 
+        Material.CHAINMAIL_CHESTPLATE, Material.LEATHER_LEGGINGS, Material.LEATHER_CHESTPLATE);
     List<Material> bannedInteract = List.of(Material.ENDER_EYE);
     List<Integer> customModelAntiDrop = List.of(25, 24);
 
@@ -84,7 +88,7 @@ public class CanceledListener implements Listener {
         var entity = e.getEntity();
         if(entity instanceof Player player && game.isGuard(player)){
             e.setDamage(1);
-            //TODO: GUARD DAMAGE
+            
         }
     }
 
@@ -185,6 +189,25 @@ public class CanceledListener implements Listener {
     @EventHandler
     public void craft(CraftItemEvent e){
         e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e){
+        var player = (Player) e.getWhoClicked();
+        if(player.getGameMode() == GameMode.CREATIVE) return;
+
+        var item = e.getCurrentItem();
+        var slot = e.getSlotType();
+
+        if (item != null && slot == SlotType.ARMOR){
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onArrowPick(PlayerPickupArrowEvent e){
+        var player = e.getPlayer();
+        if(player.getGameMode() != GameMode.CREATIVE) e.setCancelled(true);
     }
 
 }
