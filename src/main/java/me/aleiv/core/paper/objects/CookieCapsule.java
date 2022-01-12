@@ -173,7 +173,9 @@ public class CookieCapsule {
         }
 
         this.player.removePotionEffect(PotionEffectType.INVISIBILITY);
-        this.player.removePotionEffect(PotionEffectType.SLOW);
+        if (!this.onError) {
+            this.player.removePotionEffect(PotionEffectType.SLOW);
+        }
         this.player.teleport(this.locCache);
         Bukkit.getScheduler().scheduleSyncDelayedTask(ArtMap.instance(), () -> this.player.teleport(this.locCache), 2L);
         this.player.playSound(player.getLocation(), "squid:sfx.cookie_box_close", 1, 1);
@@ -211,8 +213,8 @@ public class CookieCapsule {
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(CinematicTool.getInstance(), () -> {
                 this.onError = false;
+                player.removePotionEffect(PotionEffectType.SLOW);
                 if (this.mounted) {
-                    player.removePotionEffect(PotionEffectType.SLOW);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 2, false, false, false));
                 }
             }, 3*20L);
