@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import me.aleiv.core.paper.Games.CookieGame;
+import me.aleiv.core.paper.core.WebServer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -92,6 +93,7 @@ public class Core extends JavaPlugin {
 
         pullSpecialJson();
         pullParticipantJson();
+        startWebServer();
 
         // LISTENERS
 
@@ -139,6 +141,10 @@ public class Core extends JavaPlugin {
 
         // Start effect manager
 
+    }
+
+    private void startWebServer() {
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> new WebServer(this, 80));
     }
 
     @Override
