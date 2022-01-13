@@ -86,6 +86,9 @@ public class GlobalListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e){
+        // Cancelled dropping experience
+        e.setShouldDropExperience(false);
+
         var player = e.getEntity();
         var game = instance.getGame();
         var participants = game.getParticipants();
