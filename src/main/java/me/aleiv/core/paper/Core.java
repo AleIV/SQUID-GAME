@@ -33,7 +33,9 @@ import me.aleiv.core.paper.Games.potato.PotatoCMD;
 import me.aleiv.core.paper.Games.potato.PotatoListener;
 import me.aleiv.core.paper.Games.rope.RopeCMD;
 import me.aleiv.core.paper.Games.rope.RopeListener;
+import me.aleiv.core.paper.commands.CinemaCMD;
 import me.aleiv.core.paper.commands.ClothesCMD;
+import me.aleiv.core.paper.commands.DaysCMD;
 import me.aleiv.core.paper.commands.ElevatorsCMD;
 import me.aleiv.core.paper.commands.MainCMD;
 import me.aleiv.core.paper.commands.PlayersCMD;
@@ -132,6 +134,9 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new TestCMD(this));
         commandManager.registerCommand(new PlayersCMD(this));
         commandManager.registerCommand(new ClothesCMD(this));
+        commandManager.registerCommand(new CinemaCMD(this));
+        commandManager.registerCommand(new DaysCMD(this));
+
 
 
         // Register skin command

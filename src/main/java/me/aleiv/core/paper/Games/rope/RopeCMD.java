@@ -43,6 +43,8 @@ public class RopeCMD extends BaseCommand {
                     AnimationTools.setStandModel(stand, Material.BRICK, 38);
                     });
 
+                    AnimationTools.setStandModel(AnimationTools.getArmorStand("ROPE_GUILLOTINE"), Material.BRICK, 39);
+
                 });
             });
         }

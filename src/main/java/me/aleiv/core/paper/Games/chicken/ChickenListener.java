@@ -41,12 +41,13 @@ public class ChickenListener implements Listener {
             default:
                 break;
         }
+        
         final var f = str;
         Bukkit.getOnlinePlayers().forEach(player ->{
             var equip = player.getEquipment();
             var helmet = equip.getHelmet();
             if(helmet != null && helmet.hasItemMeta() && helmet.getItemMeta().hasCustomModelData() && helmet.getItemMeta().getCustomModelData() == 24){
-                player.sendTitle(f, "", 0, 0, 0);
+                instance.showTitle(player, f, "", 0, 60, 0);
             }
         });
         

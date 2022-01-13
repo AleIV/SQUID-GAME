@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.Games.rope;
+package me.aleiv.core.paper.Games.potato;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
