@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.listeners.GreenLightListener;
+import me.aleiv.core.paper.Games.doll.GreenLightListener;
 import net.md_5.bungee.api.ChatColor;
 import us.jcedeno.libs.rapidinv.ItemBuilder;
 import us.jcedeno.libs.rapidinv.RapidInv;

@@ -36,37 +36,45 @@ public class GlobalGame {
     }
 
     public enum Mask {
-        CREEPER, SQUID, EYE, BOSS
+        CREEPER, SQUID, EYE, BOSS, CHEF
     }
 
     public void clothes(Player player, Mask mask) {
         var equip = player.getEquipment();
         var inv = player.getInventory();
         inv.clear();
-        equip.setItemInOffHand(new ItemStack(Material.CROSSBOW));
-        var revolver = new ItemBuilder(Material.CROSSBOW).meta(meta -> meta.setCustomModelData(1)).name("Revolver")
-                .build();
-        inv.addItem(revolver);
-        inv.addItem(new ItemStack(Material.ARROW, 64));
-
-        final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
-                "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-
-        var harness = new ItemBuilder(Material.IRON_CHESTPLATE)
-                .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
-
-        inv.addItem(harness);
 
         switch (mask) {
             case CREEPER: {
                 var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(6)).name("Mask").build();
                 equip.setHelmet(hat);
+
+                var revolver = new ItemBuilder(Material.CROSSBOW).meta(meta -> meta.setCustomModelData(1))
+                        .name("Revolver")
+                        .build();
+                inv.addItem(revolver);
+                inv.addItem(new ItemStack(Material.ARROW, 64));
             }
                 break;
 
             case SQUID: {
                 var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(4)).name("Mask").build();
                 equip.setHelmet(hat);
+
+                equip.setItemInOffHand(new ItemStack(Material.CROSSBOW));
+                var revolver = new ItemBuilder(Material.CROSSBOW).meta(meta -> meta.setCustomModelData(1))
+                        .name("Revolver")
+                        .build();
+                inv.addItem(revolver);
+                inv.addItem(new ItemStack(Material.ARROW, 64));
+
+                final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
+                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+
+                var harness = new ItemBuilder(Material.IRON_CHESTPLATE)
+                        .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
+
+                inv.addItem(harness);
             }
                 break;
 
@@ -86,6 +94,27 @@ public class GlobalGame {
                         .build();
                 inv.addItem(r);
                 inv.addItem(new ItemStack(Material.ARROW, 64));
+            }
+                break;
+
+            case CHEF: {
+                inv.clear();
+                var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(7)).name("Mask").build();
+                equip.setHelmet(hat);
+
+                var r = new ItemBuilder(Material.CROSSBOW).meta(meta -> meta.setCustomModelData(1))
+                        .name("Revolver")
+                        .build();
+                inv.addItem(r);
+                inv.addItem(new ItemStack(Material.ARROW, 64));
+
+                final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
+                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+
+                var chef = new ItemBuilder(Material.GOLDEN_CHESTPLATE)
+                        .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
+
+                equip.setChestplate(chef);
             }
                 break;
 
@@ -150,7 +179,8 @@ public class GlobalGame {
                 break;
 
             case CHICKEN: {
-                var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(24)).name("Bandage").build();
+                var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(24)).name("Bandage")
+                        .build();
                 equip.setHelmet(hat);
 
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
@@ -170,7 +200,8 @@ public class GlobalGame {
 
             case AURON: {
 
-                var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(63)).name("Mask").build();
+                var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(63)).name("Mask")
+                        .build();
                 equip.setHelmet(hat);
 
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
@@ -190,7 +221,8 @@ public class GlobalGame {
 
             case RUBIUS: {
 
-                var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(65)).name("Mask").build();
+                var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(65)).name("Mask")
+                        .build();
                 equip.setHelmet(hat);
 
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
@@ -210,7 +242,8 @@ public class GlobalGame {
 
             case KOMANCHE: {
 
-                var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(64)).name("Mask").build();
+                var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(64)).name("Mask")
+                        .build();
                 equip.setHelmet(hat);
 
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),

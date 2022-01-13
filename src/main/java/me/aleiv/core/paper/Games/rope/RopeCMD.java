@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.commands.gamesCMD;
+package me.aleiv.core.paper.Games.rope;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -42,6 +42,8 @@ public class RopeCMD extends BaseCommand {
                     ropeEntities2.forEach(stand -> {
                     AnimationTools.setStandModel(stand, Material.BRICK, 38);
                     });
+
+                    AnimationTools.setStandModel(AnimationTools.getArmorStand("ROPE_GUILLOTINE"), Material.BRICK, 39);
 
                 });
             });

@@ -37,9 +37,10 @@ public class CanceledListener implements Listener {
     Core instance;
 
     List<Material> bannedMoveList = List.of(Material.NOTE_BLOCK);
-    List<Material> bannedSpawnList = List.of(Material.TWISTING_VINES);
+    List<Material> bannedSpawnList = List.of(Material.TWISTING_VINES, Material.DIAMOND_CHESTPLATE, Material.DIAMOND_LEGGINGS, 
+    Material.CHAINMAIL_CHESTPLATE, Material.LEATHER_LEGGINGS, Material.LEATHER_CHESTPLATE, Material.NETHERITE_CHESTPLATE, Material.NETHERITE_LEGGINGS);
     List<Material> bannedDropList = List.of(Material.DIAMOND_CHESTPLATE, Material.DIAMOND_LEGGINGS, 
-        Material.CHAINMAIL_CHESTPLATE, Material.LEATHER_LEGGINGS, Material.LEATHER_CHESTPLATE);
+        Material.CHAINMAIL_CHESTPLATE, Material.LEATHER_LEGGINGS, Material.LEATHER_CHESTPLATE, Material.NETHERITE_CHESTPLATE, Material.NETHERITE_LEGGINGS);
     List<Material> bannedInteract = List.of(Material.ENDER_EYE);
     List<Integer> customModelAntiDrop = List.of(25, 24);
 

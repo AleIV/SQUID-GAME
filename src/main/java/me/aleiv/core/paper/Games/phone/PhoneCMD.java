@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.commands.gamesCMD;
+package me.aleiv.core.paper.Games.phone;
 
 import java.util.UUID;
 

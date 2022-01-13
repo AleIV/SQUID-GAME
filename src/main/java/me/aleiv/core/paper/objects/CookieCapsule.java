@@ -32,7 +32,7 @@ import me.Fupery.ArtMap.Painting.CanvasRenderer;
 import me.aleiv.cinematicCore.paper.CinematicTool;
 import me.aleiv.cinematicCore.paper.objects.NPCInfo;
 import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Games.CookieGame;
+import me.aleiv.core.paper.Games.cookie.CookieGame;
 import me.aleiv.modeltool.utilities.RandomUtils;
 
 public class CookieCapsule {

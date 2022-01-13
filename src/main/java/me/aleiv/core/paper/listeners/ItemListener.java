@@ -112,19 +112,19 @@ public class ItemListener implements Listener {
                 }
 
                 table = AnimationTools.getEntity("BOX_RODOLFO");
-                if(table.getUniqueId().toString().equals(uuid)){
+                if(table != null && table.getUniqueId().toString().equals(uuid)){
                     inv.addItem(new ItemBuilder(Material.FERMENTED_SPIDER_EYE).meta(meta -> meta.setCustomModelData(2)).build());
                     return;
                 } 
     
                 table = AnimationTools.getEntity("BOX_SQUID");
-                if(table.getUniqueId().toString().equals(uuid)){
+                if(table != null && table.getUniqueId().toString().equals(uuid)){
                     inv.addItem(new ItemBuilder(Material.FERMENTED_SPIDER_EYE).meta(meta -> meta.setCustomModelData(3)).build());
                     return;
                 }
     
                 table = AnimationTools.getEntity("BOX_CREEPER");
-                if(table.getUniqueId().toString().equals(uuid)){
+                if(table != null && table.getUniqueId().toString().equals(uuid)){
                     if(table.getUniqueId().toString().equals(uuid)){
                         inv.addItem(new ItemBuilder(Material.FERMENTED_SPIDER_EYE).meta(meta -> meta.setCustomModelData(0)).build());
                         return;

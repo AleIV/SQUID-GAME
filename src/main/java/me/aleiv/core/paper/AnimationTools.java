@@ -184,9 +184,9 @@ public class AnimationTools {
 
     public static Vector superNormalize(Vector vector) {
         var newVector = vector;
-        newVector.setX(vector.getX()*0.03);
-        newVector.setY(vector.getY()*0.03);
-        newVector.setZ(vector.getZ()*0.03);
+        newVector.setX(vector.getX()*0.02);
+        newVector.setY(vector.getY()*0.02);
+        newVector.setZ(vector.getZ()*0.02);
         return newVector;
     }
 

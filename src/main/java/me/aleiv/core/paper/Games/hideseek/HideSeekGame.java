@@ -1,4 +1,4 @@
-package me.aleiv.core.paper.Games;
+package me.aleiv.core.paper.Games.hideseek;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

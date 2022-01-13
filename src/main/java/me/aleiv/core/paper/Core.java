@@ -10,8 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import me.aleiv.core.paper.Games.CookieGame;
-import me.aleiv.core.paper.core.WebServer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -21,7 +19,23 @@ import org.bukkit.plugin.java.JavaPlugin;
 import co.aikar.commands.PaperCommandManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
+import me.aleiv.core.paper.Games.chair.ChairCMD;
+import me.aleiv.core.paper.Games.chair.ChairListener;
+import me.aleiv.core.paper.Games.chicken.ChickenCMD;
+import me.aleiv.core.paper.Games.cookie.CookieCMD;
+import me.aleiv.core.paper.Games.cookie.CookieGame;
+import me.aleiv.core.paper.Games.doll.DollCMD;
+import me.aleiv.core.paper.Games.glass.GlassCMD;
+import me.aleiv.core.paper.Games.glass.GlassListener;
+import me.aleiv.core.paper.Games.hideseek.HideSeekCMD;
+import me.aleiv.core.paper.Games.phone.PhoneCMD;
+import me.aleiv.core.paper.Games.potato.PotatoCMD;
+import me.aleiv.core.paper.Games.potato.PotatoListener;
+import me.aleiv.core.paper.Games.rope.RopeCMD;
+import me.aleiv.core.paper.Games.rope.RopeListener;
+import me.aleiv.core.paper.commands.CinemaCMD;
 import me.aleiv.core.paper.commands.ClothesCMD;
+import me.aleiv.core.paper.commands.DaysCMD;
 import me.aleiv.core.paper.commands.ElevatorsCMD;
 import me.aleiv.core.paper.commands.MainCMD;
 import me.aleiv.core.paper.commands.PlayersCMD;
@@ -29,24 +43,13 @@ import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.commands.TestCMD;
 import me.aleiv.core.paper.commands.UtilsCMD;
-import me.aleiv.core.paper.commands.gamesCMD.ChairCMD;
-import me.aleiv.core.paper.commands.gamesCMD.CookieCMD;
-import me.aleiv.core.paper.commands.gamesCMD.DollCMD;
-import me.aleiv.core.paper.commands.gamesCMD.GlassCMD;
-import me.aleiv.core.paper.commands.gamesCMD.HideSeekCMD;
-import me.aleiv.core.paper.commands.gamesCMD.PhoneCMD;
-import me.aleiv.core.paper.commands.gamesCMD.PotatoCMD;
-import me.aleiv.core.paper.commands.gamesCMD.RopeCMD;
+import me.aleiv.core.paper.core.WebServer;
 import me.aleiv.core.paper.detection.CollisionManager;
 import me.aleiv.core.paper.listeners.CanceledListener;
-import me.aleiv.core.paper.listeners.ChairListener;
-import me.aleiv.core.paper.listeners.GlassListener;
 import me.aleiv.core.paper.listeners.GlobalListener;
 import me.aleiv.core.paper.listeners.HideListener;
 import me.aleiv.core.paper.listeners.ItemListener;
 import me.aleiv.core.paper.listeners.MechanicsListener;
-import me.aleiv.core.paper.listeners.PotatoListener;
-import me.aleiv.core.paper.listeners.RopeListener;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
@@ -85,8 +88,8 @@ public class Core extends JavaPlugin {
         NegativeSpaces.registerCodes();
         entityModelManager = new EntityModelManager(this);
         resourcePackManager = new ResourcePackManager(this);
-        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/e8520d9599c981837da0f6c2c7f39ef3b603028b.zip");
-        resourcePackManager.setResourcePackHash("e8520d9599c981837da0f6c2c7f39ef3b603028b");
+        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/502d587ba808f6145e9a04d9c755c8b9cf518ea9.zip");
+        resourcePackManager.setResourcePackHash("502d587ba808f6145e9a04d9c755c8b9cf518ea9");
 
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
@@ -124,12 +127,16 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new GlassCMD(this));
         commandManager.registerCommand(new PhoneCMD(this));
         commandManager.registerCommand(new CookieCMD(this));
+        commandManager.registerCommand(new ChickenCMD(this));
 
         commandManager.registerCommand(new UtilsCMD(this));
         commandManager.registerCommand(new SpecialCMD(this));
         commandManager.registerCommand(new TestCMD(this));
         commandManager.registerCommand(new PlayersCMD(this));
         commandManager.registerCommand(new ClothesCMD(this));
+        commandManager.registerCommand(new CinemaCMD(this));
+        commandManager.registerCommand(new DaysCMD(this));
+
 
 
         // Register skin command
