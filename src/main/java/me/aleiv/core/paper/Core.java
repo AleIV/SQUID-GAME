@@ -21,6 +21,7 @@ import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
 import me.aleiv.core.paper.Games.chair.ChairCMD;
 import me.aleiv.core.paper.Games.chair.ChairListener;
+import me.aleiv.core.paper.Games.chicken.ChickenCMD;
 import me.aleiv.core.paper.Games.cookie.CookieCMD;
 import me.aleiv.core.paper.Games.cookie.CookieGame;
 import me.aleiv.core.paper.Games.doll.DollCMD;
@@ -29,7 +30,7 @@ import me.aleiv.core.paper.Games.glass.GlassListener;
 import me.aleiv.core.paper.Games.hideseek.HideSeekCMD;
 import me.aleiv.core.paper.Games.phone.PhoneCMD;
 import me.aleiv.core.paper.Games.potato.PotatoCMD;
-import me.aleiv.core.paper.Games.rope.PotatoListener;
+import me.aleiv.core.paper.Games.potato.PotatoListener;
 import me.aleiv.core.paper.Games.rope.RopeCMD;
 import me.aleiv.core.paper.Games.rope.RopeListener;
 import me.aleiv.core.paper.commands.ClothesCMD;
@@ -40,6 +41,7 @@ import me.aleiv.core.paper.commands.SpecialCMD;
 import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.commands.TestCMD;
 import me.aleiv.core.paper.commands.UtilsCMD;
+import me.aleiv.core.paper.core.WebServer;
 import me.aleiv.core.paper.detection.CollisionManager;
 import me.aleiv.core.paper.listeners.CanceledListener;
 import me.aleiv.core.paper.listeners.GlobalListener;
@@ -84,14 +86,15 @@ public class Core extends JavaPlugin {
         NegativeSpaces.registerCodes();
         entityModelManager = new EntityModelManager(this);
         resourcePackManager = new ResourcePackManager(this);
-        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/e8520d9599c981837da0f6c2c7f39ef3b603028b.zip");
-        resourcePackManager.setResourcePackHash("e8520d9599c981837da0f6c2c7f39ef3b603028b");
+        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/502d587ba808f6145e9a04d9c755c8b9cf518ea9.zip");
+        resourcePackManager.setResourcePackHash("502d587ba808f6145e9a04d9c755c8b9cf518ea9");
 
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
 
         pullSpecialJson();
         pullParticipantJson();
+        startWebServer();
 
         // LISTENERS
 
@@ -122,6 +125,7 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new GlassCMD(this));
         commandManager.registerCommand(new PhoneCMD(this));
         commandManager.registerCommand(new CookieCMD(this));
+        commandManager.registerCommand(new ChickenCMD(this));
 
         commandManager.registerCommand(new UtilsCMD(this));
         commandManager.registerCommand(new SpecialCMD(this));
@@ -139,6 +143,10 @@ public class Core extends JavaPlugin {
 
         // Start effect manager
 
+    }
+
+    private void startWebServer() {
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> new WebServer(this, 80));
     }
 
     @Override

@@ -41,11 +41,7 @@ public class CookieListener implements Listener {
 
         CookieCapsule capsule = plugin.getGame().getCookieGame().getCapsule(player);
         if (capsule != null && capsule.isMounted()) {
-            if (capsule.isOnError()) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> e.getDismounted().addPassenger(player), 3L);
-            } else {
-                capsule.unmount(true);
-            }
+            capsule.unmount(true);
         }
     }
 
