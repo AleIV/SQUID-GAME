@@ -77,7 +77,7 @@ public class CinemaCMD extends BaseCommand {
                 cine.play(uuids, "GLASS");
             }
             case HIDESEEK -> {
-                cine.play(uuids, "HIDESEEK");
+                cine.play(uuids, "HIDE");
             }
             case INTRO -> {
                 cine.play(uuids, "PART1", "BOAT1", "ISLAND");

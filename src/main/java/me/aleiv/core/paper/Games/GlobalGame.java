@@ -6,6 +6,8 @@ import me.aleiv.core.paper.Game.GameStage;
 import me.aleiv.core.paper.Game.HideMode;
 import me.aleiv.core.paper.utilities.Frames;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import net.minecraft.server.v1_16_R3.ItemGlassBottle;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -14,6 +16,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.jcedeno.libs.rapidinv.ItemBuilder;
@@ -27,7 +30,6 @@ public class GlobalGame {
 
     public GlobalGame(Core instance) {
         this.instance = instance;
-
     }
 
     public enum Clothe {
@@ -68,7 +70,7 @@ public class GlobalGame {
                 inv.addItem(new ItemStack(Material.ARROW, 64));
 
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
-                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 
                 var harness = new ItemBuilder(Material.IRON_CHESTPLATE)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
@@ -108,7 +110,7 @@ public class GlobalGame {
                 inv.addItem(new ItemStack(Material.ARROW, 64));
 
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
-                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 
                 var chef = new ItemBuilder(Material.GOLDEN_CHESTPLATE)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
@@ -130,14 +132,14 @@ public class GlobalGame {
         switch (clothe) {
             case SMOKIN: {
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
-                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                        "GENERIC.MOVEMENT.SPEED", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 
-                var chest = new ItemBuilder(Material.LEATHER_CHESTPLATE)
-                        .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
+                var chest = new ItemBuilder(Material.LEATHER_CHESTPLATE).flags(ItemFlag.HIDE_ATTRIBUTES)
+                        .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, armor)).build();
 
                 equip.setChestplate(chest);
 
-                var legs = new ItemBuilder(Material.LEATHER_LEGGINGS)
+                var legs = new ItemBuilder(Material.LEATHER_LEGGINGS).flags(ItemFlag.HIDE_ATTRIBUTES)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
 
                 equip.setLeggings(legs);
@@ -147,14 +149,14 @@ public class GlobalGame {
 
             case UNIFORM: {
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
-                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                        "GENERIC.MOVEMENT.SPEED", -0.01, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 
-                var chest = new ItemBuilder(Material.DIAMOND_CHESTPLATE)
+                var chest = new ItemBuilder(Material.DIAMOND_CHESTPLATE).flags(ItemFlag.HIDE_ATTRIBUTES)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
 
                 equip.setChestplate(chest);
 
-                var legs = new ItemBuilder(Material.DIAMOND_LEGGINGS)
+                var legs = new ItemBuilder(Material.DIAMOND_LEGGINGS).flags(ItemFlag.HIDE_ATTRIBUTES)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
 
                 equip.setLeggings(legs);
@@ -163,14 +165,14 @@ public class GlobalGame {
 
             case GLASS: {
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
-                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 
-                var chest = new ItemBuilder(Material.CHAINMAIL_CHESTPLATE)
+                var chest = new ItemBuilder(Material.CHAINMAIL_CHESTPLATE).flags(ItemFlag.HIDE_ATTRIBUTES)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
 
                 equip.setChestplate(chest);
 
-                var legs = new ItemBuilder(Material.DIAMOND_LEGGINGS)
+                var legs = new ItemBuilder(Material.DIAMOND_LEGGINGS).flags(ItemFlag.HIDE_ATTRIBUTES)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
 
                 equip.setLeggings(legs);
@@ -183,7 +185,7 @@ public class GlobalGame {
                 equip.setHelmet(hat);
 
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
-                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 
                 var chest = new ItemBuilder(Material.DIAMOND_CHESTPLATE)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
@@ -204,14 +206,14 @@ public class GlobalGame {
                 equip.setHelmet(hat);
 
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
-                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 
                 var chest = new ItemBuilder(Material.NETHERITE_CHESTPLATE)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
 
                 equip.setChestplate(chest);
 
-                var legs = new ItemBuilder(Material.NETHERITE_LEGGINGS)
+                var legs = new ItemBuilder(Material.NETHERITE_LEGGINGS).flags(ItemFlag.HIDE_ATTRIBUTES)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
 
                 equip.setLeggings(legs);
@@ -225,14 +227,14 @@ public class GlobalGame {
                 equip.setHelmet(hat);
 
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
-                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 
-                var chest = new ItemBuilder(Material.NETHERITE_CHESTPLATE)
+                var chest = new ItemBuilder(Material.NETHERITE_CHESTPLATE).flags(ItemFlag.HIDE_ATTRIBUTES)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
 
                 equip.setChestplate(chest);
 
-                var legs = new ItemBuilder(Material.NETHERITE_LEGGINGS)
+                var legs = new ItemBuilder(Material.NETHERITE_LEGGINGS).flags(ItemFlag.HIDE_ATTRIBUTES)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
 
                 equip.setLeggings(legs);
@@ -246,14 +248,14 @@ public class GlobalGame {
                 equip.setHelmet(hat);
 
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
-                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+                        "GENERIC.ARMOR", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 
-                var chest = new ItemBuilder(Material.NETHERITE_CHESTPLATE)
+                var chest = new ItemBuilder(Material.NETHERITE_CHESTPLATE).flags(ItemFlag.HIDE_ATTRIBUTES)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
 
                 equip.setChestplate(chest);
 
-                var legs = new ItemBuilder(Material.NETHERITE_LEGGINGS)
+                var legs = new ItemBuilder(Material.NETHERITE_LEGGINGS).flags(ItemFlag.HIDE_ATTRIBUTES)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();
 
                 equip.setLeggings(legs);
