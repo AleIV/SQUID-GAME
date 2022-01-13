@@ -94,6 +94,7 @@ public class Core extends JavaPlugin {
         registerListener(new PotatoListener(this));
         registerListener(new GlassListener(this));
         registerListener(new ItemListener(this));
+        registerListener(new CinematicListener(this));
 
         // COMMANDS
 
