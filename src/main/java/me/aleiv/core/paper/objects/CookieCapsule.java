@@ -49,7 +49,7 @@ public class CookieCapsule {
     private CookieGame.CookieType cookieType;
 
     private Map artmapMap;
-    private ItemStack mapItem;
+    public ItemStack mapItem;
     private MapView mapView;
     private Canvas canvas;
 
