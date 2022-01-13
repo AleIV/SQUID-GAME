@@ -35,7 +35,7 @@ public class ItemListener implements Listener {
     @EventHandler
     public void onHelmet(PlayerInteractEvent e){
         var item = e.getItem();
-        if(item != null && item.getItemMeta().hasCustomModelData() && helmetModel.contains(item.getItemMeta().getCustomModelData())){
+        if(item != null && item.getItemMeta().hasCustomModelData() && helmetModel.contains(item.getItemMeta().getCustomModelData()) && item.getType() != Material.FERMENTED_SPIDER_EYE){
             var player = e.getPlayer();
             var equip = player.getEquipment();
             if(equip.getHelmet() == null){
