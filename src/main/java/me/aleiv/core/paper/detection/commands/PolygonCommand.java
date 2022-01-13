@@ -1,12 +1,5 @@
 package me.aleiv.core.paper.detection.commands;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
@@ -14,6 +7,12 @@ import co.aikar.commands.annotation.Subcommand;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.detection.CollisionManager;
 import me.aleiv.core.paper.detection.objects.Polygon;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @CommandAlias("polygon")
 public class PolygonCommand extends BaseCommand {

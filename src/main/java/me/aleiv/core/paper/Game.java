@@ -1,13 +1,5 @@
 package me.aleiv.core.paper;
 
-import java.util.HashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import me.aleiv.core.paper.Games.Elevators;
@@ -24,6 +16,13 @@ import me.aleiv.core.paper.events.GameTickEvent;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.objects.Participant.Role;
 import me.aleiv.core.paper.objects.Timer;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashMap;
 
 @Data
 @EqualsAndHashCode(callSuper = false)

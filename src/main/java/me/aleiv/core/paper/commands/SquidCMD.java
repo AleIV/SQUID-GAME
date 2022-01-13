@@ -1,8 +1,5 @@
 package me.aleiv.core.paper.commands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -15,6 +12,8 @@ import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.TimerType;
 import me.aleiv.core.paper.listeners.FrozeListener;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 
 @CommandAlias("squid")
 @CommandPermission("admin.perm")

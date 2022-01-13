@@ -1,10 +1,11 @@
 package me.aleiv.core.paper.vectors.commands;
 
-import java.util.HashMap;
-import java.util.UUID;
-
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.Subcommand;
 import com.destroystokyo.paper.ParticleBuilder;
-
+import me.aleiv.core.paper.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -12,11 +13,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.Subcommand;
-import me.aleiv.core.paper.Core;
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * A command design to play around with vectors in minecraft.

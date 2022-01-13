@@ -1,11 +1,10 @@
 package me.aleiv.core.paper.detection.objects;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 @Data
 @AllArgsConstructor(staticName = "of")

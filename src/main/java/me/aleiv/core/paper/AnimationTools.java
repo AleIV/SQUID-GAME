@@ -1,44 +1,26 @@
 package me.aleiv.core.paper;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-
 import com.destroystokyo.paper.ParticleBuilder;
-
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.World;
+import me.aleiv.core.paper.Game.DeathReason;
+import me.aleiv.core.paper.objects.NoteBlockData;
+import me.aleiv.core.paper.objects.OffSet;
+import me.aleiv.core.paper.utilities.LineVector;
+import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import org.bukkit.*;
 import org.bukkit.block.data.type.NoteBlock;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-
-import me.aleiv.core.paper.Game.DeathReason;
-import me.aleiv.core.paper.objects.NoteBlockData;
-import me.aleiv.core.paper.objects.OffSet;
-import me.aleiv.core.paper.utilities.LineVector;
-import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import us.jcedeno.libs.rapidinv.ItemBuilder;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 
 public class AnimationTools {

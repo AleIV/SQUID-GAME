@@ -1,19 +1,14 @@
 package me.aleiv.core.paper.detection;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-
 import lombok.Getter;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.detection.commands.PolygonCommand;
 import me.aleiv.core.paper.detection.listeners.PolygonListener;
 import me.aleiv.core.paper.detection.objects.Polygon;
 import me.aleiv.core.paper.detection.task.CheckCollisionsTask;
+import org.bukkit.Bukkit;
+
+import java.util.*;
 
 public class CollisionManager {
     private Core instance;

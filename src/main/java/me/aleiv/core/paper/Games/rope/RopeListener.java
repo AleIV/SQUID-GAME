@@ -1,7 +1,11 @@
 package me.aleiv.core.paper.Games.rope;
 
-import java.util.Random;
-
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.events.LeftWinsEvent;
+import me.aleiv.core.paper.events.RightWinsEvent;
+import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -11,12 +15,7 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.events.LeftWinsEvent;
-import me.aleiv.core.paper.events.RightWinsEvent;
-import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
-import net.md_5.bungee.api.ChatColor;
+import java.util.Random;
 
 public class RopeListener implements Listener {
 

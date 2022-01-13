@@ -1,12 +1,11 @@
 package me.aleiv.core.paper.utilities;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.util.Vector;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Helper class that represent a line in 3D space.

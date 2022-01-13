@@ -1,7 +1,5 @@
 package me.aleiv.core.paper.Games.chair;
 
-import org.bukkit.command.CommandSender;
-
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -9,6 +7,7 @@ import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.command.CommandSender;
 
 @CommandAlias("chair")
 @CommandPermission("admin.perm")

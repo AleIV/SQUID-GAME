@@ -1,12 +1,11 @@
 package me.aleiv.core.paper.Games.doll;
 
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
 
 public class GreenLightListener implements Listener {
 

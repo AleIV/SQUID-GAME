@@ -1,9 +1,9 @@
 package me.aleiv.core.paper.utilities.TCT;
 
-import java.util.concurrent.CompletableFuture;
-
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * BukkitTCT - Quick and dirty way to run tasks asynchronously and synchronously

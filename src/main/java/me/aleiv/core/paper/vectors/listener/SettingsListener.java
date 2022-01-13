@@ -1,11 +1,10 @@
 package me.aleiv.core.paper.vectors.listener;
 
+import me.aleiv.core.paper.vectors.VectorsManager;
+import me.aleiv.core.paper.vectors.objects.VectorSettings;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import me.aleiv.core.paper.vectors.VectorsManager;
-import me.aleiv.core.paper.vectors.objects.VectorSettings;
 
 public class SettingsListener implements Listener {
     private VectorsManager vectorsManager;

@@ -1,17 +1,14 @@
 package me.aleiv.core.paper.core;
 
-import com.google.gson.JsonObject;
 import fi.iki.elonen.NanoHTTPD;
 import me.aleiv.core.paper.Core;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
 public class WebServer extends NanoHTTPD {
 

@@ -1,7 +1,7 @@
 package me.aleiv.core.paper.listeners;
 
-import java.util.List;
-
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
@@ -18,10 +18,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
 import us.jcedeno.libs.rapidinv.ItemBuilder;
+
+import java.util.List;
 
 public class ItemListener implements Listener {
 

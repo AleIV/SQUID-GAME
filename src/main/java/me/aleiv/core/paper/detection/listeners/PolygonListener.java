@@ -1,12 +1,11 @@
 package me.aleiv.core.paper.detection.listeners;
 
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-
 import me.aleiv.core.paper.detection.events.PlayerEnterPolygonEvent;
 import me.aleiv.core.paper.detection.events.PlayerExitPloygonEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 public class PolygonListener implements Listener {
 

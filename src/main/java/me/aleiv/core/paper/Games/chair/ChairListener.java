@@ -1,10 +1,9 @@
 package me.aleiv.core.paper.Games.chair;
 
 
-import java.util.List;
-
 import com.destroystokyo.paper.ParticleBuilder;
-
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.events.GameTickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.ArmorStand;
@@ -12,8 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.events.GameTickEvent;
+import java.util.List;
 
 public class ChairListener implements Listener {
 

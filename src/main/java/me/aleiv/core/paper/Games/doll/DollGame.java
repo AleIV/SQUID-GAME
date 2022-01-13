@@ -1,11 +1,5 @@
 package me.aleiv.core.paper.Games.doll;
 
-import java.util.HashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +7,11 @@ import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.TimerType;
 import me.aleiv.core.paper.objects.GreenLightPanel;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+
+import java.util.HashMap;
 
 @Data
 public class DollGame {

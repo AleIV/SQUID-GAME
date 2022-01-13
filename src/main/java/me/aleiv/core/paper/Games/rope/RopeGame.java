@@ -1,9 +1,11 @@
 package me.aleiv.core.paper.Games.rope;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
+import lombok.Data;
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.events.LeftWinsEvent;
+import me.aleiv.core.paper.events.RightWinsEvent;
+import me.aleiv.core.paper.utilities.NegativeSpaces;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,12 +19,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import lombok.Data;
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.events.LeftWinsEvent;
-import me.aleiv.core.paper.events.RightWinsEvent;
-import me.aleiv.core.paper.utilities.NegativeSpaces;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Data
 public class RopeGame {

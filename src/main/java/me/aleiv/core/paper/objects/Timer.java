@@ -1,8 +1,10 @@
 package me.aleiv.core.paper.objects;
 
-import java.util.HashMap;
-import java.util.List;
-
+import lombok.Getter;
+import lombok.Setter;
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Game.TimerType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -10,11 +12,8 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
-import lombok.Getter;
-import lombok.Setter;
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Game.TimerType;
+import java.util.HashMap;
+import java.util.List;
 
 public class Timer {
 

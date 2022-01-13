@@ -2,14 +2,13 @@ package me.aleiv.core.paper.Games.cookie;
 
 import lombok.Getter;
 import me.Fupery.ArtMap.ArtMap;
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.objects.CookieCapsule;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;

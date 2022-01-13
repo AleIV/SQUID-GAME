@@ -1,8 +1,7 @@
 package me.aleiv.core.paper.detection.events;
 
-import org.bukkit.entity.Player;
-
 import me.aleiv.core.paper.detection.objects.Polygon;
+import org.bukkit.entity.Player;
 
 /**
  * This event is called when a player enters a polygon.

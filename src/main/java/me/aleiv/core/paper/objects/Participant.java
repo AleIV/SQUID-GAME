@@ -1,12 +1,11 @@
 package me.aleiv.core.paper.objects;
 
-import java.util.Collection;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-
 import lombok.Data;
 import me.aleiv.core.paper.Core;
+import org.bukkit.Bukkit;
+
+import java.util.Collection;
+import java.util.UUID;
 
 @Data   
 public class Participant {

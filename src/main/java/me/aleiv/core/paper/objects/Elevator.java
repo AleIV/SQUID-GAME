@@ -1,15 +1,14 @@
 package me.aleiv.core.paper.objects;
 
-import java.util.List;
-
+import lombok.Data;
+import me.aleiv.core.paper.AnimationTools;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import lombok.Data;
-import me.aleiv.core.paper.AnimationTools;
+import java.util.List;
 
 @Data
 public class Elevator {

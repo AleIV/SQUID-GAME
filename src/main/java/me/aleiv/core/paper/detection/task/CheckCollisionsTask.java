@@ -1,12 +1,11 @@
 package me.aleiv.core.paper.detection.task;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import me.aleiv.core.paper.detection.CollisionManager;
 import me.aleiv.core.paper.detection.events.PlayerEnterPolygonEvent;
 import me.aleiv.core.paper.detection.events.PlayerExitPloygonEvent;
 import me.aleiv.core.paper.detection.objects.Polygon;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class CheckCollisionsTask implements Runnable {
     private CollisionManager collisionManager;

@@ -1,14 +1,13 @@
 package me.aleiv.core.paper.Games.chair;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-
 import lombok.Getter;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChairGame {
     Core instance;

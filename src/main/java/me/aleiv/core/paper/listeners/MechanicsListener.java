@@ -1,13 +1,12 @@
 package me.aleiv.core.paper.listeners;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.GameStage;
 import me.aleiv.core.paper.Games.GlobalGame.Clothe;
 import me.aleiv.core.paper.objects.Participant.Role;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 public class MechanicsListener implements Listener {
 

@@ -1,15 +1,5 @@
 package me.aleiv.core.paper.vectors;
 
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Particle;
-import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
-
 import lombok.Getter;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.vectors.commands.VectorSettingsCommand;
@@ -19,6 +9,15 @@ import me.aleiv.core.paper.vectors.objects.VectorSettings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
+import org.bukkit.Particle;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
+
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * 

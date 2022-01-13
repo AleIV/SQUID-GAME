@@ -1,10 +1,10 @@
 package me.aleiv.core.paper.objects;
 
-import java.util.List;
-
 import org.bukkit.Instrument;
 import org.bukkit.Note;
 import org.bukkit.Note.Tone;
+
+import java.util.List;
 
 public class NoteBlockData {
     int octave;

@@ -1,11 +1,10 @@
 package me.aleiv.core.paper.detection.events;
 
+import lombok.Getter;
+import me.aleiv.core.paper.detection.objects.Polygon;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-
-import lombok.Getter;
-import me.aleiv.core.paper.detection.objects.Polygon;
 
 public class BaseEvent extends Event {
 

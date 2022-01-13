@@ -1,22 +1,11 @@
 package me.aleiv.core.paper;
 
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
+import co.aikar.commands.PaperCommandManager;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import co.aikar.commands.PaperCommandManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
 import me.aleiv.core.paper.Games.chair.ChairCMD;
@@ -33,23 +22,10 @@ import me.aleiv.core.paper.Games.potato.PotatoCMD;
 import me.aleiv.core.paper.Games.potato.PotatoListener;
 import me.aleiv.core.paper.Games.rope.RopeCMD;
 import me.aleiv.core.paper.Games.rope.RopeListener;
-import me.aleiv.core.paper.commands.CinemaCMD;
-import me.aleiv.core.paper.commands.ClothesCMD;
-import me.aleiv.core.paper.commands.DaysCMD;
-import me.aleiv.core.paper.commands.ElevatorsCMD;
-import me.aleiv.core.paper.commands.MainCMD;
-import me.aleiv.core.paper.commands.PlayersCMD;
-import me.aleiv.core.paper.commands.SpecialCMD;
-import me.aleiv.core.paper.commands.SquidCMD;
-import me.aleiv.core.paper.commands.TestCMD;
-import me.aleiv.core.paper.commands.UtilsCMD;
+import me.aleiv.core.paper.commands.*;
 import me.aleiv.core.paper.core.WebServer;
 import me.aleiv.core.paper.detection.CollisionManager;
-import me.aleiv.core.paper.listeners.CanceledListener;
-import me.aleiv.core.paper.listeners.GlobalListener;
-import me.aleiv.core.paper.listeners.HideListener;
-import me.aleiv.core.paper.listeners.ItemListener;
-import me.aleiv.core.paper.listeners.MechanicsListener;
+import me.aleiv.core.paper.listeners.*;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
@@ -61,7 +37,16 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
 import us.jcedeno.libs.rapidinv.RapidInvManager;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @SpigotPlugin
 public class Core extends JavaPlugin {

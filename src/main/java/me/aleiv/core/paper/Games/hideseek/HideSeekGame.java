@@ -1,10 +1,9 @@
 package me.aleiv.core.paper.Games.hideseek;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 
 public class HideSeekGame {
     Core instance;

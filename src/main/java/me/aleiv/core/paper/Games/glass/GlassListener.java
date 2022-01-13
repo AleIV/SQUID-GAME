@@ -1,11 +1,10 @@
 package me.aleiv.core.paper.Games.glass;
 
+import me.aleiv.core.paper.Core;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-
-import me.aleiv.core.paper.Core;
 
 public class GlassListener implements Listener {
 

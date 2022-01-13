@@ -1,14 +1,13 @@
 package me.aleiv.core.paper.Games;
 
-import java.util.HashMap;
-
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.objects.Elevator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.objects.Elevator;
+import java.util.HashMap;
 
 public class Elevators {
     Core instance;

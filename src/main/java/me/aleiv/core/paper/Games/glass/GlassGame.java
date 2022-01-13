@@ -1,7 +1,9 @@
 package me.aleiv.core.paper.Games.glass;
 
 import com.destroystokyo.paper.ParticleBuilder;
-
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -9,10 +11,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 
 public class GlassGame {
     Core instance;
