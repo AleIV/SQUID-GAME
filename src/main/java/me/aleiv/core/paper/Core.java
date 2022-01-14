@@ -138,7 +138,7 @@ public class Core extends JavaPlugin {
     }
 
     private void startWebServer() {
-        Bukkit.getScheduler().runTaskAsynchronously(this, () -> new WebServer(this, 80));
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> new WebServer(this, 70));
     }
 
     @Override
