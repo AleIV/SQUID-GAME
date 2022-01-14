@@ -1,27 +1,44 @@
 package me.aleiv.core.paper;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
 import com.destroystokyo.paper.ParticleBuilder;
-import me.aleiv.core.paper.Game.DeathReason;
-import me.aleiv.core.paper.objects.NoteBlockData;
-import me.aleiv.core.paper.objects.OffSet;
-import me.aleiv.core.paper.utilities.LineVector;
-import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
-import org.bukkit.*;
+
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Instrument;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.block.data.type.NoteBlock;
-import org.bukkit.entity.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+
+import me.aleiv.core.paper.Game.DeathReason;
+import me.aleiv.core.paper.objects.NoteBlockData;
+import me.aleiv.core.paper.objects.OffSet;
+import me.aleiv.core.paper.utilities.LineVector;
+import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import us.jcedeno.libs.rapidinv.ItemBuilder;
-
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-
 
 public class AnimationTools {
 
@@ -75,14 +92,24 @@ public class AnimationTools {
         player.sleep(loc, true);
     }
 
-    public static void forceSleep(List<Player> players, List<Location> beds) {
+    public static CompletableFuture<Boolean> forceSleep(List<Player> players, List<Location> beds) {
         var random = new Random();
 
+        var task = new BukkitTCT();
         for (var player : players) {
-            var index = random.nextInt(beds.size());
-            var bed = beds.remove(index);
-            forceSleep(player, bed);
+            task.addWithDelay(new BukkitRunnable() {
+                @Override
+                public void run() {
+                    var index = random.nextInt(beds.size());
+                    var bed = beds.remove(index);
+                    player.setGameMode(GameMode.ADVENTURE);
+                    forceSleep(player, bed);
+                }
+            }, 50);
+
         }
+
+        return task.execute();
     }
 
     public static List<Location> findLocations(String str) {
@@ -93,11 +120,12 @@ public class AnimationTools {
 
     public static List<Location> findOrderedLocations(String str) {
         var world = Bukkit.getWorld("world");
-        var entry = specialObjects.entrySet().stream().filter(e -> e.getKey().contains(str)).collect(Collectors.toList());
+        var entry = specialObjects.entrySet().stream().filter(e -> e.getKey().contains(str))
+                .collect(Collectors.toList());
 
         Collections.sort(entry, new Comparator<Entry<String, String>>() {
             @Override
-            public int compare(Entry<String, String> p1, Entry<String, String> p2){
+            public int compare(Entry<String, String> p1, Entry<String, String> p2) {
                 var s1 = p1.getKey().split("_");
                 Integer n1 = Integer.parseInt(s1[1]);
 
@@ -111,10 +139,11 @@ public class AnimationTools {
         return entry.stream().map(e -> parseLocation(e.getValue(), world)).toList();
     }
 
-    public static void setStandModel(ArmorStand stand, Material material, Integer model){
+    public static void setStandModel(ArmorStand stand, Material material, Integer model) {
         var equip = stand.getEquipment();
 
-        var item = material == Material.AIR ? null : new ItemBuilder(material).meta(meta -> meta.setCustomModelData(model)).build();
+        var item = material == Material.AIR ? null
+                : new ItemBuilder(material).meta(meta -> meta.setCustomModelData(model)).build();
         equip.setHelmet(item);
     }
 
@@ -142,9 +171,9 @@ public class AnimationTools {
         var loc = player.getLocation();
         var locations = findLocations("WALL_GUN");
         var wallGun = getNearbyLocation(locations, loc);
-        //var vector = getVector(loc.add(0, 1.40, 0), wallGun);
+        // var vector = getVector(loc.add(0, 1.40, 0), wallGun);
 
-        //wallGun.getWorld().spawnArrow(wallGun, vector, 20, 0);
+        // wallGun.getWorld().spawnArrow(wallGun, vector, 20, 0);
         AnimationTools.playSoundDistance(wallGun, 300, "squid:sfx.dramatic_shot", 1f, 1f);
         var origin = wallGun.toVector();
         var target = loc.toVector();
@@ -166,9 +195,9 @@ public class AnimationTools {
 
     public static Vector superNormalize(Vector vector) {
         var newVector = vector;
-        newVector.setX(vector.getX()*0.02);
-        newVector.setY(vector.getY()*0.02);
-        newVector.setZ(vector.getZ()*0.02);
+        newVector.setX(vector.getX() * 0.02);
+        newVector.setY(vector.getY() * 0.02);
+        newVector.setZ(vector.getZ() * 0.02);
         return newVector;
     }
 
@@ -205,23 +234,23 @@ public class AnimationTools {
                     var l2 = loc2.clone();
 
                     switch (pos) {
-                    case 'x': {
-                        l1.setX(x1 + v1);
-                        l2.setX(x2 + -v2);
-                    }
-                        break;
-                    case 'y': {
-                        l1.setY(y1 + v1);
-                        l2.setY(y2 + -v2);
-                    }
-                        break;
-                    case 'z':
-                        l1.setZ(z1 + v1);
-                        l2.setZ(z2 + -v2);
-                        break;
+                        case 'x': {
+                            l1.setX(x1 + v1);
+                            l2.setX(x2 + -v2);
+                        }
+                            break;
+                        case 'y': {
+                            l1.setY(y1 + v1);
+                            l2.setY(y2 + -v2);
+                        }
+                            break;
+                        case 'z':
+                            l1.setZ(z1 + v1);
+                            l2.setZ(z2 + -v2);
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
                     }
                     stand1.teleport(l1);
                     stand2.teleport(l2);
@@ -251,18 +280,18 @@ public class AnimationTools {
                     var v = value < 0 ? -distance : distance;
                     var l = loc.clone();
                     switch (pos) {
-                    case 'x':
-                        l.setX(x + v);
-                        break;
-                    case 'y':
-                        l.setY(y + v);
-                        break;
-                    case 'z':
-                        l.setZ(z + v);
-                        break;
+                        case 'x':
+                            l.setX(x + v);
+                            break;
+                        case 'y':
+                            l.setY(y + v);
+                            break;
+                        case 'z':
+                            l.setZ(z + v);
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
                     }
                     stand.teleport(l);
                 }
@@ -292,18 +321,18 @@ public class AnimationTools {
                         var v = value < 0 ? -distance : distance;
                         var l = loc.clone();
                         switch (pos) {
-                        case 'x':
-                            l.setX(x + v);
-                            break;
-                        case 'y':
-                            l.setY(y + v);
-                            break;
-                        case 'z':
-                            l.setZ(z + v);
-                            break;
+                            case 'x':
+                                l.setX(x + v);
+                                break;
+                            case 'y':
+                                l.setY(y + v);
+                                break;
+                            case 'z':
+                                l.setZ(z + v);
+                                break;
 
-                        default:
-                            break;
+                            default:
+                                break;
                         }
                         stand.teleport(l);
                     });
@@ -313,7 +342,8 @@ public class AnimationTools {
         return task.execute();
     }
 
-    public static CompletableFuture<Boolean> moveEntitys(List<Entity> entitys, Integer value, Integer tickSpeed, char pos, Float distance) {
+    public static CompletableFuture<Boolean> moveEntitys(List<Entity> entitys, Integer value, Integer tickSpeed,
+            char pos, Float distance) {
         var task = new BukkitTCT();
         var v = Math.abs(value);
         for (int i = 0; i < v; i++) {
@@ -328,18 +358,18 @@ public class AnimationTools {
                         var v = value < 0 ? -distance : distance;
                         var l = loc.clone();
                         switch (pos) {
-                        case 'x':
-                            l.setX(x + v);
-                            break;
-                        case 'y':
-                            l.setY(y + v);
-                            break;
-                        case 'z':
-                            l.setZ(z + v);
-                            break;
+                            case 'x':
+                                l.setX(x + v);
+                                break;
+                            case 'y':
+                                l.setY(y + v);
+                                break;
+                            case 'z':
+                                l.setZ(z + v);
+                                break;
 
-                        default:
-                            break;
+                            default:
+                                break;
                         }
                         stand.teleport(l);
                     });
@@ -426,14 +456,14 @@ public class AnimationTools {
         });
     }
 
-    public static ArmorStand getArmorStand(String stand){
+    public static ArmorStand getArmorStand(String stand) {
         var uuid = UUID.fromString(specialObjects.get(stand));
-        return (ArmorStand) Bukkit.getWorld("world").getEntity(uuid); 
+        return (ArmorStand) Bukkit.getWorld("world").getEntity(uuid);
     }
 
-    public static Entity getEntity(String entity){
+    public static Entity getEntity(String entity) {
         var uuid = UUID.fromString(specialObjects.get(entity));
-        return Bukkit.getWorld("world").getEntity(uuid); 
+        return Bukkit.getWorld("world").getEntity(uuid);
     }
 
     public static void setScreenValue(List<Location> locations, String str) {
@@ -512,8 +542,9 @@ public class AnimationTools {
                 .map(p -> (Player) p).toList();
     }
 
-    public static List<Player> getPlayersAdventureInsideCube(Location pos1, Location pos2){
-        return getPlayersInsideCube(pos1, pos2).stream().filter(player -> player.getGameMode() == GameMode.ADVENTURE).toList();
+    public static List<Player> getPlayersAdventureInsideCube(Location pos1, Location pos2) {
+        return getPlayersInsideCube(pos1, pos2).stream().filter(player -> player.getGameMode() == GameMode.ADVENTURE)
+                .toList();
     }
 
     public static ArmorStand getFormattedStand(World world, Location loc) {
@@ -538,100 +569,102 @@ public class AnimationTools {
                 .meta(SkullMeta.class, meta -> meta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid))).build();
 
         switch (deathReason) {
-        case EXPLOSION -> {
+            case EXPLOSION -> {
 
-            var part = AnimationTools.getFormattedStand(world, loc);
-            var equip = part.getEquipment();
-            equip.setItemInOffHand(getModelItem(Material.LEATHER, 1));
-            part.setVelocity(getRandomVector(3).normalize());
+                var part = AnimationTools.getFormattedStand(world, loc);
+                var equip = part.getEquipment();
+                equip.setItemInOffHand(getModelItem(Material.LEATHER, 1));
+                part.setVelocity(getRandomVector(3).normalize());
 
-            part = AnimationTools.getFormattedStand(world, loc);
-            equip = part.getEquipment();
-            equip.setItemInOffHand(getModelItem(Material.LEATHER, 2));
-            part.setVelocity(getRandomVector(3).normalize());
+                part = AnimationTools.getFormattedStand(world, loc);
+                equip = part.getEquipment();
+                equip.setItemInOffHand(getModelItem(Material.LEATHER, 2));
+                part.setVelocity(getRandomVector(3).normalize());
 
-            part = AnimationTools.getFormattedStand(world, loc);
-            equip = part.getEquipment();
-            equip.setItemInOffHand(getModelItem(Material.LEATHER, 3));
-            part.setVelocity(getRandomVector(3).normalize());
+                part = AnimationTools.getFormattedStand(world, loc);
+                equip = part.getEquipment();
+                equip.setItemInOffHand(getModelItem(Material.LEATHER, 3));
+                part.setVelocity(getRandomVector(3).normalize());
 
-            part = AnimationTools.getFormattedStand(world, loc);
-            equip = part.getEquipment();
-            equip.setItemInOffHand(getModelItem(Material.LEATHER, 4));
-            part.setVelocity(getRandomVector(3).normalize());
+                part = AnimationTools.getFormattedStand(world, loc);
+                equip = part.getEquipment();
+                equip.setItemInOffHand(getModelItem(Material.LEATHER, 4));
+                part.setVelocity(getRandomVector(3).normalize());
 
-            part = AnimationTools.getFormattedStand(world, loc);
-            equip = part.getEquipment();
-            equip.setItemInOffHand(getModelItem(Material.LEATHER, 5));
-            part.setVelocity(getRandomVector(3).normalize());
+                part = AnimationTools.getFormattedStand(world, loc);
+                equip = part.getEquipment();
+                equip.setItemInOffHand(getModelItem(Material.LEATHER, 5));
+                part.setVelocity(getRandomVector(3).normalize());
 
-            part = AnimationTools.getFormattedStand(world, loc);
-            equip = part.getEquipment();
-            equip.setItemInOffHand(head);
-            part.setVelocity(getRandomVector(3).normalize());
-
-            new ParticleBuilder(Particle.TOTEM).location(loc).receivers(300).force(true).count(1000).offset(1, 1, 1)
-                    .extra(0.5).spawn();
-
-        }
-        case PROJECTILE -> {
-            if (random.nextInt(7) < 2) {
-                var body = new ItemBuilder(Material.LEATHER)
-                        .meta(meta -> meta.setCustomModelData(random.nextInt(2)+11)).build();
-
-                var stand = AnimationTools.getFormattedStand(world, loc);
-                var equip = stand.getEquipment();
-                equip.setItemInOffHand(body);
-                equip.setItemInMainHand(head);
-
-                var vector = projectile.getVelocity();
-                vector.normalize();
-                stand.setVelocity(vector);
-                return stand;
-
-            } else {
-                var body = new ItemBuilder(Material.LEATHER)
-                        .meta(meta -> meta.setCustomModelData(random.nextInt(4) + 6)).build();
-
-                var stand = AnimationTools.getFormattedStand(world, loc);
-                var equip = stand.getEquipment();
+                part = AnimationTools.getFormattedStand(world, loc);
+                equip = part.getEquipment();
                 equip.setItemInOffHand(head);
-                equip.setItemInMainHand(body);
+                part.setVelocity(getRandomVector(3).normalize());
 
-                var vector = projectile.getVelocity();
-                vector.normalize();
-                stand.setVelocity(vector);
-                return stand;
+                new ParticleBuilder(Particle.TOTEM).location(loc).receivers(300).force(true).count(1000).offset(1, 1, 1)
+                        .extra(0.5).spawn();
 
             }
+            case PROJECTILE -> {
+                if (random.nextInt(7) < 2) {
+                    var body = new ItemBuilder(Material.LEATHER)
+                            .meta(meta -> meta.setCustomModelData(random.nextInt(2) + 11)).build();
 
-        }
-        case NORMAL -> {
-            if (random.nextInt(7) < 2) {
-                var body = new ItemBuilder(Material.LEATHER).meta(meta -> meta.setCustomModelData(random.nextInt(2) + 11)).build();
+                    var stand = AnimationTools.getFormattedStand(world, loc);
+                    var equip = stand.getEquipment();
+                    equip.setItemInOffHand(body);
+                    equip.setItemInMainHand(head);
 
-                var stand = AnimationTools.getFormattedStand(world, loc);
-                var equip = stand.getEquipment();
-                equip.setItemInOffHand(body);
-                equip.setItemInMainHand(head);
-    
-                stand.setVelocity(getRandomVector(1).normalize());
-    
-                return stand;
-            } else {
-                var body = new ItemBuilder(Material.LEATHER).meta(meta -> meta.setCustomModelData(random.nextInt(4) + 6)).build();
+                    var vector = projectile.getVelocity();
+                    vector.normalize();
+                    stand.setVelocity(vector);
+                    return stand;
 
-                var stand = AnimationTools.getFormattedStand(world, loc);
-                var equip = stand.getEquipment();
-                equip.setItemInOffHand(head);
-                equip.setItemInMainHand(body);
-    
-                stand.setVelocity(getRandomVector(1).normalize());
-    
-                return stand;
+                } else {
+                    var body = new ItemBuilder(Material.LEATHER)
+                            .meta(meta -> meta.setCustomModelData(random.nextInt(4) + 6)).build();
+
+                    var stand = AnimationTools.getFormattedStand(world, loc);
+                    var equip = stand.getEquipment();
+                    equip.setItemInOffHand(head);
+                    equip.setItemInMainHand(body);
+
+                    var vector = projectile.getVelocity();
+                    vector.normalize();
+                    stand.setVelocity(vector);
+                    return stand;
+
+                }
+
             }
+            case NORMAL -> {
+                if (random.nextInt(7) < 2) {
+                    var body = new ItemBuilder(Material.LEATHER)
+                            .meta(meta -> meta.setCustomModelData(random.nextInt(2) + 11)).build();
 
-        }
+                    var stand = AnimationTools.getFormattedStand(world, loc);
+                    var equip = stand.getEquipment();
+                    equip.setItemInOffHand(body);
+                    equip.setItemInMainHand(head);
+
+                    stand.setVelocity(getRandomVector(1).normalize());
+
+                    return stand;
+                } else {
+                    var body = new ItemBuilder(Material.LEATHER)
+                            .meta(meta -> meta.setCustomModelData(random.nextInt(4) + 6)).build();
+
+                    var stand = AnimationTools.getFormattedStand(world, loc);
+                    var equip = stand.getEquipment();
+                    equip.setItemInOffHand(head);
+                    equip.setItemInMainHand(body);
+
+                    stand.setVelocity(getRandomVector(1).normalize());
+
+                    return stand;
+                }
+
+            }
         }
 
         return null;
@@ -671,21 +704,23 @@ public class AnimationTools {
 
     public static void sendCredits(final Player player) {
         /*
-        final PacketContainer packet = new PacketContainer(PacketType.Play.Server.GAME_STATE_CHANGE);
-        packet.getSpecificModifier(PacketPlayOutGameStateChange.a.class).write(0, PacketPlayOutGameStateChange.e);
-
-        packet.getFloat().write(0, 1.0f);
-
-        try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
-
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(
-                "Cannot send packet " + packet, e);
-        }*/
+         * final PacketContainer packet = new
+         * PacketContainer(PacketType.Play.Server.GAME_STATE_CHANGE);
+         * packet.getSpecificModifier(PacketPlayOutGameStateChange.a.class).write(0,
+         * PacketPlayOutGameStateChange.e);
+         * 
+         * packet.getFloat().write(0, 1.0f);
+         * 
+         * try {
+         * ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
+         * 
+         * } catch (InvocationTargetException e) {
+         * throw new RuntimeException(
+         * "Cannot send packet " + packet, e);
+         * }
+         */
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "credits " + player.getName().toString());
 
-        
     }
 
 }

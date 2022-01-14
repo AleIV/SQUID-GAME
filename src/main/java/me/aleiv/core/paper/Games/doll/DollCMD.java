@@ -41,6 +41,10 @@ public class DollCMD extends BaseCommand {
     @CommandCompletion("@players")
     public void shoot(Player sender, @Name("target") @Optional @Flags("other") Player target) {
         AnimationTools.shootLocation(target);
+        var effects = instance.getGame().getEffects();
+        var targetLoc = target.getLocation();
+        var players = targetLoc.getNearbyPlayers(7).stream().toList();
+        effects.blood(players);
 
     }
 

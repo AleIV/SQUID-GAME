@@ -1,12 +1,8 @@
 package me.aleiv.core.paper.Games;
 
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Game.GameStage;
-import me.aleiv.core.paper.Game.HideMode;
-import me.aleiv.core.paper.utilities.Frames;
-import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
-import net.minecraft.server.v1_16_R3.ItemGlassBottle;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -19,11 +15,13 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import us.jcedeno.libs.rapidinv.ItemBuilder;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.events.GameStartedEvent;
+import me.aleiv.core.paper.utilities.Frames;
+import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import us.jcedeno.libs.rapidinv.ItemBuilder;
 
 public class GlobalGame {
     Core instance;
@@ -293,7 +291,7 @@ public class GlobalGame {
         var players = Bukkit.getOnlinePlayers();
         var participants = players.stream().filter(player -> game.isPlayer(player)).map(player -> (Player) player)
                 .toList();
-        var guards = players.stream().filter(player -> game.isGuard(player)).map(player -> (Player) player).toList();
+        var guards = players.stream().filter(player -> game.isGuard(player)).filter(p -> p.getGameMode() != GameMode.SPECTATOR).map(player -> (Player) player).toList();
 
         AnimationTools.forceSleep(participants, beds);
         AnimationTools.forceSleep(guards, guardBeds);
@@ -304,8 +302,6 @@ public class GlobalGame {
     }
 
     public void playSquidGameStart() {
-        var game = instance.getGame();
-        var mainRoom = game.getMainRoom();
         var task = new BukkitTCT();
 
         for (int i = 0; i < 160; i++) {
@@ -321,33 +317,8 @@ public class GlobalGame {
 
         var tk = task.execute();
         tk.thenAccept(action -> {
-            Bukkit.getScheduler().runTask(instance, tks -> {
-                game.setHideMode(HideMode.INGAME);
-                game.setGameStage(GameStage.INGAME);
-                game.refreshHide();
-
-                Bukkit.getWorlds().forEach(world -> {
-                    world.setTime(20000);
-                });
-
-                var allPlayers = Bukkit.getOnlinePlayers();
-
-                allPlayers.forEach(player -> {
-                    player.teleport(new Location(Bukkit.getWorld("world"), 232, 6, -80));
-                    instance.sendActionBar(player, Character.toString('\u3400') + "");
-                    player.setGameMode(GameMode.ADVENTURE);
-                    var inv = player.getInventory();
-                    inv.clear();
-
-                });
-
-                try {
-                    makeAllSleep();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                mainRoom.lights(true);
+            Bukkit.getScheduler().runTask(instance, t ->{
+                Bukkit.getPluginManager().callEvent(new GameStartedEvent());
             });
         });
 

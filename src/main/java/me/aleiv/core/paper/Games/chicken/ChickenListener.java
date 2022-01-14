@@ -45,8 +45,15 @@ public class ChickenListener implements Listener {
         Bukkit.getOnlinePlayers().forEach(player ->{
             var equip = player.getEquipment();
             var helmet = equip.getHelmet();
+            var y = player.getLocation().getY();
             if(helmet != null && helmet.hasItemMeta() && helmet.getItemMeta().hasCustomModelData() && helmet.getItemMeta().getCustomModelData() == 24){
-                instance.showTitle(player, f, "", 0, 60, 0);
+                if(y <= 45 ){
+                    instance.showTitle(player, Character.toString('\u0273') + "", "", 0, 60, 0);
+    
+                }else{
+                    instance.showTitle(player, f, "", 0, 60, 0);
+                }
+                
             }
         });
         

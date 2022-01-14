@@ -2,6 +2,7 @@ package me.aleiv.core.paper;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.aleiv.core.paper.Games.Effects;
 import me.aleiv.core.paper.Games.Elevators;
 import me.aleiv.core.paper.Games.GlobalGame;
 import me.aleiv.core.paper.Games.MainRoom;
@@ -38,6 +39,7 @@ public class Game extends BukkitRunnable {
 
     //GAMES
     GlobalGame globalGame;
+    Effects effects;
 
     MainRoom mainRoom;
     DollGame dollGame;
@@ -70,6 +72,7 @@ public class Game extends BukkitRunnable {
         this.timer = new Timer(instance, (int) gameTime);
 
         this.globalGame = new GlobalGame(instance);
+        this.effects = new Effects(instance);
         
         this.mainRoom = new MainRoom(instance);
         this.ropeGame = new RopeGame(instance);

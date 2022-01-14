@@ -20,7 +20,7 @@ public class MechanicsListener implements Listener {
     public void onJoinUniform(PlayerJoinEvent e) {
         var player = e.getPlayer();
         var equip = player.getEquipment();
-        if (equip.getChestplate() != null) {
+        if (equip.getChestplate() == null) {
             var game = instance.getGame();
             if (game.getGameStage() != GameStage.LOBBY) {
                 var participants = game.getParticipants();

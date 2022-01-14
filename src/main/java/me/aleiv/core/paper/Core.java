@@ -73,8 +73,8 @@ public class Core extends JavaPlugin {
         NegativeSpaces.registerCodes();
         entityModelManager = new EntityModelManager(this);
         resourcePackManager = new ResourcePackManager(this);
-        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/502d587ba808f6145e9a04d9c755c8b9cf518ea9.zip");
-        resourcePackManager.setResourcePackHash("502d587ba808f6145e9a04d9c755c8b9cf518ea9");
+        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/1644a073b927b1940b71a4b0141cd1936215e6cc.zip");
+        resourcePackManager.setResourcePackHash("1644a073b927b1940b71a4b0141cd1936215e6cc");
 
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
@@ -122,6 +122,7 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new ClothesCMD(this));
         commandManager.registerCommand(new CinemaCMD(this));
         commandManager.registerCommand(new DaysCMD(this));
+        commandManager.registerCommand(new EffectsCMD(this));
 
 
 

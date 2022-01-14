@@ -1,7 +1,7 @@
 package me.aleiv.core.paper.listeners;
 
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
@@ -18,19 +18,22 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import us.jcedeno.libs.rapidinv.ItemBuilder;
 
-import java.util.List;
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Games.GlobalGame.Clothe;
+import us.jcedeno.libs.rapidinv.ItemBuilder;
 
 public class ItemListener implements Listener {
 
     Core instance;
 
-    List<Integer> helmetModel = List.of(4, 5, 6, 7, 24, 62, 63, 64, 65);
+    List<Integer> helmetModel = List.of();
 
     public ItemListener(Core instance){
         this.instance = instance;
     }
+
 
     @EventHandler
     public void onHelmet(PlayerInteractEvent e){
@@ -42,6 +45,14 @@ public class ItemListener implements Listener {
                 equip.setHelmet(item);
                 equip.setItemInMainHand(null);
             }
+        }
+
+        var block =  e.getClickedBlock();
+        if(block != null && block.getType() == Material.PURPLE_CARPET){
+            block.setType(Material.AIR);
+            var player = e.getPlayer();
+            var clothes = instance.getGame().getGlobalGame();
+            clothes.clothes(player, Clothe.SMOKIN);
         }
     }
 

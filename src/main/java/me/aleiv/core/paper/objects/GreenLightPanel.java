@@ -175,6 +175,10 @@ public class GreenLightPanel extends RapidInv{
 
     public void shoot(Player player){
         AnimationTools.shootLocation(player);
+        var effects = instance.getGame().getEffects();
+        var targetLoc = player.getLocation();
+        var players = targetLoc.getNearbyPlayers(7).stream().toList();
+        effects.blood(players);
     }
 
 }
