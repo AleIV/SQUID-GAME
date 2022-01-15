@@ -29,6 +29,7 @@ public class DollCMD extends BaseCommand {
 
     @Subcommand("runLight")
     @CommandAlias("runLight")
+    @CommandCompletion("@bool")
     public void runLight(Player sender, Boolean bool) {
         var game = instance.getGame();
         game.getDollGame().runLight(bool);
@@ -76,6 +77,7 @@ public class DollCMD extends BaseCommand {
     }
 
     @Subcommand("body")
+    @CommandCompletion("@bool")
     public void doll(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Doll " + bool);
         var tools = instance.getGame().getDollGame();
@@ -83,6 +85,7 @@ public class DollCMD extends BaseCommand {
     }
 
     @Subcommand("head")
+    @CommandCompletion("@bool")
     public void dollHead(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Doll head" + bool);
         var tools = instance.getGame().getDollGame();

@@ -13,6 +13,7 @@ import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.utilities.LineVector;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -106,6 +107,12 @@ public class TestCMD extends BaseCommand {
             instance.broadcastMessage(ChatColor.GREEN + anim.toString());
 
         }
+
+    }
+
+    @Subcommand("att")
+    public void att(Player sender, double i) {
+       sender.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(i);
 
     }
         

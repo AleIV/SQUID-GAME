@@ -1,15 +1,17 @@
 package me.aleiv.core.paper.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.objects.Participant.Role;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 
 @CommandAlias("main")
 @CommandPermission("admin.perm")
@@ -22,6 +24,7 @@ public class MainCMD extends BaseCommand {
     }
 
     @Subcommand("lights")
+    @CommandCompletion("@bool")
     public void game(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Lights " + bool);
 
@@ -30,6 +33,7 @@ public class MainCMD extends BaseCommand {
     }
 
     @Subcommand("pasiveLights")
+    @CommandCompletion("@bool")
     public void pasiveLights(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Pasive Lights " + bool);
 
@@ -38,6 +42,7 @@ public class MainCMD extends BaseCommand {
     }
 
     @Subcommand("elevator")
+    @CommandCompletion("@bool")
     public void elevator(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Main elevator " + bool);
         var tools = instance.getGame().getMainRoom();
@@ -45,6 +50,7 @@ public class MainCMD extends BaseCommand {
     }
 
     @Subcommand("submarine-left")
+    @CommandCompletion("@bool")
     public void leftDoor(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Main left door submarine " + bool);
         var tools = instance.getGame().getMainRoom();
@@ -52,6 +58,7 @@ public class MainCMD extends BaseCommand {
     }
 
     @Subcommand("submarine-right")
+    @CommandCompletion("@bool")
     public void rightDoor(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Main right door submarine " + bool);
         var tools = instance.getGame().getMainRoom();
@@ -59,6 +66,7 @@ public class MainCMD extends BaseCommand {
     }
 
     @Subcommand("tube")
+    @CommandCompletion("@bool")
     public void tube(CommandSender sender, Boolean bool){
         var tools = instance.getGame().getMainRoom();
         tools.moveTube(bool);
@@ -66,6 +74,7 @@ public class MainCMD extends BaseCommand {
     }
 
     @Subcommand("screen-turn")
+    @CommandCompletion("@bool")
     public void screen(CommandSender sender, Boolean bool){
         var tools = instance.getGame().getMainRoom();
         tools.turnScreen(bool);
