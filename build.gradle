@@ -72,7 +72,7 @@ dependencies {
     implementation 'com.github.stefvanschie.inventoryframework:IF:0.10.4'
 
     // CinematicTool
-    compileOnly 'com.github.AleIV:CinematicCore-Premium:980f5c2'
+    compileOnly 'com.github.AleIV:CinematicCore-Premium:75b3cbb'
 
     // ArtMap for Cookie Game
     compileOnly files('lib/ArtMap-SquidGame.jar')
