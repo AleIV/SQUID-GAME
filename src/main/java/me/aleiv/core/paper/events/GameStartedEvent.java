@@ -12,6 +12,7 @@ public class GameStartedEvent extends Event {
     private final @Getter HandlerList Handlers = HandlerList;
 
     public GameStartedEvent() {
+        
     }
 
 }

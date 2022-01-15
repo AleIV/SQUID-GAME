@@ -4,6 +4,7 @@ import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.events.LeftWinsEvent;
 import me.aleiv.core.paper.events.RightWinsEvent;
+import me.aleiv.core.paper.utilities.PlayerUtils;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -70,6 +71,8 @@ public class RopeListener implements Listener {
                     p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
                 });
 
+                PlayerUtils.forceHandSwing(player, false);
+
             } else if (left.contains(player)) {
                 if (rope.getBoolMode()) {
                     if (rope.getBoolModeBool()) {
@@ -78,6 +81,7 @@ public class RopeListener implements Listener {
                     rope.setBoolModeBool(!rope.getBoolModeBool());
 
                 } else {
+                    
                     rope.addPoints(-1);
                 }
 
@@ -92,10 +96,14 @@ public class RopeListener implements Listener {
                     p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
                 });
 
+                PlayerUtils.forceHandSwing(player, false);
+
             }
 
         }
     }
+
+    
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {

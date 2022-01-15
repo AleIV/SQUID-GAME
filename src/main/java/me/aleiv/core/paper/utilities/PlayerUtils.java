@@ -12,7 +12,7 @@ public class PlayerUtils {
 
     private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
-    public void forceHandSwing(Player player, boolean offHandSwing) {
+    public static void forceHandSwing(Player player, boolean offHandSwing) {
         PacketContainer animation = protocolManager.
                 createPacket(PacketType.Play.Client.ARM_ANIMATION, false);
 
