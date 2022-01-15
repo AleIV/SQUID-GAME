@@ -124,6 +124,8 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new DaysCMD(this));
         commandManager.registerCommand(new EffectsCMD(this));
 
+        commandManager.registerCommand(new GuardnpcCMD(this));
+
 
 
         // Register skin command
