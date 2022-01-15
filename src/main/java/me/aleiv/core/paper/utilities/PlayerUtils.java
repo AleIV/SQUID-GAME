@@ -14,7 +14,7 @@ public class PlayerUtils {
 
     public static void forceHandSwing(Player player, boolean offHandSwing) {
         PacketContainer animation = protocolManager.
-                createPacket(PacketType.Play.Client.ARM_ANIMATION, false);
+                createPacket(PacketType.Play.Server.ANIMATION, false);
 
         animation.getEntityModifier(player.getWorld()).write(0, player);
         animation.getIntegers().
