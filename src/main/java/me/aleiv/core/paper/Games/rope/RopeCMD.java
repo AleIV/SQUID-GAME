@@ -1,16 +1,18 @@
 package me.aleiv.core.paper.Games.rope;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 
 @CommandAlias("rope")
 @CommandPermission("admin.perm")
@@ -23,6 +25,7 @@ public class RopeCMD extends BaseCommand {
     }
 
     @Subcommand("guillotine")
+    @CommandCompletion("@bool")
     public void guillotine(CommandSender sender, Boolean bool){
         var tools = instance.getGame().getRopeGame();
         var task = tools.moveGuillotine(bool);
@@ -50,6 +53,7 @@ public class RopeCMD extends BaseCommand {
     }
 
     @Subcommand("boolMode")
+    @CommandCompletion("@bool")
     public void boolMode(CommandSender sender, Boolean bool){
         var tools = instance.getGame().getRopeGame();
         tools.setBoolMode(bool);
@@ -58,6 +62,7 @@ public class RopeCMD extends BaseCommand {
     }
 
     @Subcommand("gate")
+    @CommandCompletion("@bool")
     public void gate(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Rope gate " + bool);
         var tools = instance.getGame().getRopeGame();
@@ -65,6 +70,7 @@ public class RopeCMD extends BaseCommand {
     }
 
     @Subcommand("ingame")
+    @CommandCompletion("@bool")
     public void play(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Rope ingame " + bool);
         var tools = instance.getGame().getRopeGame();
@@ -72,6 +78,7 @@ public class RopeCMD extends BaseCommand {
     }
 
     @Subcommand("bossbar")
+    @CommandCompletion("@bool")
     public void bossbar(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Bossbar rope " + bool);
         var tools = instance.getGame().getRopeGame();
@@ -98,6 +105,7 @@ public class RopeCMD extends BaseCommand {
     }
 
     @Subcommand("right-elevator")
+    @CommandCompletion("@bool")
     public void rightElevator(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Right elevator " + bool);
         var tools = instance.getGame().getRopeGame();
@@ -105,6 +113,7 @@ public class RopeCMD extends BaseCommand {
     }
 
     @Subcommand("left-elevator")
+    @CommandCompletion("@bool")
     public void leftElevator(CommandSender sender, Boolean bool){
         sender.sendMessage(ChatColor.DARK_AQUA + "Left elevator " + bool);
         var tools = instance.getGame().getRopeGame();

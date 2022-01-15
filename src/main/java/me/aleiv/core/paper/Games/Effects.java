@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.aleiv.core.paper.Core;
@@ -31,6 +33,11 @@ public class Effects {
     public void stun(List<Player> players, int v){
         var task = new BukkitTCT();
 
+        players.forEach(player ->{
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20*v, 5));
+        });
+
+
         for (int i = 0; i < v; i++) {
             task.addWithDelay(new BukkitRunnable() {
                 @Override
@@ -54,6 +61,7 @@ public class Effects {
         players.forEach(player ->{
             var loc = player.getLocation();
             player.playSound(loc, "squid:sfx.heart", 1, 1);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20*v, 5));
         });
 
         for (int i = 0; i < v; i++) {
@@ -78,6 +86,10 @@ public class Effects {
 
     public void breathe(List<Player> players, int v){
         var task = new BukkitTCT();
+
+        players.forEach(player ->{
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20*v, 5));
+        });
 
         for (int i = 0; i < v; i++) {
             task.addWithDelay(new BukkitRunnable() {

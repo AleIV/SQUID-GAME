@@ -28,31 +28,36 @@ public class CookieCMD extends BaseCommand {
         this.instance = instance;
 
         this.cookieGame = this.instance.getGame().getCookieGame();
-        //instance.getCommandManager().getCommandCompletions().registerStaticCompletion("cookies",
-                //CookieEnum.getAll().stream().map(m -> m.name()).toList());
+        // instance.getCommandManager().getCommandCompletions().registerStaticCompletion("cookies",
+        // CookieEnum.getAll().stream().map(m -> m.name()).toList());
+
     }
 
-    /*@CommandCompletion("@cookies")
-    @Subcommand("give")
-    public void giveCookie(Player sender, String cookieType) {
-
-        CookieEnum cookie = CookieEnum.valueOf(cookieType.toUpperCase());
-        if (cookie == null) {
-            sender.sendMessage("Invalid cookie type");
-            return;
-        }
-
-        var cookieCase = new ItemStack(Material.FERMENTED_SPIDER_EYE);
-        var itemMeta = cookieCase.getItemMeta();
-        itemMeta.setCustomModelData(cookie.getModelData());
-
-        cookieCase.setItemMeta(itemMeta);
-
-        sender.getInventory().addItem(cookieCase);
-
-    }*/
+    /*
+     * @CommandCompletion("@cookies")
+     * 
+     * @Subcommand("give")
+     * public void giveCookie(Player sender, String cookieType) {
+     * 
+     * CookieEnum cookie = CookieEnum.valueOf(cookieType.toUpperCase());
+     * if (cookie == null) {
+     * sender.sendMessage("Invalid cookie type");
+     * return;
+     * }
+     * 
+     * var cookieCase = new ItemStack(Material.FERMENTED_SPIDER_EYE);
+     * var itemMeta = cookieCase.getItemMeta();
+     * itemMeta.setCustomModelData(cookie.getModelData());
+     * 
+     * cookieCase.setItemMeta(itemMeta);
+     * 
+     * sender.getInventory().addItem(cookieCase);
+     * 
+     * }
+     */
 
     @Subcommand("door")
+    @CommandCompletion("@bool")
     public void door(CommandSender sender, Boolean bool) {
         var tools = instance.getGame().getCookieGame();
         tools.mainDoor(bool);
@@ -93,7 +98,7 @@ public class CookieCMD extends BaseCommand {
         locations.add(player.getLocation().clone().add(0, 25, 0));
         locations.add(player.getLocation().clone().add(0, 25, 10));
         locations.add(player.getLocation().clone().add(0, 25, 20));
-        //TODO:?
+        // TODO:?
 
         this.instance.getGame().getCookieGame().start(locations);
     }

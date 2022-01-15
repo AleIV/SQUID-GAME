@@ -147,7 +147,7 @@ public class GlobalGame {
 
             case UNIFORM: {
                 final AttributeModifier armor = new AttributeModifier(UUID.randomUUID(),
-                        "GENERIC.MOVEMENT.SPEED", -0.01, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+                        "GENERIC.MOVEMENT.SPEED", 0.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 
                 var chest = new ItemBuilder(Material.DIAMOND_CHESTPLATE).flags(ItemFlag.HIDE_ATTRIBUTES)
                         .meta(meta -> meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armor)).build();

@@ -36,6 +36,7 @@ public class Game extends BukkitRunnable {
     Timer timer;
 
     boolean froze = false;
+    boolean sprint = true;
 
     //GAMES
     GlobalGame globalGame;
