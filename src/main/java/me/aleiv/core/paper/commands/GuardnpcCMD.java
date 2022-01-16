@@ -1,19 +1,24 @@
 package me.aleiv.core.paper.commands;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
 import co.aikar.commands.BaseCommand;
-import com.github.juliarn.npc.NPC;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
+import lombok.NonNull;
 import me.aleiv.cinematicCore.paper.CinematicTool;
 import me.aleiv.cinematicCore.paper.objects.NPCInfo;
 import me.aleiv.core.paper.Core;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 @CommandAlias("guardnpc")
 @CommandPermission("admin.perm")
 public class GuardnpcCMD extends BaseCommand {
 
-    private final Core instance;
+    private @NonNull Core instance;
 
     public GuardnpcCMD(Core instance) {
         this.instance = instance;
