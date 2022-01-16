@@ -293,6 +293,7 @@ public class CookieGame {
             return null;
         }
 
+        loc.getChunk().load();
         CookieCapsule cookieCapsule = new CookieCapsule(player, loc, type);
         this.capsules.put(player.getUniqueId(), cookieCapsule);
 
@@ -316,5 +317,9 @@ public class CookieGame {
 
     public boolean isStarted() {
         return started;
+    }
+
+    public void skip(Player player) {
+        capsules.remove(player.getUniqueId());
     }
 }

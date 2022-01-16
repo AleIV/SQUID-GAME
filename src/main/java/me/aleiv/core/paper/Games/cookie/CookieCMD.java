@@ -6,7 +6,6 @@ import lombok.NonNull;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.gui.CookieGUI;
-import me.aleiv.core.paper.gui.CookieWinnerGUI;
 import me.aleiv.core.paper.objects.CookieCapsule;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -101,13 +100,8 @@ public class CookieCMD extends BaseCommand {
 
     @Subcommand("fails")
     @CommandCompletion("@players")
-    @Syntax("[Player]")
-    public void menuFails(Player sender, @Optional String playerName) {
-        if (playerName == null) {
-            new CookieGUI(sender);
-            return;
-        }
-
+    @Syntax("<Player>")
+    public void menuFails(Player sender, String playerName) {
         Player player = Bukkit.getPlayer(playerName);
         if (player == null) {
             sender.sendMessage(ChatColor.DARK_AQUA + "Player not found");
@@ -123,15 +117,10 @@ public class CookieCMD extends BaseCommand {
         sender.sendMessage(ChatColor.DARK_AQUA + "Player " + player.getName() + " has " + cookieCapsule.getErrors() + " errors");
     }
 
-    @Subcommand("winners")
+    @Subcommand("winner")
     @CommandCompletion("@players")
-    @Syntax("[Player]")
-    public void menuWinners(Player sender, @Optional String playerName) {
-        if (playerName == null) {
-            new CookieWinnerGUI(sender);
-            return;
-        }
-
+    @Syntax("<Player>")
+    public void menuWinners(Player sender, String playerName) {
         Player player = Bukkit.getPlayer(playerName);
         if (player == null) {
             sender.sendMessage(ChatColor.DARK_AQUA + "Player not found");
@@ -145,6 +134,11 @@ public class CookieCMD extends BaseCommand {
         }
 
         sender.sendMessage(ChatColor.DARK_AQUA + "Player " + player.getName() + " has " + (cookieCapsule.isDone() ? "finished" : "not finished"));
+    }
+
+    @Subcommand("menu")
+    public void menu(Player sender) {
+        new CookieGUI(sender, CookieGUI.Filter.NONE);
     }
 
     @Subcommand("add-location")
@@ -208,6 +202,30 @@ public class CookieCMD extends BaseCommand {
         }
         capsule.unblock();
         player.sendMessage(ChatColor.DARK_AQUA + "Player unblocked");
+    }
+
+    @Subcommand("force skip")
+    @CommandCompletion("@players")
+    @Syntax("<player>")
+    public void onForceSkip(Player player, String playerName) {
+        Player target = Bukkit.getPlayer(playerName);
+        if (target == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player not found");
+            return;
+        }
+
+        CookieCapsule capsule = this.cookieGame.getCapsule(target);
+        if (capsule == null) {
+            player.sendMessage(ChatColor.DARK_AQUA + "Player doesn't have a capsule");
+            return;
+        }
+
+        if (capsule.isMounted()) {
+            capsule.block();
+        }
+
+        this.cookieGame.skip(target);
+        player.sendMessage(ChatColor.DARK_AQUA + "Player capsule skipped. Create a new one");
     }
 
     @Subcommand("force mount")
