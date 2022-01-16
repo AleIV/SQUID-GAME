@@ -181,6 +181,22 @@ public class CookieCMD extends BaseCommand {
         player.sendMessage(ChatColor.DARK_AQUA + "Player blocked");
     }
 
+    @Subcommand("blockall")
+    public void onBlockAll(Player player) {
+        this.cookieGame.getAllCapules().forEach(CookieCapsule::block);
+        player.sendMessage(ChatColor.DARK_AQUA + "All players blocked");
+    }
+
+    @Subcommand("unblockall")
+    public void onUnblockAll(Player player) {
+        this.cookieGame.getAllCapules().forEach(c -> {
+            if (!c.isDone()) {
+                c.unblock();
+            }
+        });
+        player.sendMessage(ChatColor.DARK_AQUA + "All players that didn't win already unblocked");
+    }
+
     @Subcommand("unblock")
     @CommandCompletion("@players")
     @Syntax("<player>")
