@@ -105,7 +105,7 @@ public class AnimationTools {
                     player.setGameMode(GameMode.ADVENTURE);
                     forceSleep(player, bed);
                 }
-            }, 50);
+            }, 50*2);
 
         }
 

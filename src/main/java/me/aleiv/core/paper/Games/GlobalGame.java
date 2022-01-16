@@ -304,12 +304,16 @@ public class GlobalGame {
     public void playSquidGameStart() {
         var task = new BukkitTCT();
 
-        for (int i = 0; i < 160; i++) {
+        Bukkit.getScheduler().runTask(instance, t ->{
+            Bukkit.getPluginManager().callEvent(new GameStartedEvent());
+        });
+
+        for (int i = 0; i < 320; i++) {
             task.addWithDelay(new BukkitRunnable() {
                 @Override
                 public void run() {
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        instance.showTitle(player, Character.toString('\u3400') + "", "", 0, 20, 0);
+                        instance.sendActionBar(player, Character.toString('\u3400') + "");
                     });
                 }
             }, 50);
@@ -318,7 +322,9 @@ public class GlobalGame {
         var tk = task.execute();
         tk.thenAccept(action -> {
             Bukkit.getScheduler().runTask(instance, t ->{
-                Bukkit.getPluginManager().callEvent(new GameStartedEvent());
+                var game = instance.getGame();
+                var mainRoom = game.getMainRoom();
+                mainRoom.lights(true);
             });
         });
 

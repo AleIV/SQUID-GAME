@@ -74,7 +74,6 @@ public class GlobalListener implements Listener {
     @EventHandler
     public void onStart(GameStartedEvent e) {
         var game = instance.getGame();
-        var mainRoom = game.getMainRoom();
         var globalGame = game.getGlobalGame();
         game.setHideMode(HideMode.INGAME);
         game.setGameStage(GameStage.INGAME);
@@ -87,7 +86,6 @@ public class GlobalListener implements Listener {
         var allPlayers = Bukkit.getOnlinePlayers();
 
         allPlayers.forEach(player -> {
-            instance.sendActionBar(player, Character.toString('\u3400') + "");
             var inv = player.getInventory();
             inv.clear();
 
@@ -101,8 +99,6 @@ public class GlobalListener implements Listener {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        mainRoom.lights(true);
 
     }
 
