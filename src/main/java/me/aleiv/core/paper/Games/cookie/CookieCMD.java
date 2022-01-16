@@ -104,13 +104,51 @@ public class CookieCMD extends BaseCommand {
     }
 
     @Subcommand("fails")
-    public void menuFails(Player player) {
-        new CookieGUI(player);
+    @CommandCompletion("@players")
+    @Syntax("[Player]")
+    public void menuFails(Player sender, @Optional String playerName) {
+        if (playerName == null) {
+            new CookieGUI(sender);
+            return;
+        }
+
+        Player player = Bukkit.getPlayer(playerName);
+        if (player == null) {
+            sender.sendMessage(ChatColor.DARK_AQUA + "Player not found");
+            return;
+        }
+
+        CookieCapsule cookieCapsule = this.cookieGame.getCapsule(player);
+        if (cookieCapsule == null) {
+            sender.sendMessage(ChatColor.DARK_AQUA + "Player doesn't have a capsule");
+            return;
+        }
+
+        sender.sendMessage(ChatColor.DARK_AQUA + "Player " + player.getName() + " has " + cookieCapsule.getErrors() + " errors");
     }
 
     @Subcommand("winners")
-    public void menuWinners(Player player) {
-        new CookieWinnerGUI(player);
+    @CommandCompletion("@players")
+    @Syntax("[Player]")
+    public void menuWinners(Player sender, @Optional String playerName) {
+        if (playerName == null) {
+            new CookieWinnerGUI(sender);
+            return;
+        }
+
+        Player player = Bukkit.getPlayer(playerName);
+        if (player == null) {
+            sender.sendMessage(ChatColor.DARK_AQUA + "Player not found");
+            return;
+        }
+
+        CookieCapsule cookieCapsule = this.cookieGame.getCapsule(player);
+        if (cookieCapsule == null) {
+            sender.sendMessage(ChatColor.DARK_AQUA + "Player doesn't have a capsule");
+            return;
+        }
+
+        sender.sendMessage(ChatColor.DARK_AQUA + "Player " + player.getName() + " has " + (cookieCapsule.isDone() ? "finished" : "not finished"));
     }
 
     @Subcommand("add-location")
