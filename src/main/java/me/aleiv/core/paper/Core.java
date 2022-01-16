@@ -72,6 +72,7 @@ public class Core extends JavaPlugin {
         BukkitTCT.registerPlugin(this);
         NegativeSpaces.registerCodes();
         entityModelManager = new EntityModelManager(this);
+        // TODO: Uncomment resourcepack
         /*resourcePackManager = new ResourcePackManager(this);
         resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/4741bb979bd515e4ba66c34dee2ec08059bd484b.zip");
         resourcePackManager.setResourcePackHash("4741bb979bd515e4ba66c34dee2ec08059bd484b");*/
