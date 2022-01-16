@@ -95,10 +95,6 @@ public class CookieCMD extends BaseCommand {
         }
 
         List<Location> locations = AnimationTools.findLocations("COOKIEBOX");
-        locations.add(player.getLocation().clone().add(0, 25, 0));
-        locations.add(player.getLocation().clone().add(0, 25, 10));
-        locations.add(player.getLocation().clone().add(0, 25, 20));
-        // TODO:?
 
         this.instance.getGame().getCookieGame().start(locations);
     }
