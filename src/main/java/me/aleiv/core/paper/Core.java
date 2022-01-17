@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import me.aleiv.core.paper.core.HologramPlayer;
+import me.aleiv.core.paper.listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -47,12 +49,6 @@ import me.aleiv.core.paper.commands.TestCMD;
 import me.aleiv.core.paper.commands.UtilsCMD;
 import me.aleiv.core.paper.core.WebServer;
 import me.aleiv.core.paper.detection.CollisionManager;
-import me.aleiv.core.paper.listeners.CanceledListener;
-import me.aleiv.core.paper.listeners.CinematicListener;
-import me.aleiv.core.paper.listeners.GlobalListener;
-import me.aleiv.core.paper.listeners.HideListener;
-import me.aleiv.core.paper.listeners.ItemListener;
-import me.aleiv.core.paper.listeners.MechanicsListener;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
@@ -79,6 +75,7 @@ public class Core extends JavaPlugin {
     private @Getter EntityModelManager entityModelManager;
     private @Getter ResourcePackManager resourcePackManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    @Getter private HologramPlayer hologramPlayer;
 
     @Override
     public void onEnable() {
@@ -93,6 +90,7 @@ public class Core extends JavaPlugin {
         resourcePackManager = new ResourcePackManager(this);
         resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/ecacc79de31c0877d450738333a2f00a8dd07e6d.zip");
         resourcePackManager.setResourcePackHash("ecacc79de31c0877d450738333a2f00a8dd07e6d");
+        resourcePackManager.setBypassPerm("squidgame.rp.bypass");
 
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
@@ -100,6 +98,11 @@ public class Core extends JavaPlugin {
         pullSpecialJson();
         pullParticipantJson();
         startWebServer();
+
+        // Hologram start
+        this.hologramPlayer = new HologramPlayer(this);
+        this.hologramPlayer.spawnHologram();
+        Bukkit.getScheduler().runTask(this, () -> this.hologramPlayer.spawnHologram());
 
         // LISTENERS
 
@@ -113,6 +116,7 @@ public class Core extends JavaPlugin {
         registerListener(new GlassListener(this));
         registerListener(new ItemListener(this));
         registerListener(new CinematicListener(this));
+        registerListener(new HologramListener(this));
 
         // COMMANDS
 
@@ -154,7 +158,6 @@ public class Core extends JavaPlugin {
         this.vectorManager = new VectorsManager(this);
 
         // Start effect manager
-
     }
 
     private void startWebServer() {
