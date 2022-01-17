@@ -5,7 +5,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -285,16 +284,17 @@ public class GlobalGame {
         Bukkit.getWorlds().forEach(it -> {
             it.setTime(20000);
         });
+
         var game = instance.getGame();
         var beds = AnimationTools.findLocations("BED");
         var guardBeds = AnimationTools.findLocations("GUARDB");
         var players = Bukkit.getOnlinePlayers();
-        var participants = players.stream().filter(player -> game.isPlayer(player)).map(player -> (Player) player)
-                .toList();
-        var guards = players.stream().filter(player -> game.isGuard(player)).filter(p -> p.getGameMode() != GameMode.SPECTATOR).map(player -> (Player) player).toList();
+        var participants = players.stream().filter(player -> game.isPlayer(player)).map(player -> (Player) player).toList();
+        var guards = players.stream().filter(player -> game.isGuard(player)).map(player -> (Player) player).toList();
 
         AnimationTools.forceSleep(participants, beds);
         AnimationTools.forceSleep(guards, guardBeds);
+
     }
 
     public void sleep(Player player, Location loc) {
@@ -302,32 +302,7 @@ public class GlobalGame {
     }
 
     public void playSquidGameStart() {
-        var task = new BukkitTCT();
-
-        Bukkit.getScheduler().runTask(instance, t ->{
-            Bukkit.getPluginManager().callEvent(new GameStartedEvent());
-        });
-
-        for (int i = 0; i < 320; i++) {
-            task.addWithDelay(new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Bukkit.getOnlinePlayers().forEach(player -> {
-                        instance.sendActionBar(player, Character.toString('\u3400') + "");
-                    });
-                }
-            }, 50);
-        }
-
-        var tk = task.execute();
-        tk.thenAccept(action -> {
-            Bukkit.getScheduler().runTask(instance, t ->{
-                var game = instance.getGame();
-                var mainRoom = game.getMainRoom();
-                mainRoom.lights(true);
-            });
-        });
-
+        Bukkit.getPluginManager().callEvent(new GameStartedEvent());
     }
 
     public CompletableFuture<Boolean> playAnimation(List<Player> players, Integer from, Integer until, int fadeIn,

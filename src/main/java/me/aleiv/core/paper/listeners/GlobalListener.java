@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import me.aleiv.cinematicCore.paper.events.CinematicFinishEvent;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.DeathReason;
@@ -50,38 +51,24 @@ public class GlobalListener implements Listener {
     public GlobalListener(Core instance) {
         this.instance = instance;
 
-        /*
-         * instance.getProtocolManager().addPacketListener(
-         * new PacketAdapter(instance, ListenerPriority.NORMAL,
-         * PacketType.Play.Server.GAME_STATE_CHANGE) {
-         * 
-         * @Override
-         * public void onPacketSending(PacketEvent event) {
-         * var floats = event.getPacket().getFloat();
-         * instance.broadcastMessage(ChatColor.RED + "111");
-         * instance.broadcastMessage(ChatColor.GREEN +
-         * event.getPacketType().toString());
-         * instance.broadcastMessage(floats.getValues().toString());
-         * instance.broadcastMessage(ChatColor.GREEN +
-         * event.getPacket().getBytes().toString());
-         * 
-         * 
-         * }
-         * });
-         */
+    }
+
+    @EventHandler
+    public void cinemaStart(CinematicFinishEvent e) {
+        var cinematic = e.getCinematicProgress().getScenes().get(0);
+        var name = cinematic.getName();
+        if (name.contains("PART1")) {
+            var global = instance.getGame().getGlobalGame();
+            global.playSquidGameStart();
+        }
     }
 
     @EventHandler
     public void onStart(GameStartedEvent e) {
         var game = instance.getGame();
         var globalGame = game.getGlobalGame();
-        game.setHideMode(HideMode.INGAME);
-        game.setGameStage(GameStage.INGAME);
-        game.refreshHide();
 
-        Bukkit.getWorlds().forEach(world -> {
-            world.setTime(20000);
-        });
+        var mainLoc = new Location(Bukkit.getWorld("world"), 279, 5, -115);
 
         var allPlayers = Bukkit.getOnlinePlayers();
 
@@ -89,18 +76,20 @@ public class GlobalListener implements Listener {
             var inv = player.getInventory();
             inv.clear();
 
-            if(game.isPlayer(player))
+            if (game.isPlayer(player))
                 globalGame.clothes(player, Clothe.UNIFORM);
 
         });
 
-        try {
-            globalGame.makeAllSleep();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        var mainRoom = game.getMainRoom();
+        globalGame.makeAllSleep();
 
-    }
+        game.setHideMode(HideMode.INGAME);
+        game.setGameStage(GameStage.INGAME);
+        game.refreshHide();
+        mainRoom.lights(true);
+
+    }//TODO: TP SPECS TO MAIN ROOM 
 
     @EventHandler
     public void onCredits(PlayerRespawnEvent e) {
