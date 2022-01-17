@@ -25,7 +25,7 @@ public class GuardnpcCMD extends BaseCommand {
     }
 
     @Subcommand("create")
-    public void create(Player player) {
+    public void onCreate(Player player) {
         NPCInfo npcInfo = new NPCInfo(player, true, true, true);
         npcInfo.setCache(true);
         CinematicTool.getInstance().getNpcManager().spawnNPC(npcInfo);
