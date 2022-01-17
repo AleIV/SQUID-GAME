@@ -31,6 +31,16 @@ public class TestCMD extends BaseCommand {
         this.instance = instance;
     }
 
+    @Subcommand("hologram1")
+    public void hologram1(Player player) {
+        instance.getHologramPlayer().spawnHologram();
+    }
+
+    @Subcommand("hologram2")
+    public void hologram2(Player player) {
+        instance.getHologramPlayer().removeHologram();
+    }
+
     @Subcommand("particle-distance")
     public void greenLight(CommandSender sender, @Name("distance") Double distance) {
         LineVector.interval = distance;
