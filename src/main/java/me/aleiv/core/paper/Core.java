@@ -90,9 +90,9 @@ public class Core extends JavaPlugin {
         BukkitTCT.registerPlugin(this);
         NegativeSpaces.registerCodes();
         entityModelManager = new EntityModelManager(this);
-        /*resourcePackManager = new ResourcePackManager(this);
-        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/4741bb979bd515e4ba66c34dee2ec08059bd484b.zip");
-        resourcePackManager.setResourcePackHash("4741bb979bd515e4ba66c34dee2ec08059bd484b");*/
+        resourcePackManager = new ResourcePackManager(this);
+        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/ecacc79de31c0877d450738333a2f00a8dd07e6d.zip");
+        resourcePackManager.setResourcePackHash("ecacc79de31c0877d450738333a2f00a8dd07e6d");
 
         game = new Game(this);
         game.runTaskTimerAsynchronously(this, 0L, 20L);
