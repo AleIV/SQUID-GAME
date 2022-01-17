@@ -1,15 +1,22 @@
 package me.aleiv.core.paper.commands;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
-import lombok.NonNull;
-import me.aleiv.core.paper.Core;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Flags;
+import co.aikar.commands.annotation.Name;
+import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Subcommand;
+import lombok.NonNull;
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("utils")
 @CommandPermission("admin.perm")
@@ -49,6 +56,45 @@ public class UtilsCMD extends BaseCommand {
         tools.setCity(sender.getLocation());
     }
 
+    @Subcommand("sleep-instant")
+    public void sleepInstant(Player sender) {
+        sender.sendMessage(ChatColor.DARK_AQUA + "sleep-instant");
+
+        var game = instance.getGame();
+        var beds = AnimationTools.findLocations("BED");
+        var guardBeds = AnimationTools.findLocations("GUARDB");
+        var players = Bukkit.getOnlinePlayers();
+        var participants = players.stream().filter(player -> game.isPlayer(player)).map(player -> (Player) player).toList();
+        var guards = players.stream().filter(player -> game.isGuard(player)).map(player -> (Player) player).toList();
+        
+        AnimationTools.forceSleepInstant(guards, guardBeds);
+        AnimationTools.forceSleepInstant(participants, beds);
+    }
+
+    @Subcommand("sleep-guards")
+    public void guards(Player sender) {
+        sender.sendMessage(ChatColor.DARK_AQUA + "guards-instant");
+
+        var game = instance.getGame();
+        var guardBeds = AnimationTools.findLocations("GUARDB");
+        var players = Bukkit.getOnlinePlayers();
+        var guards = players.stream().filter(player -> game.isGuard(player)).map(player -> (Player) player).toList();
+        
+        AnimationTools.forceSleepInstant(guards, guardBeds);
+    }
+
+    @Subcommand("sleep-players")
+    public void sleepPlauers(Player sender) {
+        sender.sendMessage(ChatColor.DARK_AQUA + "players-instant");
+
+        var game = instance.getGame();
+        var beds = AnimationTools.findLocations("BED");
+        var players = Bukkit.getOnlinePlayers();
+        var participants = players.stream().filter(player -> game.isPlayer(player)).map(player -> (Player) player).toList();
+        
+        AnimationTools.forceSleepInstant(participants, beds);
+    }
+
     @Subcommand("gas")
     public void sendGas(CommandSender sender) {
         var tools = instance.getGame();
@@ -83,7 +129,7 @@ public class UtilsCMD extends BaseCommand {
             && stand.getEquipment().getItemInMainHand().getType() ==  Material.PLAYER_HEAD) || (stand.getEquipment().getItemInOffHand() != null 
             && stand.getEquipment().getItemInOffHand().getType() ==  Material.PLAYER_HEAD)).toList();
         for (var armorStand : stands) {
-            armorStand.damage(10);
+            armorStand.remove();
         }
 
     }
