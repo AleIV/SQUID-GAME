@@ -14,6 +14,7 @@ import me.aleiv.cinematicCore.paper.CinematicTool;
 import me.aleiv.cinematicCore.paper.objects.NPCInfo;
 import me.aleiv.core.paper.Core;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @CommandAlias("guardnpc")
@@ -29,7 +30,7 @@ public class GuardnpcCMD extends BaseCommand {
     @Subcommand("create")
     public void onCreate(Player player) {
         NPCInfo npcInfo = new NPCInfo(player, true, true, true);
-        npcInfo.getProfile().setName(UUID.randomUUID().toString().substring(0, 15));
+        npcInfo.setName(UUID.randomUUID().toString().substring(0, 15));
         npcInfo.setCache(true);
         CinematicTool.getInstance().getNpcManager().spawnNPC(npcInfo);
 
@@ -40,9 +41,10 @@ public class GuardnpcCMD extends BaseCommand {
     @CommandCompletion("@nothing")
     @Syntax("<range>")
     public void removeRange(Player player, int range) {
-        CinematicTool.getInstance().getNpcManager().getNPCs().forEach(npc -> {
+        new ArrayList<>(CinematicTool.getInstance().getNpcManager().getNPCs()).forEach(npc -> {
             Location loc = npc.getLocation().getLocation();
             if (loc.distance(player.getLocation()) <= range) {
+                npc.setCache(false);
                 CinematicTool.getInstance().getNpcManager().removeNPC(npc);
             }
         });
