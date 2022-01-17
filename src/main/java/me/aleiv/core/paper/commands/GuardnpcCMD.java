@@ -14,6 +14,8 @@ import me.aleiv.cinematicCore.paper.CinematicTool;
 import me.aleiv.cinematicCore.paper.objects.NPCInfo;
 import me.aleiv.core.paper.Core;
 
+import java.util.UUID;
+
 @CommandAlias("guardnpc")
 @CommandPermission("admin.perm")
 public class GuardnpcCMD extends BaseCommand {
@@ -27,6 +29,7 @@ public class GuardnpcCMD extends BaseCommand {
     @Subcommand("create")
     public void onCreate(Player player) {
         NPCInfo npcInfo = new NPCInfo(player, true, true, true);
+        npcInfo.getProfile().setName(UUID.randomUUID().toString().substring(0, 15));
         npcInfo.setCache(true);
         CinematicTool.getInstance().getNpcManager().spawnNPC(npcInfo);
 
