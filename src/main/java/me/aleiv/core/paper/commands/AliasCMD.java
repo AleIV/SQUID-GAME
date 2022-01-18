@@ -1,5 +1,7 @@
 package me.aleiv.core.paper.commands;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,8 +22,45 @@ public class AliasCMD extends BaseCommand {
 
     private @NonNull Core instance;
 
+    List<String> listSounds = List.of("dramatic_shot", "fusil_shot", "revolver_shot", "revolver_shot2",
+            "impact", "impact2", "heart", "scare", "darkness", "panic", "weird",
+            "tension", "breathe", "music_rewind", "daze", "eco_shot", "fart", "cough",
+            "full_shots", "trumpet_final");
+
     public AliasCMD(Core instance) {
         this.instance = instance;
+
+        var manager = instance.getCommandManager();
+        manager.getCommandCompletions().registerAsyncCompletion("sfx", c -> {
+            return listSounds.stream().toList();
+        });
+    }
+
+    @Subcommand("sfx")
+    @CommandAlias("sfx")
+    @CommandCompletion("sfx")
+    public void sfx(Player sender, String str, Integer i) {
+
+        var players = sender.getLocation().getNearbyPlayers(i).stream().toList();
+        players.forEach(p -> {
+            var loc = p.getLocation();
+            p.playSound(loc, "squid:sfx." + str, 1, 1);
+        });
+
+        sender.sendMessage(ChatColor.DARK_AQUA + "Sound " + str + " radius " + i);
+    }
+
+    @Subcommand("sound")
+    @CommandAlias("sound")
+    public void speaker(Player sender, String str, Integer i) {
+
+        var players = sender.getLocation().getNearbyPlayers(i).stream().toList();
+        players.forEach(p -> {
+            var loc = p.getLocation();
+            p.playSound(loc, str, 1, 1);
+        });
+
+        sender.sendMessage(ChatColor.DARK_AQUA + "Sound " + str + " radius " + i);
     }
 
     @Subcommand("g|globalmute")
@@ -42,29 +81,16 @@ public class AliasCMD extends BaseCommand {
 
         sender.sendMessage(ChatColor.DARK_AQUA + "Distance Voice " + distance);
     }
-    
+
     @Subcommand("speaker|s")
     @CommandAlias("speaker|s")
     @CommandCompletion("@bool")
     public void speaker(CommandSender sender, Boolean bool, @Optional Integer rad) {
 
-        var radius =  rad == null ? "" : rad + "";
+        var radius = rad == null ? "" : rad + "";
         Bukkit.dispatchCommand(sender, "squidvoice speaker " + bool + radius);
 
         sender.sendMessage(ChatColor.DARK_AQUA + "Speaker " + bool + radius);
-    }
-
-    @Subcommand("sound")
-    @CommandAlias("sound")
-    public void speaker(Player sender, String str, Integer i) {
-
-        var players =  sender.getLocation().getNearbyPlayers(i).stream().toList();
-        players.forEach(p ->{
-            var loc = p.getLocation();
-            p.playSound(loc, str, 1, 1);
-        });
-
-        sender.sendMessage(ChatColor.DARK_AQUA + "Sound " + str + " radius " + i);
     }
 
     @Subcommand("saturation")
@@ -72,8 +98,8 @@ public class AliasCMD extends BaseCommand {
     public void saturation(Player sender, Integer i) {
 
         var game = instance.getGame();
-        Bukkit.getOnlinePlayers().forEach(player ->{
-            if(game.isPlayer(player)){
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if (game.isPlayer(player)) {
                 player.setFoodLevel(i);
             }
         });

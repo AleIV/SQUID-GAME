@@ -33,7 +33,6 @@ import me.aleiv.core.paper.Game.HideMode;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Games.GlobalGame.Clothe;
 import me.aleiv.core.paper.events.GameStartedEvent;
-import me.aleiv.core.paper.events.GameTickEvent;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.objects.Participant.Role;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
@@ -236,45 +235,6 @@ public class GlobalListener implements Listener {
         } else {
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
         }
-
-    }
-
-    @EventHandler
-    public void gameTickEvent(GameTickEvent e) {
-        var game = instance.getGame();
-        Bukkit.getScheduler().runTask(instance, () -> {
-
-            var timer = game.getTimer();
-            if (timer.isActive()) {
-                var currentTime = (int) game.getGameTime();
-                timer.refreshTime(currentTime);
-            }
-
-            if (game.getGameStage() == GameStage.PAUSE) {
-                var players = Bukkit.getOnlinePlayers();
-                players.forEach(player -> {
-                    if (!player.hasPermission("admin.perm")) {
-                        player.addPotionEffect(
-                                new PotionEffect(PotionEffectType.SLOW, 5 * 20, 255, false, false, false));
-                        instance.showTitle(player, Character.toString('\u0264') + "", "", 0, 40, 0);
-                        instance.sendActionBar(player, Character.toString('\u3400') + "");
-                    }
-                });
-            } else if (game.getGameStage() == GameStage.STARTING) {
-                var players = Bukkit.getOnlinePlayers();
-                var size = game.getParticipants().entrySet().stream()
-                        .filter(entry -> entry.getValue().getRole() == Role.PLAYER).toList().size();
-                players.forEach(player -> {
-                    if (!player.hasPermission("admin.perm")) {
-                        player.addPotionEffect(
-                                new PotionEffect(PotionEffectType.SLOW, 5 * 20, 255, false, false, false));
-                        instance.showTitle(player, Character.toString('\u0265') + "", size + "", 0, 40, 0);
-                        instance.sendActionBar(player, Character.toString('\u3400') + "");
-                    }
-                });
-            }
-
-        });
 
     }
 
