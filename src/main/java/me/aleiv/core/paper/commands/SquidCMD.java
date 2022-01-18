@@ -2,14 +2,11 @@ package me.aleiv.core.paper.commands;
 
 import java.util.Arrays;
 
+import co.aikar.commands.annotation.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.GameStage;
@@ -18,18 +15,16 @@ import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.TimerType;
 import me.aleiv.core.paper.listeners.FrozeListener;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 
 @CommandAlias("squid")
 @CommandPermission("admin.perm")
 public class SquidCMD extends BaseCommand {
 
     private @NonNull Core instance;
-    FrozeListener frozeListener;
 
     public SquidCMD(Core instance) {
         this.instance = instance;
-
-        this.frozeListener = new FrozeListener(instance);
 
         var manager = instance.getCommandManager();
 
@@ -50,17 +45,29 @@ public class SquidCMD extends BaseCommand {
         });
     }
 
-    @Subcommand("froze")
+    @Subcommand("frozeall")
     @CommandCompletion("@bool")
-    public void froze(CommandSender sender, boolean bool) {
-        if(bool){
-            instance.registerListener(frozeListener);
-
-        }else{
-            instance.unregisterListener(frozeListener);
-        }
+    public void frozeall(CommandSender sender, boolean bool) {
+        this.instance.getGame().setAllFroze(bool);
 
         sender.sendMessage(ChatColor.DARK_AQUA + "Froze " + bool);
+    }
+
+    @Subcommand("froze")
+    @CommandCompletion("@players")
+    @Syntax("<player>")
+    public void onFroze(Player sender, String targetName) {
+        Player target = Bukkit.getPlayer(targetName);
+        if (target == null) {
+            sender.sendMessage(ChatColor.RED + "Player not found");
+            return;
+        }
+
+        if (this.instance.getGame().switchFroze(target.getUniqueId())) {
+            sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " is now frozen");
+        } else {
+            sender.sendMessage(ChatColor.RED + "Player " + target.getName() + " is not frozen");
+        }
     }
 
     @Subcommand("sprint")
