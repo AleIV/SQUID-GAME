@@ -1,6 +1,8 @@
 package me.aleiv.core.paper.commands;
 
 import co.aikar.commands.annotation.*;
+import me.aleiv.core.paper.Game;
+import me.aleiv.core.paper.listeners.LimitListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -18,10 +20,12 @@ import net.md_5.bungee.api.ChatColor;
 public class UtilsCMD extends BaseCommand {
 
     private @NonNull Core instance;
+    private LimitListener limitListener;
 
     public UtilsCMD(Core instance) {
         this.instance = instance;
-
+        this.limitListener = new LimitListener(instance);
+        instance.registerListener(limitListener);
     }
 
     @Subcommand("make-all-sleep")
@@ -145,6 +149,15 @@ public class UtilsCMD extends BaseCommand {
                 p.teleport(player);
             }
         });
+    }
+
+    @CommandAlias("limit")
+    @CommandCompletion("@nothing")
+    @Syntax("<limit>")
+    public void onLimit(Player player, int i) {
+        this.limitListener.setLimit(i);
+        this.instance.getGame().setPvp(Game.PvPType.ONLY_PVP);
+        player.sendMessage("Limit set to " + i);
     }
 
 }
