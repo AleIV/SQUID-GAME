@@ -66,7 +66,7 @@ dependencies {
 
     //modelapi
     compileOnly 'com.ticxo.modelengine:api:R2.2.0'
-    implementation 'com.github.AleIV:Model-Tool:v1.0.1'
+    implementation files('lib/ModelTool.jar')
 
     // InventoryFramework
     implementation 'com.github.stefvanschie.inventoryframework:IF:0.10.4'
