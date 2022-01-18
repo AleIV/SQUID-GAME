@@ -2,11 +2,9 @@ package me.aleiv.core.paper.listeners;
 
 import java.util.List;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
@@ -14,6 +12,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -82,33 +81,40 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onMechanics(PlayerInteractAtEntityEvent e){
-        var entity = e.getRightClicked();
-        var player = e.getPlayer();
-        var equip = player.getEquipment();
-        var item = equip.getItemInMainHand();
-        if(entity instanceof Player target){
+        Entity entity = e.getRightClicked();
+        Player player = e.getPlayer();
+        ItemStack item = null;
+        if (e.getHand() == EquipmentSlot.HAND) {
+            item = e.getPlayer().getInventory().getItemInMainHand();
+        } else if (e.getHand() == EquipmentSlot.OFF_HAND) {
+            item = e.getPlayer().getInventory().getItemInOffHand();
+        }
 
-            if(item != null && item.hasItemMeta() && item.getItemMeta().hasDisplayName()){
-                if(item.displayName().toString().contains("push")){
-                    var direction = player.getLocation().getDirection();
-                    target.setVelocity(direction.normalize());
-    
-                }else if(item.displayName().toString().contains("take")){
-    
-                    if(player.getPassengers().isEmpty()){
-                        player.addPassenger(target);
-                        
-                    }else{
-                        player.getPassengers().forEach(pass ->{
-                            pass.eject();
-                        });
-                    }
-                    
-                    
+
+        if (entity instanceof Player target && item != null && item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
+            String name = item.getItemMeta().displayName().toString();
+            if (name.contains("push")) {
+                var direction = player.getLocation().getDirection();
+                target.setVelocity(direction.normalize());
+            } else if (name.contains("take")) {
+                if (player.getPassengers().isEmpty()) {
+                    player.addPassenger(target);
+                } else {
+                    player.getPassengers().forEach(Entity::eject);
                 }
+            } else if (name.contains("froze")) {
+                this.instance.getGame().switchFroze(target.getUniqueId());
+            } else if (name.contains("info")) {
+                player.sendMessage("Player Name: §e" + target.getName());
+                player.sendMessage("Player UUID: §e" + target.getUniqueId());
+            } else if (name.contains("shot")) {
+                AnimationTools.shootLocation(target);
+                var effects = instance.getGame().getEffects();
+                var targetLoc = target.getLocation();
+                var players = targetLoc.getNearbyPlayers(7).stream().toList();
+                effects.blood(players);
             }
-        
-        }else if(entity instanceof ArmorStand stand){
+        } else if (entity instanceof ArmorStand stand) {
             var uuid = stand.getUniqueId().toString();
             //TODO:CHECK WELL
 
