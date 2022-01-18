@@ -23,7 +23,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -35,7 +38,8 @@ public class Game extends BukkitRunnable {
 
     Timer timer;
 
-    boolean froze = false;
+    boolean allFroze = false;
+    List<UUID> frozenPlayers = new ArrayList<>();
     boolean sprint = true;
 
     //GAMES
@@ -173,5 +177,25 @@ public class Game extends BukkitRunnable {
         gameTime = new_time;
 
         Bukkit.getPluginManager().callEvent(new GameTickEvent(new_time, true));
+    }
+
+    public void setFroze(Player player, boolean freeze) {
+        if (freeze) {
+            this.frozenPlayers.add(player.getUniqueId());
+        } else {
+            this.frozenPlayers.remove(player.getUniqueId());
+        }
+    }
+
+    public boolean isPlayerFrozen(UUID playerUUID) {
+        return this.frozenPlayers.contains(playerUUID);
+    }
+
+    public boolean switchFroze(UUID playerUUID) {
+        if (!this.frozenPlayers.remove(playerUUID)) {
+            this.frozenPlayers.add(playerUUID);
+            return true;
+        }
+        return false;
     }
 }
