@@ -16,6 +16,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
+import java.util.Arrays;
+
 public class CookieListener implements Listener {
 
     private final Core plugin;
@@ -66,18 +68,22 @@ public class CookieListener implements Listener {
         if (item == null) return;
 
         ItemMeta meta = item.getItemMeta();
-        if (item.getType() == Material.FERMENTED_SPIDER_EYE && meta.hasCustomModelData()) {
+        if (e.getClickedBlock() != null && e.getClickedBlock().getType().toString().contains("BUTTON")) {
+            int typeInt = 1;
+            switch (e.getClickedBlock().getType()) {
+                case JUNGLE_BUTTON -> typeInt = 1;
+                case ACACIA_BUTTON -> typeInt = 2;
+                case DARK_OAK_BUTTON -> typeInt = 3;
+                case SPRUCE_BUTTON -> typeInt = 4;
+            }
+
+            this.giveCookie(player, typeInt);
+        } else if (item.getType() == Material.FERMENTED_SPIDER_EYE && meta.hasCustomModelData()) {
             e.setCancelled(true);
 
             CookieCapsule cookieCapsule = plugin.getGame().getCookieGame().getCapsule(e.getPlayer());
             if (cookieCapsule == null) {
-                CookieGame.CookieType type = switch (meta.getCustomModelData()) {
-                    case 3 -> CookieGame.CookieType.CREEPER;
-                    case 1 -> CookieGame.CookieType.EYE;
-                    case 4 -> CookieGame.CookieType.RODOLFO;
-                    case 2 -> CookieGame.CookieType.SQUID;
-                    default -> null;
-                };
+                CookieGame.CookieType type = this.getType(meta.getCustomModelData());
                 if (type == null) return;
 
                 cookieCapsule = plugin.getGame().getCookieGame().createCapsule(player, type);
@@ -87,6 +93,28 @@ public class CookieListener implements Listener {
             }
 
         }
+    }
+
+    private void giveCookie(Player player, Integer type) {
+        if (type == null) return;
+
+        if (Arrays.stream(player.getInventory().getContents()).noneMatch(item -> item != null && item.getType() == Material.FERMENTED_SPIDER_EYE)) {
+            ItemStack item = new ItemStack(Material.FERMENTED_SPIDER_EYE);
+            ItemMeta meta = item.getItemMeta();
+            meta.setCustomModelData(type);
+            item.setItemMeta(meta);
+            player.getInventory().addItem(item);
+        }
+    }
+
+    private CookieGame.CookieType getType(Integer id) {
+        return switch (id) {
+            case 3 -> CookieGame.CookieType.CREEPER;
+            case 1 -> CookieGame.CookieType.EYE;
+            case 4 -> CookieGame.CookieType.RODOLFO;
+            case 2 -> CookieGame.CookieType.SQUID;
+            default -> null;
+        };
     }
 
 }
