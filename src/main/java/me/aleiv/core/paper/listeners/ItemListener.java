@@ -2,9 +2,12 @@ package me.aleiv.core.paper.listeners;
 
 import java.util.List;
 
-import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.entity.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;

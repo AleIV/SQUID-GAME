@@ -151,6 +151,7 @@ public class GlobalListener implements Listener {
 
                 }else if(stage == Stage.FINAL){
                     AnimationTools.summonDeadBody(player, DeathReason.FINAL, null);
+                    
                 }else{  
                     AnimationTools.summonDeadBody(player, DeathReason.NORMAL, null);
                 }
@@ -166,8 +167,8 @@ public class GlobalListener implements Listener {
 
         } else {
 
-            e.deathMessage(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "#" + participant.getNumber()
-                    + " " + player.getName() + CYAN + " eliminated."));
+            e.deathMessage(MiniMessage.get().parse(CYAN + "Jugador " + ChatColor.WHITE + "#" + participant.getNumber()
+                    + " " + player.getName() + CYAN + " eliminado."));
         }
 
     }

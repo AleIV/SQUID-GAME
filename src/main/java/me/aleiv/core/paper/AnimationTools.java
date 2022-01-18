@@ -758,8 +758,8 @@ public class AnimationTools {
 
                 var stand = AnimationTools.getFormattedStand(world, loc);
                 var equip = stand.getEquipment();
-                equip.setItemInOffHand(body);
-                equip.setItemInMainHand(head);
+                equip.setItemInOffHand(head);
+                equip.setItemInMainHand(body);
 
                 stand.setVelocity(getRandomVector(1).normalize());
 

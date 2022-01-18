@@ -34,7 +34,7 @@ public class GlobalStage implements Listener{
         var game = instance.getGame();
         var stage = game.getStage();
         if(stage == Stage.KICK && game.isPlayer(player)){
-            player.kick(MiniMessage.get().parse("☠️"));
+            player.kick(MiniMessage.get().parse("Zzz"));
         }
     }
 
@@ -63,16 +63,16 @@ public class GlobalStage implements Listener{
                         if (!player.hasPermission("admin.perm") && player.getGameMode() != GameMode.SPECTATOR) {
                             player.addPotionEffect(
                                     new PotionEffect(PotionEffectType.SLOW, 5 * 20, 255, false, false, false));
-                            instance.showTitle(player, Character.toString('\u0264') + "", participantsOnline + "/" + participantsAlive, 0, 40, 0);
+                            instance.showTitle(player, participantsOnline.size() + "/" + participantsAlive, Character.toString('\u0264') + "", 0, 40, 0);
                             instance.sendActionBar(player, Character.toString('\u3400') + "");
                         }else{
-                            instance.sendActionBar(player, participantsOnline + "/" + participantsAlive);
+                            instance.sendActionBar(player, participantsOnline.size() + "/" + participantsAlive.size());
                         }
                     });
 
                 }else if(game.getStage() == Stage.WAITING){
                     players.forEach(player -> {
-                        instance.sendActionBar(player, participantsOnline + "/150");
+                        instance.sendActionBar(player, participantsOnline.size() + "/150");
                     });
                 }
             }

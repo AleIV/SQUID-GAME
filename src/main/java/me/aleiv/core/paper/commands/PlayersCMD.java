@@ -91,8 +91,8 @@ public class PlayersCMD extends BaseCommand {
                 killed.add(p.getName());
                 p.setDead(true);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "whitelist remove " + p.getName());
-                Bukkit.broadcast(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "#" + p.getNumber()
-                + " " + p.getName() + CYAN + " eliminated."));
+                Bukkit.broadcast(MiniMessage.get().parse(CYAN + "Jugador " + ChatColor.WHITE + "#" + p.getNumber()
+                + " " + p.getName() + CYAN + " eliminado."));
 
             }
         });
