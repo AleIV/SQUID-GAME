@@ -87,7 +87,7 @@ public class PlayersCMD extends BaseCommand {
 
         List<String> killed = new ArrayList<>();
         participants.values().forEach(p ->{
-            if(!p.isOnline()){
+            if(!p.isOnline() && !p.isDead() && p.getRole() == Role.PLAYER){
                 killed.add(p.getName());
                 p.setDead(true);
                 Bukkit.broadcast(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "#" + p.getNumber()
