@@ -90,6 +90,7 @@ public class PlayersCMD extends BaseCommand {
             if(!p.isOnline() && !p.isDead() && p.getRole() == Role.PLAYER){
                 killed.add(p.getName());
                 p.setDead(true);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "whitelist remove " + p.getName());
                 Bukkit.broadcast(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "#" + p.getNumber()
                 + " " + p.getName() + CYAN + " eliminated."));
 
