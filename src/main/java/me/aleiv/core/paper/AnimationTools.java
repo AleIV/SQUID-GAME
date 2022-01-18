@@ -216,6 +216,17 @@ public class AnimationTools {
         equip.setHelmet(item);
     }
 
+    public static Integer getStandModel(ArmorStand stand) {
+        var equip = stand.getEquipment();
+
+        var item = equip.getHelmet();
+
+        if (item != null && item.hasItemMeta() && item.getItemMeta().hasCustomModelData()) {
+            return item.getItemMeta().getCustomModelData();
+        }
+        return null;
+    }
+
     public static Location getNearbyLocation(List<Location> locations, Location location) {
         Location nearbyLocation = locations.get(0);
         for (var loc : locations) {
