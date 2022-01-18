@@ -57,4 +57,10 @@ public class ChickenCMD extends BaseCommand {
         sender.sendMessage(ChatColor.DARK_AQUA + "Mode chicken " + mode);
     }
 
+    @Subcommand("reset-button")
+    public void resetButton(CommandSender sender) {
+        listener.resetButtonPushes();
+        sender.sendMessage(ChatColor.DARK_AQUA + "Reset button pushes");
+    }
+
 }

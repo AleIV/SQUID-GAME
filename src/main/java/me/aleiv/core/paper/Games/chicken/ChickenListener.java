@@ -4,15 +4,26 @@ import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.events.GameTickEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class ChickenListener implements Listener {
 
     private final @NonNull Core instance;
+    private final List<UUID> playersAlreadyPushedButton;
 
     public ChickenListener(Core instance) {
         this.instance = instance;
+
+        this.playersAlreadyPushedButton = new ArrayList<>();
     }
 
     @EventHandler
@@ -57,6 +68,25 @@ public class ChickenListener implements Listener {
             }
         });
         
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent e) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+        Block clickedBlock = e.getClickedBlock();
+        if (clickedBlock != null && clickedBlock.getType() == Material.WARPED_BUTTON && !this.playersAlreadyPushedButton.contains(e.getPlayer().getUniqueId())) {
+            this.playersAlreadyPushedButton.add(e.getPlayer().getUniqueId());
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                if (this.instance.getGame().isGuard(p)) {
+                    p.sendMessage("§aEl jugador §f" + e.getPlayer().getName() + "§a a ha puslado el botón");
+                }
+            });
+        }
+    }
+
+    public void resetButtonPushes() {
+        this.playersAlreadyPushedButton.clear();
     }
     
 }
