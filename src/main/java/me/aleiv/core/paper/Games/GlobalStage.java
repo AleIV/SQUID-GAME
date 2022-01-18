@@ -1,6 +1,7 @@
 package me.aleiv.core.paper.Games;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -59,11 +60,13 @@ public class GlobalStage implements Listener{
                 if(game.getStage() == Stage.PAUSE){
 
                     players.forEach(player -> {
-                        if (!player.hasPermission("admin.perm")) {
+                        if (!player.hasPermission("admin.perm") && player.getGameMode() != GameMode.SPECTATOR) {
                             player.addPotionEffect(
                                     new PotionEffect(PotionEffectType.SLOW, 5 * 20, 255, false, false, false));
                             instance.showTitle(player, Character.toString('\u0264') + "", participantsOnline + "/" + participantsAlive, 0, 40, 0);
                             instance.sendActionBar(player, Character.toString('\u3400') + "");
+                        }else{
+                            instance.sendActionBar(player, participantsOnline + "/" + participantsAlive);
                         }
                     });
 
