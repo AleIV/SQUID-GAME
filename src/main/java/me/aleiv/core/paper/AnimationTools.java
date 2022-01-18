@@ -120,66 +120,72 @@ public class AnimationTools {
 
     }
 
-    /*public static CompletableFuture<Boolean> forceSleep(List<List<Player>> players, List<List<Location>> beds) {
-        var random = new Random();
-
-        var instance = Core.getInstance();
-        var task = new BukkitTCT();
-
-        for (int i = 0; i < 2; i++) {
-            task.addWithDelay(new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Bukkit.getScheduler().runTask(instance, t -> {
-                        Bukkit.getOnlinePlayers().forEach(p -> {
-                            instance.sendActionBar(p, Character.toString('\u3400'));
-                        });
-                    });
-                }
-            }, 50 * 20);
-        }
-
-        var i = 0;
-        for (var playerList : players) {
-            var bedList = beds.get(i);
-            playerList.forEach(player -> {
-                task.addWithDelay(new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        Bukkit.getScheduler().runTask(instance, t -> {
-                            var index = random.nextInt(beds.size());
-                            var bed = bedList.remove(index);
-                            player.setGameMode(GameMode.ADVENTURE);
-                            player.teleport(bed.clone().add(0, 1, 0));
-                            //forceSleep(player, bed);
-                        });
-                    }
-                }, 50);
-
-            });
-
-            i++;
-        }
-
-        var fade = new BukkitTCT();
-
-        for (int index = 0; index < (i / 20) + 2; index++) {
-            task.addWithDelay(new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Bukkit.getScheduler().runTask(instance, t -> {
-                        Bukkit.getOnlinePlayers().forEach(p -> {
-                            instance.sendActionBar(p, Character.toString('\u3400'));
-                        });
-                    });
-                }
-            }, 50 * 20);
-        }
-
-        fade.execute();
-
-        return task.execute();
-    }*/
+    /*
+     * public static CompletableFuture<Boolean> forceSleep(List<List<Player>>
+     * players, List<List<Location>> beds) {
+     * var random = new Random();
+     * 
+     * var instance = Core.getInstance();
+     * var task = new BukkitTCT();
+     * 
+     * for (int i = 0; i < 2; i++) {
+     * task.addWithDelay(new BukkitRunnable() {
+     * 
+     * @Override
+     * public void run() {
+     * Bukkit.getScheduler().runTask(instance, t -> {
+     * Bukkit.getOnlinePlayers().forEach(p -> {
+     * instance.sendActionBar(p, Character.toString('\u3400'));
+     * });
+     * });
+     * }
+     * }, 50 * 20);
+     * }
+     * 
+     * var i = 0;
+     * for (var playerList : players) {
+     * var bedList = beds.get(i);
+     * playerList.forEach(player -> {
+     * task.addWithDelay(new BukkitRunnable() {
+     * 
+     * @Override
+     * public void run() {
+     * Bukkit.getScheduler().runTask(instance, t -> {
+     * var index = random.nextInt(beds.size());
+     * var bed = bedList.remove(index);
+     * player.setGameMode(GameMode.ADVENTURE);
+     * player.teleport(bed.clone().add(0, 1, 0));
+     * //forceSleep(player, bed);
+     * });
+     * }
+     * }, 50);
+     * 
+     * });
+     * 
+     * i++;
+     * }
+     * 
+     * var fade = new BukkitTCT();
+     * 
+     * for (int index = 0; index < (i / 20) + 2; index++) {
+     * task.addWithDelay(new BukkitRunnable() {
+     * 
+     * @Override
+     * public void run() {
+     * Bukkit.getScheduler().runTask(instance, t -> {
+     * Bukkit.getOnlinePlayers().forEach(p -> {
+     * instance.sendActionBar(p, Character.toString('\u3400'));
+     * });
+     * });
+     * }
+     * }, 50 * 20);
+     * }
+     * 
+     * fade.execute();
+     * 
+     * return task.execute();
+     * }
+     */
 
     public static List<Location> findLocations(String str) {
         var world = Bukkit.getWorld("world");
@@ -732,6 +738,21 @@ public class AnimationTools {
 
                     return stand;
                 }
+
+            }
+
+            case FINAL -> {
+                var body = new ItemBuilder(Material.LEATHER)
+                        .meta(meta -> meta.setCustomModelData(15)).build();
+
+                var stand = AnimationTools.getFormattedStand(world, loc);
+                var equip = stand.getEquipment();
+                equip.setItemInOffHand(body);
+                equip.setItemInMainHand(head);
+
+                stand.setVelocity(getRandomVector(1).normalize());
+
+                return stand;
 
             }
         }

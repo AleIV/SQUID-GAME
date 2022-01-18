@@ -1,5 +1,8 @@
 package me.aleiv.core.paper.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,6 +17,7 @@ import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.objects.Participant.Role;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("players")
@@ -22,6 +26,8 @@ public class PlayersCMD extends BaseCommand {
 
     private @NonNull Core instance;
 
+    String CYAN = "<#4be2ba>";
+    
     public PlayersCMD(Core instance) {
         this.instance = instance;
     }
@@ -74,6 +80,26 @@ public class PlayersCMD extends BaseCommand {
     
     }
 
+    @Subcommand("kill-offline")
+    public void kill(CommandSender sender) {
+        var game = instance.getGame();
+        var participants = game.getParticipants();
+
+        List<String> killed = new ArrayList<>();
+        participants.values().forEach(p ->{
+            if(!p.isOnline()){
+                killed.add(p.getName());
+                p.setDead(true);
+                Bukkit.broadcast(MiniMessage.get().parse(CYAN + "Player " + ChatColor.WHITE + "#" + p.getNumber()
+                + " " + p.getName() + CYAN + " eliminated."));
+
+            }
+        });
+
+        instance.saveParticipantJson();
+    
+    }
+
     @Subcommand("reset-roles")
     public void roleGlobal(CommandSender sender) {
         var game = instance.getGame();
@@ -96,7 +122,7 @@ public class PlayersCMD extends BaseCommand {
         var game = instance.getGame();
         var participants = game.getParticipants();
 
-        var alive = participants.entrySet().stream().filter(entry-> entry.getValue().getRole() ==  Role.PLAYER && !entry.getValue().isDead()).toList();
+        var alive = participants.entrySet().stream().filter(entry-> entry.getValue().getRole() == Role.PLAYER && !entry.getValue().isDead()).toList();
         var names = alive.stream().map(p -> p.getValue().getName()).toList().toString();
             
         sender.sendMessage(ChatColor.AQUA + "There are " + alive.size() + " alive players.");

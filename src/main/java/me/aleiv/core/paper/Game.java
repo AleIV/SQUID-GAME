@@ -112,7 +112,7 @@ public class Game extends BukkitRunnable {
     }
 
     public enum DeathReason{
-        EXPLOSION, PROJECTILE, NORMAL
+        EXPLOSION, PROJECTILE, NORMAL, FINAL
     }
 
     public boolean isGuard(Player player){

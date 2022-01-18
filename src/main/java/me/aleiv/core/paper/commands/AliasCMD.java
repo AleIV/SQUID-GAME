@@ -1,5 +1,6 @@
 package me.aleiv.core.paper.commands;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Games.GlobalStage.Stage;
 import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("alias")
@@ -34,6 +36,23 @@ public class AliasCMD extends BaseCommand {
         manager.getCommandCompletions().registerAsyncCompletion("sfx", c -> {
             return listSounds.stream().toList();
         });
+
+        manager.getCommandCompletions().registerAsyncCompletion("stages", c -> {
+            return Arrays.stream(Stage.values()).map(m -> m.toString()).toList();
+        });
+
+
+    }
+
+    @Subcommand("stage")
+    @CommandAlias("stage")
+    @CommandCompletion("@stages")
+    public void stage(Player sender, Stage stage) {
+
+        var game = instance.getGame();
+        game.setStage(stage);
+
+        sender.sendMessage(ChatColor.DARK_AQUA + "Stage " + stage);
     }
 
     @Subcommand("sfx")

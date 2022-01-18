@@ -32,6 +32,7 @@ import me.aleiv.core.paper.Game.GameStage;
 import me.aleiv.core.paper.Game.HideMode;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Games.GlobalGame.Clothe;
+import me.aleiv.core.paper.Games.GlobalStage.Stage;
 import me.aleiv.core.paper.events.GameStartedEvent;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.objects.Participant.Role;
@@ -95,6 +96,11 @@ public class GlobalListener implements Listener {
 
         player.setGameMode(GameMode.SPECTATOR);
 
+        var stage = instance.getGame().getStage();
+        if(stage == Stage.FINAL) return;
+
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "whitelist remove " + player.getName());
+
         if (flags.contains(RespawnFlag.END_PORTAL)) {
             // end credits
 
@@ -126,6 +132,7 @@ public class GlobalListener implements Listener {
         var uuid = player.getUniqueId().toString();
         var participant = participants.get(uuid);
         var gamemode = player.getGameMode();
+        var stage = game.getStage();
 
         if (participant.getRole() == Role.PLAYER && gamemode == GameMode.ADVENTURE && !participant.isDead()) {
             var damageEvent = player.getLastDamageCause();
@@ -142,7 +149,9 @@ public class GlobalListener implements Listener {
                     var players = targetLoc.getNearbyPlayers(15).stream().toList();
                     effects.blood(players);
 
-                }else {
+                }else if(stage == Stage.FINAL){
+                    AnimationTools.summonDeadBody(player, DeathReason.FINAL, null);
+                }else{  
                     AnimationTools.summonDeadBody(player, DeathReason.NORMAL, null);
                 }
             }
@@ -292,6 +301,8 @@ public class GlobalListener implements Listener {
                     // PLAYER TO PLAYER CASE
                     e.setCancelled(true);
                     return;
+                }else if(role == Role.VIP){
+                    e.setCancelled(true);
                 }
 
             } else if (damager instanceof Projectile) {

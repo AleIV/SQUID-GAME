@@ -123,6 +123,7 @@ public class Core extends JavaPlugin {
         registerListener(new CinematicListener(this));
         registerListener(new FrozeListener(this));
         //registerListener(new HologramListener(this));
+        registerListener(game.getGlobalStage());
 
         // COMMANDS
 
