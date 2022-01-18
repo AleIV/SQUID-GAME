@@ -32,8 +32,8 @@ import me.aleiv.core.paper.Game.GameStage;
 import me.aleiv.core.paper.Game.HideMode;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Games.GlobalGame.Clothe;
+import me.aleiv.core.paper.Games.GlobalStage.Stage;
 import me.aleiv.core.paper.events.GameStartedEvent;
-import me.aleiv.core.paper.events.GameTickEvent;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.objects.Participant.Role;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
@@ -96,6 +96,11 @@ public class GlobalListener implements Listener {
 
         player.setGameMode(GameMode.SPECTATOR);
 
+        var stage = instance.getGame().getStage();
+        if(stage == Stage.FINAL) return;
+
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "whitelist remove " + player.getName());
+
         if (flags.contains(RespawnFlag.END_PORTAL)) {
             // end credits
 
@@ -127,6 +132,7 @@ public class GlobalListener implements Listener {
         var uuid = player.getUniqueId().toString();
         var participant = participants.get(uuid);
         var gamemode = player.getGameMode();
+        var stage = game.getStage();
 
         if (participant.getRole() == Role.PLAYER && gamemode == GameMode.ADVENTURE && !participant.isDead()) {
             var damageEvent = player.getLastDamageCause();
@@ -143,7 +149,9 @@ public class GlobalListener implements Listener {
                     var players = targetLoc.getNearbyPlayers(15).stream().toList();
                     effects.blood(players);
 
-                }else {
+                }else if(stage == Stage.FINAL){
+                    AnimationTools.summonDeadBody(player, DeathReason.FINAL, null);
+                }else{  
                     AnimationTools.summonDeadBody(player, DeathReason.NORMAL, null);
                 }
             }
@@ -240,45 +248,6 @@ public class GlobalListener implements Listener {
     }
 
     @EventHandler
-    public void gameTickEvent(GameTickEvent e) {
-        var game = instance.getGame();
-        Bukkit.getScheduler().runTask(instance, () -> {
-
-            var timer = game.getTimer();
-            if (timer.isActive()) {
-                var currentTime = (int) game.getGameTime();
-                timer.refreshTime(currentTime);
-            }
-
-            if (game.getGameStage() == GameStage.PAUSE) {
-                var players = Bukkit.getOnlinePlayers();
-                players.forEach(player -> {
-                    if (!player.hasPermission("admin.perm")) {
-                        player.addPotionEffect(
-                                new PotionEffect(PotionEffectType.SLOW, 5 * 20, 255, false, false, false));
-                        instance.showTitle(player, Character.toString('\u0264') + "", "", 0, 40, 0);
-                        instance.sendActionBar(player, Character.toString('\u3400') + "");
-                    }
-                });
-            } else if (game.getGameStage() == GameStage.STARTING) {
-                var players = Bukkit.getOnlinePlayers();
-                var size = game.getParticipants().entrySet().stream()
-                        .filter(entry -> entry.getValue().getRole() == Role.PLAYER).toList().size();
-                players.forEach(player -> {
-                    if (!player.hasPermission("admin.perm")) {
-                        player.addPotionEffect(
-                                new PotionEffect(PotionEffectType.SLOW, 5 * 20, 255, false, false, false));
-                        instance.showTitle(player, Character.toString('\u0265') + "", size + "", 0, 40, 0);
-                        instance.sendActionBar(player, Character.toString('\u3400') + "");
-                    }
-                });
-            }
-
-        });
-
-    }
-
-    @EventHandler
     public void playerMove(PlayerMoveEvent e) {
         var game = instance.getGame();
         if (game.getGameStage() != GameStage.LOBBY)
@@ -332,6 +301,8 @@ public class GlobalListener implements Listener {
                     // PLAYER TO PLAYER CASE
                     e.setCancelled(true);
                     return;
+                }else if(role == Role.VIP){
+                    e.setCancelled(true);
                 }
 
             } else if (damager instanceof Projectile) {

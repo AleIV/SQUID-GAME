@@ -52,6 +52,11 @@ public class Participant {
         }
     }
 
+    public boolean isOnline(){
+        var player = Bukkit.getPlayer(name);
+        return player != null && player.isOnline();
+    }
+
     public void chooseNumber(){
         this.number = getAvailableNumber();
     }

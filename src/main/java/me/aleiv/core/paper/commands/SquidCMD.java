@@ -2,20 +2,23 @@ package me.aleiv.core.paper.commands;
 
 import java.util.Arrays;
 
-import co.aikar.commands.annotation.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Syntax;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.GameStage;
 import me.aleiv.core.paper.Game.HideMode;
 import me.aleiv.core.paper.Game.PvPType;
 import me.aleiv.core.paper.Game.TimerType;
-import me.aleiv.core.paper.listeners.FrozeListener;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.entity.Player;
 
 @CommandAlias("squid")
 @CommandPermission("admin.perm")
@@ -68,14 +71,6 @@ public class SquidCMD extends BaseCommand {
         } else {
             sender.sendMessage(ChatColor.RED + "Player " + target.getName() + " is not frozen");
         }
-    }
-
-    @Subcommand("sprint")
-    @CommandCompletion("@bool")
-    public void sprint(CommandSender sender, boolean bool) {
-        var game = instance.getGame();
-        game.setSprint(bool);
-        sender.sendMessage(ChatColor.DARK_AQUA + "Sprint " + bool);
     }
 
     @Subcommand("pvp")
