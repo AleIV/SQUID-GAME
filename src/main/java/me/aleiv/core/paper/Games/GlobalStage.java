@@ -32,7 +32,7 @@ public class GlobalStage implements Listener{
         var player = e.getPlayer();
         var game = instance.getGame();
         var stage = game.getStage();
-        if(stage == Stage.KICK){
+        if(stage == Stage.KICK && game.isPlayer(player)){
             player.kick(MiniMessage.get().parse("☠️"));
         }
     }
