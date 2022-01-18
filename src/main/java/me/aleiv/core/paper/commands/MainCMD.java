@@ -1,8 +1,10 @@
 package me.aleiv.core.paper.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -83,7 +85,7 @@ public class MainCMD extends BaseCommand {
         sender.sendMessage(ChatColor.DARK_AQUA + "Screen turn " + bool);
     }
 
-    @Subcommand("refresh-prize")
+    @Subcommand("manual-prize")
     public void refreshPrize(CommandSender sender, Integer newPrize, Integer delay, Integer value) {
         var tools = instance.getGame().getMainRoom();
         tools.refreshPrize(newPrize, delay, value);
@@ -91,10 +93,10 @@ public class MainCMD extends BaseCommand {
     }
 
     @Subcommand("prize")
-    public void prize(CommandSender sender, Integer newPrize) {
+    public void prize(CommandSender sender, Integer newPrize, Integer count) {
         var tools = instance.getGame().getMainRoom();
 
-        tools.refreshPrize(newPrize, 2, 50);
+        tools.refreshPrize(newPrize, 2, count);
         sender.sendMessage(ChatColor.DARK_AQUA + "Refreshed prize " + newPrize);
     }
 
@@ -110,11 +112,43 @@ public class MainCMD extends BaseCommand {
         sender.sendMessage(ChatColor.DARK_AQUA + "Refreshed players ");
     }
 
-    @Subcommand("refresh-players")
+    @Subcommand("manual-players")
     public void refreshPlayers(CommandSender sender, Integer newPrize, Integer delay, Integer value) {
         var tools = instance.getGame().getMainRoom();
         tools.refreshPlayers(newPrize, delay, value);
         sender.sendMessage(ChatColor.DARK_AQUA + "Refreshed players " + newPrize + " " + delay);
+    }
+
+    @Subcommand("snowball")
+    @CommandCompletion("@bool")
+    public void snowball(CommandSender sender, Boolean bool) {
+        if (bool) {
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                var inv = p.getInventory().getContents();
+                var count = 0;
+                for (var item : inv) {
+                    if (item != null && item.getType() == Material.GLASS_BOTTLE) {
+                        p.getInventory().setItem(count, new ItemStack(Material.SNOWBALL));
+                    }
+                    count++;
+                }
+
+            });
+
+        } else {
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                var inv = p.getInventory().getContents();
+                var count = 0;
+                for (var item : inv) {
+                    if (item != null && item.getType() == Material.SNOWBALL) {
+                        p.getInventory().setItem(count, new ItemStack(Material.GLASS_BOTTLE));
+                    }
+                    count++;
+                }
+
+            });
+        }
+        sender.sendMessage(ChatColor.DARK_AQUA + "Snowballs " + bool);
     }
 
     @Subcommand("pass-night")
@@ -135,6 +169,7 @@ public class MainCMD extends BaseCommand {
 
             AnimationTools.forceSleepInstant(guards, guardBeds);
             AnimationTools.forceSleepInstant(participants, beds);
+
         }, 110);
     }
 

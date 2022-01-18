@@ -1,15 +1,20 @@
 package me.aleiv.core.paper.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Flags;
+import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.objects.Participant.Role;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 @CommandAlias("players")
 @CommandPermission("admin.perm")
@@ -35,7 +40,7 @@ public class PlayersCMD extends BaseCommand {
             if(role == Role.PLAYER){
                 participant.chooseNumber();
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard players set " + participant.getName() + " number " + participant.getNumber());
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team leave " + participant.getName());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team join PARTICIPANT " + participant.getName());
 
             }else{
                 participant.setNumber(0);
@@ -52,7 +57,7 @@ public class PlayersCMD extends BaseCommand {
     }
 
     @Subcommand("dead")
-    @CommandCompletion("@players")
+    @CommandCompletion("@players @bool")
     public void dead(CommandSender sender, @Flags("other") Player player, Boolean dead) {
         var game = instance.getGame();
         var participants = game.getParticipants();
@@ -63,9 +68,9 @@ public class PlayersCMD extends BaseCommand {
             participant.setDead(dead);
             
             sender.sendMessage(ChatColor.DARK_AQUA + player.getName() + " dead mode set to " + dead);
-        }
 
-        instance.saveParticipantJson();
+            instance.saveParticipantJson();
+        }
     
     }
 
@@ -110,6 +115,31 @@ public class PlayersCMD extends BaseCommand {
         sender.sendMessage(ChatColor.DARK_RED + "There are " + dead.size() + " dead players.");
         sender.sendMessage(ChatColor.YELLOW + names);
         
+    }
+
+    //@Subcommand("count")
+    public void getCount(CommandSender sender, Integer i) {
+
+        var to = 0;
+        var count = 1;
+        while(count < i){
+            var participant = getNum(count);
+            if(participant == null) break;
+            if(!participant.isDead()){
+                to = count;
+                count++;
+            }
+        }
+        
+
+        sender.sendMessage(ChatColor.DARK_RED + "There are " + i + " players from 1 to " + to);
+        
+    }
+
+    public Participant getNum(int i){
+        var game = instance.getGame();
+        var participantsList = game.getParticipants();
+        return participantsList.values().stream().filter(v-> v.getNumber() == i).findAny().orElse(null);
     }
 
     @Subcommand("guards")

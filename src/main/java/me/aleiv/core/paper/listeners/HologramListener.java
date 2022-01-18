@@ -1,18 +1,14 @@
 package me.aleiv.core.paper.listeners;
 
-import me.aleiv.core.paper.Core;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.server.PluginDisableEvent;
+
+import me.aleiv.core.paper.Core;
 
 public class HologramListener implements Listener {
 
-    private final Core plugin;
+    public Core plugin;
 
-    public HologramListener(Core plugin) {
+    /*public HologramListener(Core plugin) {
         this.plugin = plugin;
     }
 
@@ -36,5 +32,5 @@ public class HologramListener implements Listener {
 
         int online = (int) Bukkit.getOnlinePlayers().stream().filter(p -> plugin.getGame().isPlayer(p)).count();
         plugin.getHologramPlayer().updateName(online);
-    }
+    }*/
 }

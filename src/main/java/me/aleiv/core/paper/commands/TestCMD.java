@@ -1,23 +1,25 @@
 package me.aleiv.core.paper.commands;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Name;
-import co.aikar.commands.annotation.Subcommand;
+import java.util.List;
+
 import com.ticxo.modelengine.api.ModelEngineAPI;
 import com.ticxo.modelengine.api.model.ActiveModel;
-import lombok.NonNull;
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.utilities.LineVector;
-import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Name;
+import co.aikar.commands.annotation.Subcommand;
+import lombok.NonNull;
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.utilities.LineVector;
+import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("test")
 @CommandPermission("admin.perm")
@@ -29,16 +31,6 @@ public class TestCMD extends BaseCommand {
 
     public TestCMD(Core instance) {
         this.instance = instance;
-    }
-
-    @Subcommand("hologram1")
-    public void hologram1(Player player) {
-        instance.getHologramPlayer().spawnHologram();
-    }
-
-    @Subcommand("hologram2")
-    public void hologram2(Player player) {
-        instance.getHologramPlayer().removeHologram();
     }
 
     @Subcommand("particle-distance")

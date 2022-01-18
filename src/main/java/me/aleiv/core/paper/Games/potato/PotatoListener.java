@@ -40,7 +40,8 @@ public class PotatoListener implements Listener {
                 player.removePotionEffect(PotionEffectType.GLOWING);
 
                 player.playSound(loc2, "squid:sfx.potato_receive", 1, 1);
-                damagerPlayer.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 10000*20, 0, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 10000*20, 0, false, false, false));
+                damagerPlayer.removePotionEffect(PotionEffectType.GLOWING);
                 
                 invDamager.remove(Material.RABBIT_FOOT);
                 invPlayer.addItem(potato);

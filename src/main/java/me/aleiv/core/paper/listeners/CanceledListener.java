@@ -84,16 +84,6 @@ public class CanceledListener implements Listener {
     }
 
     @EventHandler
-    public void onDamage(EntityDamageEvent e){
-        var game = instance.getGame();
-        var entity = e.getEntity();
-        if(entity instanceof Player player && game.isGuard(player)){
-            e.setDamage(1);
-            
-        }
-    }
-
-    @EventHandler
     public void onExperience(EntitySpawnEvent e){
         if(e.getEntity() instanceof ExperienceOrb){
             e.setCancelled(true);

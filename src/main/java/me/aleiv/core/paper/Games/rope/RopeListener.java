@@ -4,6 +4,7 @@ import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.events.LeftWinsEvent;
 import me.aleiv.core.paper.events.RightWinsEvent;
+import me.aleiv.core.paper.utilities.NegativeSpaces;
 import me.aleiv.core.paper.utilities.PlayerUtils;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import net.md_5.bungee.api.ChatColor;
@@ -73,6 +74,8 @@ public class RopeListener implements Listener {
 
                 PlayerUtils.forceHandSwing(player, false);
 
+                instance.sendActionBar(player, NegativeSpaces.get(208) + Character.toString('\u025E'));
+
             } else if (left.contains(player)) {
                 if (rope.getBoolMode()) {
                     if (rope.getBoolModeBool()) {
@@ -97,6 +100,8 @@ public class RopeListener implements Listener {
                 });
 
                 PlayerUtils.forceHandSwing(player, false);
+
+                instance.sendActionBar(player, NegativeSpaces.get(208) + Character.toString('\u025E'));
 
             }
 

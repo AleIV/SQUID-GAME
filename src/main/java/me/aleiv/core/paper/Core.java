@@ -10,8 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import me.aleiv.core.paper.core.HologramPlayer;
-import me.aleiv.core.paper.listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -35,6 +33,7 @@ import me.aleiv.core.paper.Games.potato.PotatoCMD;
 import me.aleiv.core.paper.Games.potato.PotatoListener;
 import me.aleiv.core.paper.Games.rope.RopeCMD;
 import me.aleiv.core.paper.Games.rope.RopeListener;
+import me.aleiv.core.paper.commands.AliasCMD;
 import me.aleiv.core.paper.commands.CinemaCMD;
 import me.aleiv.core.paper.commands.ClothesCMD;
 import me.aleiv.core.paper.commands.DaysCMD;
@@ -48,13 +47,17 @@ import me.aleiv.core.paper.commands.SquidCMD;
 import me.aleiv.core.paper.commands.TestCMD;
 import me.aleiv.core.paper.commands.UtilsCMD;
 import me.aleiv.core.paper.core.WebServer;
-import me.aleiv.core.paper.detection.CollisionManager;
+import me.aleiv.core.paper.listeners.CanceledListener;
+import me.aleiv.core.paper.listeners.CinematicListener;
+import me.aleiv.core.paper.listeners.GlobalListener;
+import me.aleiv.core.paper.listeners.HideListener;
+import me.aleiv.core.paper.listeners.ItemListener;
+import me.aleiv.core.paper.listeners.MechanicsListener;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
 import me.aleiv.core.paper.utilities.ResourcePackManager;
 import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
-import me.aleiv.core.paper.vectors.VectorsManager;
 import me.aleiv.modeltool.core.EntityModelManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -69,13 +72,13 @@ public class Core extends JavaPlugin {
     private @Getter Game game;
     private @Getter PaperCommandManager commandManager;
     private @Getter static MiniMessage miniMessage = MiniMessage.get();
-    private @Getter CollisionManager collisionManager;
-    private @Getter VectorsManager vectorManager;
+    //private @Getter CollisionManager collisionManager;
+    //private @Getter VectorsManager vectorManager;
     private @Getter ProtocolManager protocolManager;
     private @Getter EntityModelManager entityModelManager;
     private @Getter ResourcePackManager resourcePackManager;
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    @Getter private HologramPlayer hologramPlayer;
+     //@Getter private HologramPlayer hologramPlayer;
 
     @Override
     public void onEnable() {
@@ -88,8 +91,8 @@ public class Core extends JavaPlugin {
         NegativeSpaces.registerCodes();
         entityModelManager = new EntityModelManager(this);
         resourcePackManager = new ResourcePackManager(this);
-        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/ecacc79de31c0877d450738333a2f00a8dd07e6d.zip");
-        resourcePackManager.setResourcePackHash("ecacc79de31c0877d450738333a2f00a8dd07e6d");
+        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/869c3595a1ca1bfaca07b46ee592ade26887bddd.zip");
+        resourcePackManager.setResourcePackHash("869c3595a1ca1bfaca07b46ee592ade26887bddd");
         resourcePackManager.setBypassPerm("squidgame.rp.bypass");
 
         game = new Game(this);
@@ -100,9 +103,9 @@ public class Core extends JavaPlugin {
         startWebServer();
 
         // Hologram start
-        this.hologramPlayer = new HologramPlayer(this);
-        this.hologramPlayer.spawnHologram();
-        Bukkit.getScheduler().runTask(this, () -> this.hologramPlayer.spawnHologram());
+        //this.hologramPlayer = new HologramPlayer(this);
+        //this.hologramPlayer.spawnHologram();
+        //Bukkit.getScheduler().runTask(this, () -> this.hologramPlayer.spawnHologram());
 
         // LISTENERS
 
@@ -116,7 +119,7 @@ public class Core extends JavaPlugin {
         registerListener(new GlassListener(this));
         registerListener(new ItemListener(this));
         registerListener(new CinematicListener(this));
-        registerListener(new HologramListener(this));
+        //registerListener(new HologramListener(this));
 
         // COMMANDS
 
@@ -145,17 +148,18 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new CinemaCMD(this));
         commandManager.registerCommand(new DaysCMD(this));
         commandManager.registerCommand(new EffectsCMD(this));
-
         commandManager.registerCommand(new GuardnpcCMD(this));
+
+        commandManager.registerCommand(new AliasCMD(this));
 
 
 
         // Register skin command
 
         // Start collision manager
-        this.collisionManager = new CollisionManager(this);
+        //this.collisionManager = new CollisionManager(this);
         // Start vectors manager
-        this.vectorManager = new VectorsManager(this);
+        //this.vectorManager = new VectorsManager(this);
 
         // Start effect manager
     }

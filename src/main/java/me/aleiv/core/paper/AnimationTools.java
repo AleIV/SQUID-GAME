@@ -115,7 +115,7 @@ public class AnimationTools {
             var index = random.nextInt(beds.size());
             var bed = beds.remove(index);
             p.setGameMode(GameMode.ADVENTURE);
-            p.teleport(bed.clone().add(0, 1, 0));
+            p.teleport(bed.clone().add(0.5, 1, -0.5));
         });
 
     }

@@ -68,8 +68,6 @@ public class GlobalListener implements Listener {
         var game = instance.getGame();
         var globalGame = game.getGlobalGame();
 
-        var mainLoc = new Location(Bukkit.getWorld("world"), 279, 5, -115);
-
         var allPlayers = Bukkit.getOnlinePlayers();
 
         allPlayers.forEach(player -> {
@@ -89,7 +87,7 @@ public class GlobalListener implements Listener {
         game.refreshHide();
         mainRoom.lights(true);
 
-    }//TODO: TP SPECS TO MAIN ROOM 
+    }
 
     @EventHandler
     public void onCredits(PlayerRespawnEvent e) {
@@ -135,6 +133,7 @@ public class GlobalListener implements Listener {
             if (damageEvent instanceof EntityDamageByEntityEvent damageEntity
                     && damageEntity.getDamager() instanceof Projectile projectile) {
                 AnimationTools.summonDeadBody(player, DeathReason.PROJECTILE, projectile);
+
             } else {
                 var cause = damageEvent.getCause();
                 if (cause == DamageCause.BLOCK_EXPLOSION || cause == DamageCause.ENTITY_EXPLOSION) {
@@ -144,7 +143,7 @@ public class GlobalListener implements Listener {
                     var players = targetLoc.getNearbyPlayers(15).stream().toList();
                     effects.blood(players);
 
-                } else {
+                }else {
                     AnimationTools.summonDeadBody(player, DeathReason.NORMAL, null);
                 }
             }
@@ -184,13 +183,12 @@ public class GlobalListener implements Listener {
         var player = e.getPlayer();
         var uuid = player.getUniqueId().toString();
 
-        player.setCollidable(false);
-
         e.joinMessage(MiniMessage.get().parse(""));
         instance.adminMessage(ChatColor.YELLOW + player.getName() + " joined the game");
 
         if (!participants.containsKey(uuid)) {
             participants.put(uuid, new Participant(uuid, player.getName()));
+            
         }
 
         var participant = participants.get(uuid);

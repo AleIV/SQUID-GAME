@@ -22,7 +22,7 @@ public class Participant {
         
         this.number = getAvailableNumber();
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard players set " + name + " number " + number);
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team leave " + name);
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team join PARTICIPANT " + name);
 
         var player = Bukkit.getPlayer(UUID.fromString(uuid));
         if(player != null){
@@ -38,7 +38,13 @@ public class Participant {
         this.number = number;
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard players set " + name + " number " + number);
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team leave " + name);
+
+        if(role == Role.PLAYER){
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team join PARTICIPANT " + name);
+        }else{
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team join funny " + name);
+        }
+        
     
         var player = Bukkit.getPlayer(UUID.fromString(uuid));
         if(player != null){

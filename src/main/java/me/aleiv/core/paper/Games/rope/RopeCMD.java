@@ -1,8 +1,12 @@
 package me.aleiv.core.paper.Games.rope;
 
+import java.util.List;
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -12,6 +16,7 @@ import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import net.md_5.bungee.api.ChatColor;
 
 @CommandAlias("rope")
@@ -118,6 +123,45 @@ public class RopeCMD extends BaseCommand {
         sender.sendMessage(ChatColor.DARK_AQUA + "Left elevator " + bool);
         var tools = instance.getGame().getRopeGame();
         tools.leftElevator(bool);
+    }
+
+    List<String> numbers = List.of(Character.toString('\u0274') + "", Character.toString('\u0275') + "", Character.toString('\u0276') + "", 
+    Character.toString('\u0277') + "", Character.toString('\u0278') + "", Character.toString('\u0279') + "");
+    
+    @Subcommand("sort")
+    public void sort(CommandSender sender, Integer n){
+        var random = new Random();
+        var task = new BukkitTCT();
+
+        var v = 10;
+        for (int i = 0; i < v; i++) {
+            task.addWithDelay(new BukkitRunnable() {
+                @Override
+                public void run() {
+                    var num = numbers.get(random.nextInt(numbers.size()));
+                    Bukkit.getOnlinePlayers().forEach(p ->{
+                        var loc = p.getLocation();
+                        instance.showTitle(p, ChatColor.RED + num, "", 0, 80, 0);
+                        p.playSound(loc, "squid:sfx.right", 1, 0.1f);
+                    });
+                }
+            }, 50 * 10);
+        }
+
+        task.addWithDelay(new BukkitRunnable() {
+            @Override
+            public void run(){
+                var num = numbers.get(n-1);
+                Bukkit.getOnlinePlayers().forEach(p ->{
+                    var loc = p.getLocation();
+                    instance.showTitle(p, num, "", 0, 120, 0);
+                    p.playSound(loc, "squid:sfx.right", 1, 0.1f);
+                });
+            }
+        }, 50 * 10);
+
+        task.execute();
+
     }
 
 }
