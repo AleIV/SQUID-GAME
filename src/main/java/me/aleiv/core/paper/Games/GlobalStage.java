@@ -13,6 +13,7 @@ import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.events.GameTickEvent;
 import me.aleiv.core.paper.objects.Participant.Role;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.md_5.bungee.api.ChatColor;
 
 @Data
 public class GlobalStage implements Listener{
@@ -63,10 +64,12 @@ public class GlobalStage implements Listener{
                         if (!player.hasPermission("admin.perm") && player.getGameMode() != GameMode.SPECTATOR) {
                             player.addPotionEffect(
                                     new PotionEffect(PotionEffectType.SLOW, 5 * 20, 255, false, false, false));
-                            instance.showTitle(player, participantsOnline.size() + "/" + participantsAlive, Character.toString('\u0264') + "", 0, 40, 0);
+                            String p = participantsOnline.size() + "/" + "" + participantsAlive.size();
+                            instance.showTitle(player, Character.toString('\u0264') + "", p, 0, 40, 0);
                             instance.sendActionBar(player, Character.toString('\u3400') + "");
                         }else{
-                            instance.sendActionBar(player, participantsOnline.size() + "/" + participantsAlive.size());
+                            String p = participantsOnline.size() + "/"  + "" + participantsAlive.size();
+                            instance.sendActionBar(player, p);
                         }
                     });
 
@@ -75,32 +78,6 @@ public class GlobalStage implements Listener{
                         instance.sendActionBar(player, participantsOnline.size() + "/150");
                     });
                 }
-            }
-
-            if (game.getStage() == Stage.PAUSE) {
-                var players = Bukkit.getOnlinePlayers();
-                players.forEach(player -> {
-                    if (!player.hasPermission("admin.perm")) {
-                        player.addPotionEffect(
-                                new PotionEffect(PotionEffectType.SLOW, 5 * 20, 255, false, false, false));
-                        instance.showTitle(player, Character.toString('\u0264') + "", "", 0, 40, 0);
-                        instance.sendActionBar(player, Character.toString('\u3400') + "");
-                    }
-                });
-
-            } else if (game.getStage() == Stage.WAITING) {
-                var players = Bukkit.getOnlinePlayers();
-                var size = game.getParticipants().entrySet().stream()
-                        .filter(entry -> entry.getValue().getRole() == Role.PLAYER).toList().size();
-
-                players.forEach(player -> {
-                    if (!player.hasPermission("admin.perm")) {
-                        player.addPotionEffect(
-                                new PotionEffect(PotionEffectType.SLOW, 5 * 20, 255, false, false, false));
-                        instance.showTitle(player, Character.toString('\u0265') + "", size + "", 0, 40, 0);
-                        instance.sendActionBar(player, Character.toString('\u3400') + "");
-                    }
-                });
             }
 
         });
