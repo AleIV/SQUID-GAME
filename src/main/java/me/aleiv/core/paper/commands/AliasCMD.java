@@ -57,7 +57,7 @@ public class AliasCMD extends BaseCommand {
 
     @Subcommand("sfx")
     @CommandAlias("sfx")
-    @CommandCompletion("sfx")
+    @CommandCompletion("@sfx")
     public void sfx(Player sender, String str, Integer i) {
 
         var players = sender.getLocation().getNearbyPlayers(i).stream().toList();
@@ -66,7 +66,7 @@ public class AliasCMD extends BaseCommand {
             p.playSound(loc, "squid:sfx." + str, 1, 1);
         });
 
-        sender.sendMessage(ChatColor.DARK_AQUA + "Sound " + str + " radius " + i);
+        sender.sendMessage(ChatColor.DARK_AQUA + "SFX " + str + " radius " + i);
     }
 
     @Subcommand("sound")

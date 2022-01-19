@@ -101,7 +101,7 @@ public class PlayersCMD extends BaseCommand {
     
     }
 
-    @Subcommand("reset-roles")
+    //@Subcommand("reset-roles")
     public void roleGlobal(CommandSender sender) {
         var game = instance.getGame();
         var participants = game.getParticipants();

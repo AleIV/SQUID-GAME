@@ -43,7 +43,7 @@ public class Game extends BukkitRunnable {
 
     boolean allFroze = false;
     List<UUID> frozenPlayers = new ArrayList<>();
-    Stage stage = Stage.INGAME;
+    Stage stage = Stage.KICK;
 
     //GAMES
     GlobalGame globalGame;

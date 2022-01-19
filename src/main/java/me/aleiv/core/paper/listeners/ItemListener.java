@@ -107,9 +107,11 @@ public class ItemListener implements Listener {
                 }
             } else if (name.contains("froze")) {
                 this.instance.getGame().switchFroze(target.getUniqueId());
+
             } else if (name.contains("info")) {
                 player.sendMessage("Player Name: §e" + target.getName());
                 player.sendMessage("Player UUID: §e" + target.getUniqueId());
+                
             } else if (name.contains("shot")) {
                 AnimationTools.shootLocation(target);
                 var effects = instance.getGame().getEffects();
