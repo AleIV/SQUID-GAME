@@ -14,10 +14,7 @@ import me.aleiv.cinematicCore.paper.objects.NPCInfo;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Games.cookie.CookieGame;
 import me.aleiv.modeltool.utilities.RandomUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -253,7 +250,7 @@ public class CookieCapsule {
         this.onError = false;
         this.block();
 
-        Bukkit.getOnlinePlayers().parallelStream().filter(p -> Core.getInstance().getGame().isGuard(p)).forEach(player -> {
+        Bukkit.getOnlinePlayers().parallelStream().filter(p -> Core.getInstance().getGame().isGuard(p)).filter(p -> p.getGameMode() != GameMode.ADVENTURE).forEach(player -> {
             player.sendMessage(ChatColor.GREEN + this.player.getName() + " ha terminado la galleta.");
         });
 
