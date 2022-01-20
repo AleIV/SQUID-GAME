@@ -4,6 +4,7 @@ import me.Fupery.ArtMap.Event.PlayerPaintedEvent;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.objects.CookieCapsule;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -59,6 +60,26 @@ public class CookieListener implements Listener {
     }
 
     @EventHandler
+    public void onButtonPush(PlayerInteractEvent e) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+        Player player = e.getPlayer();
+        Block block = e.getClickedBlock();
+
+        if (block == null || !block.getType().toString().contains("BUTTON")) return;
+
+        int typeInt = 1;
+        switch (e.getClickedBlock().getType()) {
+            case JUNGLE_BUTTON -> typeInt = 1;
+            case BIRCH_BUTTON -> typeInt = 2;
+            case DARK_OAK_BUTTON -> typeInt = 3;
+            case SPRUCE_BUTTON -> typeInt = 4;
+        }
+
+        this.giveCookie(player, typeInt);
+    }
+
+    @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (!plugin.getGame().getCookieGame().isStarted()) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
@@ -68,17 +89,7 @@ public class CookieListener implements Listener {
         if (item == null) return;
 
         ItemMeta meta = item.getItemMeta();
-        if (e.getClickedBlock() != null && e.getClickedBlock().getType().toString().contains("BUTTON")) {
-            int typeInt = 1;
-            switch (e.getClickedBlock().getType()) {
-                case JUNGLE_BUTTON -> typeInt = 1;
-                case ACACIA_BUTTON -> typeInt = 2;
-                case DARK_OAK_BUTTON -> typeInt = 3;
-                case SPRUCE_BUTTON -> typeInt = 4;
-            }
-
-            this.giveCookie(player, typeInt);
-        } else if (item.getType() == Material.FERMENTED_SPIDER_EYE && meta.hasCustomModelData()) {
+        if (item.getType() == Material.FERMENTED_SPIDER_EYE && meta.hasCustomModelData()) {
             e.setCancelled(true);
 
             CookieCapsule cookieCapsule = plugin.getGame().getCookieGame().getCapsule(e.getPlayer());
