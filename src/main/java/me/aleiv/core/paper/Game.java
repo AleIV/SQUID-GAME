@@ -69,7 +69,7 @@ public class Game extends BukkitRunnable {
     GameStage gameStage = GameStage.INGAME;
 
     String totalPlayers = "000";
-    String totalPrize = "000000";
+    String totalPrize = "010000";
 
     Location city;
     Location whiteLobby;
