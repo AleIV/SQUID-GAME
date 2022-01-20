@@ -29,7 +29,6 @@ import org.bukkit.scheduler.BukkitTask;
 public class PhoneCMD extends BaseCommand {
 
     private @NonNull Core instance;
-    private BukkitTask animationTask;
 
     public PhoneCMD(Core instance){
         this.instance = instance;
