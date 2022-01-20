@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
 import co.aikar.commands.BaseCommand;
@@ -14,6 +15,9 @@ import lombok.NonNull;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @CommandAlias("utils")
 @CommandPermission("admin.perm")
@@ -158,6 +162,18 @@ public class UtilsCMD extends BaseCommand {
         this.limitListener.setLimit(i);
         this.instance.getGame().setPvp(Game.PvPType.ONLY_PVP);
         player.sendMessage("Limit set to " + i);
+    }
+
+    @CommandAlias("countplayers")
+    @CommandCompletion("@nothing")
+    @Syntax("<range>")
+    public void onCountPlayers(Player player, int i) {
+        List<Player> players = player.getNearbyEntities(i, i, i).stream()
+                .filter(entity -> entity instanceof Player)
+                .map(entity -> (Player) entity)
+                .filter(p -> this.instance.getGame().isPlayer(p)).toList();
+        player.sendMessage("Players in range: " + players.size());
+        player.sendMessage("Players: " + players.stream().map(HumanEntity::getName).collect(Collectors.joining(", ")));
     }
 
 }
