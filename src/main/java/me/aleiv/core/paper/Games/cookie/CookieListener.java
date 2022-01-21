@@ -59,7 +59,7 @@ public class CookieListener implements Listener {
         this.plugin.getGame().getCookieGame().stop();
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onButtonPush(PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
@@ -77,7 +77,7 @@ public class CookieListener implements Listener {
         }
 
         this.giveCookie(player, typeInt);
-    }
+    }*/
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
