@@ -52,14 +52,12 @@ public class RopeListener implements Listener {
             var centerVector = AnimationTools.parseLocation(specialObjects.get("ROPE_CENTER"), world);
             if (right.contains(player)) {
 
-                if (rope.getBoolMode()) {
-                    if (rope.getBoolModeBool()) {
-                        rope.addPoints(1);
-                    }
-                    rope.setBoolModeBool(!rope.getBoolModeBool());
+                if (rope.getMarginBool1() != 0) {
+                    rope.setMarginBool1(rope.getMarginBool1()-1);
 
                 } else {
-                    rope.addPoints(1);
+                    rope.addPoints(1*rope.getMultiplier());
+                    rope.setMarginBool1(rope.getMargin());
                 }
 
                 if (random.nextInt(10) == 0) {
@@ -69,7 +67,7 @@ public class RopeListener implements Listener {
                 var leftVector = AnimationTools.parseLocation(specialObjects.get("ROPE_LEFT"), world);
                 var vector = AnimationTools.getVector(centerVector, leftVector);
                 left.forEach(p -> {
-                    p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
+                    p.setVelocity(AnimationTools.superNormalize(vector.normalize(), rope.getPush()));
                 });
 
                 PlayerUtils.forceHandSwing(player, false);
@@ -77,15 +75,12 @@ public class RopeListener implements Listener {
                 instance.sendActionBar(player, NegativeSpaces.get(208) + Character.toString('\u025E'));
 
             } else if (left.contains(player)) {
-                if (rope.getBoolMode()) {
-                    if (rope.getBoolModeBool()) {
-                        rope.addPoints(-1);
-                    }
-                    rope.setBoolModeBool(!rope.getBoolModeBool());
+                if (rope.getMarginBool2() != 0) {
+                    rope.setMarginBool2(rope.getMarginBool2()-1);
 
                 } else {
-                    
-                    rope.addPoints(-1);
+                    rope.addPoints(-1*rope.getMultiplier());
+                    rope.setMarginBool2(rope.getMargin());
                 }
 
                 if (random.nextInt(10) == 0) {
@@ -96,7 +91,7 @@ public class RopeListener implements Listener {
                 var vector = AnimationTools.getVector(centerVector, rightVector);
 
                 right.forEach(p -> {
-                    p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
+                    p.setVelocity(AnimationTools.superNormalize(vector.normalize(), rope.getPush()));
                 });
 
                 PlayerUtils.forceHandSwing(player, false);

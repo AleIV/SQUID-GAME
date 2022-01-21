@@ -31,7 +31,7 @@ public class CinemaCMD extends BaseCommand {
         PIG, //ALL
         INTRO, DISCURSO, DOLL, HIDESEEK, //DAY 1
         COOKIE, //DAY 2
-        ROPE, //DAY 3
+        POTATO, ROPE, //DAY 3
         CHAIR, CHICKEN, //DAY 4
         PHONE, GLASS, //DAY 5
         SQUIDGAME //DAY 6
@@ -87,6 +87,9 @@ public class CinemaCMD extends BaseCommand {
             }
             case ROPE -> {
                 cine.play(uuids, "ROPE");
+            }
+            case POTATO -> {
+                cine.play(uuids, "POTATO");
             }
             case SQUIDGAME -> {
                 cine.play(uuids, "SQUIDGAME");
