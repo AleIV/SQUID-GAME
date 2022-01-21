@@ -45,6 +45,8 @@ public class RopeGame {
     Integer margin = 1;
     Integer marginBool2 = 0;
 
+    Double push = 0.01;
+
     List<ArmorStand> rightRope = new ArrayList<>();
     List<ArmorStand> leftRope = new ArrayList<>();
 

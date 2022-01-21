@@ -279,11 +279,11 @@ public class AnimationTools {
         return loc1.toVector().subtract(loc2.toVector());
     }
 
-    public static Vector superNormalize(Vector vector) {
+    public static Vector superNormalize(Vector vector, Double dou) {
         var newVector = vector;
-        newVector.setX(vector.getX() * 0.02);
-        newVector.setY(vector.getY() * 0.02);
-        newVector.setZ(vector.getZ() * 0.02);
+        newVector.setX(vector.getX() * dou);
+        newVector.setY(vector.getY() * dou);
+        newVector.setZ(vector.getZ() * dou);
         return newVector;
     }
 

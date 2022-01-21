@@ -61,7 +61,15 @@ public class RopeCMD extends BaseCommand {
     public void margin(CommandSender sender, Integer m){
         var tools = instance.getGame().getRopeGame();
         tools.setMargin(m);
-        sender.sendMessage(ChatColor.DARK_AQUA + "Margin2 " + m);
+        sender.sendMessage(ChatColor.DARK_AQUA + "margin " + m);
+        
+    }
+
+    @Subcommand("push")
+    public void push(CommandSender sender, Double push){
+        var tools = instance.getGame().getRopeGame();
+        tools.setPush(push);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Push " + push);
         
     }
 

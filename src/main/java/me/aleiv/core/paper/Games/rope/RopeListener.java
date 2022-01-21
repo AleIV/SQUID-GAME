@@ -67,7 +67,7 @@ public class RopeListener implements Listener {
                 var leftVector = AnimationTools.parseLocation(specialObjects.get("ROPE_LEFT"), world);
                 var vector = AnimationTools.getVector(centerVector, leftVector);
                 left.forEach(p -> {
-                    p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
+                    p.setVelocity(AnimationTools.superNormalize(vector.normalize(), rope.getPush()));
                 });
 
                 PlayerUtils.forceHandSwing(player, false);
@@ -91,7 +91,7 @@ public class RopeListener implements Listener {
                 var vector = AnimationTools.getVector(centerVector, rightVector);
 
                 right.forEach(p -> {
-                    p.setVelocity(AnimationTools.superNormalize(vector.normalize()));
+                    p.setVelocity(AnimationTools.superNormalize(vector.normalize(), rope.getPush()));
                 });
 
                 PlayerUtils.forceHandSwing(player, false);
