@@ -56,7 +56,7 @@ public class RopeListener implements Listener {
                     rope.setMarginBool1(rope.getMarginBool1()-1);
 
                 } else {
-                    rope.addPoints(1);
+                    rope.addPoints(1*rope.getMultiplier());
                     rope.setMarginBool1(rope.getMargin());
                 }
 
@@ -79,7 +79,7 @@ public class RopeListener implements Listener {
                     rope.setMarginBool2(rope.getMarginBool2()-1);
 
                 } else {
-                    rope.addPoints(-1);
+                    rope.addPoints(-1*rope.getMultiplier());
                     rope.setMarginBool2(rope.getMargin());
                 }
 

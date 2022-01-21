@@ -93,8 +93,8 @@ public class Core extends JavaPlugin {
         NegativeSpaces.registerCodes();
         entityModelManager = new EntityModelManager(this);
         resourcePackManager = new ResourcePackManager(this);
-        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/cbc3ca916e9482eeab691fafb390d844f661f7eb.zip");
-        resourcePackManager.setResourcePackHash("cbc3ca916e9482eeab691fafb390d844f661f7eb");
+        resourcePackManager.setResoucePackURL("https://download.mc-packs.net/pack/e9eaa9591e81f1023d8b5e3e2fc1603547f4f40e.zip");
+        resourcePackManager.setResourcePackHash("e9eaa9591e81f1023d8b5e3e2fc1603547f4f40e");
         resourcePackManager.setBypassPerm("squidgame.rp.bypass");
 
         game = new Game(this);
