@@ -41,8 +41,9 @@ public class RopeGame {
 
     Boolean ropeBossbar = false;
     Boolean inGame = false;
-    Boolean boolMode = false;
-    Boolean boolModeBool = false;
+    Integer marginBool1 = 0;
+    Integer margin = 1;
+    Integer marginBool2 = 0;
 
     List<ArmorStand> rightRope = new ArrayList<>();
     List<ArmorStand> leftRope = new ArrayList<>();

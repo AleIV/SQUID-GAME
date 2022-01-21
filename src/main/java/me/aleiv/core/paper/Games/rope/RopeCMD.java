@@ -57,12 +57,11 @@ public class RopeCMD extends BaseCommand {
         }
     }
 
-    @Subcommand("boolMode")
-    @CommandCompletion("@bool")
-    public void boolMode(CommandSender sender, Boolean bool){
+    @Subcommand("margin")
+    public void margin(CommandSender sender, Integer m){
         var tools = instance.getGame().getRopeGame();
-        tools.setBoolMode(bool);
-        sender.sendMessage(ChatColor.DARK_AQUA + "BoolMode move " + bool);
+        tools.setMargin(m);
+        sender.sendMessage(ChatColor.DARK_AQUA + "Margin2 " + m);
         
     }
 
@@ -126,7 +125,8 @@ public class RopeCMD extends BaseCommand {
     }
 
     List<String> numbers = List.of(Character.toString('\u0274') + "", Character.toString('\u0275') + "", Character.toString('\u0276') + "", 
-    Character.toString('\u0277') + "", Character.toString('\u0278') + "", Character.toString('\u0279') + "");
+    Character.toString('\u0277') + "", Character.toString('\u0278') + "", Character.toString('\u0279') + "", Character.toString('\u0285') + "",
+    Character.toString('\u0286') + "");
     
     @Subcommand("sort")
     public void sort(CommandSender sender, Integer n){
