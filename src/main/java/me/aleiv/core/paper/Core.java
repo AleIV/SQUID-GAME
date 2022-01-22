@@ -119,7 +119,7 @@ public class Core extends JavaPlugin {
         commandManager = new PaperCommandManager(this);
 
         commandManager.getCommandCompletions().registerStaticCompletion("cookieTypes", Arrays.stream(CookieGame.CookieType.values()).map(CookieGame.CookieType::name).collect(Collectors.toList()));
-        commandManager.getCommandCompletions().registerStaticCompletion("rubiusanimation", List.of("idle", "walk", "intro", "dance1", "dance2", "dance3", "dance4", "dance5", "dance6", "dance7", "dance8", "dance9"));
+        commandManager.getCommandCompletions().registerStaticCompletion("rubiusanimation", List.of("idle", "walk", "intro", "penguin", "twerk", "jump", "asereje", "spin", "floss", "fortnite", "worm", "backflip", "antigravity", "robot", "gangnam", "dab"));
 
         commandManager.registerCommand(new DollCMD(this));
         commandManager.registerCommand(new MainCMD(this));
