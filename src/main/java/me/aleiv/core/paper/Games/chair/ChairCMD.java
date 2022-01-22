@@ -3,6 +3,7 @@ package me.aleiv.core.paper.Games.chair;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
@@ -23,6 +24,8 @@ import net.md_5.bungee.api.ChatColor;
 public class ChairCMD extends BaseCommand {
 
     private @NonNull Core instance;
+
+    Random random = new Random();
 
     public ChairCMD(Core instance){
         this.instance = instance;
@@ -55,18 +58,38 @@ public class ChairCMD extends BaseCommand {
     @Subcommand("place-chair")
     public void onBody(Player sender, int i){
         var world = sender.getWorld();
-        var loc = sender.getLocation();
-        var random = new Random();
+        var location = sender.getLocation();
         
         for (int j = 0; j < i; j++) {
-            var bool = random.nextBoolean() ? -1 : 1;
-            var x = bool * random.nextInt(6);
-            var z = bool * random.nextInt(6);
-            var stand = AnimationTools.getFormattedStand(world, loc.add(x, 0, z));
+
+            var loc = findScatterLocation(location, 5, 5);
+            var stand = AnimationTools.getFormattedStand(world, loc);
             stand.setSmall(true);
             AnimationTools.setStandModel(stand, Material.BRICK, 40);
         }
         
 
+    }
+
+    public static Location findScatterLocation(Location loc, final int radius, int max) {
+        // Use Math#Random to obtain a random integer that can be used as a location.
+        loc.setX(loc.getX() + Math.random() * radius);
+        loc.setZ(loc.getZ() + Math.random() * radius);
+
+        // A location object is returned once we reach this step, next step is to
+        // validate the location from others.
+        return loc;
+    }
+
+    public int getR(int i) {
+        var neg = random.nextBoolean();
+        var rand = random.nextInt(i) + 1;
+        return neg ? rand * 1 : rand * -1;
+    }
+
+    public Location genLoc(Location location, Integer i) {
+        var world = location.getWorld();
+        var loc = new Location(world, getR(i), location.getY(), getR(i));
+        return loc;
     }
 }
