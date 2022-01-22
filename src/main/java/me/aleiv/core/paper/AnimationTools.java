@@ -121,7 +121,7 @@ public class AnimationTools {
 
     }
 
-    public static void sleepVIP(Player player, int number) {
+    public static void sleepVIP(Player player, int number){
         if(number == 0){
             var loc = parseLocation("FIREB_1", Bukkit.getWorld("world"));
             forceSleep(player, loc);

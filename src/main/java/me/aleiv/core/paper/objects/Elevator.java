@@ -35,7 +35,7 @@ public class Elevator {
         if(bool){
             Bukkit.getOnlinePlayers().forEach(player ->{
                 player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-                
+
             });
             
         }

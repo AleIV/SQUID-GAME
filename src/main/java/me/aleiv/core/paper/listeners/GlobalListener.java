@@ -116,9 +116,10 @@ public class GlobalListener implements Listener {
             var game = instance.getGame();
             var participants = game.getParticipants();
             var participant = participants.get(player.getUniqueId().toString());
-            if(participant.getNumber() == 82 || participant.getNumber() == 136 || participant.getNumber() == 0){
+            if(participant.getNumber() == 82 || participant.getNumber() == 136 || participant.getNumber() == 145){
                 instance.showTitle(player, Character.toString('\u3400'), "", 0, 120, 0);
                 Bukkit.getScheduler().runTaskLater(instance, task ->{
+                    player.setGameMode(GameMode.ADVENTURE);
                     AnimationTools.sleepVIP(player, participant.getNumber());
                 }, 100);
                 return;

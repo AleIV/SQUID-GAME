@@ -569,13 +569,13 @@ public class Elevators {
 
         elevators.put(ElevatorType.VIP_ROPE, new Elevator(loc1, loc2));
 
-        loc1 = AnimationTools.parseLocation(specialObjects.get("MAIN_ROOM_POS1"), world);
-        loc2 = AnimationTools.parseLocation(specialObjects.get("MAIN_ROOM_POS2"), world);
+        loc1 = AnimationTools.parseLocation(specialObjects.get("MAIN_ROOM_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("MAIN_ROOM_LOC2"), world);
 
         elevators.put(ElevatorType.MAIN_ROOM, new Elevator(loc1, loc2));
 
-        loc1 = AnimationTools.parseLocation(specialObjects.get("VIP_FIRE_POS1"), world);
-        loc2 = AnimationTools.parseLocation(specialObjects.get("VIP_FIRE_POS2"), world);
+        loc1 = AnimationTools.parseLocation(specialObjects.get("VIP_FIRE_LOC1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("VIP_FIRE_LOC2"), world);
 
         elevators.put(ElevatorType.VIP_FIRE, new Elevator(loc1, loc2));
 

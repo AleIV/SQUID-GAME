@@ -52,7 +52,7 @@ public class ItemListener implements Listener {
 
         var block =  e.getClickedBlock();
         if(block != null && block.getType().toString().contains("_CARPET")){
-            block.setType(Material.AIR);
+            
             var player = e.getPlayer();
             var clothes = instance.getGame().getGlobalGame();
 
@@ -64,18 +64,22 @@ public class ItemListener implements Listener {
 
             if(block.getType() == Material.PURPLE_CARPET){
                 clothes.clothes(player, Clothe.SMOKIN);
+                block.setType(Material.AIR);
 
             }else if(block.getType() == Material.BLUE_CARPET && participant.getNumber() == 82){
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team join funny " + name);
                 clothes.clothes(player, Clothe.AURON);
+                block.setType(Material.AIR);
 
             }else if(block.getType() == Material.PINK_CARPET && participant.getNumber() == 145){
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team join funny " + name);
                 clothes.clothes(player, Clothe.KOMANCHE);
+                block.setType(Material.AIR);
 
-            }else if(block.getType() == Material.LIME_CARPET && participant.getNumber() == 0){
+            }else if(block.getType() == Material.LIME_CARPET && participant.getNumber() == 136){
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team join funny " + name);
                 clothes.clothes(player, Clothe.RUBIUS);
+                block.setType(Material.AIR);
 
             }
             
