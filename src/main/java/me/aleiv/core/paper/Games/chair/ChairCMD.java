@@ -1,10 +1,14 @@
 package me.aleiv.core.paper.Games.chair;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -57,28 +61,35 @@ public class ChairCMD extends BaseCommand {
 
     @Subcommand("place-chair")
     public void onBody(Player sender, int i){
-        var world = sender.getWorld();
-        var location = sender.getLocation();
-        
+        Location startingLoc = new Location(Bukkit.getWorld("world"), 356, 42, -145);
+        ArrayList<Location> locs = this.getBlockRadius(startingLoc.clone(), 16).parallelStream().map(Block::getLocation).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+
         for (int j = 0; j < i; j++) {
-
-            var loc = findScatterLocation(location, 5, 5);
-            var stand = AnimationTools.getFormattedStand(world, loc);
-            stand.setSmall(true);
-            AnimationTools.setStandModel(stand, Material.BRICK, 40);
+            int randomIndex = random.nextInt(locs.size()-1);
+            Location loc = locs.remove(randomIndex);
+            spawnChair(loc);
         }
-        
-
     }
 
-    public static Location findScatterLocation(Location loc, final int radius, int max) {
-        // Use Math#Random to obtain a random integer that can be used as a location.
-        loc.setX(loc.getX() + Math.random() * radius);
-        loc.setZ(loc.getZ() + Math.random() * radius);
+    private void spawnChair(Location loc) {
+        var stand = AnimationTools.getFormattedStand(loc.getWorld(), loc);
+        stand.setSmall(true);
+        AnimationTools.setStandModel(stand, Material.BRICK, 40);
+    }
 
-        // A location object is returned once we reach this step, next step is to
-        // validate the location from others.
-        return loc;
+    private List<Block> getBlockRadius(Location loc, int radius){
+        if (radius < 0) {
+            return new ArrayList<>();
+        }
+        Block start = loc.getBlock();
+        List<Block> blocks = new ArrayList<>();
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                Block block = start.getRelative(x, 0, z);
+                blocks.add(block);
+            }
+        }
+        return blocks;
     }
 
     public int getR(int i) {
