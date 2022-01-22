@@ -32,6 +32,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import me.aleiv.core.paper.Game.DeathReason;
 import me.aleiv.core.paper.objects.NoteBlockData;
@@ -118,6 +119,22 @@ public class AnimationTools {
             p.teleport(bed.clone().add(0.5, 1, -0.5));
         });
 
+    }
+
+    public static void sleepVIP(Player player, int number) {
+        if(number == 0){
+            var loc = parseLocation("FIREB_1", Bukkit.getWorld("world"));
+            forceSleep(player, loc);
+
+        }else if(number == 136){
+            var loc = parseLocation("FIREB_2", Bukkit.getWorld("world"));
+            forceSleep(player, loc);
+
+        }else if(number == 145){
+            var loc = parseLocation("FIREB_3", Bukkit.getWorld("world"));
+            forceSleep(player, loc);
+
+        }
     }
 
     /*

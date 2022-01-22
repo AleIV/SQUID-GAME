@@ -2,6 +2,7 @@ package me.aleiv.core.paper.listeners;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
@@ -50,11 +51,34 @@ public class ItemListener implements Listener {
         }
 
         var block =  e.getClickedBlock();
-        if(block != null && block.getType() == Material.PURPLE_CARPET){
+        if(block != null && block.getType().toString().contains("_CARPET")){
             block.setType(Material.AIR);
             var player = e.getPlayer();
             var clothes = instance.getGame().getGlobalGame();
-            clothes.clothes(player, Clothe.SMOKIN);
+
+            var game = instance.getGame();
+            var participants = game.getParticipants();
+            var participant = participants.get(player.getUniqueId().toString());
+
+            var name = player.getName();
+
+            if(block.getType() == Material.PURPLE_CARPET){
+                clothes.clothes(player, Clothe.SMOKIN);
+
+            }else if(block.getType() == Material.BLUE_CARPET && participant.getNumber() == 82){
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team join funny " + name);
+                clothes.clothes(player, Clothe.AURON);
+
+            }else if(block.getType() == Material.PINK_CARPET && participant.getNumber() == 145){
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team join funny " + name);
+                clothes.clothes(player, Clothe.KOMANCHE);
+
+            }else if(block.getType() == Material.LIME_CARPET && participant.getNumber() == 0){
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "team join funny " + name);
+                clothes.clothes(player, Clothe.RUBIUS);
+
+            }
+            
         }
     }
 

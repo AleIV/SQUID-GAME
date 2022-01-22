@@ -21,7 +21,7 @@ public class Elevators {
 
     public enum ElevatorType {
         ONE, TWO, THREE, DOLL, HIDE_SEEK, POTATO, EXIT1, EXIT2, CHICKEN1, CHICKEN2, GOCHICKEN, GLASS,
-        VIP_MAIN, VIP_ADMIN, VIP_GLASS, VIP_ROPE, VIP_DOLL, MAIN_ROOM
+        VIP_MAIN, VIP_ADMIN, VIP_GLASS, VIP_ROPE, VIP_DOLL, MAIN_ROOM, VIP_FIRE
     }
 
     public void elevatorTravel(Player player, ElevatorType elevator2, Boolean bool){
@@ -102,6 +102,10 @@ public class Elevators {
             }
             case VIP_DOLL ->{
                 moveElevator28("VIP_DOLL", bool);
+            }
+
+            case VIP_FIRE ->{
+                moveElevator28("VIP_FIRE", bool);
             }
         case MAIN_ROOM -> throw new UnsupportedOperationException("Unimplemented case: " + elevatorType);
         default -> throw new IllegalArgumentException("Unexpected value: " + elevatorType);
@@ -569,6 +573,11 @@ public class Elevators {
         loc2 = AnimationTools.parseLocation(specialObjects.get("MAIN_ROOM_POS2"), world);
 
         elevators.put(ElevatorType.MAIN_ROOM, new Elevator(loc1, loc2));
+
+        loc1 = AnimationTools.parseLocation(specialObjects.get("VIP_FIRE_POS1"), world);
+        loc2 = AnimationTools.parseLocation(specialObjects.get("VIP_FIRE_POS2"), world);
+
+        elevators.put(ElevatorType.VIP_FIRE, new Elevator(loc1, loc2));
 
         
 

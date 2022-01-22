@@ -97,9 +97,11 @@ public class GlobalListener implements Listener {
         player.setGameMode(GameMode.SPECTATOR);
 
         var stage = instance.getGame().getStage();
-        if(stage == Stage.FINAL) return;
+        if(stage == Stage.FINAL) {
+            //TODO: FINAL SPEC push smooth
 
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "whitelist remove " + player.getName());
+            return;
+        };
 
         if (flags.contains(RespawnFlag.END_PORTAL)) {
             // end credits
@@ -110,6 +112,19 @@ public class GlobalListener implements Listener {
 
         } else if (!player.hasPermission("admin.perm")) {
             // just died
+
+            var game = instance.getGame();
+            var participants = game.getParticipants();
+            var participant = participants.get(player.getUniqueId().toString());
+            if(participant.getNumber() == 82 || participant.getNumber() == 136 || participant.getNumber() == 0){
+                instance.showTitle(player, Character.toString('\u3400'), "", 0, 120, 0);
+                Bukkit.getScheduler().runTaskLater(instance, task ->{
+                    AnimationTools.sleepVIP(player, participant.getNumber());
+                }, 100);
+                return;
+            }
+
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "whitelist remove " + player.getName());
 
             e.setRespawnLocation(new Location(Bukkit.getWorld("world"), 18, 69, -6));
 
