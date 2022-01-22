@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import me.aleiv.core.paper.commands.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -34,19 +35,6 @@ import me.aleiv.core.paper.Games.potato.PotatoCMD;
 import me.aleiv.core.paper.Games.potato.PotatoListener;
 import me.aleiv.core.paper.Games.rope.RopeCMD;
 import me.aleiv.core.paper.Games.rope.RopeListener;
-import me.aleiv.core.paper.commands.AliasCMD;
-import me.aleiv.core.paper.commands.CinemaCMD;
-import me.aleiv.core.paper.commands.ClothesCMD;
-import me.aleiv.core.paper.commands.DaysCMD;
-import me.aleiv.core.paper.commands.EffectsCMD;
-import me.aleiv.core.paper.commands.ElevatorsCMD;
-import me.aleiv.core.paper.commands.GuardnpcCMD;
-import me.aleiv.core.paper.commands.MainCMD;
-import me.aleiv.core.paper.commands.PlayersCMD;
-import me.aleiv.core.paper.commands.SpecialCMD;
-import me.aleiv.core.paper.commands.SquidCMD;
-import me.aleiv.core.paper.commands.TestCMD;
-import me.aleiv.core.paper.commands.UtilsCMD;
 import me.aleiv.core.paper.core.WebServer;
 import me.aleiv.core.paper.listeners.CanceledListener;
 import me.aleiv.core.paper.listeners.CinematicListener;
@@ -155,6 +143,7 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new DaysCMD(this));
         commandManager.registerCommand(new EffectsCMD(this));
         commandManager.registerCommand(new GuardnpcCMD(this));
+        commandManager.registerCommand(new CPSCommand(this));
 
         commandManager.registerCommand(new AliasCMD(this));
 

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import me.aleiv.cinematicCore.paper.events.LiveCinematicPlayerRegisterEvent;
+import me.aleiv.cinematicCore.paper.events.LiveCinematicPlayerRemoveEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,6 +46,24 @@ public class CinematicListener implements Listener {
         List<Player> playerInCinematic = e.getCinematicProgress().getPlayerInfo().values().parallelStream().map(i -> Bukkit.getPlayer(i.getUuid())).filter(Objects::nonNull).toList();
 
         playerInCinematic.forEach(p -> p.getInventory().setHelmet(headItems.remove(p.getUniqueId())));
+    }
+
+    @EventHandler
+    public void onLiveCinematicRegisterPlayer(LiveCinematicPlayerRegisterEvent e) {
+        Player player = e.getPlayer();
+
+        headItems.put(player.getUniqueId(), player.getInventory().getHelmet());
+        player.getInventory().setHelmet(new ItemStack(Material.CARVED_PUMPKIN));
+    }
+
+    @EventHandler
+    public void onPlayerRemoveLiveCinematic(LiveCinematicPlayerRemoveEvent e) {
+        Player player = e.getPlayer();
+
+        if (headItems.containsKey(player.getUniqueId())) {
+            ItemStack item = headItems.remove(player.getUniqueId());
+            player.getInventory().setHelmet(item);
+        }
     }
 
     @EventHandler
