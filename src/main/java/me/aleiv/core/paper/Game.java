@@ -68,8 +68,8 @@ public class Game extends BukkitRunnable {
     HideMode hideMode = HideMode.INGAME;
     GameStage gameStage = GameStage.INGAME;
 
-    String totalPlayers = "121";
-    String totalPrize = "010000";
+    String totalPlayers = "042";
+    String totalPrize = "072000";
 
     Location city;
     Location whiteLobby;
