@@ -76,6 +76,11 @@ public class PhoneCMD extends BaseCommand {
     public void onRubiusDisguise(Player player) {
         var manager = instance.getEntityModelManager();
 
+        if (manager.isPlayerDisguised(player)) {
+            player.sendMessage(ChatColor.RED + "You are already disguised");
+            return;
+        }
+
         try {
             var loc = player.getLocation();
             var entity = manager.spawnEntityModel(UUID.randomUUID().toString(), 20, "rubius", loc, EntityType.WOLF, EntityMood.STATIC);
