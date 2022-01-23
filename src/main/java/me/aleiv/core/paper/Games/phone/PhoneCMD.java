@@ -96,10 +96,11 @@ public class PhoneCMD extends BaseCommand {
         }
     }
 
+    @CommandAlias("ra")
     @Subcommand("rubius animation")
     @CommandCompletion("@rubiusanimation @bool")
     @Syntax("<animation> <loop>")
-    public void onRubiusAnimation(Player player, String animationName, Boolean loop) {
+    public void onRubiusAnimation(Player player, String animationName, @Optional @Default("false") Boolean loop) {
         var manager = instance.getEntityModelManager();
         EntityModel model = manager.getEntityModel(player.getUniqueId());
         if (model == null || !Objects.equals(model.getActiveModel().getModelId(), "rubius")) {
