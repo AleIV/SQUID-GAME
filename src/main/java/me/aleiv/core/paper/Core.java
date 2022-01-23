@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import me.aleiv.core.paper.commands.*;
+import me.aleiv.core.paper.listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -36,13 +37,6 @@ import me.aleiv.core.paper.Games.potato.PotatoListener;
 import me.aleiv.core.paper.Games.rope.RopeCMD;
 import me.aleiv.core.paper.Games.rope.RopeListener;
 import me.aleiv.core.paper.core.WebServer;
-import me.aleiv.core.paper.listeners.CanceledListener;
-import me.aleiv.core.paper.listeners.CinematicListener;
-import me.aleiv.core.paper.listeners.FrozeListener;
-import me.aleiv.core.paper.listeners.GlobalListener;
-import me.aleiv.core.paper.listeners.HideListener;
-import me.aleiv.core.paper.listeners.ItemListener;
-import me.aleiv.core.paper.listeners.MechanicsListener;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
@@ -111,6 +105,7 @@ public class Core extends JavaPlugin {
         registerListener(new ItemListener(this));
         registerListener(new CinematicListener(this));
         registerListener(new FrozeListener(this));
+        registerListener(new ChatListener(this));
         //registerListener(new HologramListener(this));
         registerListener(game.getGlobalStage());
 
