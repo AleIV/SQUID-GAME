@@ -175,5 +175,22 @@ public class UtilsCMD extends BaseCommand {
         player.sendMessage("Players in range: " + players.size());
         player.sendMessage("Players: " + players.stream().map(HumanEntity::getName).collect(Collectors.joining(", ")));
     }
+    
+    @CommandAlias("clear-chat")
+    public void onClearChat(Player player) {
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            if (!p.hasPermission("squidgame.bypasschatclear")) {
+                this.clearchat(p);
+            }
+        });
+
+        player.sendMessage("Chat cleared for players without perm 'squidgame.bypasschatclear'");
+    }
+
+    private void clearchat(Player player) {
+        for (int i = 0; i < 100; i++) {
+            player.sendMessage(ChatColor.BLACK + " ");
+        }
+    }
 
 }
