@@ -101,6 +101,19 @@ public class PhoneCMD extends BaseCommand {
         }
     }
 
+    @Subcommand("redetect")
+    public void onRubiusRecheck(Player player) {
+        var manager = instance.getEntityModelManager();
+        EntityModel model = manager.getEntityModel(player.getUniqueId());
+        if (model != null) {
+            player.sendMessage(ChatColor.GREEN + "You are not in a model.");
+            return;
+        }
+
+        model.getModeledEntity().detectPlayers();
+        player.sendMessage(ChatColor.GREEN + "Redetected players.");
+    }
+
     @CommandAlias("ra")
     @Subcommand("rubius animation")
     @CommandCompletion("@rubiusanimation @bool")
