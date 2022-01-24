@@ -11,7 +11,6 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -199,17 +198,17 @@ public class UtilsCMD extends BaseCommand {
 
     @Subcommand("shufflelocations")
     public void onShuffle(Player player) {
-        List<Location> locs = Bukkit.getOnlinePlayers().parallelStream()
-                .filter(p -> this.instance.getGame().isPlayer(p))
-                .map(Entity::getLocation).collect(Collectors.toList());
-        List<Player> players = Bukkit.getOnlinePlayers().stream().map(OfflinePlayer::getPlayer).toList();
-        Collections.shuffle(locs);
+        List<Player> players = Bukkit.getOnlinePlayers().parallelStream().filter(p -> this.instance.getGame().isPlayer(p)).collect(Collectors.toList());
+        Collections.shuffle(players);
+        HashMap<Player, Location> locations = new HashMap<>();
 
-        // Teleport a player to each location with a for each loop
-        for (int i = 0; i < locs.size(); i++) {
-            players.get(i).teleport(locs.get(i));
+        for (int i = 0; i < players.size(); i++) {
+            Player p = players.get(i);
+            Player next = players.get((i + 1) % players.size());
+            locations.put(p, next.getLocation());
         }
 
+        locations.forEach(Entity::teleport);
 
         player.sendMessage(ChatColor.DARK_AQUA + "Players shuffled");
     }
