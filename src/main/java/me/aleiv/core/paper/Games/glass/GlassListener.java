@@ -44,17 +44,6 @@ public class GlassListener implements Listener {
     }
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent e){
-        var block = e.getClickedBlock();
-        var player = e.getPlayer();
-        var glass = instance.getGame().getGlassGame();
-        if(block != null && player.getGameMode() == GameMode.CREATIVE && !player.isSneaking() && glass.isGlass(block.getType())){
-            glass.breakGlass(block, true);
-            
-        }
-    }
-
-    @EventHandler
     public void onArmorStandInteraction(PlayerInteractAtEntityEvent e) {
         if (e.getRightClicked().getType() == EntityType.ARMOR_STAND) {
             ArmorStand stand = (ArmorStand) e.getRightClicked();
@@ -97,6 +86,8 @@ public class GlassListener implements Listener {
                 game.transformBlocks(block, Material.LIGHT_GRAY_STAINED_GLASS);
             } else if (itemName.contains("normalglass")) {
                 game.transformBlocks(block, Material.BROWN_STAINED_GLASS);
+            } else if (itemName.contains("breakglass")) {
+                game.breakGlass(block, true);
             }
 
             e.getPlayer().sendMessage(ChatColor.GREEN + "Glass block transformed");
@@ -136,7 +127,7 @@ public class GlassListener implements Listener {
 
     public void glassBreakCheck(Location to) {
         to = to.clone();
-        Block blockBelow = to.add(0, -0.4, 0).getBlock();
+        Block blockBelow = to.add(0, -0.6, 0).getBlock();
         if (blockBelow.getType() == Material.GLASS) {
             instance.getGame().getGlassGame().breakGlass(blockBelow, true);
         }
