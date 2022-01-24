@@ -82,13 +82,13 @@ public class GlassListener implements Listener {
             GlassGame game = instance.getGame().getGlassGame();
 
             if (itemName.contains("fallglass")) {
-                game.transformBlocks(block, Material.WHITE_STAINED_GLASS);
-            } else if (itemName.contains("normalglass")) {
-                game.transformBlocks(block, Material.LIGHT_GRAY_STAINED_GLASS);
-            } else if (itemName.contains("texturedglass")) {
                 game.transformBlocks(block, Material.BROWN_STAINED_GLASS);
-            } else if (itemName.contains("breakglass")) {
+            } else if (itemName.contains("normalglass")) {
                 game.transformBlocks(block, Material.WHITE_STAINED_GLASS);
+            } else if (itemName.contains("texturedglass")) {
+                game.transformBlocks(block, Material.LIGHT_GRAY_STAINED_GLASS);
+            } else if (itemName.contains("breakglass")) {
+                game.transformBlocks(block, Material.BROWN_STAINED_GLASS);
                 game.breakGlass(block, true);
             }
 
@@ -130,7 +130,7 @@ public class GlassListener implements Listener {
     public void glassBreakCheck(Player player, Location to) {
         to = to.clone();
         Block blockBelow = to.add(0, -0.4, 0).getBlock();
-        if (blockBelow.getType() == Material.WHITE_STAINED_GLASS) {
+        if (blockBelow.getType() == Material.BROWN_STAINED_GLASS) {
             instance.getGame().getGlassGame().breakGlass(blockBelow, true);
             player.setVelocity(new Vector(0, -1, 0));
         }
