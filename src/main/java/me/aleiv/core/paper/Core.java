@@ -137,6 +137,7 @@ public class Core extends JavaPlugin {
         commandManager.registerCommand(new CPSCommand(this));
 
         commandManager.registerCommand(new AliasCMD(this));
+        commandManager.registerCommand(new WinnerCMD(this));
 
         
 
