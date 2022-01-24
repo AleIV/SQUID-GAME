@@ -1,8 +1,6 @@
 package me.aleiv.core.paper.Games.glass;
 
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Games.GlobalGame;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -13,12 +11,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Games.GlobalGame;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.md_5.bungee.api.ChatColor;
+
 public class GlassListener implements Listener {
 
     Core instance;
 
     private int maniquiConChaleco = 84;
     private int maniquiSinChaleco = 42;
+
+    private String color1 = "<#f901ae>";
 
     public GlassListener(Core instance) {
         this.instance = instance;
@@ -45,7 +51,13 @@ public class GlassListener implements Listener {
                 e.setCancelled(true);
                 AnimationTools.setStandModel(stand, Material.BRICK, maniquiSinChaleco);
                 Player player = e.getPlayer();
-                this.instance.getGame().getGlobalGame().clothes(player, GlobalGame.Clothe.GLASS);
+                var game = instance.getGame();
+                game.getGlobalGame().clothes(player, GlobalGame.Clothe.GLASS);
+                var participants = game.getParticipants();
+                var participant = participants.get(player.getUniqueId().toString());
+                var c =  MiniMessage.get().parse(color1 + stand.getName() + ". " + ChatColor.WHITE + "Jugador " + color1 + "#" + participant.getNumber() + " " + ChatColor.WHITE + participant.getName());
+                Bukkit.broadcast(c);
+               
             }
         }
     }

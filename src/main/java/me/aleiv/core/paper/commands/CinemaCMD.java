@@ -1,14 +1,21 @@
 package me.aleiv.core.paper.commands;
 
+import java.util.Arrays;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Flags;
+import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.cinematicCore.paper.CinematicTool;
 import me.aleiv.core.paper.Core;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import java.util.Arrays;
 
 @CommandAlias("cinema")
 @CommandPermission("admin.perm")
@@ -40,8 +47,25 @@ public class CinemaCMD extends BaseCommand {
 
     @Subcommand("squidgame")
     @CommandCompletion("@players")
-    public void squidgame(Player sender, @Flags("other") Player player1, @Flags("other") Player player2){
-        //TODO: FINAL CINEMA
+    public void squidgame(Player sender, @Flags("other") Player player1, @Flags("other") Player player2, String... str){
+        var cine = CinematicTool.getInstance().getGame();   
+        var game = instance.getGame();
+        game.setAllFroze(true);
+        var players = Bukkit.getOnlinePlayers();
+        players.forEach(player ->{
+            var loc = player.getLocation();
+            player.playSound(loc, "squid:sfx.billy", 111, 1);
+        });
+        var loc1 = new Location(Bukkit.getWorld("world"), 421.5, 65, 64.5, 90, 0);
+        var loc2 = new Location(Bukkit.getWorld("world"), 383.5, 65, 64.5, -90, 0);
+        player1.teleport(loc1);
+        player2.teleport(loc2);
+        cine.setNpcs(true);
+        cine.setFade(false);
+        Bukkit.getScheduler().runTaskLater(instance, task -> {
+            cine.play(players.stream().map(p -> p.getUniqueId()).toList(), str);
+        }, 1);
+
     }
 
     @Subcommand("play")

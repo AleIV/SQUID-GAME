@@ -97,7 +97,7 @@ public class GlobalGame {
 
             case CHEF: {
                 inv.clear();
-                var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(7)).name("Mask").build();
+                var hat = new ItemBuilder(Material.BRICK).meta(meta -> meta.setCustomModelData(98)).name("Mask").build();
                 equip.setHelmet(hat);
 
                 var r = new ItemBuilder(Material.CROSSBOW).meta(meta -> meta.setCustomModelData(1))
@@ -259,8 +259,6 @@ public class GlobalGame {
             }
                 break;
 
-            default:
-                break;
         }
     }
 
@@ -289,7 +287,8 @@ public class GlobalGame {
         var beds = AnimationTools.findLocations("BED");
         var guardBeds = AnimationTools.findLocations("GUARDB");
         var players = Bukkit.getOnlinePlayers();
-        var participants = players.stream().filter(player -> game.isPlayer(player)).map(player -> (Player) player).toList();
+        var participants = players.stream().filter(player -> game.isPlayer(player)).map(player -> (Player) player)
+                .toList();
         var guards = players.stream().filter(player -> game.isGuard(player)).map(player -> (Player) player).toList();
 
         AnimationTools.forceSleep(participants, beds);

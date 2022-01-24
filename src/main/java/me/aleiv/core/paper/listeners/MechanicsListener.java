@@ -4,6 +4,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import me.aleiv.cinematicCore.paper.events.CinematicFinishEvent;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game.GameStage;
 import me.aleiv.core.paper.Games.GlobalGame.Clothe;
@@ -39,6 +40,15 @@ public class MechanicsListener implements Listener {
             
         }
 
+    }
+
+    @EventHandler
+    public void onFinish(CinematicFinishEvent e){
+        var cine = e.getCinematicProgress().getScenes().get(0);
+        if(cine.getName().contains("1")){
+            var game = instance.getGame();
+            game.setAllFroze(false);
+        }
     }
 
 
