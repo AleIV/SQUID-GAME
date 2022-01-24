@@ -2,14 +2,19 @@ package me.aleiv.core.paper.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import com.github.juliarn.npc.NPC;
 import lombok.NonNull;
 import me.aleiv.cinematicCore.paper.CinematicTool;
+import me.aleiv.cinematicCore.paper.objects.NPCInfo;
 import me.aleiv.core.paper.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 @CommandAlias("cinema")
 @CommandPermission("admin.perm")
@@ -50,13 +55,15 @@ public class CinemaCMD extends BaseCommand {
             var loc = player.getLocation();
             player.playSound(loc, "squid:sfx.billy", 111, 1);
         });
-        var loc1 = new Location(Bukkit.getWorld("world"), 421.5, 65, 64.5, 90, 0);
-        var loc2 = new Location(Bukkit.getWorld("world"), 383.5, 65, 64.5, -90, 0);
-        player1.teleport(loc1);
-        player2.teleport(loc2);
+
         cine.setNpcs(true);
         cine.setFade(false);
         Bukkit.getScheduler().runTaskLater(instance, task -> {
+            var loc1 = new Location(Bukkit.getWorld("world"), 421.5, 65, 64.5, 90, 0);
+            var loc2 = new Location(Bukkit.getWorld("world"), 383.5, 65, 64.5, -90, 0);
+            player1.teleport(loc1);
+            player2.teleport(loc2);
+
             cine.play(players.stream().map(p -> p.getUniqueId()).toList(), str);
         }, 1);
 
