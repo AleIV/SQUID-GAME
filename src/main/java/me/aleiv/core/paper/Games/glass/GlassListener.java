@@ -88,6 +88,7 @@ public class GlassListener implements Listener {
             } else if (itemName.contains("texturedglass")) {
                 game.transformBlocks(block, Material.BROWN_STAINED_GLASS);
             } else if (itemName.contains("breakglass")) {
+                game.transformBlocks(block, Material.GLASS);
                 game.breakGlass(block, true);
             }
 
