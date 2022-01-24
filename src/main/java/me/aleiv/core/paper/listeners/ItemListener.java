@@ -1,5 +1,7 @@
 package me.aleiv.core.paper.listeners;
 
+import de.maxhenkel.voicechat.Voicechat;
+import de.maxhenkel.voicechat.models.VoiceRestrictions;
 import me.aleiv.core.paper.AnimationTools;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Games.GlobalGame.Clothe;
@@ -129,18 +131,38 @@ public class ItemListener implements Listener {
                     player.getPassengers().forEach(Entity::eject);
                 }
             } else if (name.contains("froze")) {
-                this.instance.getGame().switchFroze(target.getUniqueId());
-
+                if (this.instance.getGame().switchFroze(target.getUniqueId())) {
+                    player.sendMessage("Player " + target.getName() + " is now frozen");
+                } else {
+                    player.sendMessage("Player " + target.getName() + " is now unfrozen");
+                }
             } else if (name.contains("info")) {
                 player.sendMessage("Player Name: §e" + target.getName());
                 player.sendMessage("Player UUID: §e" + target.getUniqueId());
-                
             } else if (name.contains("shot")) {
                 AnimationTools.shootLocation(target);
                 var effects = instance.getGame().getEffects();
                 var targetLoc = target.getLocation();
                 var players = targetLoc.getNearbyPlayers(7).stream().toList();
                 effects.blood(players);
+            } else if (name.contains("mute")) {
+                VoiceRestrictions vr = Voicechat.SERVER.getVoiceRestrictions();
+                if (vr.isPlayerMuted(target.getUniqueId())) {
+                    vr.removeMutedPlayer(target.getUniqueId());
+                    player.sendMessage("Player " + target.getName() + " is now unmuted");
+                } else {
+                    vr.addMutedPlayer(target.getUniqueId());
+                    player.sendMessage("Player " + target.getName() + " is now muted");
+                }
+            } else if (name.contains("globalmute")) {
+                VoiceRestrictions vr = Voicechat.SERVER.getVoiceRestrictions();
+                if (vr.isAllMuted()) {
+                    vr.setAllMuted(false);
+                    player.sendMessage("Global mute is now off");
+                } else {
+                    vr.setAllMuted(true);
+                    player.sendMessage("Global mute is now on");
+                }
             }
         } else if (entity instanceof ArmorStand stand) {
             var uuid = stand.getUniqueId().toString();

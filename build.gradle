@@ -78,6 +78,9 @@ dependencies {
     // ArtMap for Cookie Game
     compileOnly files('lib/ArtMap-SquidGame.jar')
 
+    // Voice chat
+    compileOnly files('lib/squidvoice.jar')
+
     // nanohttpd
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
 
