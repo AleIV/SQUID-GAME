@@ -9,12 +9,14 @@ import me.aleiv.core.paper.Game;
 import me.aleiv.core.paper.listeners.LimitListener;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -190,6 +192,20 @@ public class UtilsCMD extends BaseCommand {
         for (int i = 0; i < 100; i++) {
             player.sendMessage(ChatColor.BLACK + " ");
         }
+    }
+
+    @Subcommand("shufflelocations")
+    public void onShuffle(Player player) {
+        List<Player> players = Bukkit.getOnlinePlayers().parallelStream().filter(p -> this.instance.getGame().isPlayer(p)).collect(Collectors.toList());
+        Collections.shuffle(players);
+
+        for (int i = 0; i < players.size(); i++) {
+            Player p = players.get(i);
+            Player next = players.get((i + 1) % players.size());
+            p.teleport(next.getLocation());
+        }
+
+        player.sendMessage(ChatColor.DARK_AQUA + "Players shuffled");
     }
 
 }
