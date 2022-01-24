@@ -72,6 +72,24 @@ public class GlassCMD extends BaseCommand {
         sender.sendMessage(ChatColor.DARK_AQUA + "Set " + player.getName() + " glass break to " + bool);
     }
 
+    @Subcommand("glass-break-all")
+    @CommandCompletion("@players true|false")
+    @Syntax("<player> <true|false>")
+    public void glassBreakAll(CommandSender sender, @Optional @Default("true") Boolean bool) {
+
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            if (instance.getGame().isPlayer(p)) {
+                if (bool) {
+                    instance.getGame().getGlassGame().addPlayerGlassBreak(p.getUniqueId());
+                } else {
+                    instance.getGame().getGlassGame().removePlayerGlassBreak(p.getUniqueId());
+                }
+            }
+        });
+
+        sender.sendMessage(ChatColor.DARK_AQUA + "Set EVERYONE glass break to " + bool);
+    }
+
     @Subcommand("glass-break-force")
     @CommandCompletion("@players")
     @Syntax("<player>")
