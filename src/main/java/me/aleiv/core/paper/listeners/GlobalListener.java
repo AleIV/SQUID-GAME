@@ -167,6 +167,10 @@ public class GlobalListener implements Listener {
 
                 }else if(stage == Stage.FINAL){
                     AnimationTools.summonDeadBody(player, DeathReason.FINAL, null);
+                    Bukkit.getOnlinePlayers().forEach(p ->{
+                        var loc = player.getLocation();
+                        p.playSound(loc, "squid:sfx.trumpet_final", 1, 1);
+                    });
                     
                 }else{  
                     AnimationTools.summonDeadBody(player, DeathReason.NORMAL, null);
