@@ -101,7 +101,6 @@ public class Core extends JavaPlugin {
         registerListener(new ChairListener(this));
         registerListener(new MechanicsListener(this));
         registerListener(new PotatoListener(this));
-        registerListener(new GlassListener(this));
         registerListener(new ItemListener(this));
         registerListener(new CinematicListener(this));
         registerListener(new FrozeListener(this));

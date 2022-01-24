@@ -9,14 +9,23 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.UUID;
+
 public class GlassGame {
-    Core instance;
+
+    private final Core instance;
+
+    private GlassListener glassListener;
 
     public GlassGame(Core instance){
         this.instance = instance;
+
+        this.glassListener = new GlassListener(instance);
+        instance.registerListener(this.glassListener);
     }
 
     public boolean isGlass(Material material) {
@@ -68,6 +77,34 @@ public class GlassGame {
 
         task.execute();
         
+    }
+
+    public void addPlayerWithJacket(UUID playerUUID) {
+        this.glassListener.addPlayerWithJacket(playerUUID);
+    }
+
+    public void removePlayerWithJacket(UUID playerUUID) {
+        this.glassListener.removePlayerWithJacket(playerUUID);
+    }
+
+    public boolean hasPlayerJacket(UUID playerUUID) {
+        return this.glassListener.hasPlayerWithJacket(playerUUID);
+    }
+
+    public void addPlayerGlassBreak(UUID playerUUID) {
+        this.glassListener.addBreakGlass(playerUUID);
+    }
+
+    public void removePlayerGlassBreak(UUID playerUUID) {
+        this.glassListener.removeBreakGlass(playerUUID);
+    }
+
+    public boolean hasPlayerGlassBreak(UUID playerUUID) {
+        return this.glassListener.hasBreakGlass(playerUUID);
+    }
+
+    public void forceGlassBreak(Player player) {
+        this.glassListener.glassBreakCheck(player.getLocation());
     }
 
 }
