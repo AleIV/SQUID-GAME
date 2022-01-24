@@ -57,7 +57,7 @@ public class WinnerCMD extends BaseCommand {
 
         Bukkit.getOnlinePlayers().forEach(p -> {
             p.sendTitle("\uF808" + symbol, "§6", 20, 20*10, 20);
-            p.playSound(p.getLocation(), "sfx.trumpet_final", 50, 1);
+            p.playSound(p.getLocation(), "squid:sfx.trumpet_final", 50, 1);
         });
     }
 
