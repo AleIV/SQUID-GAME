@@ -29,7 +29,7 @@ public class GlassGame {
     }
 
     public boolean isGlass(Material material) {
-        return material == Material.GLASS;
+        return material == Material.WHITE_STAINED_GLASS;
     }
 
     public void breakGlass(Block block, Boolean bool) {
@@ -83,7 +83,7 @@ public class GlassGame {
                     new ParticleBuilder(Particle.CLOUD).location(loc).receivers(300).force(true).count(100)
                     .offset(1, 1, 1).extra(1).spawn();
                     var block = world.getBlockAt(loc);
-                    if(block.getType() == Material.GLASS){
+                    if(block.getType() == Material.WHITE_STAINED_GLASS){
                         breakGlass(block, false);
                     }
                 }
