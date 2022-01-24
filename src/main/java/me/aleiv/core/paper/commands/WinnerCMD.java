@@ -42,7 +42,7 @@ public class WinnerCMD extends BaseCommand {
         this.winners.put("iRoier", "̔");
         this.winners.put("LuzuVlogs", "̕");
         this.winners.put("SoyBarcaGamer", "̖");
-        this.winners.put("DeqiuV", "̗");
+        this.winners.put("DeqiuVKLK", "̗");
     }
 
     @Default
