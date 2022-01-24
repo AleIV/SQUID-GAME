@@ -1,12 +1,11 @@
 package me.aleiv.core.paper.listeners;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
+import lombok.NonNull;
+import me.aleiv.cinematicCore.paper.events.CinematicFinishEvent;
+import me.aleiv.cinematicCore.paper.events.CinematicStartEvent;
 import me.aleiv.cinematicCore.paper.events.LiveCinematicPlayerRegisterEvent;
 import me.aleiv.cinematicCore.paper.events.LiveCinematicPlayerRemoveEvent;
+import me.aleiv.core.paper.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,10 +14,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import lombok.NonNull;
-import me.aleiv.cinematicCore.paper.events.CinematicFinishEvent;
-import me.aleiv.cinematicCore.paper.events.CinematicStartEvent;
-import me.aleiv.core.paper.Core;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class CinematicListener implements Listener {
 

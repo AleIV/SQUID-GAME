@@ -1,20 +1,19 @@
 package me.aleiv.core.paper.commands;
 
+import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import lombok.NonNull;
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Game;
 import me.aleiv.core.paper.listeners.LimitListener;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-
-import co.aikar.commands.BaseCommand;
-import lombok.NonNull;
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import net.md_5.bungee.api.ChatColor;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,9 +1,5 @@
 package me.aleiv.core.paper.Games.chicken;
 
-import java.util.Arrays;
-
-import org.bukkit.command.CommandSender;
-
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -12,6 +8,9 @@ import co.aikar.commands.annotation.Subcommand;
 import lombok.NonNull;
 import me.aleiv.core.paper.Core;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.util.Arrays;
 
 @CommandAlias("chicken")
 @CommandPermission("admin.perm")

@@ -1,15 +1,15 @@
 package me.aleiv.core.paper.core;
 
+import fi.iki.elonen.NanoHTTPD;
+import lombok.NonNull;
+import me.aleiv.core.paper.Core;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-
-import fi.iki.elonen.NanoHTTPD;
-import lombok.NonNull;
-import me.aleiv.core.paper.Core;
 
 public class WebServer extends NanoHTTPD {
 

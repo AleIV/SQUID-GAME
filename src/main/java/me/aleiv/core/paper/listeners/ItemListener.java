@@ -1,14 +1,11 @@
 package me.aleiv.core.paper.listeners;
 
-import java.util.List;
-
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Games.GlobalGame.Clothe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
@@ -21,11 +18,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Games.GlobalGame.Clothe;
 import us.jcedeno.libs.rapidinv.ItemBuilder;
+
+import java.util.List;
 
 public class ItemListener implements Listener {
 

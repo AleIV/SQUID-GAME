@@ -1,15 +1,14 @@
 package me.aleiv.core.paper.Games;
 
-import java.util.List;
-import java.util.Random;
-
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import java.util.List;
+import java.util.Random;
 
 public class Effects {
     Core instance;

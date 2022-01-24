@@ -4,7 +4,6 @@ import me.Fupery.ArtMap.Event.PlayerPaintedEvent;
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.objects.CookieCapsule;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

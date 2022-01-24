@@ -2,7 +2,6 @@ package me.aleiv.core.paper.listeners;
 
 import me.aleiv.core.paper.Core;
 import me.aleiv.core.paper.Games.GlobalStage.Stage;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;

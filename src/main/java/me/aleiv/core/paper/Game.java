@@ -1,24 +1,9 @@
 package me.aleiv.core.paper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import me.aleiv.core.paper.Games.Effects;
-import me.aleiv.core.paper.Games.Elevators;
-import me.aleiv.core.paper.Games.GlobalGame;
-import me.aleiv.core.paper.Games.GlobalStage;
+import me.aleiv.core.paper.Games.*;
 import me.aleiv.core.paper.Games.GlobalStage.Stage;
-import me.aleiv.core.paper.Games.MainRoom;
 import me.aleiv.core.paper.Games.chair.ChairGame;
 import me.aleiv.core.paper.Games.cookie.CookieGame;
 import me.aleiv.core.paper.Games.doll.DollGame;
@@ -30,6 +15,16 @@ import me.aleiv.core.paper.events.GameTickEvent;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.objects.Participant.Role;
 import me.aleiv.core.paper.objects.Timer;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = false)

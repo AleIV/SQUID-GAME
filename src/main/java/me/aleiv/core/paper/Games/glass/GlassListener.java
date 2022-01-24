@@ -1,5 +1,10 @@
 package me.aleiv.core.paper.Games.glass;
 
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Games.GlobalGame;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -12,12 +17,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Games.GlobalGame;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.ArrayList;

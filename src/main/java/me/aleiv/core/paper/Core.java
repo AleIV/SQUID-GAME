@@ -1,25 +1,11 @@
 package me.aleiv.core.paper;
 
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import co.aikar.commands.PaperCommandManager;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
-import me.aleiv.core.paper.commands.*;
-import me.aleiv.core.paper.listeners.*;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import co.aikar.commands.PaperCommandManager;
 import kr.entree.spigradle.annotations.SpigotPlugin;
 import lombok.Getter;
 import me.aleiv.core.paper.Games.chair.ChairCMD;
@@ -29,14 +15,15 @@ import me.aleiv.core.paper.Games.cookie.CookieCMD;
 import me.aleiv.core.paper.Games.cookie.CookieGame;
 import me.aleiv.core.paper.Games.doll.DollCMD;
 import me.aleiv.core.paper.Games.glass.GlassCMD;
-import me.aleiv.core.paper.Games.glass.GlassListener;
 import me.aleiv.core.paper.Games.hideseek.HideSeekCMD;
 import me.aleiv.core.paper.Games.phone.PhoneCMD;
 import me.aleiv.core.paper.Games.potato.PotatoCMD;
 import me.aleiv.core.paper.Games.potato.PotatoListener;
 import me.aleiv.core.paper.Games.rope.RopeCMD;
 import me.aleiv.core.paper.Games.rope.RopeListener;
+import me.aleiv.core.paper.commands.*;
 import me.aleiv.core.paper.core.WebServer;
+import me.aleiv.core.paper.listeners.*;
 import me.aleiv.core.paper.objects.Participant;
 import me.aleiv.core.paper.utilities.JsonConfig;
 import me.aleiv.core.paper.utilities.NegativeSpaces;
@@ -47,7 +34,17 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
 import us.jcedeno.libs.rapidinv.RapidInvManager;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @SpigotPlugin
 public class Core extends JavaPlugin {

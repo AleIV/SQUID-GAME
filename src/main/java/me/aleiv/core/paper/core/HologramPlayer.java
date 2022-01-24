@@ -1,11 +1,10 @@
 package me.aleiv.core.paper.core;
 
+import me.aleiv.core.paper.Core;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
-
-import me.aleiv.core.paper.Core;
 
 public class HologramPlayer {
 

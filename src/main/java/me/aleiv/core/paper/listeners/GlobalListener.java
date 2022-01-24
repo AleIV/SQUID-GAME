@@ -1,12 +1,22 @@
 package me.aleiv.core.paper.listeners;
 
 import com.destroystokyo.paper.ParticleBuilder;
-
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import me.aleiv.cinematicCore.paper.events.CinematicFinishEvent;
+import me.aleiv.core.paper.AnimationTools;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.Game.DeathReason;
+import me.aleiv.core.paper.Game.GameStage;
+import me.aleiv.core.paper.Game.HideMode;
+import me.aleiv.core.paper.Game.PvPType;
+import me.aleiv.core.paper.Games.GlobalGame.Clothe;
+import me.aleiv.core.paper.Games.GlobalStage.Stage;
+import me.aleiv.core.paper.events.GameStartedEvent;
+import me.aleiv.core.paper.objects.Participant;
+import me.aleiv.core.paper.objects.Participant.Role;
+import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -23,22 +33,6 @@ import org.bukkit.event.player.PlayerRespawnEvent.RespawnFlag;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import me.aleiv.cinematicCore.paper.events.CinematicFinishEvent;
-import me.aleiv.core.paper.AnimationTools;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.Game.DeathReason;
-import me.aleiv.core.paper.Game.GameStage;
-import me.aleiv.core.paper.Game.HideMode;
-import me.aleiv.core.paper.Game.PvPType;
-import me.aleiv.core.paper.Games.GlobalGame.Clothe;
-import me.aleiv.core.paper.Games.GlobalStage.Stage;
-import me.aleiv.core.paper.events.GameStartedEvent;
-import me.aleiv.core.paper.objects.Participant;
-import me.aleiv.core.paper.objects.Participant.Role;
-import me.aleiv.core.paper.utilities.TCT.BukkitTCT;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.md_5.bungee.api.ChatColor;
 import us.jcedeno.libs.rapidinv.ItemBuilder;
 
 public class GlobalListener implements Listener {

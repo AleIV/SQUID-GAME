@@ -1,5 +1,10 @@
 package me.aleiv.core.paper.Games;
 
+import lombok.Data;
+import me.aleiv.core.paper.Core;
+import me.aleiv.core.paper.events.GameTickEvent;
+import me.aleiv.core.paper.objects.Participant.Role;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
@@ -7,13 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import lombok.Data;
-import me.aleiv.core.paper.Core;
-import me.aleiv.core.paper.events.GameTickEvent;
-import me.aleiv.core.paper.objects.Participant.Role;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.md_5.bungee.api.ChatColor;
 
 @Data
 public class GlobalStage implements Listener{
