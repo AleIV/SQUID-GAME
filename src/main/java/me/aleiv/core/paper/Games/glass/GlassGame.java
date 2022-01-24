@@ -53,6 +53,21 @@ public class GlassGame {
 
     }
 
+    public void transformBlocks(Block block, Material newMat) {
+        Material oldMat = block.getType();
+        block.setType(newMat);
+
+        for (BlockFace face : BlockFace.values()) {
+            if (face.equals(BlockFace.DOWN) || face.equals(BlockFace.UP) || face.equals(BlockFace.NORTH)
+                    || face.equals(BlockFace.EAST) || face.equals(BlockFace.SOUTH) || face.equals(BlockFace.WEST)) {
+                Block newBlock = block.getRelative(face);
+                if (newBlock.getType() == oldMat) {
+                    transformBlocks(newBlock, newMat);
+                }
+            }
+        }
+    }
+
     public void breakAll(){
         var locations = AnimationTools.findOrderedLocations("GLASSPANE");
         var world = Bukkit.getWorld("world");

@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,28 @@ public class GlassListener implements Listener {
     }
 
     @EventHandler
+    public void onBlockClick(PlayerInteractEvent e) {
+        ItemStack item = e.getItem();
+        Block block = e.getClickedBlock();
+
+        if (item != null && item.hasItemMeta() && item.getItemMeta().hasDisplayName() && block != null && block.getType().toString().contains("GLASS")) {
+            e.setCancelled(true);
+            String itemName = item.getItemMeta().displayName().toString();
+            GlassGame game = instance.getGame().getGlassGame();
+
+            if (itemName.contains("fallglass")) {
+                game.transformBlocks(block, Material.GLASS);
+            } else if (itemName.contains("texturedglass")) {
+                game.transformBlocks(block, Material.LIGHT_GRAY_STAINED_GLASS);
+            } else if (itemName.contains("normalglass")) {
+                game.transformBlocks(block, Material.BROWN_STAINED_GLASS);
+            }
+
+            e.getPlayer().sendMessage(ChatColor.GREEN + "Glass block transformed");
+        }
+    }
+
+    @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         if (!this.breakGlass.contains(e.getPlayer().getUniqueId())) return;
 
@@ -113,7 +136,7 @@ public class GlassListener implements Listener {
 
     public void glassBreakCheck(Location to) {
         to = to.clone();
-        Block blockBelow = to.add(0, -0.2, 0).getBlock();
+        Block blockBelow = to.add(0, -0.4, 0).getBlock();
         if (blockBelow.getType() == Material.GLASS) {
             instance.getGame().getGlassGame().breakGlass(blockBelow, true);
         }
