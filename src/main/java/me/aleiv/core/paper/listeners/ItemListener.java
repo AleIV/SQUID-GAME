@@ -145,7 +145,7 @@ public class ItemListener implements Listener {
                 var targetLoc = target.getLocation();
                 var players = targetLoc.getNearbyPlayers(7).stream().toList();
                 effects.blood(players);
-            } else if (name.contains("mute")) {
+            } else if (name.contains("muteplayer")) {
                 VoiceRestrictions vr = Voicechat.SERVER.getVoiceRestrictions();
                 if (vr.isPlayerMuted(target.getUniqueId())) {
                     vr.removeMutedPlayer(target.getUniqueId());
