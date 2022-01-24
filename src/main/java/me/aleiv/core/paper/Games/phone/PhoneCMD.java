@@ -50,7 +50,10 @@ public class PhoneCMD extends BaseCommand {
         var manager = instance.getEntityModelManager();
         
         if(bool){
-            
+            if (manager.isPlayerDisguised(player)) {
+                player.sendMessage(ChatColor.RED + "You are already disguised");
+                return;
+            }
             try {
                 var loc = player.getLocation();
                 var entity = manager.spawnEntityModel(UUID.randomUUID().toString(), 20, "pug", loc, EntityType.WOLF, EntityMood.STATIC);
@@ -62,10 +65,13 @@ public class PhoneCMD extends BaseCommand {
 
         }else{
             EntityModel model = manager.getEntityModel(player.getUniqueId());
-            if (model != null) {
-                manager.undisguisePlayer(player);
-                model.remove();
+            if (model == null) {
+                player.sendMessage(ChatColor.RED + "You are not disguised");
+                return;
             }
+
+            manager.undisguisePlayer(player);
+            model.remove();
         }
     }
 
