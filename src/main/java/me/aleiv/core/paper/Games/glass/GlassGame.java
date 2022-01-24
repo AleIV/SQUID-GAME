@@ -119,7 +119,7 @@ public class GlassGame {
     }
 
     public void forceGlassBreak(Player player) {
-        this.glassListener.glassBreakCheck(player.getLocation());
+        this.glassListener.glassBreakCheck(player, player.getLocation());
     }
 
 }

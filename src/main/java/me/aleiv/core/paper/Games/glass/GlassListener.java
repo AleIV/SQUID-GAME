@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +99,7 @@ public class GlassListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent e) {
         if (!this.breakGlass.contains(e.getPlayer().getUniqueId())) return;
 
-        this.glassBreakCheck(e.getTo());
+        this.glassBreakCheck(e.getPlayer(), e.getTo());
     }
 
     public void addPlayerWithJacket(UUID uuid) {
@@ -125,11 +126,12 @@ public class GlassListener implements Listener {
         return this.breakGlass.contains(uuid);
     }
 
-    public void glassBreakCheck(Location to) {
+    public void glassBreakCheck(Player player, Location to) {
         to = to.clone();
-        Block blockBelow = to.add(0, -0.6, 0).getBlock();
+        Block blockBelow = to.add(0, -0.4, 0).getBlock();
         if (blockBelow.getType() == Material.GLASS) {
             instance.getGame().getGlassGame().breakGlass(blockBelow, true);
+            player.setVelocity(new Vector(0, -1, 0));
         }
     }
 
