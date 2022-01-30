@@ -42,7 +42,7 @@ public class AliasCMD extends BaseCommand {
     @Subcommand("stage")
     @CommandAlias("stage")
     @CommandCompletion("@stages")
-    public void stage(Player sender, Stage stage) {
+    public void stage(CommandSender sender, Stage stage) {
 
         var game = instance.getGame();
         game.setStage(stage);
